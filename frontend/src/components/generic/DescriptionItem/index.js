@@ -1,26 +1,13 @@
 import React from 'react'
 
 import { isEmpty } from 'lodash-es'
-import { makeStyles } from '@material-ui/core/styles'
-import {
-    Typography,
-    Grid,
-    List,
-    ListItem,
-    ListItemText,
-} from '@material-ui/core'
+
+import { Typography, Grid, List, ListItem, ListItemText } from '@mui/material'
 import { Skills, Roles, Misc } from '@hackjunction/shared'
 import { Yes, No, NotAvailable } from 'components/generic/Tag/Variants'
 import moment from 'moment'
 
-const useStyles = makeStyles(theme => ({
-    title: {
-        fontWeight: 'bold',
-    },
-}))
-
 const DescriptionItem = ({ title, content, fieldName }) => {
-    const classes = useStyles()
     const renderBoolean = bool => {
         if (bool === true) {
             return <Yes />
@@ -39,7 +26,6 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                         <ListItemText
                             primaryTypographyProps={{
                                 variant: 'body2',
-                                classes: { root: classes.title },
                             }}
                             secondaryTypographyProps={{ variant: 'subtitle1' }}
                             primary={labelMap[key] || key}
@@ -69,7 +55,6 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                                     )}
                                     primaryTypographyProps={{
                                         variant: 'body2',
-                                        classes: { root: classes.title },
                                     }}
                                     secondaryTypographyProps={{
                                         variant: 'subtitle1',
@@ -93,7 +78,6 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                                         secondary={label}
                                         primaryTypographyProps={{
                                             variant: 'body2',
-                                            classes: { root: classes.title },
                                         }}
                                         secondaryTypographyProps={{
                                             variant: 'subtitle1',
@@ -166,7 +150,6 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                                     primary={item}
                                     primaryTypographyProps={{
                                         variant: 'body2',
-                                        classes: { root: classes.title },
                                     }}
                                     secondaryTypographyProps={{
                                         variant: 'subtitle1',
@@ -200,9 +183,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
 
     return (
         <Grid item xs={12}>
-            <Typography variant="body2" classes={{ root: classes.title }}>
-                {title}
-            </Typography>
+            <Typography variant="body2">{title}</Typography>
             <Typography variant="subtitle1" color="textSecondary">
                 {renderContent(content, fieldName)}
             </Typography>

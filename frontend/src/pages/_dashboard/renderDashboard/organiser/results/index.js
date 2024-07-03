@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 import { useSelector } from 'react-redux'
 
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -12,13 +12,13 @@ import OverallTab from './overall'
 import TracksTab from './tracks'
 import ChallengesTab from './challenges'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 export default () => {
     console.log('THIS IS THE RESULTS PAGE')
     const event = useSelector(OrganiserSelectors.event)
     const location = useLocation()
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
 
     const tabs = useMemo(() => {
         const data = [

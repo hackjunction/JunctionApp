@@ -6,17 +6,17 @@ import {
     Grid,
     Link,
     Paper,
-} from '@material-ui/core'
+} from '@mui/material'
 import TextInput from 'components/inputs/TextInput'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Formik, FastField } from 'formik'
 
 import { useDispatch, useSelector } from 'react-redux'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import { useTranslation } from 'react-i18next'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import VotingTokenService from 'services/votingToken'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import Button from 'components/generic/Button'
 import { Table } from 'components/generic/_Table'
 
@@ -35,7 +35,7 @@ export default () => {
         if (idToken && event?.slug) {
             refreshTokens()
         }
-    }, [ event?.slug,idToken])
+    }, [event?.slug, idToken])
 
     const refreshTokens = useCallback(() => {
         if (idToken && event?.slug) {
@@ -45,7 +45,7 @@ export default () => {
                 },
             )
         }
-    }, [event?.slug,idToken])
+    }, [event?.slug, idToken])
 
     const handleSubmit = useCallback(
         (values, formikBag) => {

@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
     Box,
     Typography,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     Dialog,
     DialogContent,
     DialogActions,
-} from '@material-ui/core'
-import Rating from '@material-ui/lab/Rating'
+} from '@mui/material'
+import Rating from '@mui/lab/Rating'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
@@ -22,9 +22,9 @@ import RegistrationStatusSelect from 'components/inputs/RegistrationStatusSelect
 import ConfirmDialog from 'components/generic/ConfirmDialog'
 import Button from 'components/generic/Button'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useFormField } from 'hooks/formHooks'
 import { useTranslation } from 'react-i18next'
 export default ({ visible, userIds = [], onClose }) => {
@@ -126,11 +126,11 @@ export default ({ visible, userIds = [], onClose }) => {
                             {t('un_expanded_')}
                             {t('Edit_selected_registration_cont_')}
                         </Typography>
-                        <ExpansionPanel
+                        <Accordion
                             expanded={isExpanded('rating')}
                             onChange={() => toggleExpanded('rating')}
                         >
-                            <ExpansionPanelSummary>
+                            <AccordionSummary>
                                 <Box
                                     flex="1"
                                     display="flex"
@@ -159,19 +159,19 @@ export default ({ visible, userIds = [], onClose }) => {
                                         </Typography>
                                     )}
                                 </Box>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
+                            </AccordionSummary>
+                            <AccordionDetails>
                                 <Rating
                                     value={rating.value}
                                     onChange={(e, num) => rating.setValue(num)}
                                 />
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                        <ExpansionPanel
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion
                             expanded={isExpanded('assignedTo')}
                             onChange={() => toggleExpanded('assignedTo')}
                         >
-                            <ExpansionPanelSummary>
+                            <AccordionSummary>
                                 <Box
                                     flex="1"
                                     display="flex"
@@ -199,8 +199,8 @@ export default ({ visible, userIds = [], onClose }) => {
                                         </Typography>
                                     )}
                                 </Box>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
+                            </AccordionSummary>
+                            <AccordionDetails>
                                 <OrganiserSelectModal
                                     open={organiserModal}
                                     onClose={setOrganiserModal}
@@ -227,13 +227,13 @@ export default ({ visible, userIds = [], onClose }) => {
                                         {t('Change_')}
                                     </Button>
                                 </Box>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                        <ExpansionPanel
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion
                             expanded={isExpanded('tags')}
                             onChange={() => toggleExpanded('tags')}
                         >
-                            <ExpansionPanelSummary>
+                            <AccordionSummary>
                                 <Box
                                     flex="1"
                                     display="flex"
@@ -262,20 +262,20 @@ export default ({ visible, userIds = [], onClose }) => {
                                         </Typography>
                                     )}
                                 </Box>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
+                            </AccordionSummary>
+                            <AccordionDetails>
                                 <EventTagsSelect
                                     value={tags.value}
                                     onChange={tags.setValue}
                                     tags={event.tags}
                                 />
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                        <ExpansionPanel
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion
                             expanded={isExpanded('status')}
                             onChange={() => toggleExpanded('status')}
                         >
-                            <ExpansionPanelSummary>
+                            <AccordionSummary>
                                 <Box
                                     flex="1"
                                     display="flex"
@@ -303,14 +303,14 @@ export default ({ visible, userIds = [], onClose }) => {
                                         </Typography>
                                     )}
                                 </Box>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
+                            </AccordionSummary>
+                            <AccordionDetails>
                                 <RegistrationStatusSelect
                                     value={status.value}
                                     onChange={status.setValue}
                                 />
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
+                            </AccordionDetails>
+                        </Accordion>
                     </Container>
                 </DialogContent>
                 <DialogActions>

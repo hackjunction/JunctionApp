@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { Grid, Typography, Box } from '@material-ui/core'
+import { Grid, Typography, Box } from '@mui/material'
 import moment from 'moment-timezone'
 import {
     RegistrationStatuses,
@@ -9,7 +9,7 @@ import {
     EventHelpers,
 } from '@hackjunction/shared'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'
@@ -71,6 +71,4 @@ export default () => {
             </GradientBox>
         </Grid>
     )
-
-
 }

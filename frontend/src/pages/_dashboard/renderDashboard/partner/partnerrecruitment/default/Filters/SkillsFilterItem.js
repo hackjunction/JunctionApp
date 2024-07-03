@@ -1,19 +1,18 @@
 import React, { useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
 import {
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-    ExpansionPanelActions,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    AccordionActions,
     Typography,
     FormGroup,
     FormControlLabel,
     Checkbox,
     Button,
     Box,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useTranslation } from 'react-i18next'
 import { Skills } from '@hackjunction/shared'
 
@@ -54,16 +53,16 @@ const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
         }
     }
     return (
-        <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Box display="flex" flexDirection="column">
                     <Typography variant="subtitle1">{skill}</Typography>
                     <Typography variant="caption">
                         {renderSelected()}
                     </Typography>
                 </Box>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
                 <FormGroup className={classes.radios}>
                     {Skills.skillLevelArray.map(({ value, label }) => (
                         <FormControlLabel
@@ -79,13 +78,13 @@ const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
                         />
                     ))}
                 </FormGroup>
-            </ExpansionPanelDetails>
-            <ExpansionPanelActions>
+            </AccordionDetails>
+            <AccordionActions>
                 <Button size="small" onClick={onRemove}>
                     {t('Remove_')}
                 </Button>
-            </ExpansionPanelActions>
-        </ExpansionPanel>
+            </AccordionActions>
+        </Accordion>
     )
 })
 

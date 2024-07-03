@@ -1,14 +1,7 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Button, Typography } from '@material-ui/core'
-import InfoTwoToneIcon from '@material-ui/icons/InfoTwoTone'
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        backgroundColor: '#efefef',
-    },
-}))
+import { Box, Button, Typography } from '@mui/material'
+import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone'
 
 const Empty = ({
     isEmpty,
@@ -16,8 +9,6 @@ const Empty = ({
     button,
     hideIfNotEmpty = false,
 }) => {
-    const classes = useStyles()
-
     const renderButton = () => {
         if (!button) return null
         return (
@@ -57,7 +48,7 @@ const Empty = ({
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            className={classes.root}
+            className="tw-bg-gray-300"
         >
             <InfoTwoToneIcon />
             <Box mt={2}>

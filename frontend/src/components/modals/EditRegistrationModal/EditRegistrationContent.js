@@ -3,16 +3,16 @@ import { useSelector } from 'react-redux'
 import { RegistrationFields } from '@hackjunction/shared'
 import { groupBy, sortBy, find } from 'lodash-es'
 import {
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     Typography,
     Grid,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import DescriptionItem from 'components/generic/DescriptionItem'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 export default React.memo(({ registration }) => {
     const event = useSelector(OrganiserSelectors.event)
@@ -37,15 +37,15 @@ export default React.memo(({ registration }) => {
     return (
         <>
             {categoryNames.map(name => (
-                <ExpansionPanel key={name}>
-                    <ExpansionPanelSummary
+                <Accordion key={name}>
+                    <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls={`${name}-content`}
                         id={`${name}-header`}
                     >
                         <Typography>{name}</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                    </AccordionSummary>
+                    <AccordionDetails>
                         <Grid container spacing={3}>
                             {grouped[name].map(field => {
                                 let label =
@@ -68,20 +68,20 @@ export default React.memo(({ registration }) => {
                                 )
                             })}
                         </Grid>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
+                    </AccordionDetails>
+                </Accordion>
             ))}
             {event.customQuestions.map(section => {
                 return (
-                    <ExpansionPanel key={section.name}>
-                        <ExpansionPanelSummary
+                    <Accordion key={section.name}>
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls={`${section.name}-content`}
                             id={`${section.name}-header`}
                         >
                             <Typography>{section.label}</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <Grid container spacing={3}>
                                 {section.questions.map(question => {
                                     return (
@@ -98,8 +98,8 @@ export default React.memo(({ registration }) => {
                                     )
                                 })}
                             </Grid>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                        </AccordionDetails>
+                    </Accordion>
                 )
             })}
         </>

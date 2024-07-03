@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography } from '@mui/material'
+
 import { useDispatch, useSelector } from 'react-redux'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 
 import { useArray } from 'hooks/customHooks'
 import Select from 'components/inputs/Select'

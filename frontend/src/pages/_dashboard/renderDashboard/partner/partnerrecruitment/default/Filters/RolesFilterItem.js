@@ -1,19 +1,18 @@
 import React, { useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
 import {
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-    ExpansionPanelActions,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    AccordionActions,
     Typography,
     FormGroup,
     FormControlLabel,
     Checkbox,
     Button,
     Box,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import { Roles } from '@hackjunction/shared'
 
@@ -54,16 +53,16 @@ const RolesFilterItem = React.memo(({ role, years, onEdit, onRemove }) => {
         }
     }
     return (
-        <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Box display="flex" flexDirection="column">
                     <Typography variant="subtitle1">{role}</Typography>
                     <Typography variant="caption">
                         {renderSelected()}
                     </Typography>
                 </Box>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
                 <FormGroup className={classes.radios}>
                     {Roles.experienceLevelArray.map(({ value, label }) => (
                         <FormControlLabel
@@ -79,13 +78,13 @@ const RolesFilterItem = React.memo(({ role, years, onEdit, onRemove }) => {
                         />
                     ))}
                 </FormGroup>
-            </ExpansionPanelDetails>
-            <ExpansionPanelActions>
+            </AccordionDetails>
+            <AccordionActions>
                 <Button size="small" onClick={onRemove}>
                     Remove
                 </Button>
-            </ExpansionPanelActions>
-        </ExpansionPanel>
+            </AccordionActions>
+        </Accordion>
     )
 })
 

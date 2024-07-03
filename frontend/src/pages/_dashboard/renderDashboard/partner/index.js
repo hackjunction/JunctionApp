@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
-import DashboardIcon from '@material-ui/icons/Dashboard'
-import AmpStoriesIcon from '@material-ui/icons/AmpStories'
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
-import EventIcon from '@material-ui/icons/Event'
-import WorkIcon from '@material-ui/icons/Work'
-import PlaceIcon from '@material-ui/icons/Place'
-import RateReviewIcon from '@material-ui/icons/RateReview'
-import { makeStyles } from '@material-ui/core/styles'
-import { Typography } from '@material-ui/core'
+import { useResolvedPath, useLocation } from 'react-router'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import WebStoriesOutlined from '@mui/icons-material/WebStoriesOutlined'
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
+import EventIcon from '@mui/icons-material/Event'
+import WorkIcon from '@mui/icons-material/Work'
+import PlaceIcon from '@mui/icons-material/Place'
+import RateReviewIcon from '@mui/icons-material/RateReview'
+
+import { Typography } from '@mui/material'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import BasicNavBar from 'components/navbars/BasicNavBar'
@@ -23,10 +23,10 @@ import CalendarPage from './calendar'
 import RecruitmentPage from './partnerrecruitment'
 import MapPage from '../generalPages/map'
 
-import Badge from '@material-ui/core/Badge'
+import Badge from '@mui/material/Badge'
 
 import ProjectsPage from './projects'
-import { QuestionAnswerSharp } from '@material-ui/icons'
+import { QuestionAnswerSharp } from '@mui/icons-material'
 import { Chat } from 'components/messaging/chat'
 // import PartnerReviewingBlock from '../generalPages/default/Blocks/PartnerReviewingBlock'
 
@@ -53,7 +53,7 @@ export default ({
     lockedPages,
 }) => {
     const classes = useStyles()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
@@ -125,7 +125,7 @@ export default ({
                     key: 'hackerpack',
                     path: '/hackerpack',
                     exact: true,
-                    icon: <AmpStoriesIcon />,
+                    icon: <WebStoriesOutlined />,
                     hidden: !shownPages?.hackerPack,
                     label: 'Hackerpack',
                     component: HackerpackPage,

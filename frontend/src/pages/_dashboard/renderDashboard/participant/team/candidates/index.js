@@ -5,9 +5,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import Profile from 'components/Participant/Profile'
 import Button from 'components/generic/Button'
 import Filter from 'components/Team/Filter'
@@ -17,7 +17,7 @@ import {
     Radio,
     RadioGroup,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import junctionStyle from 'utils/styles'
 

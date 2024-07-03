@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
 import {
     Avatar,
     Card,
@@ -10,7 +9,7 @@ import {
     Grid,
     Tooltip,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'

@@ -1,18 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { TextField, MenuItem, Chip, ListItemText } from '@material-ui/core'
+import { TextField, MenuItem, Chip, ListItemText } from '@mui/material'
 import { SelectOptions } from '@hackjunction/shared'
-
-const useStyles = makeStyles(theme => ({
-    chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    chip: {
-        margin: 2,
-    },
-}))
 
 const _Select = React.memo(
     ({
@@ -28,7 +17,6 @@ const _Select = React.memo(
         type,
         value,
     }) => {
-        const classes = useStyles()
         const handleChange = useCallback(
             e => {
                 e.preventDefault()
@@ -86,13 +74,9 @@ const _Select = React.memo(
         if (multiple) {
             selectProps.renderValue = (value = []) => {
                 return (
-                    <div className={classes.chips}>
+                    <div className="flex flex-wrap">
                         {value.map(item => (
-                            <Chip
-                                key={item}
-                                label={item}
-                                className={classes.chip}
-                            />
+                            <Chip key={item} label={item} className="p-1" />
                         ))}
                     </div>
                 )

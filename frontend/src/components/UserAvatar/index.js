@@ -1,13 +1,13 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
-import { useRouteMatch } from 'react-router'
-import { Avatar, Box, IconButton } from '@material-ui/core'
+
+import { useResolvedPath } from 'react-router'
+import { Avatar, Box, IconButton } from '@mui/material'
 import JunctionTheme from 'junctionTheme.js'
 import { useMyProfilePreview } from 'graphql/queries/userProfile'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const [profile] = useMyProfilePreview()
     const dispatch = useDispatch()
     const color = JunctionTheme.palette

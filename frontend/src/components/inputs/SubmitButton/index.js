@@ -1,54 +1,31 @@
 import React, { useState } from 'react'
-
-import { makeStyles } from '@material-ui/core/styles'
 import {
     Box,
     Checkbox,
     Typography,
     Button,
     CircularProgress,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import ExternalLink from 'components/generic/ExternalLink'
 import config from 'constants/config'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        background: 'rgba(255,255,255,1)',
-        padding: theme.spacing(2),
-        marginBottom: '2px',
-        width: '100%',
-        maxWidth: '600px',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    button: {
-        '&.Mui-disabled': {
-            backgroundColor: theme.palette.primary.main,
-            opacity: 0.6,
-        },
-    },
-}))
-
 const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
-    const classes = useStyles()
     const [confirmed1, setConfirmed1] = useState(false)
     const [confirmed2, setConfirmed2] = useState(false)
     const [confirmed3, setConfirmed3] = useState(false)
     const { t } = useTranslation()
     const confirmed = confirmed1 && confirmed2 && confirmed3
-    console.log('event is ', event)
+
     return (
-        <Box display="flex" flexDirection="column" alignItems="center">
-            <Box className={classes.wrapper}>
+        <Box className="flex flex-col items-center">
+            <Box className="bg-white p-4 mb-1 w-full max-w-xl flex flex-row items-center">
                 <Checkbox
                     color="primary"
-                    className={classes.checkbox}
                     checked={confirmed1}
                     onChange={e => setConfirmed1(e.target.checked)}
                 />
-                <Typography variant="subtitle1" className={classes.label}>
+                <Typography variant="subtitle1">
                     {t('Consent_privacy_')}
                     <ExternalLink href={config.PRIVACY_URL}>
                         {t('Privacy_policy_', {
@@ -65,14 +42,13 @@ const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
                     ) : null}
                 </Typography>
             </Box>
-            <Box className={classes.wrapper}>
+            <Box className="bg-white p-4 mb-1 w-full max-w-xl flex flex-row items-center">
                 <Checkbox
                     color="primary"
-                    className={classes.checkbox}
                     checked={confirmed2}
                     onChange={e => setConfirmed2(e.target.checked)}
                 />
-                <Typography variant="subtitle1" className={classes.label}>
+                <Typography variant="subtitle1">
                     {t('Read_agree_terms_')}
                     <ExternalLink href={config.TERMS_URL}>
                         {t('Terms_and_conditions_', {
@@ -89,26 +65,17 @@ const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
                     ) : null}
                 </Typography>
             </Box>
-            <Box className={classes.wrapper}>
+            <Box className="bg-white p-4 mb-1 w-full max-w-xl flex flex-row items-center">
                 <Checkbox
                     color="primary"
-                    className={classes.checkbox}
                     checked={confirmed3}
                     onChange={e => setConfirmed3(e.target.checked)}
                 />
-                <Typography variant="subtitle1" className={classes.label}>
+                <Typography variant="subtitle1">
                     {t('Confirm_info_')}
                 </Typography>
             </Box>
-            <Box
-                width="100%"
-                maxWidth={600}
-                mt={2}
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="center"
-            >
+            <Box className="w-full max-w-xl mt-4 flex flex-row items-center justify-center">
                 {loading ? (
                     <CircularProgress size={24} />
                 ) : (
@@ -117,7 +84,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
                         fullWidth
                         color="primary"
                         variant="contained"
-                        className={classes.button}
+                        className="disabled:opacity-60 disabled:bg-primary"
                         disabled={hasErrors || !confirmed || loading}
                     >
                         {t('Submit_')}

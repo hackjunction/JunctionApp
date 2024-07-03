@@ -1,12 +1,11 @@
-import { Dialog, Typography } from '@material-ui/core'
+import { Dialog, Typography } from '@mui/material'
 import Button from 'components/generic/Button'
 import Container from 'components/generic/Container'
 import PageWrapper from 'components/layouts/PageWrapper'
 import React, { useEffect, useState } from 'react'
 import Profile from 'components/Participant/Profile'
-import { set } from 'react-ga'
 import { useDispatch } from 'react-redux'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 import { gradientRandomizer } from 'utils/stylingHelpers'
 
 export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {

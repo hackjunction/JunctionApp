@@ -1,19 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    Box,
-    Typography,
-    IconButton,
-    CircularProgress,
-} from '@material-ui/core'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 
 import { useDebounce } from 'hooks/customHooks'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 
 export default () => {
     const dispatch = useDispatch()
@@ -55,9 +50,7 @@ export default () => {
             </IconButton>
             <Box padding={1}>
                 {totalResults === 0 && loading ? (
-                    <Typography variant="overline">
-                        Page 1
-                    </Typography>
+                    <Typography variant="overline">Page 1</Typography>
                 ) : (
                     <Typography variant="overline">
                         Page {_currentPage + 1} of {totalPages}

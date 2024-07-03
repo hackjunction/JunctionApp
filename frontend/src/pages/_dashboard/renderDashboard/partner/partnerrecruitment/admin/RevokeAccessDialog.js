@@ -8,17 +8,17 @@ import {
     DialogContentText,
     DialogActions,
     CircularProgress,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import { useSelector, useDispatch } from 'react-redux'
 
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
 
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
 
 export default ({ userId, onClose }) => {
     const { t } = useTranslation()
@@ -29,20 +29,23 @@ export default ({ userId, onClose }) => {
     const handleRevokeAccess = useCallback(async () => {
         setLoading(true)
         try {
-            const eventNames = events.filter(event => event.recruiters.some(r => r.recruiterId === userId)
-            )?.map(event => event.slug)
-            Promise.all(eventNames?.map(event => {
-                return dispatch(
-                    OrganiserActions.removeRecruiterFromEvent(
-                        event, //slug
-                        userId,
-                    ),
+            const eventNames = events
+                .filter(event =>
+                    event.recruiters.some(r => r.recruiterId === userId),
                 )
-            }))
-
-            dispatch(
-                RecruitmentActions.adminRevokeRecruiterAccess(userId),
+                ?.map(event => event.slug)
+            Promise.all(
+                eventNames?.map(event => {
+                    return dispatch(
+                        OrganiserActions.removeRecruiterFromEvent(
+                            event, //slug
+                            userId,
+                        ),
+                    )
+                }),
             )
+
+            dispatch(RecruitmentActions.adminRevokeRecruiterAccess(userId))
             dispatch(SnackbarActions.success('Success!'))
             onClose()
         } catch (e) {

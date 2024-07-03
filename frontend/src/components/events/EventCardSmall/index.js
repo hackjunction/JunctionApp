@@ -1,49 +1,21 @@
 import React, { useCallback } from 'react'
-
-import { makeStyles } from '@material-ui/core/styles'
-import { Paper, Grid, Box, Typography } from '@material-ui/core'
-
+import { Paper, Grid, Box, Typography } from '@mui/material'
 import Image from 'components/generic/Image'
 
-const useStyles = makeStyles(theme => ({
-    paper: {
-        borderRadius: '10px',
-        overflow: 'hidden',
-        boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.04)',
-        cursor: 'pointer',
-        position: 'relative',
-        transition: 'all 0.2s ease',
-        '&:hover': {
-            boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.12)',
-        },
-    },
-    image: {
-        objectFit: 'cover',
-        height: '100%',
-        width: '100%',
-        minHeight: '130px',
-    },
-}))
-
 export default ({ event, handleClick }) => {
-    /*
-    if (!event.slug) {
-        return 'loading'
-    }
-    console.log('event is', event)
-    */
-    const classes = useStyles()
-
     const onClick = useCallback(() => {
         handleClick(event)
     }, [event, handleClick])
 
     return event ? (
-        <Paper className={classes.paper} onClick={onClick}>
+        <Paper
+            className="rounded-[10px] overflow-hidden shadow-[2px_7px_30px_rgba(0,0,0,0.04)] cursor-pointer relative transition-all duration-200 ease-in-out hover:shadow-[2px_7px_30px_rgba(0,0,0,0.12)]"
+            onClick={onClick}
+        >
             <Grid container spacing={0}>
                 <Grid item xs={12} md={3}>
                     <Image
-                        className={classes.image}
+                        className="object-cover h-full w-full min-h-[130px]"
                         defaultImage={require('assets/images/default_cover_image.png')}
                         publicId={event.coverImage?.publicId}
                         transformation={{

@@ -1,12 +1,8 @@
 import { createStore, applyMiddleware } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
-import apolloClient from '../graphql/client'
 import storage from 'redux-persist/lib/storage'
-import thunk from 'redux-thunk'
-import { routerMiddleware } from 'connected-react-router'
-import { createBrowserHistory } from 'history'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import { middleware as reduxPackMiddleware } from 'redux-pack'
+import { thunk } from 'redux-thunk'
+import { composeWithDevTools } from '@redux-devtools/extension'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import LogRocket from 'logrocket'
 
@@ -19,11 +15,9 @@ const persistConfig = {
     stateReconciler: autoMergeLevel2,
 }
 
-export const history = createBrowserHistory()
-
 const persistedReducer = persistReducer(
     persistConfig,
-    createRootReducer(history),
+    createRootReducer(),
 )
 
 export default preloadedState => {
@@ -32,9 +26,7 @@ export default preloadedState => {
         preloadedState,
         composeWithDevTools(
             applyMiddleware(
-                routerMiddleware(history), // for dispatching history actions
                 thunk,
-                reduxPackMiddleware,
                 LogRocket.reduxMiddleware(),
                 // ... other middlewares ...
             ),

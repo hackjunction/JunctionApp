@@ -2,15 +2,15 @@ import React, { useCallback } from 'react'
 
 import { useFormik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import { Typography, Box, Grid } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Navigate } from 'react-router-dom'
+import { Typography, Box, Grid } from '@mui/material'
+
 import * as yup from 'yup'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserActions from 'redux/user/actions'
-import * as AuthActions from 'redux/auth/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserActions from 'reducers/user/actions'
+import * as AuthActions from 'reducers/auth/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 import Button from 'components/generic/Button'
 import UserProfilesService from 'services/userProfiles'
@@ -162,7 +162,7 @@ export default () => {
     })
     // TODO check if this causes the loop
     if (!idToken) {
-        return <Redirect to="/login" />
+        return <Navigate to="/login" />
     }
 
     return (
@@ -280,7 +280,7 @@ export default () => {
                                     {/* TODO Change this text in locale JSON */}
                                     <Typography
                                         variant="subtitle2"
-                                        className={classes.label}
+                                        className="font-bold"
                                     >
                                         I confirm that I am at least 15 years of
                                         age, and I have read and agree with the{' '}

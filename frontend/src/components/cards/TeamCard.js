@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-    Card,
-    CardContent,
-    CardActions,
-    Typography,
-    Chip,
-} from '@material-ui/core'
+import { Card, CardContent, CardActions, Typography, Chip } from '@mui/material'
 import Button from 'components/generic/Button'
 import 'react-multi-carousel/lib/styles.css'
 import TeamHeader from 'components/Team/TeamHeader'

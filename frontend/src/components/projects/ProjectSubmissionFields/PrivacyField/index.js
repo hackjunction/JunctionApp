@@ -1,4 +1,4 @@
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import { FastField } from 'formik'
 import Switch from 'components/generic/Switch'

@@ -1,45 +1,7 @@
 import React from 'react'
-
 import HyperModal from 'react-hyper-modal'
 import clsx from 'clsx'
-import { Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        display: 'flex',
-        zIndex: 2000,
-    },
-    wrapperPadded: {
-        padding: theme.spacing(2),
-    },
-    content: {
-        background: '#ffffff',
-        width: '100% !important',
-        maxWidth: '600px',
-        zIndex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-    },
-    contentMed: {
-        maxWidth: '900px',
-    },
-    contentMax: {
-        maxWidth: 'none',
-        height: '100% !important',
-        borderRadius: '0 !important',
-    },
-    header: {
-        padding: theme.spacing(3),
-        textAlign: 'center',
-    },
-    inner: {
-        padding: '1rem',
-        flex: 1,
-        overflow: 'auto',
-    },
-}))
+import { Box, Typography } from '@mui/material'
 
 const GenericModal = ({
     title,
@@ -49,29 +11,29 @@ const GenericModal = ({
     children,
     footer = null,
 }) => {
-    const classes = useStyles()
     return (
         <HyperModal
             isOpen={isOpen}
             requestClose={handleClose}
             classes={{
-                contentClassName: clsx({
-                    [classes.content]: true,
-                    [classes.contentMed]: size === 'med',
-                    [classes.contentMax]: size === 'max',
-                }),
-                wrapperClassName: clsx({
-                    [classes.wrapper]: true,
-                    [classes.wrapperPadded]: size !== 'max',
+                contentClassName: clsx(
+                    'bg-white w-full max-w-xs md:max-w-2xl z-10 flex flex-col items-stretch',
+                    {
+                        'md:max-w-3xl': size === 'med',
+                        'max-w-none h-full rounded-none': size === 'max',
+                    },
+                ),
+                wrapperClassName: clsx('flex z-50', {
+                    'p-4': size !== 'max',
                 }),
             }}
         >
             {title && (
-                <Box className={classes.header}>
+                <Box className="p-6 text-center">
                     <Typography variant="h6">{title}</Typography>
                 </Box>
             )}
-            <Box className={classes.inner}>{children}</Box>
+            <Box className="p-4 flex-1 overflow-auto">{children}</Box>
             {footer}
         </HyperModal>
     )

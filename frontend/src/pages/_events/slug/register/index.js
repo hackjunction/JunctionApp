@@ -8,7 +8,7 @@ import React, {
 
 import { sortBy } from 'lodash-es'
 import { useDispatch } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
+
 import {
     Typography,
     Stepper,
@@ -17,13 +17,13 @@ import {
     Box,
     Button,
     Grid,
-} from '@material-ui/core'
+} from '@mui/material'
 import { RegistrationFields } from '@hackjunction/shared'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as UserSelectors from 'redux/user/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as UserSelectors from 'reducers/user/selectors'
 
 import Container from 'components/generic/Container'
 import Image from 'components/generic/Image'

@@ -1,22 +1,10 @@
 import React, { useCallback, useMemo } from 'react'
 import { groupBy } from 'lodash-es'
-import { TextField } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { TextField } from '@mui/material'
 
 import * as FilterTypes from '../filterTypes'
 
-const useStyles = makeStyles(theme => ({
-    option: {
-        padding: theme.spacing(1),
-    },
-    optionSelected: {
-        padding: theme.spacing(1),
-        background: theme.palette.theme_lightgray.main,
-    },
-}))
-
 const Component = ({ column }) => {
-    const classes = useStyles()
     const { filterValue, preFilteredRows, setFilter, id } = column
     const selectedValues = filterValue || []
     const handleChange = useCallback(
@@ -50,8 +38,8 @@ const Component = ({ column }) => {
                 <option
                     className={
                         selectedValues.indexOf(value) !== -1
-                            ? classes.optionSelected
-                            : classes.option
+                            ? 'p-1 bg-gray-200'
+                            : 'p-1'
                     }
                     key={value}
                     value={value}

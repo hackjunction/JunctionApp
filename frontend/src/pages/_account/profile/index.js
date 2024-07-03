@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Grid, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Grid, Typography } from '@mui/material'
+
 import { Formik, FastField, Field } from 'formik'
 import { RegistrationFields } from '@hackjunction/shared'
 import * as yup from 'yup'
@@ -21,9 +21,9 @@ import RecruitmentOptionInput from 'components/inputs/RecruitmentOptionInput'
 import Select from 'components/inputs/Select'
 import BottomBar from 'components/inputs/BottomBar'
 
-import * as UserSelectors from 'redux/user/selectors'
-import * as UserActions from 'redux/user/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as UserActions from 'reducers/user/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 import { useTranslation } from 'react-i18next'
 import { debugGroup } from 'utils/debuggingTools'

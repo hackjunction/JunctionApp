@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FastField, useFormikContext } from 'formik'
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography } from '@mui/material'
 import RegistrationQuestion from 'pages/_events/slug/register/RegistrationQuestion'
 import Switch from 'components/generic/Switch'
 
@@ -10,7 +10,7 @@ export default ({ section, sectionAnswers = undefined }) => {
     useEffect(() => {
         setVisible(
             !section.conditional ||
-            (!!sectionAnswers && !!sectionAnswers.value),
+                (!!sectionAnswers && !!sectionAnswers.value),
         )
     }, [sectionAnswers])
 

@@ -8,8 +8,8 @@ import {
     Typography,
     CircularProgress,
     Box,
-} from '@material-ui/core'
-import Skeleton from '@material-ui/lab/Skeleton'
+} from '@mui/material'
+import Skeleton from '@mui/lab/Skeleton'
 import {
     SuccessHeader,
     ErrorHeader,

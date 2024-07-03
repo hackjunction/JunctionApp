@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { difference } from 'lodash-es'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
 
 /** Hide a component if the user doesn't have a given permission, but don't redirect to login/error */
 

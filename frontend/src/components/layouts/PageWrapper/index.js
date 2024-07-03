@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { Box, Typography, CircularProgress } from '@material-ui/core'
+import { Box, Typography, CircularProgress } from '@mui/material'
 
 const PageWrapper = ({
     loading = false,
@@ -33,7 +33,7 @@ const PageWrapper = ({
             )
         }
         if (error || errorMessage) {
-            console.log("errors", error, errorMessage)
+            console.log('errors', error, errorMessage)
             // TODO Oops something went wrong happens here. Make it better :D
             return (
                 <Box

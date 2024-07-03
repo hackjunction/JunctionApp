@@ -1,9 +1,9 @@
 import NoTeam from 'components/Team/NoTeam'
 import TeamProfile from 'components/Team/TeamProfile'
 import React, { useMemo, useState, useEffect, useCallback } from 'react'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import TeamCreateEditForm from 'components/Team/TeamCreateEditForm'
 

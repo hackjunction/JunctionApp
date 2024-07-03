@@ -1,17 +1,17 @@
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Grid, Typography, Box } from '@material-ui/core'
+import { Grid, Typography, Box } from '@mui/material'
 import { FastField, useFormikContext } from 'formik'
 
 import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import Button from 'components/generic/Button'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import EmailService from 'services/email'
 import { useTranslation } from 'react-i18next'
 

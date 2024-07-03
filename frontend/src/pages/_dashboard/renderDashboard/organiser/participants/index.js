@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import PageHeader from 'components/generic/PageHeader'
@@ -10,14 +10,14 @@ import TeamsTab from './teams'
 import AssignedTab from './assigned'
 // import TravelTab from './travel'
 import AdminTab from './admin'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
 import { useDispatch, useSelector } from 'react-redux'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const dispatch = useDispatch()
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const location = useLocation()
 
     useEffect(() => {

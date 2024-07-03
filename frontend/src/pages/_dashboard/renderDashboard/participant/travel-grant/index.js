@@ -1,11 +1,11 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Typography, Box } from '@material-ui/core'
+import { Typography, Box } from '@mui/material'
 import moment from 'moment-timezone'
 
 import PageHeader from 'components/generic/PageHeader'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 import TravelGrantForm from './TravelGrantForm'
 import GradientBox from 'components/generic/GradientBox'

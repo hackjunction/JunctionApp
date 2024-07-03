@@ -1,14 +1,14 @@
 import React, { useState, useMemo, useCallback } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { Switch, Button, Typography, Grid, Box } from '@material-ui/core'
+import { Switch, Button, Typography, Grid, Box } from '@mui/material'
 
 import AttendeeTable from 'components/tables/AttendeeTable'
 import ConfirmDialog from 'components/generic/ConfirmDialog'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 import { useToggle } from 'hooks/customHooks'
 

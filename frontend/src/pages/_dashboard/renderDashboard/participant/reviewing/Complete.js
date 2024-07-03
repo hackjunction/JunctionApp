@@ -1,8 +1,7 @@
 import React from 'react'
 
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
-import { Grid, Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import { Grid, Box, Typography } from '@mui/material'
 
 const useStyles = makeStyles(theme => ({
     icon: {

@@ -1,6 +1,6 @@
 import React from 'react'
-import { useRouteMatch } from 'react-router'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { useResolvedPath } from 'react-router'
+import { Route, Routes, Navigate } from 'react-router-dom'
 
 import DefaultPage from './default'
 import HackerpackForm from './hackerpack'
@@ -8,9 +8,9 @@ import BannerForm from './banner'
 import OrganizationForm from './organization'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     return (
-        <Switch>
+        <Routes>
             <Route exact={true} path={`${match.url}`} component={DefaultPage} />
             <Route
                 exact={false}
@@ -27,7 +27,7 @@ export default () => {
                 path={`${match.url}/organization/:slug`}
                 component={OrganizationForm}
             />
-            <Redirect to={match.url} />
-        </Switch>
+            <Navigate to={match.url} />
+        </Routes>
     )
 }

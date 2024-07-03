@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 
-import DeleteIcon from '@material-ui/icons/Delete'
+import DeleteIcon from '@mui/icons-material/Delete'
 import {
     List,
     ListItem,
@@ -14,31 +14,23 @@ import {
     FormGroup,
     FormControlLabel,
     Checkbox,
-} from '@material-ui/core'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+} from '@mui/material'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import EventService from 'services/events'
 
 import Select from 'components/inputs/Select'
 import Button from 'components/generic/Button'
 
-import { makeStyles } from '@material-ui/core/styles'
 import { useFormField } from 'hooks/formHooks'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import { EventPageScripts } from '@hackjunction/shared'
-
-const useStyles = makeStyles(theme => ({
-    errorMessage: {
-        color: theme.palette.error.main,
-    },
-}))
 
 export default ({ value = [], fieldName, setFieldValue }) => {
     const hasSuperAdmin = useSelector(AuthSelectors.hasSuperAdmin)
     const idToken = useSelector(AuthSelectors.getIdToken)
     const event = useSelector(OrganiserSelectors.event)
 
-    const classes = useStyles()
     const availablePages = React.useMemo(() => {
         return EventPageScripts.ALLOWED_PAGE_SCRIPT_LOCATIONS.filter(
             location => !value?.find(l => l.page === location.id),
@@ -184,9 +176,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                         value: page.id,
                     }))}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
-                    {page.error}
-                </Typography>
+                <Typography variant="caption">{page.error}</Typography>
             </Grid>
             <Grid item xs={12}>
                 <TextAreaInput
@@ -195,9 +185,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     value={scriptValue.value}
                     onChange={scriptValue.setValue}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
-                    {scriptValue.error}
-                </Typography>
+                <Typography variant="caption">{scriptValue.error}</Typography>
             </Grid>
             <Grid item xs={12} md={3}>
                 <Button
