@@ -13,7 +13,7 @@ module.exports = {
                 { $set: { finalsActive: false } },
             )
 
-        console.log('Event', res.n, res.nModified)
+        console.log('Event', res.matchedCount, res.modifiedCount)
         return Promise.resolve()
     },
 }

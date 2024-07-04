@@ -12,7 +12,7 @@ module.exports = {
                 { challenges: { $exists: true, $size: 0 } },
                 { $set: { challengesEnabled: false } },
             )
-        console.info('Done with challengesEnabled to false', nres.n, nres.nModified)
+        console.info('Done with challengesEnabled to false', nres.matchedCount, nres.modifiedCount)
         return Promise.resolve()
     },
 }

@@ -9,29 +9,38 @@ module.exports = {
         // Update faq field
         const resFaq = await mongoose
             .model('Event')
-            .updateMany(
-                { faq: { $exists: false } },
-                { $set: { faq: "" } },
-            )
-        console.log('Done updating faq field', resFaq.n, resFaq.nModified)
+            .updateMany({ faq: { $exists: false } }, { $set: { faq: '' } })
+        console.log(
+            'Done updating faq field',
+            resFaq.matchedCount,
+            resFaq.modifiedCount,
+        )
 
         // Update challenge_instructions field
         const resChallengeInstructions = await mongoose
             .model('Event')
             .updateMany(
                 { challenge_instructions: { $exists: false } },
-                { $set: { challenge_instructions: "" } },
+                { $set: { challenge_instructions: '' } },
             )
-        console.log('Done updating challenge_instructions field', resChallengeInstructions.n, resChallengeInstructions.nModified)
+        console.log(
+            'Done updating challenge_instructions field',
+            resChallengeInstructions.matchedCount,
+            resChallengeInstructions.modifiedCount,
+        )
 
         // Update demoInstructions field
         const resDemoInstructions = await mongoose
             .model('Event')
             .updateMany(
                 { demoInstructions: { $exists: false } },
-                { $set: { demoInstructions: "" } },
+                { $set: { demoInstructions: '' } },
             )
-        console.log('Done updating demoInstructions field', resDemoInstructions.n, resDemoInstructions.nModified)
+        console.log(
+            'Done updating demoInstructions field',
+            resDemoInstructions.matchedCount,
+            resDemoInstructions.modifiedCount,
+        )
 
         return Promise.resolve()
     },

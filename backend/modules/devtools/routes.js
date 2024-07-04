@@ -22,7 +22,7 @@ router.route('/anonymize-db').get(async (req, res) => {
                 update: {
                     $set: {
                         'answers.email': `juuso.lappalainen+${Math.floor(
-                            Math.random() * 1000000
+                            Math.random() * 1000000,
                         )}@hackjunction.com`,
                     },
                 },
@@ -43,7 +43,7 @@ router.route('/anonymize-db').get(async (req, res) => {
                 update: {
                     $set: {
                         email: `juuso.lappalainen+${Math.floor(
-                            Math.random() * 1000000
+                            Math.random() * 1000000,
                         )}@hackjunction.com`,
                     },
                 },
@@ -57,10 +57,10 @@ router.route('/anonymize-db').get(async (req, res) => {
 })
 
 // This isn't in use at the moment
-router.route('/test-discord').get(async (req, res) => {
-    await DiscordService.initialize()
-    res.status(200).send('Initialized')
-})
+// router.route('/test-discord').get(async (req, res) => {
+//     await DiscordService.initialize()
+//     res.status(200).send('Initialized')
+// })
 
 router.route('/sync-user-profiles').get(async (req, res) => {
     const registrations = await Registration.find({})
@@ -71,7 +71,7 @@ router.route('/sync-user-profiles').get(async (req, res) => {
     userProfiles.forEach(user => {
         const registration = _.find(
             registrations,
-            reg => reg.user === user.userId
+            reg => reg.user === user.userId,
         )
 
         if (registration && registration.answers) {

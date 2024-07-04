@@ -12,7 +12,11 @@ module.exports = {
                 { meetingsEnabled: { $exists: false } },
                 { $set: { meetingsEnabled: true } },
             )
-        console.log('Done with meetingsEnabled', res.n, res.nModified)
+        console.log(
+            'Done with meetingsEnabled',
+            res.matchedCount,
+            res.modifiedCount,
+        )
 
         return Promise.resolve()
     },

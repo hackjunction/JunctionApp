@@ -8,7 +8,8 @@ const {
     GraphQLInt,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDate } = require('graphql-iso-date')
+// const { GraphQLDate } = require('graphql-iso-date')
+const { DateResolver } = require('graphql-scalars')
 
 const MeetingType = new GraphQLObjectType({
     name: 'Meeting',
@@ -16,19 +17,19 @@ const MeetingType = new GraphQLObjectType({
         return {
             /** Fields from DB model */
             _id: {
-                type: GraphQLNonNull(GraphQLID),
+                type: new GraphQLNonNull(GraphQLID),
             },
             event: {
-                type: GraphQLNonNull(GraphQLString),
+                type: new GraphQLNonNull(GraphQLString),
             },
             attendees: {
-                type: GraphQLList(GraphQLString),
+                type: new GraphQLList(GraphQLString),
             },
             organizerEmail: {
                 type: GraphQLString,
             },
             challenge: {
-                type: GraphQLNonNull(GraphQLString),
+                type: new GraphQLNonNull(GraphQLString),
             },
             title: {
                 type: GraphQLString,
@@ -37,10 +38,10 @@ const MeetingType = new GraphQLObjectType({
                 type: GraphQLString,
             },
             startTime: {
-                type: GraphQLDate,
+                type: DateResolver,
             },
             endTime: {
-                type: GraphQLDate,
+                type: DateResolver,
             },
             timeZone: {
                 type: GraphQLString,
@@ -70,7 +71,7 @@ const MeetingsMutationResponseType = new GraphQLObjectType({
     fields: () => {
         return {
             created: {
-                type: GraphQLList(MeetingType),
+                type: new GraphQLList(MeetingType),
             },
             deleted: {
                 type: MeetingMutationDeleteResponseType,
@@ -84,16 +85,16 @@ const MeetingInput = new GraphQLInputObjectType({
     fields: () => {
         return {
             event: {
-                type: GraphQLNonNull(GraphQLString),
+                type: new GraphQLNonNull(GraphQLString),
             },
             attendees: {
-                type: GraphQLList(GraphQLString),
+                type: new GraphQLList(GraphQLString),
             },
             organizerEmail: {
                 type: GraphQLString,
             },
             challenge: {
-                type: GraphQLNonNull(GraphQLString),
+                type: new GraphQLNonNull(GraphQLString),
             },
             title: {
                 type: GraphQLString,
@@ -102,10 +103,10 @@ const MeetingInput = new GraphQLInputObjectType({
                 type: GraphQLString,
             },
             startTime: {
-                type: GraphQLDate,
+                type: DateResolver,
             },
             endTime: {
-                type: GraphQLDate,
+                type: DateResolver,
             },
             timeZone: {
                 type: GraphQLString,
@@ -121,7 +122,7 @@ const QueryType = new GraphQLObjectType({
     name: 'Query',
     fields: {
         meetingSlots: {
-            type: GraphQLList(MeetingType),
+            type: new GraphQLList(MeetingType),
             args: {
                 eventId: {
                     type: GraphQLString,
@@ -133,10 +134,10 @@ const QueryType = new GraphQLObjectType({
                     type: GraphQLString,
                 },
                 from: {
-                    type: GraphQLDate,
+                    type: DateResolver,
                 },
                 to: {
-                    type: GraphQLDate,
+                    type: DateResolver,
                 },
             },
         },
@@ -149,21 +150,27 @@ const MutationType = new GraphQLObjectType({
         createMeetingSlot: {
             type: MeetingType,
             args: {
-                meeting: { type: GraphQLNonNull(MeetingInput) },
+                meeting: { type: new GraphQLNonNull(MeetingInput) },
             },
         },
         meetingSlotsBulkAction: {
             type: MeetingsMutationResponseType,
             args: {
-                create: { type: GraphQLList(GraphQLNonNull(MeetingInput)) },
-                delete: { type: GraphQLList(GraphQLNonNull(GraphQLID)) },
+                create: {
+                    type: new GraphQLList(new GraphQLNonNull(MeetingInput)),
+                },
+                delete: {
+                    type: new GraphQLList(new GraphQLNonNull(GraphQLID)),
+                },
             },
         },
         bookMeeting: {
             type: MeetingType,
             args: {
-                meetingId: { type: GraphQLNonNull(GraphQLString) },
-                attendees: { type: GraphQLNonNull(GraphQLList(GraphQLString)) },
+                meetingId: { type: new GraphQLNonNull(GraphQLString) },
+                attendees: {
+                    type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
+                },
                 location: { type: GraphQLString },
                 description: { type: GraphQLString },
             },
@@ -171,7 +178,7 @@ const MutationType = new GraphQLObjectType({
         cancelMeeting: {
             type: MeetingType,
             args: {
-                meetingId: { type: GraphQLNonNull(GraphQLString) },
+                meetingId: { type: new GraphQLNonNull(GraphQLString) },
             },
         },
     },
@@ -209,10 +216,15 @@ const Resolvers = {
         },
         bookMeeting: async (parent, args, context) => {
             if (args.meetingId && args.attendees) {
-                console.log("booking meeting...", args)
+                console.log('booking meeting...', args)
                 return context
                     .controller('Meeting')
-                    .bookMeeting(args.meetingId, args.attendees, args.location, args.description)
+                    .bookMeeting(
+                        args.meetingId,
+                        args.attendees,
+                        args.location,
+                        args.description,
+                    )
             }
             return null
         },

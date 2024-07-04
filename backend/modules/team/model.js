@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const shortid = require('shortid')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const TeamRole = require('@hackjunction/shared/schemas/TeamRole')
-const Candidate = require('@hackjunction/shared/schemas/Candidate')
+// const Candidate = require('@hackjunction/shared/schemas/Candidate')
 
 const TeamSchema = new mongoose.Schema({
     event: {
@@ -28,12 +28,28 @@ const TeamSchema = new mongoose.Schema({
     },
     // new
     teamRoles: {
-        type: [TeamRole.mongoose],
+        type: [new mongoose.Schema(TeamRole.mongoose)],
         required: false,
         default: [],
     },
     candidates: {
-        type: [Candidate.mongoose],
+        type: [
+            new mongoose.Schema({
+                userId: {
+                    type: String,
+                    required: true,
+                },
+                roles: {
+                    type: [new mongoose.Schema(TeamRole.mongoose)],
+                    required: true,
+                    default: [],
+                },
+                motivation: {
+                    type: String,
+                    required: true,
+                },
+            }),
+        ],
         required: false,
         default: [],
     },

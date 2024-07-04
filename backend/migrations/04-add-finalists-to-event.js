@@ -12,7 +12,7 @@ module.exports = {
                 { finalists: { $exists: false } },
                 { $set: { finalists: [] } },
             )
-        console.log('Done with Events', res.n, res.nModified)
+        console.log('Done with Events', res.matchedCount, res.modifiedCount)
 
         return Promise.resolve()
     },

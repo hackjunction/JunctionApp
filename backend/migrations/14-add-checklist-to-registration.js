@@ -57,7 +57,11 @@ module.exports = {
                 return Promise.all(promises)
             })
 
-        console.info('Done with registration checklist', nres.n, nres.nModified)
+        console.info(
+            'Done with registration checklist',
+            nres.matchedCount,
+            nres.modifiedCount,
+        )
         return Promise.resolve()
     },
 }

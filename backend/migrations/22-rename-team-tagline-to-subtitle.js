@@ -15,8 +15,8 @@ module.exports = {
             )
         console.log(
             'Done renaming tagline to subtitle',
-            renameTaglineToSubtitle.n,
-            renameTaglineToSubtitle.nModified,
+            renameTaglineToSubtitle.matchedCount,
+            renameTaglineToSubtitle.modifiedCount,
         )
 
         console.log('Done with migration 21')

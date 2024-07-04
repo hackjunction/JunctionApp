@@ -18,7 +18,7 @@ module.exports = {
                 }
             )
 
-        console.log('Done updating empty senderEmail fields', resSenderEmail.n, resSenderEmail.nModified)
+        console.log('Done updating empty senderEmail fields', resSenderEmail.matchedCount, resSenderEmail.modifiedCount)
 
         return Promise.resolve()
     },

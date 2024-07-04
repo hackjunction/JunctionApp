@@ -11,7 +11,7 @@ const HackerpackSchema = require('@hackjunction/shared/schemas/Hackerpack')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const Certificate = require('@hackjunction/shared/schemas/Certificate')
 const mongoFile = require('@hackjunction/shared/schemas/MongoFile')
-const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
+// const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
 const TrackSchema = require('@hackjunction/shared/schemas/Track')
 const EventRecruitersSchema = require('@hackjunction/shared/schemas/Recruiter')
 const TravelGrantConfigSchema = require('@hackjunction/shared/schemas/TravelGrantConfig')
@@ -31,6 +31,8 @@ const ProjectDefaultFields = require('@hackjunction/shared/constants/project-def
 const SubmissionDefaultFieldsSchema = require('@hackjunction/shared/schemas/SubmissionDefaultFields')
 const SubmissionDefaultFields = require('@hackjunction/shared/constants/submission-default-fields')
 const ScoreCriteriaSettingsSchema = require('@hackjunction/shared/schemas/ScoreCriteriaSettings')
+const RegistrationQuestionSchema = require('@hackjunction/shared/schemas/RegistrationQuestion')
+const RegistrationSectionSchema = require('../../common/schemas/RegistrationSection')
 
 const EventSchema = new mongoose.Schema({
     /** Event info */
@@ -93,8 +95,8 @@ const EventSchema = new mongoose.Schema({
     coverImage: CloudinaryImageSchema.mongoose,
     logo: CloudinaryImageSchema.mongoose,
     certificate: Certificate.mongoose,
-    //map: mongoFile.mongoose,
-    /** Event configuration */
+    // //map: mongoFile.mongoose,
+    // /** Event configuration */
     eventType: {
         type: String,
         enum: Object.keys(EventTypes),
@@ -113,9 +115,12 @@ const EventSchema = new mongoose.Schema({
             `is required for physical or hydrid events`,
         ],
     },
-    tracksEnabled: false,
+    tracksEnabled: {
+        type: Boolean,
+        default: false,
+    },
     tracks: {
-        type: [TrackSchema.mongoose],
+        type: [new mongoose.Schema(TrackSchema.mongoose)],
         default: [],
         validate: [
             function (val) {
@@ -133,9 +138,12 @@ const EventSchema = new mongoose.Schema({
             'is required if tracks are enabled',
         ],
     },
-    challengesEnabled: false,
+    challengesEnabled: {
+        type: Boolean,
+        default: false,
+    },
     challenges: {
-        type: [ChallengeSchema.mongoose],
+        type: [new mongoose.Schema(ChallengeSchema.mongoose)],
         default: [],
         validate: [
             function (val) {
@@ -149,7 +157,7 @@ const EventSchema = new mongoose.Schema({
     },
     hackerpacksEnabled: false,
     hackerpacks: {
-        type: [HackerpackSchema.mongoose],
+        type: [new mongoose.Schema(HackerpackSchema.mongoose)],
         default: [],
     },
     allowProjectSubmissionsPerChallenge: {
@@ -192,14 +200,14 @@ const EventSchema = new mongoose.Schema({
         default: () => ({ description: '' }),
     },
     customQuestions: {
-        type: [RegistrationSectionSchema.mongoose],
+        type: [RegistrationSectionSchema],
     },
     tags: {
-        type: [EventTagSchema.mongoose],
+        type: [new mongoose.Schema(EventTagSchema.mongoose)],
         default: [],
     },
     webhooks: {
-        type: [WebhookSchema.mongoose],
+        type: [new mongoose.Schema(WebhookSchema.mongoose)],
         default: [],
     },
     eventTimeline: {
@@ -262,7 +270,7 @@ const EventSchema = new mongoose.Schema({
         default: [],
     },
     recruiters: {
-        type: [EventRecruitersSchema.mongoose],
+        type: [new mongoose.Schema(EventRecruitersSchema.mongoose)],
         default: [],
     },
     organizations: {
@@ -404,7 +412,7 @@ const EventSchema = new mongoose.Schema({
     },
     theme: { type: EventThemeSchema.mongoose, default: {} },
     pageScripts: {
-        type: [EventPageScriptSchema.mongoose],
+        type: [new mongoose.Schema(EventPageScriptSchema.mongoose)],
         default: [],
     },
     meetingsEnabled: {
@@ -412,11 +420,11 @@ const EventSchema = new mongoose.Schema({
         default: false,
     },
     meetingRooms: {
-        type: [MeetingRoomSchema.mongoose],
+        type: [new mongoose.Schema(MeetingRoomSchema.mongoose)],
         default: [],
     },
     submissionFormQuestions: {
-        type: [RegistrationSectionSchema.mongoose],
+        type: [RegistrationSectionSchema],
     },
     submissionFormEnabledFields: {
         type: [String],
@@ -430,11 +438,14 @@ const EventSchema = new mongoose.Schema({
     scoreCriteriaSettings: {
         type: ScoreCriteriaSettingsSchema.mongoose,
         default: {
-            scoreCriteria: [{criteria: 'overall', label: 'Overall'}],
+            scoreCriteria: [{ criteria: 'overall', label: 'Overall' }],
             showScore: false,
             showFeedback: false,
             reviewAnyChallenge: false,
         },
+    },
+    slug_history: {
+        type: [String],
     },
     experimental: {
         type: Boolean,

@@ -94,27 +94,39 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs"
             >
-                {tabs.map((tab, index) => (
-                    <Tab
-                        key={tab.label}
-                        label={tab.label}
-                        {...a11yProps(index)}
-                        classes={isMobile ? { wrapper: classes.wrapper } : {}}
-                    />
-                ))}
+                {tabs.map((tab, index) => {
+                    if (tab?.hidden) {
+                        return null
+                    }
+                    return (
+                        <Tab
+                            key={tab.label}
+                            label={tab.label}
+                            {...a11yProps(index)}
+                            classes={
+                                isMobile ? { wrapper: classes.wrapper } : {}
+                            }
+                        />
+                    )
+                })}
             </Tabs>
             <Box mt={3} p={2}>
                 <Switch>
-                    {tabs.map(({ key, path, component }, index) => {
-                        return (
-                            <Route
-                                key={key}
-                                exact={true}
-                                path={`${baseRoute}${path}`}
-                                component={component}
-                            />
-                        )
-                    })}
+                    {tabs.map(
+                        ({ key, path, component, hidden = false }, index) => {
+                            if (hidden) {
+                                return null
+                            }
+                            return (
+                                <Route
+                                    key={key}
+                                    exact={true}
+                                    path={`${baseRoute}${path}`}
+                                    component={component}
+                                />
+                            )
+                        },
+                    )}
                 </Switch>
             </Box>
         </div>

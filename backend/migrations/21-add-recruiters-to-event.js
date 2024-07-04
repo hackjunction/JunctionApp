@@ -4,17 +4,20 @@ const Promise = require('bluebird')
 module.exports = {
     index: 21,
     name: '21-add-recruiters-to-event',
-    description: 'Add recruiters in to event, add recruiter events to user profioles and removo recruiter organisations',
+    description:
+        'Add recruiters in to event, add recruiter events to user profioles and removo recruiter organisations',
 
     run: async () => {
         var ObjectId = require('mongodb').ObjectID
-        const ares = await mongoose
-            .model('Event')
-            .updateMany(
-                { recruiters: { $exists: false } },
-                { $set: { recruiters: [] } },//TODO: add recruiters from userprofiles here
-            )
-        console.log('Done with recruiters to event', ares.n, ares.nModified)
+        const ares = await mongoose.model('Event').updateMany(
+            { recruiters: { $exists: false } },
+            { $set: { recruiters: [] } }, //TODO: add recruiters from userprofiles here
+        )
+        console.log(
+            'Done with recruiters to event',
+            ares.matchedCount,
+            ares.modifiedCount,
+        )
         //TODO: breaks wit error MongoError: BSON field 'update.updates.u' is the wrong type 'array', expected type 'object'. fix.
         // const bres = await mongoose
         //     .model('UserProfile')
@@ -38,17 +41,20 @@ module.exports = {
         //             }
         //         }])
 
-        // console.log('Done with events to userprofiles', bres.n, bres.nModified)
+        // console.log('Done with events to userprofiles', bres.matchedCount, bres.modifiedCount)
 
         const cres = await mongoose
             .model('UserProfile')
             .updateMany(
-                { "recruiterOrganisation": { $exists: true } },
-                { $unset: { recruiterOrganisation: "" } }
+                { recruiterOrganisation: { $exists: true } },
+                { $unset: { recruiterOrganisation: '' } },
             )
-        console.log('Done with removing recruiterOrganisations from userprofiles', cres.n, cres.nModified)
+        console.log(
+            'Done with removing recruiterOrganisations from userprofiles',
+            cres.matchedCount,
+            cres.modifiedCount,
+        )
 
         return Promise.resolve()
     },
 }
-
