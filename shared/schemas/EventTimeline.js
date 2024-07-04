@@ -5,7 +5,9 @@ const {
     GraphQLNonNull,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDate } = require('graphql-iso-date')
+// const { GraphQLDate } = require('graphql-iso-date')
+const { DateResolver } = require('graphql-scalars')
+
 const mongoose = require('mongoose')
 
 const EventTimelineSchema = new mongoose.Schema({
@@ -28,7 +30,7 @@ const EventTimelineItemType = new GraphQLObjectType({
             type: GraphQLNonNull(GraphQLString),
         },
         startTime: {
-            type: GraphQLNonNull(GraphQLDate),
+            type: GraphQLNonNull(DateResolver),
         },
     },
 })
@@ -43,7 +45,7 @@ const EventTimelineItemInput = new GraphQLInputObjectType({
             type: GraphQLNonNull(GraphQLString),
         },
         startTime: {
-            type: GraphQLNonNull(GraphQLDate),
+            type: GraphQLNonNull(DateResolver),
         },
     },
 })

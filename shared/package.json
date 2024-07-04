@@ -57,7 +57,7 @@
     },
     "dependencies": {
         "graphql": "^15.0.0",
-        "graphql-iso-date": "^3.6.1",
+        "graphql-scalars": "^1.23.0",
         "lodash": "^4.17.19",
         "mongoose": "6.12.9",
         "object-path": "^0.11.4",

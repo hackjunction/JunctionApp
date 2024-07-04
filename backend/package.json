@@ -39,7 +39,7 @@
         "express-async-handler": "^1.1.4",
         "express-jwt": "^6.0.0",
         "graphql": "^16.8.2",
-        "graphql-iso-date": "^3.6.1",
+        "graphql-scalars": "^1.23.0",
         "graphql-subscriptions": "^2.0.0",
         "graphql-tools": "^9.0.1",
         "graphql-type-json": "^0.3.2",

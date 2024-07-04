@@ -8,7 +8,8 @@ const {
     GraphQLBoolean,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDateTime } = require('graphql-iso-date')
+// const { GraphQLDateTime } = require('graphql-iso-date')
+const { DateTimeResolver } = require('graphql-scalars')
 
 const moment = require('moment-timezone')
 const { EventHelpers } = require('@hackjunction/shared')
@@ -151,28 +152,28 @@ const EventInput = new GraphQLInputObjectType({
         },
         /** Times */
         registrationStartTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         registrationEndTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         startTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         endTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         submissionsStartTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         submissionsEndTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         reviewingStartTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         reviewingEndTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         finalsActive: {
             type: GraphQLBoolean,
@@ -357,28 +358,28 @@ const EventType = new GraphQLObjectType({
             },
             /** Times */
             registrationStartTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             registrationEndTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             startTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             endTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             submissionsStartTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             submissionsEndTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             reviewingStartTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             reviewingEndTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             finalsActive: {
                 type: GraphQLBoolean,
@@ -549,6 +550,9 @@ const EventType = new GraphQLObjectType({
             },
             Certificate: {
                 type: Certificate,
+            },
+            slug_history: {
+                type: new GraphQLList(GraphQLString),
             },
         }
     },

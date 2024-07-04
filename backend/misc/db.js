@@ -11,9 +11,8 @@ const connect = () => {
     logger.info('Establishing database connection...')
     return new Promise((resolve, reject) => {
         // mongoose.set('debug', true)
-        mongoose.connect(global.gConfig.MONGODB_URI)
-        // mongoose.set('strictQuery', false)
         mongoose.set('strictQuery', false)
+        mongoose.connect(global.gConfig.MONGODB_URI)
 
         mongoose.connection.on('error', err => {
             logger.error({

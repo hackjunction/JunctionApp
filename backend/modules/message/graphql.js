@@ -9,7 +9,9 @@ const {
     GraphQLNonNull,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDate } = require('graphql-iso-date')
+// const { GraphQLDate } = require('graphql-iso-date')
+const { DateResolver } = require('graphql-scalars')
+
 const Redis = require('ioredis')
 
 const pubsub = new RedisPubSub({
@@ -44,10 +46,10 @@ const MessageType = new GraphQLObjectType({
             type: GraphQLString,
         },
         readAt: {
-            type: GraphQLDate,
+            type: DateResolver,
         },
         sentAt: {
-            type: GraphQLDate,
+            type: DateResolver,
         },
     },
 })

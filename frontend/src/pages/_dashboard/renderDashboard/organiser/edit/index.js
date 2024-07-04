@@ -4,7 +4,7 @@ import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 
 import { Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
-import { forOwn } from 'lodash-es'
+import { forOwn, isEqual } from 'lodash-es'
 import { useRouteMatch, useLocation } from 'react-router'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as OrganiserActions from 'redux/organiser/actions'
@@ -67,12 +67,19 @@ export default () => {
     const { slug, _id } = event
 
     function onSubmit(values, actions) {
+        console.log('values')
+        console.log(values)
         const changed = {}
         forOwn(values, (value, field) => {
-            if (event[field] !== value) {
+            if (!isEqual(event[field], value)) {
                 changed[field] = value
             }
+            // if (event[field] !== value) {
+            //     changed[field] = value
+            // }
         })
+        console.log('changed')
+        console.log(changed)
         saveChanges({
             variables: { _id, input: changed },
         })

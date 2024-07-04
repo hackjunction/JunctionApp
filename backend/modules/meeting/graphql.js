@@ -8,7 +8,8 @@ const {
     GraphQLInt,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDate } = require('graphql-iso-date')
+// const { GraphQLDate } = require('graphql-iso-date')
+const { DateResolver } = require('graphql-scalars')
 
 const MeetingType = new GraphQLObjectType({
     name: 'Meeting',
@@ -37,10 +38,10 @@ const MeetingType = new GraphQLObjectType({
                 type: GraphQLString,
             },
             startTime: {
-                type: GraphQLDate,
+                type: DateResolver,
             },
             endTime: {
-                type: GraphQLDate,
+                type: DateResolver,
             },
             timeZone: {
                 type: GraphQLString,
@@ -102,10 +103,10 @@ const MeetingInput = new GraphQLInputObjectType({
                 type: GraphQLString,
             },
             startTime: {
-                type: GraphQLDate,
+                type: DateResolver,
             },
             endTime: {
-                type: GraphQLDate,
+                type: DateResolver,
             },
             timeZone: {
                 type: GraphQLString,
@@ -133,10 +134,10 @@ const QueryType = new GraphQLObjectType({
                     type: GraphQLString,
                 },
                 from: {
-                    type: GraphQLDate,
+                    type: DateResolver,
                 },
                 to: {
-                    type: GraphQLDate,
+                    type: DateResolver,
                 },
             },
         },
@@ -155,15 +156,21 @@ const MutationType = new GraphQLObjectType({
         meetingSlotsBulkAction: {
             type: MeetingsMutationResponseType,
             args: {
-                create: { type: new GraphQLList(new GraphQLNonNull(MeetingInput)) },
-                delete: { type: new GraphQLList(new GraphQLNonNull(GraphQLID)) },
+                create: {
+                    type: new GraphQLList(new GraphQLNonNull(MeetingInput)),
+                },
+                delete: {
+                    type: new GraphQLList(new GraphQLNonNull(GraphQLID)),
+                },
             },
         },
         bookMeeting: {
             type: MeetingType,
             args: {
                 meetingId: { type: new GraphQLNonNull(GraphQLString) },
-                attendees: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
+                attendees: {
+                    type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
+                },
                 location: { type: GraphQLString },
                 description: { type: GraphQLString },
             },
@@ -209,10 +216,15 @@ const Resolvers = {
         },
         bookMeeting: async (parent, args, context) => {
             if (args.meetingId && args.attendees) {
-                console.log("booking meeting...", args)
+                console.log('booking meeting...', args)
                 return context
                     .controller('Meeting')
-                    .bookMeeting(args.meetingId, args.attendees, args.location, args.description)
+                    .bookMeeting(
+                        args.meetingId,
+                        args.attendees,
+                        args.location,
+                        args.description,
+                    )
             }
             return null
         },

@@ -8,7 +8,8 @@ const {
     GraphQLNonNull,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDate } = require('graphql-iso-date')
+// const { GraphQLDate } = require('graphql-iso-date')
+const { DateResolver } = require('graphql-scalars')
 const RegistrationController = require('../registration/controller')
 const Event = require('../event/model')
 const Redis = require('ioredis')
@@ -46,7 +47,7 @@ const AlertType = new GraphQLObjectType({
             type: GraphQLString,
         },
         sentAt: {
-            type: GraphQLDate,
+            type: DateResolver,
         },
     },
 })

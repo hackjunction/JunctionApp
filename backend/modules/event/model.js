@@ -115,7 +115,10 @@ const EventSchema = new mongoose.Schema({
             `is required for physical or hydrid events`,
         ],
     },
-    tracksEnabled: false,
+    tracksEnabled: {
+        type: Boolean,
+        default: false,
+    },
     tracks: {
         type: [new mongoose.Schema(TrackSchema.mongoose)],
         default: [],
@@ -135,7 +138,10 @@ const EventSchema = new mongoose.Schema({
             'is required if tracks are enabled',
         ],
     },
-    challengesEnabled: false,
+    challengesEnabled: {
+        type: Boolean,
+        default: false,
+    },
     challenges: {
         type: [new mongoose.Schema(ChallengeSchema.mongoose)],
         default: [],
@@ -437,6 +443,9 @@ const EventSchema = new mongoose.Schema({
             showFeedback: false,
             reviewAnyChallenge: false,
         },
+    },
+    slug_history: {
+        type: [String],
     },
     experimental: {
         type: Boolean,

@@ -1,8 +1,10 @@
-const {
-    GraphQLDate,
-    GraphQLTime,
-    GraphQLDateTime,
-} = require('graphql-iso-date')
+// const {
+//     GraphQLDate,
+//     GraphQLTime,
+//     GraphQLDateTime,
+// } = require('graphql-iso-date')
+
+const { DateResolver } = require('graphql-scalars')
 
 const yup = require('yup')
 const _ = require('lodash')
@@ -182,7 +184,7 @@ const FieldProps = {
         mongooseSchema: {
             type: Date,
         },
-        graphqlSchema: GraphQLDate,
+        graphqlSchema: DateResolver,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
