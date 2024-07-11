@@ -295,45 +295,71 @@ controller.updateTravelGrantStatus = (user, event, status) => {
         })
 }
 
-controller.getRegistrationsForEvent = eventId => {
+controller.getRegistrationsForEvent = (eventId, getFullStrings = false) => {
     return Registration.find({
         event: eventId,
     }).then(registrations => {
         /** Do some minor optimisation here to cut down on size */
+        console.log('Registrations', registrations)
         return registrations.map(document => {
             const reg = document.toObject()
-            reg.answers = _.mapValues(reg.answers, (answer, field) => {
-                const fieldType = RegistrationFields.getFieldType(field)
-                if (answer === null) {
-                    console.log('Null answer in ', field)
-                }
-                switch (fieldType) {
-                    case FieldTypes.LONG_TEXT.id:
-                        if (answer && answer.length > 10) {
-                            return `${answer.slice(0, 10)}...`
-                        }
-                        return answer
-                    default: {
-                        if (
-                            answer &&
-                            typeof answer === 'object' &&
-                            !Array.isArray(answer) &&
-                            Object.keys(answer).length > 0
-                        ) {
-                            return _.mapValues(answer, subAnswer => {
-                                if (
-                                    typeof subAnswer === 'string' &&
-                                    subAnswer.length > 50
-                                ) {
-                                    return subAnswer.slice(0, 10)
-                                }
-                                return subAnswer
-                            })
-                        }
-                        return answer
+            if (!getFullStrings) {
+                reg.answers = _.mapValues(reg.answers, (answer, field) => {
+                    const fieldType = RegistrationFields.getFieldType(field)
+                    if (answer === null) {
+                        console.log('Null answer in ', field)
                     }
-                }
-            })
+                    switch (fieldType) {
+                        case FieldTypes.LONG_TEXT.id:
+                            if (answer && answer.length > 10) {
+                                return `${answer.slice(0, 10)}...`
+                            }
+                            return answer
+                        default: {
+                            if (field === 'CustomAnswers') {
+                                answer = answer.map(customAnswer => {
+                                    if (
+                                        typeof customAnswer.value ===
+                                            'string' &&
+                                        customAnswer.value.length > 20
+                                    ) {
+                                        customAnswer.value = `${customAnswer.value.slice(
+                                            0,
+                                            10,
+                                        )}...`
+                                    }
+                                    return customAnswer
+                                })
+                            }
+                            // TODO This code seems to be returning a value tht is not assigned to anything, it can be removed
+                            // else if (
+                            //     answer &&
+                            //     typeof answer === 'object' &&
+                            //     !Array.isArray(answer) &&
+                            //     Object.keys(answer).length > 0
+                            // ) {
+                            //     console.log('answer begin inner mapValues')
+                            //     console.log(answer)
+                            //     console.log(Object.keys(answer))
+                            //     console.log(Object.values(answer))
+                            //     return _.mapValues(answer, subAnswer => {
+                            //         console.log('answer for inner mapValues')
+                            //         console.log(answer)
+                            //         console.log(subAnswer)
+                            //         if (
+                            //             typeof subAnswer === 'string' &&
+                            //             subAnswer.length > 50
+                            //         ) {
+                            //             return subAnswer.slice(0, 10)
+                            //         }
+                            //         return subAnswer
+                            //     })
+                            // }
+                            return answer
+                        }
+                    }
+                })
+            }
             return reg
         })
     })
@@ -549,7 +575,7 @@ controller.addGavelLoginToRegistrations = async (eventId, gavelData) => {
     console.log('Registrations found', registrations.length)
     console.log('Registrations data', registrations)
     const registrationCount = registrations.length
-    
+
     console.log(
         'Modified counts, updated/total',
         updateCount,

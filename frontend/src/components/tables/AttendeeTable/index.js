@@ -72,13 +72,22 @@ export default ({
     )
     // TODO move somewhere else
     const skipArray = ['_id', '__v', 'section', 'key', 'id', 'checklist']
+    const stringEscapeArray = [
+        'firstName',
+        'lastName',
+        'motivation',
+        'headline',
+        'cityOfResidence',
+        'biography',
+        'cityOfTravel',
+    ]
     function flattenObject(ob) {
         let toReturn = {}
         for (let i in ob) {
             if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
                 continue
 
-            if (i === 'firstName' || i === 'lastName') {
+            if (stringEscapeArray.some(val => val === i)) {
                 toReturn[i] = ob[i].replace(/"/g, '""')
                 continue
             } else if (typeof ob[i] === 'object' && ob[i] !== null) {
@@ -295,6 +304,7 @@ export default ({
                                     color: 'inherit',
                                 }}
                                 data={selected.map(item => {
+                                    console.log(item.original)
                                     const returnObject = {
                                         ...flattenObject(item.original),
                                         registrationId: item.original._id,

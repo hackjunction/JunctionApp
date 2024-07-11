@@ -144,9 +144,17 @@ const editRegistration = asyncHandler(async (req, res) => {
 })
 
 const getRegistrationsForEvent = asyncHandler(async (req, res) => {
-    const registrations = await RegistrationController.getRegistrationsForEvent(
-        req.event._id.toString(),
-    )
+    let registrations
+    if (req.query.getFullStrings) {
+        registrations = await RegistrationController.getRegistrationsForEvent(
+            req.event._id.toString(),
+            req.query.getFullStrings,
+        )
+    } else {
+        registrations = await RegistrationController.getRegistrationsForEvent(
+            req.event._id.toString(),
+        )
+    }
     return res.status(200).json(registrations)
 })
 
