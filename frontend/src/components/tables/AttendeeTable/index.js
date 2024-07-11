@@ -78,13 +78,19 @@ export default ({
             if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
                 continue
 
-            if (typeof ob[i] === 'object' && ob[i] !== null) {
+            if (i === 'firstName' || i === 'lastName') {
+                toReturn[i] = ob[i].replace(/"/g, '""')
+                continue
+            } else if (typeof ob[i] === 'object' && ob[i] !== null) {
                 if (i === 'CustomAnswers') {
                     for (let j in ob[i]) {
                         if (!ob[i].hasOwnProperty(j)) continue
                         const customAnswerLabel = ob[i][j].label
                         const customAnswerValue = ob[i][j].value
-                        toReturn[customAnswerLabel] = customAnswerValue
+                        toReturn[customAnswerLabel] = customAnswerValue.replace(
+                            /"/g,
+                            '""',
+                        )
                     }
                 } else {
                     let flatObject = flattenObject(ob[i])
