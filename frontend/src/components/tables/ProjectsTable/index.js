@@ -20,14 +20,14 @@ const ProjectsTable = ({ projects }) => {
             if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
                 continue
 
-            if (i === 'description' || i === 'punchline') {
+            if (i === 'description' || i === 'name' || i === 'punchline') {
                 toReturn[i] = ob[i].replace(/"/g, '""')
                 continue
             } else if (typeof ob[i] === 'object' && ob[i] !== null) {
                 let flatObject = flattenObject(ob[i])
                 for (let x in flatObject) {
                     if (!flatObject.hasOwnProperty(x)) continue
-                    toReturn[i + '.' + x] = flatObject[x]
+                    toReturn[i + '.' + x] = flatObject[x].replace(/"/g, '""')
                 }
             } else {
                 toReturn[i] = ob[i]
