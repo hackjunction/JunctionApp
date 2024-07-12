@@ -517,15 +517,21 @@ const ProjectDetail = ({
                                         Source code
                                     </Typography>
                                     {project.sourcePublic ? (
-                                        <a
-                                            href={project.source}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {project.source
-                                                ? project.source
-                                                : 'Not available'}
-                                        </a>
+                                        <>
+                                            {project.source ? (
+                                                <a
+                                                    href={project.source}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {project.source}
+                                                </a>
+                                            ) : (
+                                                <Typography variant="subtitle1">
+                                                    Not public
+                                                </Typography>
+                                            )}
+                                        </>
                                     ) : (
                                         <Typography variant="subtitle1">
                                             Not public
