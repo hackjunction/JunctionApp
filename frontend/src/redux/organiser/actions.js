@@ -57,7 +57,6 @@ export const updateEventStats = slug => async (dispatch, getState) => {
 /** Update event organisers with loading/error data */
 export const updateOrganisersForEvent =
     (owner, organisers) => async (dispatch, getState) => {
-
         const userIds = [owner].concat(organisers)
 
         dispatch({
@@ -107,18 +106,18 @@ export const addOrganiserToEvent =
 /** Update event recruiters with loading/error data */
 
 export const updateRecruitersForEvent =
-    (recruiters) => async (dispatch, getState) => {
+    recruiters => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
         const userIds = recruiters?.map(rec => {
             return rec.recruiterId
         })
 
-
         dispatch({
             type: ActionTypes.UPDATE_EVENT_RECRUITERS,
             promise: UserProfilesService.getPublicUserProfiles(userIds),
             meta: {
-                onFailure: e => console.log('Error updating recruiters for this event', e),
+                onFailure: e =>
+                    console.log('Error updating recruiters for this event', e),
             },
         })
     }
@@ -158,7 +157,7 @@ export const removeRecruiterFromEvent =
 
 /** Update event registrations with loading/error data */
 export const updateRegistrationsForEvent =
-    slug => async (dispatch, getState) => {
+    (slug, getFullStrings) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
 
         if (!slug) return
@@ -168,6 +167,7 @@ export const updateRegistrationsForEvent =
             promise: RegistrationsService.getRegistrationsForEvent(
                 idToken,
                 slug,
+                getFullStrings,
             ),
             meta: {
                 onFailure: e => console.log('Error updating registrations', e),

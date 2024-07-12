@@ -1,4 +1,3 @@
-# Works
 trigger:
     - none
 
@@ -96,7 +95,6 @@ stages:
                               inputs:
                                   targetType: 'inline'
                                   script: |
-                                      # Modify deployment script based on the app type
                                       echo "Starting deployment script run"
 
                             - task: ExtractFiles@1
@@ -111,12 +109,12 @@ stages:
                                   SourceFolder: '$(Pipeline.Workspace)/drop_eu'
                                   Contents: '$(Build.BuildId).zip'
 
-                            - task: CmdLine@2
+                            - task: Bash@3
                               inputs:
-                                script: |
-                                  home/azureuser/.nvm/versions/node/v12.20.1/bin/pm2 restart index
-                                  echo $(user_pwd) | sudo -S systemctl restart nginx
-                                workingDirectory: '$(Pipeline.Workspace)'
+                                  targetType: 'inline'
+                                  script: |
+                                      pm2 restart index
+                                      sudo systemctl restart nginx
 
                     routeTraffic:
                         steps:

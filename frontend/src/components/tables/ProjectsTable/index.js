@@ -14,20 +14,21 @@ const ProjectsTable = ({ projects }) => {
     const event = useSelector(OrganiserSelectors.event)
 
     const skipArray = ['_id', '__v', 'id', 'key', 'section']
+    const stringEscapeArray = ['description', 'name', 'punchline']
     const flattenObject = ob => {
         let toReturn = {}
         for (let i in ob) {
             if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
                 continue
 
-            if (i === 'description' || i === 'punchline') {
+            if (stringEscapeArray.some(val => val === i)) {
                 toReturn[i] = ob[i].replace(/"/g, '""')
                 continue
             } else if (typeof ob[i] === 'object' && ob[i] !== null) {
                 let flatObject = flattenObject(ob[i])
                 for (let x in flatObject) {
                     if (!flatObject.hasOwnProperty(x)) continue
-                    toReturn[i + '.' + x] = flatObject[x]
+                    toReturn[i + '.' + x] = flatObject[x].replace(/"/g, '""')
                 }
             } else {
                 toReturn[i] = ob[i]

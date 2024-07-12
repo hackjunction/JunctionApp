@@ -143,7 +143,9 @@ const ProjectDetail = ({
         const value = find(event.tracks, t => t.slug === project.track)
 
         if (!value) {
-            return <Typography variant="subtitle1">No track</Typography>
+            return (
+                <Typography variant="subtitle1">No track selected</Typography>
+            )
         }
         return <Typography variant="subtitle1">{value.name}</Typography>
     }
@@ -155,7 +157,11 @@ const ProjectDetail = ({
         )
 
         if (values.length === 0) {
-            return <Typography variant="subtitle1">No challenges</Typography>
+            return (
+                <Typography variant="subtitle1">
+                    No challenges selected
+                </Typography>
+            )
         }
 
         return values.map(challenge => (
@@ -341,17 +347,19 @@ const ProjectDetail = ({
                                     {project.punchline}
                                 </Typography>
                             </div>
-                            <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
-                                <Markdown source={project.description} />
-                            </div>
+                            {project.description && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Markdown source={project.description} />
+                                </div>
+                            )}
                             {submissionFormAnswersArray?.length > 0 &&
                                 submissionFormAnswersArray.map(
                                     (section, index) => {
                                         if (section.answers?.length > 0) {
                                             return (
                                                 <div
-                                                    className="tw-flex tw-flex-col tw-gap-6 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md"
-                                                    key={index}
+                                                    className="tw-flex tw-flex-col tw-gap-10 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md"
+                                                    key={`${section.section}-${index}`}
                                                 >
                                                     <Typography
                                                         variant="h6"
@@ -367,43 +375,34 @@ const ProjectDetail = ({
                                                     {section.answers.length >
                                                         0 &&
                                                         section.answers.map(
-                                                            (answer, index) => (
-                                                                <div
-                                                                    key={index}
-                                                                    className="tw-flex tw-flex-col tw-gap-2"
-                                                                >
-                                                                    <Typography variant="h6">
-                                                                        {
-                                                                            answer.question
-                                                                        }
-                                                                    </Typography>
-                                                                    {answer.fieldType ===
-                                                                    'attachment' ? (
-                                                                        <div>
-                                                                            <button
-                                                                                className="tw-p-2 tw-rounded-sm tw-bg-white tw-border-solid tw-border tw-border-gray-300"
-                                                                                onClick={() =>
-                                                                                    downloadFile(
-                                                                                        answer.value,
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                Download{' '}
-                                                                                {extractFileDetails(
-                                                                                    answer.value,
-                                                                                    'filename',
-                                                                                )}
-                                                                            </button>
-                                                                        </div>
-                                                                    ) : (
-                                                                        <Typography variant="subtitle1">
+                                                            (answer, index) => {
+                                                                if (
+                                                                    answer.fieldType ===
+                                                                    'attachment'
+                                                                ) {
+                                                                    return null
+                                                                }
+                                                                return (
+                                                                    <div
+                                                                        key={`${answer.question}-${index}`}
+                                                                        className="tw-flex tw-flex-col tw-gap-2"
+                                                                    >
+                                                                        <Typography variant="h6">
                                                                             {
-                                                                                answer.value
+                                                                                answer.question
                                                                             }
                                                                         </Typography>
-                                                                    )}
-                                                                </div>
-                                                            ),
+                                                                        <Typography variant="subtitle1">
+                                                                            {answer.fieldType ===
+                                                                            'boolean'
+                                                                                ? answer.value
+                                                                                    ? 'Yes'
+                                                                                    : 'No'
+                                                                                : answer.value}
+                                                                        </Typography>
+                                                                    </div>
+                                                                )
+                                                            },
                                                         )}
                                                 </div>
                                             )
@@ -423,7 +422,7 @@ const ProjectDetail = ({
                                     </Typography>
                                 </div>
                             )}
-                            {project.video ? (
+                            {event?.submissionFormDefaultFields?.video && (
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
@@ -431,58 +430,62 @@ const ProjectDetail = ({
                                     >
                                         video
                                     </Typography>
-                                    <a
-                                        href={project.video}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {project.video}
-                                    </a>
-                                    <div className={classes.playerWrapper}>
-                                        <ReactPlayer
-                                            url={project.video}
-                                            className={classes.reactPlayer}
-                                            width="100%"
-                                            height="100%"
-                                            controls
-                                            light={false}
-                                            loop={false}
-                                            playbackRate={1.0}
-                                            volume={0.8}
-                                            muted={false}
-                                            onReady={() =>
-                                                console.log('onReady')
-                                            }
-                                            onStart={() =>
-                                                console.log('onStart')
-                                            }
-                                            onBuffer={() =>
-                                                console.log('onBuffer')
-                                            }
-                                            onSeek={e =>
-                                                console.log('onSeek', e)
-                                            }
-                                            onError={e =>
-                                                console.log('onError', e)
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className={classes.sectionTitle}
-                                    >
-                                        video
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                        No video available
-                                    </Typography>
+                                    {project.video ? (
+                                        <>
+                                            <a
+                                                href={project.video}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {project.video}
+                                            </a>
+                                            <div
+                                                className={
+                                                    classes.playerWrapper
+                                                }
+                                            >
+                                                <ReactPlayer
+                                                    url={project.video}
+                                                    className={
+                                                        classes.reactPlayer
+                                                    }
+                                                    width="100%"
+                                                    height="100%"
+                                                    controls
+                                                    light={false}
+                                                    loop={false}
+                                                    playbackRate={1.0}
+                                                    volume={0.8}
+                                                    muted={false}
+                                                    onReady={() =>
+                                                        console.log('onReady')
+                                                    }
+                                                    onStart={() =>
+                                                        console.log('onStart')
+                                                    }
+                                                    onBuffer={() =>
+                                                        console.log('onBuffer')
+                                                    }
+                                                    onSeek={e =>
+                                                        console.log('onSeek', e)
+                                                    }
+                                                    onError={e =>
+                                                        console.log(
+                                                            'onError',
+                                                            e,
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <Typography variant="subtitle1">
+                                            Not available
+                                        </Typography>
+                                    )}
                                 </div>
                             )}
-
-                            {project.demo ? (
+                            {event?.submissionFormDefaultFields?.demo && (
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
@@ -490,28 +493,22 @@ const ProjectDetail = ({
                                     >
                                         Demo
                                     </Typography>
-                                    <a
-                                        href={project.demo}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {project.demo}
-                                    </a>
-                                </div>
-                            ) : (
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className={classes.sectionTitle}
-                                    >
-                                        Demo
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                        No demo available
-                                    </Typography>
+                                    {project.demo ? (
+                                        <a
+                                            href={project.demo}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {project.demo}
+                                        </a>
+                                    ) : (
+                                        <Typography variant="subtitle1">
+                                            Not available
+                                        </Typography>
+                                    )}
                                 </div>
                             )}
-                            {!project.sourcePublic ? (
+                            {event?.submissionFormDefaultFields?.source && (
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
@@ -519,28 +516,30 @@ const ProjectDetail = ({
                                     >
                                         Source code
                                     </Typography>
-                                    <Typography variant="subtitle1">
-                                        Source code not public
-                                    </Typography>
-                                </div>
-                            ) : (
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className={classes.sectionTitle}
-                                    >
-                                        Source code
-                                    </Typography>
-                                    <a
-                                        href={project.source}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {project.source}
-                                    </a>
+                                    {project.sourcePublic ? (
+                                        <>
+                                            {project.source ? (
+                                                <a
+                                                    href={project.source}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {project.source}
+                                                </a>
+                                            ) : (
+                                                <Typography variant="subtitle1">
+                                                    Not public
+                                                </Typography>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <Typography variant="subtitle1">
+                                            Not public
+                                        </Typography>
+                                    )}
                                 </div>
                             )}
-                            {event && project.track && (
+                            {event.tracksEnabled && project.track && (
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
@@ -551,17 +550,18 @@ const ProjectDetail = ({
                                     {renderTrack()}
                                 </div>
                             )}
-                            {event && project.challenges.length > 0 && (
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className={classes.sectionTitle}
-                                    >
-                                        Challenges
-                                    </Typography>
-                                    {renderChallenges()}
-                                </div>
-                            )}
+                            {event.challengesEnabled &&
+                                project.challenges.length > 0 && (
+                                    <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                        <Typography
+                                            variant="h6"
+                                            className={classes.sectionTitle}
+                                        >
+                                            Challenges
+                                        </Typography>
+                                        {renderChallenges()}
+                                    </div>
+                                )}
                             <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                 <Typography
                                     variant="h6"
