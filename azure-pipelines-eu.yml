@@ -1,4 +1,3 @@
-# Works
 trigger:
     - none
 
@@ -96,7 +95,6 @@ stages:
                               inputs:
                                   targetType: 'inline'
                                   script: |
-                                      # Modify deployment script based on the app type
                                       echo "Starting deployment script run"
 
                             - task: ExtractFiles@1
@@ -115,7 +113,6 @@ stages:
                               inputs:
                                   targetType: 'inline'
                                   script: |
-                                      cd /home/azureuser/azagent/_work/2/japp
                                       pm2 restart index
                                       sudo systemctl restart nginx
 
