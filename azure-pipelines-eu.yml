@@ -27,16 +27,16 @@ stages:
                 - task: DownloadSecureFile@1
                   displayName: 'download europe frontend'
                   inputs:
-                      secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File.
+                      secureFile: 'FRONTEND_ENV_FILE_EU_UPDATED' # string. Required. Secure File.
 
                 - task: CopyFiles@2
                   displayName: 'copy europe frontend'
                   inputs:
                       SourceFolder: '$(Agent.TempDirectory)'
-                      Contents: FRONTEND_ENV_FILE_EU
+                      Contents: FRONTEND_ENV_FILE_EU_UPDATED
                       TargetFolder: './frontend'
 
-                - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
+                - script: mv ./frontend/FRONTEND_ENV_FILE_EU_UPDATED ./frontend/.env
                   displayName: 'rename europe .env'
 
                 - script: ls -a ./frontend
@@ -109,7 +109,7 @@ stages:
                                   SourceFolder: '$(Pipeline.Workspace)/drop_eu'
                                   Contents: '$(Build.BuildId).zip'
 
-                            - task: Bash@3
+                            - task: CmdLine@2
                               inputs:
                                   targetType: 'inline'
                                   script: |
