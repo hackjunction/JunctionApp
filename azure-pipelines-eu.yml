@@ -109,7 +109,7 @@ stages:
                                   SourceFolder: '$(Pipeline.Workspace)/drop_eu'
                                   Contents: '$(Build.BuildId).zip'
 
-                            - task: CmdLine@2
+                            - task: Bash@3
                               inputs:
                                   targetType: 'inline'
                                   script: |
