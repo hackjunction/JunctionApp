@@ -359,7 +359,7 @@ const ProjectDetail = ({
                                             return (
                                                 <div
                                                     className="tw-flex tw-flex-col tw-gap-10 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md"
-                                                    key={index}
+                                                    key={`${section.section}-${index}`}
                                                 >
                                                     <Typography
                                                         variant="h6"
@@ -376,11 +376,15 @@ const ProjectDetail = ({
                                                         0 &&
                                                         section.answers.map(
                                                             (answer, index) => {
+                                                                if (
+                                                                    answer.fieldType ===
+                                                                    'attachment'
+                                                                ) {
+                                                                    return null
+                                                                }
                                                                 return (
                                                                     <div
-                                                                        key={
-                                                                            index
-                                                                        }
+                                                                        key={`${answer.question}-${index}`}
                                                                         className="tw-flex tw-flex-col tw-gap-2"
                                                                     >
                                                                         <Typography variant="h6">
