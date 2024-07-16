@@ -115,6 +115,7 @@ stages:
                               inputs:
                                   targetType: 'inline'
                                   script: |
+                                      whoami
                                       pm2 restart index --update-env
                                       sudo systemctl restart nginx
 
