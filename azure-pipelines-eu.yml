@@ -24,19 +24,20 @@ stages:
 
                 - script: mv ./backend/BACKEND_ENV_FILE_EU_UPDATED ./backend/.env
                   displayName: 'rename europe .env'
+
                 - task: DownloadSecureFile@1
                   displayName: 'download europe frontend'
                   inputs:
-                      secureFile: 'FRONTEND_ENV_FILE_EU_UPDATED' # string. Required. Secure File.
+                      secureFile: 'FRONTEND_ENV_FILE_EU_REV4' # string. Required. Secure File.
 
                 - task: CopyFiles@2
                   displayName: 'copy europe frontend'
                   inputs:
                       SourceFolder: '$(Agent.TempDirectory)'
-                      Contents: FRONTEND_ENV_FILE_EU_UPDATED
+                      Contents: FRONTEND_ENV_FILE_EU_REV4
                       TargetFolder: './frontend'
 
-                - script: mv ./frontend/FRONTEND_ENV_FILE_EU_UPDATED ./frontend/.env
+                - script: mv ./frontend/FRONTEND_ENV_FILE_EU_REV4 ./frontend/.env
                   displayName: 'rename europe .env'
 
                 - script: ls -a ./frontend
@@ -113,7 +114,7 @@ stages:
                               inputs:
                                   targetType: 'inline'
                                   script: |
-                                      pm2 restart index
+                                      pm2 restart index --update-env
                                       sudo systemctl restart nginx
 
                     routeTraffic:
