@@ -3,11 +3,13 @@ import { Typography, Box, Grid, Dialog } from '@material-ui/core'
 import GradientBox from 'components/generic/GradientBox'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 import ProjectDetail from 'components/projects/ProjectDetail'
+import { useTranslation } from 'react-i18next'
 
 function ProjectSubmissionsBlock({ projects, event }) {
     const [selected, setSelected] = useState(false)
     const showScore = event?.scoreCriteriaSettings?.showScore
     const showFeedback = event?.scoreCriteriaSettings?.showFeedback
+    const { t } = useTranslation()
     return (
         <>
             {projects && event && projects[0]?.event === event?._id ? (
@@ -16,7 +18,7 @@ function ProjectSubmissionsBlock({ projects, event }) {
                         <GradientBox color="theme_white" p={3}>
                             <Box pb={2}>
                                 <Typography variant="h4">
-                                    Your project submissions
+                                    {t('My_project_submissions_')}
                                 </Typography>
                             </Box>
                             <ProjectsGrid
