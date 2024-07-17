@@ -15,6 +15,7 @@ import Button from 'components/generic/Button'
 //import ParticipationCertificate from 'components/pdfs/ParticipationCertificate'
 import modifyPdf from 'utils/modifyPdf'
 import config from 'constants/config'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
     const event = useSelector(DashboardSelectors.event)
@@ -22,22 +23,26 @@ export default () => {
     const userProfile = useSelector(UserSelectors.userProfile)
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
+    const { t } = useTranslation()
     if (!EventHelpers.isEventOver(event, moment)) return null
     if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id)
         return null
     if ('certificate' in event && event.certificate.url !== '') {
-        //TODO: fix certificate upload
         return (
             <Grid item xs={12}>
                 <GradientBox p={3} color="secondary">
                     <Typography variant="h4" gutterBottom>
-                        Participation certificate
+                        {t('Participation_certificate_')}
                     </Typography>
                     <Typography variant="body1" paragraph>
-                        Thanks for being a part of {event.name}! While waiting
+                        {t('Participation_certificate_message_', {
+                            event: event.name,
+                            organizer: config.PLATFORM_OWNER_NAME,
+                        })}
+                        {/* Thanks for being a part of {event.name}! While waiting
                         for the next {config.PLATFORM_OWNER_NAME} event to take
                         part in, go ahead and download your personal certificate
-                        of participation by clicking the button below!
+                        of participation by clicking the button below! */}
                     </Typography>
                     {eventLoading || projectLoading ? (
                         <CircularProgress size={24} />
@@ -61,7 +66,7 @@ export default () => {
                             color="theme_white"
                             variant="contained"
                         >
-                            Download certificate
+                            {t('Participation_certificate_download_')}
                         </Button>
                     )}
                 </GradientBox>

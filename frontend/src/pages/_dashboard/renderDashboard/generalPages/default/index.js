@@ -27,7 +27,7 @@ export default ({ alerts }) => {
     const event = useSelector(DashboardSelectors.event)
     const projects = useSelector(DashboardSelectors.projects)
     return (
-        <Box>
+        <Box className="tw-flex tw-flex-col tw-gap-2">
             <PageHeader heading="Dashboard" />
 
             <Helmet>
@@ -68,8 +68,7 @@ export default ({ alerts }) => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
-            <Box mt={2} />
-            <Grid container spacing={5}>
+            {/* <Grid container spacing={5}>
                 <div
                     style={{
                         height: '400px',
@@ -77,23 +76,22 @@ export default ({ alerts }) => {
                         display: 'flex',
                         padding: '2em',
                     }}
-                >
-                    <AlertBlock alerts={alerts} />
-                </div>
+                ></div> */}
+            <AlertBlock alerts={alerts} />
 
-                <EventOverBlock />
-                <ProjectSubmissionsBlock projects={projects} event={event} />
-                <ReviewingPeriodBlock />
-                <RegistrationStatusBlock />
-                {/*<TravelGrantStatusBlock />*/}
-                {/* <VisaInvitationBlock /> */}
-                <CertificateBlock />
-                <ProjectBlock />
-                <TeamStatusBlock />
+            <EventOverBlock />
+            <ProjectSubmissionsBlock projects={projects} event={event} />
+            <ReviewingPeriodBlock />
+            <RegistrationStatusBlock />
+            {/*<TravelGrantStatusBlock />*/}
+            {/* <VisaInvitationBlock /> */}
+            <CertificateBlock />
+            <ProjectBlock />
+            <TeamStatusBlock />
 
-                <GavelReviewingBlock />
-                <SocialMediaBlock />
-            </Grid>
+            <GavelReviewingBlock />
+            <SocialMediaBlock />
+            {/* </Grid> */}
             {event && (
                 <EventPageScriptIFrame
                     slug={event.slug}

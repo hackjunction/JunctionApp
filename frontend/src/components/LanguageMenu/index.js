@@ -17,7 +17,13 @@ export default () => {
             id="demo-simple-select"
             value={i18n.language}
             onChange={handleChange}
-            style={{ padding: '8px 0px 8px 16px' }}
+            defaultValue={'en'}
+            className="tw-text-black tw-border-1 tw-border-2 tw-border-solid tw-border-black tw-px-2 tw-py-0 tw-bg-white tw-rounded-lg"
+            // style={{
+            //     padding: '8px 0px 8px 16px',
+            //     color: 'white',
+            //     backgroundColor: 'black',
+            // }}
             disableUnderline
         >
             {/* <MenuItem value={'fi'}>
@@ -28,12 +34,12 @@ export default () => {
 
             <MenuItem value={'en'}>
                 <span role="img" aria-label="en">
-                    English
+                    EN 🇺🇸
                 </span>
             </MenuItem>
             <MenuItem value={'zh'}>
                 <span role="img" aria-label="zh">
-                    Chinese
+                    ZH 🇨🇳
                 </span>
             </MenuItem>
         </Select>
