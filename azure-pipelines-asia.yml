@@ -116,7 +116,6 @@ stages:
                                   targetType: 'inline'
                                   script: |
                                       pm2 restart index --update-env
-                                      sudo systemctl restart nginx
 
                     routeTraffic:
                         steps:
