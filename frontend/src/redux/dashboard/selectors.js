@@ -193,3 +193,7 @@ export const shownPages = createSelector(
         }
     },
 )
+
+export const teamHasCandidates = createSelector(team, team => {
+    return team?.candidates.length > 0
+})

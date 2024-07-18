@@ -31,8 +31,8 @@ const BasicNavBar = ({ text }) => {
         // <div className={classes.wrapper}>
         <div className="tw-w-full tw-p-2 tw-bg-wave-pattern tw-bg-black ">
             <div className={'tw-flex tw-justify-end tw-items-center'}>
-                <UserAvatar />
                 <LanguageMenu />
+                <UserAvatar />
             </div>
         </div>
     )
