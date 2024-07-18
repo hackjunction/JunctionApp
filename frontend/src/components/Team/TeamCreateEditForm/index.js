@@ -12,6 +12,7 @@ import React from 'react'
 import Button from 'components/generic/Button'
 import { Typography } from '@material-ui/core'
 import { debugGroup } from 'utils/debuggingTools'
+import { useTranslation } from 'react-i18next'
 
 export default ({
     initialData = {},
@@ -19,48 +20,58 @@ export default ({
     onBack = () => {},
     challengeOptions = [],
 }) => {
+    const { t } = useTranslation()
     const TeamSchema = {
         name: yup
             .string()
-            .min(
-                3,
-                ({ min }) => `The name must have at least ${min} characters`,
+            .min(3, ({ min }) =>
+                t('Field_validation_min_chars_', { fieldName: 'name', min }),
             )
-            .max(50, ({ max }) => `The name can have up to ${max} characters`)
+            .max(50, ({ max }) =>
+                t('Field_validation_max_chars_', { fieldName: 'name', max }),
+            )
             .required('Team name is required'),
         subtitle: yup
             .string()
-            .min(
-                3,
-                ({ min }) =>
-                    `The subtitle must have at least ${min} characters`,
+            .min(3, ({ min }) =>
+                t('Field_validation_min_chars_', {
+                    fieldName: 'subtitle',
+                    min,
+                }),
             )
-            .max(
-                50,
-                ({ max }) => `The subtitle can have up to ${max} characters`,
+            .max(50, ({ max }) =>
+                t('Field_validation_max_chars_', {
+                    fieldName: 'subtitle',
+                    max,
+                }),
             ),
         description: yup
             .string()
-            .min(
-                3,
-                ({ min }) =>
-                    `The description must have at least ${min} characters`,
+            .min(3, ({ min }) =>
+                t('Field_validation_min_chars_', {
+                    fieldName: 'description',
+                    min,
+                }),
             )
-            .max(
-                150,
-                ({ max }) => `The description can have up to ${max} characters`,
+            .max(150, ({ max }) =>
+                t('Field_validation_max_chars_', {
+                    fieldName: 'description',
+                    max,
+                }),
             ),
         ideaTitle: yup
             .string()
-            .min(
-                3,
-                ({ min }) =>
-                    `The title of your idea must have at least ${min} characters`,
+            .min(3, ({ min }) =>
+                t('Field_validation_min_chars_', {
+                    fieldName: 'idea title',
+                    min,
+                }),
             )
-            .max(
-                50,
-                ({ max }) =>
-                    `The title of your idea can have up to ${max} characters`,
+            .max(50, ({ max }) =>
+                t('Field_validation_max_chars_', {
+                    fieldName: 'idea title',
+                    max,
+                }),
             ),
         ideaDescription: yup
             .string()
@@ -69,43 +80,56 @@ export default ({
                 then: yup
                     .string()
                     .required(
-                        'If you have an idea title, description for the idea is required',
+                        t('Field_validation_team_idea_description_required_'),
                     ),
             })
-            .min(
-                3,
-                ({ min }) =>
-                    `The description of your idea must have at least ${min} characters`,
+            .min(3, ({ min }) =>
+                t('Field_validation_min_chars_', {
+                    fieldName: 'idea description',
+                    min,
+                }),
             )
-            .max(
-                150,
-                ({ max }) =>
-                    `The description of your idea can have up to ${max} characters`,
+            .max(150, ({ max }) =>
+                t('Field_validation_max_chars_', {
+                    fieldName: 'idea description',
+                    max,
+                }),
             ),
         email: yup
             .string()
-            .when(['discord', 'telegram'], {
-                is: (discord, telegram) => !discord && !telegram,
+            .when(['discord', 'telegram', 'slack'], {
+                is: (discord, telegram, slack) =>
+                    !discord && !telegram && !slack,
                 then: yup.string().required('One contact option is required.'),
             })
-            .min(
-                3,
-                ({ min }) => `The email must have at least ${min} characters`,
+            .min(3, ({ min }) =>
+                t('Field_validation_min_chars_', { fieldName: 'email', min }),
             )
-            .max(50, ({ max }) => `The email can have up to ${max} characters`)
-            .email('Invalid email address'),
-        discord: yup
-            .string('Invalid discord url')
-            .max(
-                50,
-                ({ max }) => `Discord links can have up to ${max} characters`,
-            ),
-        telegram: yup
-            .string('Invalid telegram url')
-            .max(
-                50,
-                ({ max }) => `Telegram links can have up to ${max} characters`,
-            ),
+            .max(50, ({ max }) =>
+                t('Field_validation_max_chars_', {
+                    fieldName: 'email',
+                    max,
+                }),
+            )
+            .email(t('Field_validation_invalid_email_')),
+        discord: yup.string('Invalid discord url').max(50, ({ max }) =>
+            t('Field_validation_max_chars_', {
+                fieldName: 'Discord link',
+                max,
+            }),
+        ),
+        telegram: yup.string('Invalid telegram url').max(50, ({ max }) =>
+            t('Field_validation_max_chars_', {
+                fieldName: 'Telegram link',
+                max,
+            }),
+        ),
+        slack: yup.string('Invalid slack url').max(150, ({ max }) =>
+            t('Field_validation_max_chars_', {
+                fieldName: 'Slack link',
+                max,
+            }),
+        ),
     }
 
     const formMode =
@@ -137,7 +161,7 @@ export default ({
                             variant="jOutlined"
                             onClick={onBack}
                         >
-                            Back
+                            {t('Back_')}
                         </Button>
                     </div>
                     <div>
@@ -146,23 +170,24 @@ export default ({
                             variant="h4"
                             component="h4"
                         >
-                            {`${formMode} your team`}
+                            {formMode === 'Create'
+                                ? t('Team_create_')
+                                : t('Team_edit_')}
                         </Typography>
                         <Typography
                             className="tw-text-lg tw-text-gray-600"
                             variant="body1"
                             component="p"
                         >
-                            Fields marked with * are required
+                            {t('Fields_with_mark_are_required_')}
                         </Typography>
                     </div>
-
                     <div>
                         <FastField name="name">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Team name *"
-                                    hint="Write a name for your team"
+                                    label={`${t('Team_name_')} *`}
+                                    hint={t('Team_name_hint_')}
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -223,8 +248,8 @@ export default ({
                                 <FastField name="challenge">
                                     {({ field, form }) => (
                                         <FormControl
-                                            label="Challenge"
-                                            hint="Select one of the challenges"
+                                            label={t('Challenge_')}
+                                            hint={t('Team_challenge_hint_')}
                                             touched={
                                                 form.touched[field.name] ||
                                                 formikProps.submitCount > 0
@@ -232,7 +257,7 @@ export default ({
                                             error={form.errors[field.name]}
                                         >
                                             <Select
-                                                label="Select challenge"
+                                                label={t('Select_challenge_')}
                                                 options={challengeOptions}
                                                 value={field.value}
                                                 onChange={value =>
@@ -256,8 +281,8 @@ export default ({
                         <FastField name="subtitle">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Team subtitle"
-                                    hint="Write a subtitle for your team"
+                                    label={t('Team_subtitle_')}
+                                    hint={t('Team_subtitle_hint_')}
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -285,8 +310,8 @@ export default ({
                         <FastField name="description">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Brief description about your team"
-                                    hint="Share what your team is about"
+                                    label={t('Team_description_')}
+                                    hint={t('Team_description_hint_')}
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -315,8 +340,8 @@ export default ({
                         <FastField name="ideaTitle">
                             {({ field, form }) => (
                                 <FormControl
-                                    label=" Title of the idea explored by your team"
-                                    hint="Write a title for your idea"
+                                    label={t('Team_idea_title_')}
+                                    hint={t('Team_idea_title_hint_')}
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -344,8 +369,8 @@ export default ({
                         <FastField name="ideaDescription">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Brief explanation of the idea explored by your team"
-                                    hint="Explain your idea in a few sentences"
+                                    label={t('Team_idea_description_')}
+                                    hint={t('Team_idea_description_hint_')}
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -374,7 +399,7 @@ export default ({
                         <FastField name="teamRoles">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Available roles in your team (optional)"
+                                    label={t('Team_available_roles_label_')}
                                     error={form.errors[field.name]}
                                     touched={
                                         form.touched[field.name] ||
@@ -404,8 +429,8 @@ export default ({
                         <FastField name="email">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Team's contact email"
-                                    hint="Your team must have at least an email, a slack, discord or a telegram channel"
+                                    label={t('Team_email_label_')}
+                                    hint={t('Team_email_hint_')}
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -433,7 +458,8 @@ export default ({
                         <FastField name="slack">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Team's Slack"
+                                    label={t('Team_slack_label_')}
+                                    hint=""
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -461,7 +487,8 @@ export default ({
                         <FastField name="telegram">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Team's Telegram"
+                                    label={t('Team_telegram_label_')}
+                                    hint=""
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -489,7 +516,8 @@ export default ({
                         <FastField name="discord">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Team's Discord"
+                                    label={t('Team_discord_label_')}
+                                    hint=""
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0

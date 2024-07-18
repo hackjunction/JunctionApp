@@ -89,7 +89,7 @@ export default ({ alerts }) => {
             <ProjectBlock />
             <TeamStatusBlock />
 
-            <GavelReviewingBlock />
+            {/* <GavelReviewingBlock /> */}
             <SocialMediaBlock />
             {/* </Grid> */}
             {event && (
