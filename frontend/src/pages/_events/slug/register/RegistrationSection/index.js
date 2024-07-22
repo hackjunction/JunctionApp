@@ -38,19 +38,25 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default props => {
-    const { sectionsInfo, fields, onNext, nextLabel, prevLabel, onPrev, data, isActive } =
-        props
+    const {
+        sectionsInfo,
+        fields,
+        onNext,
+        nextLabel,
+        prevLabel,
+        onPrev,
+        data,
+        isActive,
+    } = props
     const { event, registration } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
-
     const classes = useStyles({ isActive })
     const mainRef = useRef(null)
     const { validationSchema, initialValues } = useMemo(() => {
         return fields.reduce(
             (result, field) => {
                 const fieldParams = RegistrationFields.getField(field.fieldName)
-
                 if (fieldParams) {
                     result.validationSchema[field.fieldName] =
                         fieldParams.validationSchema(field.require, event)
