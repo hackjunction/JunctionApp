@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { ConnectedRouter, push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,20 +16,22 @@ import { getCookieConsentValue } from 'react-cookie-consent'
 import CookieConsentBar from 'components/layouts/CookieConsentBar'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
-export default ({ history, location }) => {
+export default ({ history }) => {
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
     const isSessionExpired = useSelector(AuthSelectors.isSessionExpired)
     const [loading, setLoading] = useState(true)
 
+    const location = useLocation()
+
     useEffect(() => {
         if (getCookieConsentValue() === 'true') {
             AnalyticsService.init()
-            AnalyticsService.pageView(window.location)
-            const unlisten = history.listen(AnalyticsService.pageView)
+            AnalyticsService.pageView(window.location) // Initial page view tracking
+            const unlisten = history.listen(AnalyticsService.pageView) // Listen for route changes
             return () => {
-                unlisten()
+                unlisten() // Cleanup listener on component unmount
             }
         }
     }, [location, history])
