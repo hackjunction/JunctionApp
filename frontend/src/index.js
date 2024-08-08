@@ -55,6 +55,7 @@ WebFont.load({
 posthog.init(config.POSTHOG_API_KEY, {
     api_host: config.POSTHOG_API_HOST,
     person_profiles: 'identified_only',
+    capture_pageview: false
 })
 
 ReactDOM.render(
