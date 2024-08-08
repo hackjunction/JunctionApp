@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Router } from 'react-router-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import './i18n'
@@ -81,7 +82,9 @@ ReactDOM.render(
                             <Notifier />
                             <CssBaseline />
                             <PostHogProvider client={posthog}>
-                                <App history={history} />
+                                <Router history={history}>
+                                    <App history={history} location={window.location} />
+                                </Router>
                             </PostHogProvider>
                         </SnackbarProvider>
                     </ThemeProvider>
