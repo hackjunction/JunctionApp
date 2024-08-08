@@ -52,8 +52,8 @@ WebFont.load({
 
 
 // Add PostHog
-posthog.init('phc_dvQg8kGuscCmyKR7QCJCcLdDcGRWs61gsNJO5mTgjf4', {
-    api_host: 'https://us.i.posthog.com',
+posthog.init(config.POSTHOG_API_KEY, {
+    api_host: config.POSTHOG_API_HOST,
     person_profiles: 'identified_only',
 })
 
