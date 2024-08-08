@@ -16,6 +16,8 @@ import configureStore, { history } from 'redux/configureStore'
 import config from 'constants/config'
 // import theme from './material-ui-theme'
 import theme from './junctionTheme'
+import posthog from 'posthog-js'
+import { PostHogProvider } from 'posthog-js/react'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -25,7 +27,7 @@ library.add(fab)
 const { store, persistor } = configureStore()
 
 /** Disable log statements in production */
-function noop() {}
+function noop() { }
 
 if (!config.IS_DEBUG) {
     console.log = noop
@@ -46,6 +48,13 @@ WebFont.load({
             'Inter:400,400i,700,700i',
         ],
     },
+})
+
+
+// Add PostHog
+posthog.init('phc_dvQg8kGuscCmyKR7QCJCcLdDcGRWs61gsNJO5mTgjf4', {
+    api_host: 'https://us.i.posthog.com',
+    person_profiles: 'identified_only',
 })
 
 ReactDOM.render(
@@ -70,7 +79,9 @@ ReactDOM.render(
                         >
                             <Notifier />
                             <CssBaseline />
-                            <App history={history} />
+                            <PostHogProvider client={posthog}>
+                                <App history={history} />
+                            </PostHogProvider>
                         </SnackbarProvider>
                     </ThemeProvider>
                 </StylesProvider>
