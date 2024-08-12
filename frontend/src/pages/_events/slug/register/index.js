@@ -47,6 +47,7 @@ import EventDetailContext from '../context'
 import { useTranslation } from 'react-i18next'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
+import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -144,6 +145,7 @@ export default RequiresPermission(() => {
         createRegistration,
         editRegistration,
         finishRegistration,
+        registration,
     } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
     const [loading, setLoading] = useState(false)
@@ -152,7 +154,9 @@ export default RequiresPermission(() => {
     const [eventNewsLetterHidden, setEventNewsLetterHidden] = useState(true)
 
     const globalNavbarElement = document.getElementById('global-navbar')
-    globalNavbarElement.style.display = 'none'
+    if (globalNavbarElement) {
+        globalNavbarElement.style.display = 'none'
+    }
 
     useEffect(() => {
         setTimeout(function () {
@@ -266,6 +270,7 @@ export default RequiresPermission(() => {
         [editRegistration, formData],
     )
 
+    // TODO add formdata save for setPrevStep too
     const setPrevStep = useCallback(() => {
         setActiveStep(activeStep - 1)
     }, [activeStep])
@@ -280,7 +285,7 @@ export default RequiresPermission(() => {
                 section.questions.forEach(question => {
                     const que = question.name
                     const label = question?.label || 'custom question'
-                    const value = formData[sec][que]
+                    const value = formData[sec]?.[que]
                     const custom = {
                         label: label,
                         section: sec,
@@ -385,7 +390,7 @@ export default RequiresPermission(() => {
         })
     }
 
-    const shareurl = 'https://app.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
+    const shareurl = `${config.BASE_URL}/events/${event.slug}`
     const sharetext = `I just applied to ${event.name}!`
 
     return (
