@@ -10,11 +10,13 @@ import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const voteCount = useSelector(DashboardSelectors.annotatorVoteCount)
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (event) {
@@ -22,56 +24,57 @@ export default () => {
         }
     }, [event, dispatch])
     if (
-        event.reviewMethod === 'gavelPeerReview' &&
+        event.reviewMethod === 'manualReview' &&
         EventHelpers.isReviewingOpen(event, moment)
     )
         return (
-            <Grid item xs={12}>
-                <GradientBox p={3} color="theme_purple">
-                    <Typography variant="button">Reviewing period</Typography>
-                    <Typography variant="h4">
-                        Reviewing period is open!
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                        Reviewing ends{' '}
-                        {moment(event.reviewingEndTime).fromNow()}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                        Sit back and relax while your project is reviewed!
-                    </Typography>
-                    <Box mt={2}></Box>
-                </GradientBox>
-            </Grid>
+            // <Grid item xs={12}>
+            <GradientBox p={3} color="theme_purple">
+                <Typography variant="button">
+                    {t('Reviewing_is_open_')}
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                    {t('Reviewing_end_time_', {
+                        reviewing_end_time: moment(
+                            event.reviewingEndTime,
+                        ).fromNow(),
+                    })}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    {t('Reviewing_open_message_manual_review_')}
+                </Typography>
+                <Box mt={2}></Box>
+            </GradientBox>
+            // </Grid>
         )
 
     if (!EventHelpers.isReviewingOpen(event, moment)) return null
 
     return (
-        <Grid item xs={12}>
-            <GradientBox p={3} color="theme_purple">
-                <Typography variant="button">Reviewing period</Typography>
-                <Typography variant="h4">Reviewing period is open!</Typography>
-                <Typography variant="h6" gutterBottom>
-                    Reviewing ends {moment(event.reviewingEndTime).fromNow()}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    {voteCount === 0
-                        ? `Head over to the reviewing page to start reviewing other projects!`
-                        : `You've submitted ${voteCount} votes. Head over to the reviewing page to continue reviewing other projects!`}
-                </Typography>
-                <Box mt={2}></Box>
-                <Button
-                    onClick={() =>
-                        dispatch(
-                            push(`/dashboard/event/${event.slug}/reviewing`),
-                        )
-                    }
-                    color="theme_white"
-                    variant="contained"
-                >
-                    To reviewing
-                </Button>
-            </GradientBox>
-        </Grid>
+        // <Grid item xs={12}>
+        <GradientBox p={3} color="theme_purple">
+            <Typography variant="button">{t('Reviewing_is_open_')}</Typography>
+            <Typography variant="h6" gutterBottom>
+                {t('Reviewing_end_time_', {
+                    reviewing_end_time: moment(
+                        event.reviewingEndTime,
+                    ).fromNow(),
+                })}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+                {t('Reviewing_open_message_gavel_review_')}
+            </Typography>
+            <Box mt={2}></Box>
+            <Button
+                onClick={() =>
+                    dispatch(push(`/dashboard/event/${event.slug}/reviewing`))
+                }
+                color="theme_white"
+                variant="contained"
+            >
+                {t('To_reviewing_page_')}
+            </Button>
+        </GradientBox>
+        // </Grid>
     )
 }

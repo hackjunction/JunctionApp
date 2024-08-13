@@ -9,7 +9,7 @@ import WorkIcon from '@material-ui/icons/Work'
 import PlaceIcon from '@material-ui/icons/Place'
 import RateReviewIcon from '@material-ui/icons/RateReview'
 import { makeStyles } from '@material-ui/core/styles'
-import { Typography } from '@material-ui/core'
+import { Hidden, Typography } from '@material-ui/core'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import BasicNavBar from 'components/navbars/BasicNavBar'
@@ -28,6 +28,7 @@ import Badge from '@material-ui/core/Badge'
 import ProjectsPage from './projects'
 import { QuestionAnswerSharp } from '@material-ui/icons'
 import { Chat } from 'components/messaging/chat'
+import { useTranslation } from 'react-i18next'
 // import PartnerReviewingBlock from '../generalPages/default/Blocks/PartnerReviewingBlock'
 
 const useStyles = makeStyles(theme => ({
@@ -57,6 +58,7 @@ export default ({
     const location = useLocation()
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
+    const { t } = useTranslation()
 
     return (
         <SidebarLayout
@@ -90,7 +92,7 @@ export default ({
                             <DashboardIcon />
                         </Badge>
                     ),
-                    label: 'Dashboard',
+                    label: t('Dashboard_'),
                     component: () => {
                         setAlertCount(0)
                         if (shownPages?.experimental) {
@@ -107,7 +109,7 @@ export default ({
                     lockedDescription: 'Reviewing closed',
                     exact: false,
                     icon: <RateReviewIcon />,
-                    label: 'Review',
+                    label: t('Review_projects_'),
                     component: () => {
                         return <ProjectsPage event={event} />
                     },
@@ -127,9 +129,10 @@ export default ({
                     exact: true,
                     icon: <AmpStoriesIcon />,
                     hidden: !shownPages?.hackerPack,
-                    label: 'Hackerpack',
+                    label: t('Hackerpack_'),
                     component: HackerpackPage,
                 },
+                //Experimental
                 {
                     key: 'recruitment',
                     path: '/recruitment',
@@ -137,10 +140,10 @@ export default ({
                     icon: <WorkIcon />,
                     label: 'Recruitment',
                     component: RecruitmentPage,
+                    Hidden: !shownPages?.experimental,
                     locked: true,
                     lockedDescription: 'Currently unavailable',
                 },
-                //Experimental
                 {
                     key: 'map',
                     path: '/map',

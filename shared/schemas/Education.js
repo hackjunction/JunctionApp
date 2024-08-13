@@ -13,12 +13,9 @@ const mongooseSchema = new mongoose.Schema({
     },
     graduationYear: {
         type: Number,
-        validate: {
-            validator(v) {
-                return v > 1900 && v < 2100
-            },
-            message: () => 'Graduation year must be between 1900 and 2100',
-        },
+    },
+    country: {
+        type: String,
     },
 })
 
@@ -36,6 +33,9 @@ const graphqlSchema = new GraphQLObjectType({
         },
         graduationYear: {
             type: GraphQLInt,
+        },
+        country: {
+            type: GraphQLString,
         },
     }),
 })

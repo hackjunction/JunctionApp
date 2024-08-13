@@ -122,7 +122,7 @@ export default ({
                     lockedDescription:
                         'Finalist voting closed until peer review is done',
                     icon: <HowToVoteIcon />,
-                    label: 'Finalist voting',
+                    label: t('Finalist_voting_'),
                     component: FinalistVotingPage,
                 },
                 {
@@ -154,7 +154,7 @@ export default ({
                     locked: lockedPages.reviewing,
                     lockedDescription: 'Reviewing closed',
                     icon: <StarRateIcon />,
-                    label: t('Reviewing_'),
+                    label: t('Review_projects_'),
                     component: ReviewingPage,
                 },
                 {
@@ -163,7 +163,7 @@ export default ({
                     exact: true,
                     hidden: !shownPages.eventID,
                     icon: <FingerprintIcon />,
-                    label: 'Event ID',
+                    label: t('Event_id_'),
                     component: EventIDPage,
                 },
                 {
@@ -181,7 +181,7 @@ export default ({
                     exact: true,
                     hidden: !shownPages.challengesEnabled,
                     icon: <FormatListBulletedIcon />,
-                    label: 'Challenges',
+                    label: t('Challenges_'),
                     component: ChallengesIndex,
                 },
                 {

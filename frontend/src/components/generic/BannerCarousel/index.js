@@ -69,10 +69,9 @@ const BannerCarousel = (event = null) => {
         BannerService.getAllBanners().then(banners => {
             if (banners) setPictures(banners)
         })
-
     }, [])
     const [index, setIndex] = useState(0)
-    console.log("pictures", pictures)
+    console.log('pictures', pictures)
     return (
         <>
             <Box style={{ position: 'relative' }} className={classes.margin}>

@@ -10,74 +10,51 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import Organizer from './Organizer'
 import Participant from './Participant'
 import Partner from './Partner'
-
+import { useTranslation } from 'react-i18next'
 
 export default () => {
     const match = useRouteMatch()
     const location = useLocation()
+    const { t } = useTranslation()
 
     const isPartner = useSelector(AuthSelectors.idTokenData)?.roles?.some(r =>
-        ["Recruiter", "SuperAdmin"].includes(r)
+        ['Recruiter', 'SuperAdmin'].includes(r),
     )
 
+    const tabs = [
+        {
+            label: t('Your_events_'),
+            key: 'events',
+            path: '',
+            component: Participant,
+        },
+        {
+            label: t('Organize_'),
+            key: 'organize',
+            path: '/organize',
+            component: Organizer,
+        },
+    ]
 
+    if (isPartner) {
+        tabs.push({
+            label: t('Partner_'),
+            key: 'partner',
+            path: '/partner',
+            component: Partner,
+        })
+    }
 
-
-    return isPartner ? (
+    return (
         <PageWrapper
             render={() => (
                 <MaterialTabsLayout
                     transparent
-                    tabs={[
-                        {
-                            label: 'Your Events',
-                            key: 'events',
-                            path: '',
-                            component: Participant,
-                        },
-                        {
-                            label: 'Organize',
-                            key: 'organize',
-                            path: '/organize',
-                            component: Organizer,
-                        },
-                        {
-                            label: 'Partner',
-                            key: 'partner',
-                            path: '/partner',
-                            component: Partner,
-                        },
-                    ]}
+                    tabs={tabs}
                     baseRoute={match.url}
                     location={location}
                 />
             )}
         />
     )
-        :
-        (
-            <PageWrapper
-                render={() => (
-                    <MaterialTabsLayout
-                        transparent
-                        tabs={[
-                            {
-                                label: 'Your Events',
-                                key: 'events',
-                                path: '',
-                                component: Participant,
-                            },
-                            {
-                                label: 'Organize',
-                                key: 'organize',
-                                path: '/organize',
-                                component: Organizer,
-                            },
-                        ]}
-                        baseRoute={match.url}
-                        location={location}
-                    />
-                )}
-            />
-        )
 }
