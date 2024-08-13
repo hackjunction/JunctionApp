@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, IconButton } from '@material-ui/core'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-
+// TODO Remove responsive masonry
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 import Button from 'components/generic/Button'
@@ -16,10 +16,12 @@ import TeamProfile from 'components/Team/TeamProfile'
 import Apply from 'components/Team/Apply'
 import Filter from 'components/Team/Filter'
 import JoinTeamByCode from 'components/Team/JoinTeamByCode'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
+    const { t } = useTranslation()
     const { slug } = event
     //TODO create pagination component
     const teams = useSelector(DashboardSelectors.teams)
@@ -78,7 +80,6 @@ export default () => {
         teamCards = teams?.filter(team => team.challenge === challengeFilter)
     } else {
         teamCards = teams ? teams : []
-        console.log('teamCards', teamCards)
     }
 
     const handlePrevPage = useCallback(() => {
@@ -100,10 +101,12 @@ export default () => {
                 </IconButton>
                 <Box padding={1}>
                     {totalResults === 0 ? (
-                        <Typography variant="overline">Page 1</Typography>
+                        <Typography variant="overline">
+                            {t('Page_')} 1
+                        </Typography>
                     ) : (
                         <Typography variant="overline">
-                            Page {currentPage + 1} of {totalPages}
+                            {t('Page_')} {currentPage + 1} of {totalPages}
                         </Typography>
                     )}
                 </Box>
@@ -133,7 +136,7 @@ export default () => {
                                     setSelectedTeam(null)
                                 }}
                             >
-                                Back
+                                {t('Back_')}
                             </Button>
                         </div>
                         <Apply
@@ -159,7 +162,7 @@ export default () => {
                                     setSelectedTeam(null)
                                 }}
                             >
-                                Back
+                                {t('Back_')}
                             </Button>
                         </div>
                         <TeamProfile
@@ -184,13 +187,14 @@ export default () => {
                                 variant="jOutlined"
                                 onClick={() => setJoinByCode(!joinByCode)}
                             >
-                                Join team using a code
+                                {t('Join_team_using_code_')}
+                                {/* Join team using a code */}
                             </Button>
                         ) : (
                             <span></span>
                         )}
                         <Filter
-                            noFilterOption="All challenges"
+                            noFilterOption={t('All_challenges_')}
                             filterArray={event.challenges.map(challenge => ({
                                 label: challenge.name,
                                 value: challenge._id,
@@ -209,7 +213,7 @@ export default () => {
                                     variant="jOutlined"
                                     onClick={() => setJoinByCode(false)}
                                 >
-                                    Close
+                                    {t('Close_')}
                                 </Button>
                             </div>
                         </div>
@@ -261,7 +265,7 @@ export default () => {
                             </Box>
                         </>
                     ) : (
-                        <div>No teams found</div>
+                        <div>{t('No_teams_found_')}</div>
                     )}
                 </>
             )}

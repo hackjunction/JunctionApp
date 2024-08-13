@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useCallback } from 'react'
+import React, { useRef, useMemo, useCallback } from 'react'
 
 import { Universities, Countries } from '@hackjunction/shared'
 import { Grid } from '@material-ui/core'
@@ -41,7 +41,7 @@ const UNIVERSITY_LEVELS = ['Doctoral', 'Bachelor', 'Master']
 
 const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
     const selectEl = useRef(null)
-    const [country, setCountry] = useState()
+    // const [country, setCountry] = useState()
 
     const fieldsDisabled = UNIVERSITY_LEVELS.indexOf(value.level) === -1
 
@@ -74,7 +74,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
               ]
             : []
         const countryOptions = Universities.getByAlpha2Code(
-            Countries.alpha2CodeFromName(country),
+            Countries.alpha2CodeFromName(value?.country),
         )
             .map(uni => ({
                 label: uni.name,
@@ -88,7 +88,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
             })
 
         return baseOptions.concat(countryOptions)
-    }, [country, value])
+    }, [value])
     // TODO country isn't stored to the education model. Do fix.
     // console.log('counry here', value, country)
     return (
@@ -111,8 +111,10 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                             label="Country of study"
                             placeholder="Choose country"
                             options="country"
-                            value={country}
-                            onChange={setCountry}
+                            value={value?.country}
+                            onChange={country =>
+                                handleChange('country', country)
+                            }
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -120,7 +122,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                             disabled={fieldsDisabled}
                             label="University"
                             placeholder={
-                                country
+                                value?.country
                                     ? 'Search for universities'
                                     : 'Choose a country first'
                             }

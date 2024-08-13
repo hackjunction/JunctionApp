@@ -1,5 +1,6 @@
 import { Typography } from '@material-ui/core'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
@@ -11,6 +12,7 @@ export default ({
     teamCode,
     viewMode = 'profile',
 }) => {
+    const { t } = useTranslation()
     const styling = {
         teamNameTypography: '',
         teamChallengeTypography: '',
@@ -79,7 +81,7 @@ export default ({
                     variant="body1"
                     component="p"
                 >
-                    Team code {teamCode}
+                    {t('Team_code_is_')} {teamCode}
                 </Typography>
             )}
         </div>
