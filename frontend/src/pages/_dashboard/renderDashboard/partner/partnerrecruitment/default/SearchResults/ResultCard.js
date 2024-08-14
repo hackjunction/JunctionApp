@@ -114,7 +114,11 @@ export default React.memo(
                 setIsFavorite(!_isFavorite)
 
                 dispatch(
-                    RecruitmentActions.toggleFavorite(data.userId, _isFavorite, organisation),
+                    RecruitmentActions.toggleFavorite(
+                        data.userId,
+                        _isFavorite,
+                        organisation,
+                    ),
                 ).then(({ error }) => {
                     if (error) {
                         dispatch(
@@ -148,16 +152,18 @@ export default React.memo(
                     </Tooltip>
                 </Box>
                 <div style={{ flex: 1 }}>
-                    <Avatar
-                        className={classes.avatar}
-                        alt="Profile Picture"
-                        src={data.profile.profilePicture}
-                        imgProps={{
-                            onError: e => {
-                                e.target.src = emblem_black
-                            },
-                        }}
-                    />
+                    {data.profile.avatar && (
+                        <Avatar
+                            className={classes.avatar}
+                            alt="Profile Picture"
+                            src={data.profile.avatar}
+                            imgProps={{
+                                onError: e => {
+                                    e.target.src = emblem_black
+                                },
+                            }}
+                        />
+                    )}
                     <Box className={classes.topWrapper} mb={1}>
                         <Typography className={classes.name} variant="h6">
                             {data.profile.firstName} {data.profile.lastName}
