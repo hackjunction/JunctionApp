@@ -84,7 +84,7 @@ const organiserRemoveMemberFromTeam = asyncHandler(async (req, res) => {
         req.params.code,
         req.params.userId,
     )
-    console.log("deleted: ", team)
+    console.log('deleted: ', team)
     return res.status(200).json(team)
 })
 
@@ -152,23 +152,22 @@ const getTeamRoles = asyncHandler(async (req, res) => {
 })
 
 const getTeamsForEvent = asyncHandler(async (req, res) => {
-    var teams
+    let teams
     if (req.query.page && req.query.size) {
         if (req.query.filter) {
-            console.log("req with filter", req.query)
             teams = await TeamController.getTeamsForEvent(
                 req.event._id,
                 req.user.sub,
                 req.query.page,
                 req.query.size,
-                req.query.filter
+                req.query.filter,
             )
         } else {
             teams = await TeamController.getTeamsForEvent(
                 req.event._id,
                 req.user.sub,
                 req.query.page,
-                req.query.size
+                req.query.size,
             )
         }
     } else {
@@ -180,7 +179,12 @@ const getTeamsForEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(teams)
 })
 
-
+const getTeamsForEventAsOrganizer = asyncHandler(async (req, res) => {
+    const teams = await TeamController.getTeamsForEventAsOrganizer(
+        req.event._id,
+    )
+    return res.status(200).json(teams)
+})
 
 const exportTeams = asyncHandler(async (req, res) => {
     const teams = await TeamController.exportTeams(req.body.teamIds)
@@ -194,7 +198,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        getTeamsForEvent,
+        getTeamsForEventAsOrganizer,
     )
 
 router

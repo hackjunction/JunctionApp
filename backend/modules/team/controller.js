@@ -102,6 +102,7 @@ controller.deleteTeam = (eventId, userId) => {
 }
 
 controller.deleteTeamByCode = (eventId, code) => {
+    //Not to be user by users, only by organizers. No checks for user privileges so make sure to check if user is organizer before calling this function
     return controller.getTeamByCode(eventId, code).then(team => {
         return team.remove()
     })
@@ -499,10 +500,11 @@ controller.attachUserApplicant = (teams, userId) => {
 }
 
 controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
+    let eventTeams = []
+    let teamCount = 0
     if (page && size) {
-        console.log('filter', filter)
         if (filter) {
-            const found = await Team.find({
+            eventTeams = await Team.find({
                 event: eventId,
                 challenge: filter,
             })
@@ -514,14 +516,9 @@ controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
                         return controller.attachUserApplicant(teams, userId)
                     }
                 })
-            const count = await Team.find({
-                event: eventId,
-                challenge: filter,
-            }).countDocuments()
-            console.log('with filter', { data: found, count: count })
-            return { data: found, count: count }
+            teamCount = await eventTeams.length
         } else {
-            const found = await Team.find({
+            eventTeams = await Team.find({
                 event: eventId,
             })
                 .sort({ createdAt: 'desc' })
@@ -532,11 +529,10 @@ controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
                         return controller.attachUserApplicant(teams, userId)
                     }
                 })
-            const count = await Team.find({ event: eventId }).countDocuments()
-            return { data: found, count: count }
+            teamCount = await eventTeams.length
         }
     } else {
-        const found = await Team.find({
+        eventTeams = await Team.find({
             event: eventId,
         })
             .sort({ createdAt: 'desc' })
@@ -546,25 +542,24 @@ controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
                 }
                 return teams
             })
-        const count = await Team.find({ event: eventId }).countDocuments()
-        console.log('getting all teams', count)
-        return { data: found, count: count }
+        teamCount = await eventTeams.length
     }
-    // TODO make the code not visible to participants on Redux store
+    const teamObjects = eventTeams.map(team => team.toObject())
+    const returnTeams = teamObjects.map(team => _.omit(team, 'code'))
+    return { data: returnTeams, count: teamCount }
 }
 
-controller.getAllTeamsForEvent = async (eventId, userId, page, size) => {
-    return await Team.find({
+controller.getTeamsForEventAsOrganizer = async eventId => {
+    let eventTeams = []
+    let teamCount = 0
+    //Only to be used by organizers, no checks for user privileges so make sure to check if user is organizer before calling this function
+    eventTeams = await Team.find({
         event: eventId,
-    })
-        .sort({ createdAt: 'desc' })
-        .then(teams => {
-            if (userId) {
-                return controller.attachUserApplicant(teams, userId)
-            }
-            return teams
-        })
-    // TODO make the code not visible to participants on Redux store
+    }).sort({ createdAt: 'desc' })
+    if (eventTeams.length > 0) {
+        teamCount = await eventTeams.length
+    }
+    return { data: eventTeams, count: teamCount }
 }
 
 controller.getTeamStatsForEvent = async eventId => {

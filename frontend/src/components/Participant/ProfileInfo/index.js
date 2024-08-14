@@ -4,6 +4,7 @@ import { Box, Chip, Typography, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import GradientBox from 'components/generic/GradientBox'
 import SkillRating from '../../../pages/_dashboard/renderDashboard/partner/partnerrecruitment/default/SearchResults/SkillRating'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     inline: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         alignItems: 'center',
         marginBottom: '0.2rem',
-        padding: '4px'
+        padding: '4px',
     },
     container: {
         display: 'flex',
@@ -21,47 +22,41 @@ const useStyles = makeStyles(theme => ({
 
         width: '100%',
         padding: '4px',
-        gap: '4px'
+        gap: '4px',
     },
     experience: {
         lineHeight: 1.1,
         variant: theme.typography.body1,
 
         padding: '2px',
-
     },
     years: {
         lineHeight: 1.1,
         variant: theme.typography.body1,
         color: theme.palette.grey[600],
         padding: '2px',
-
     },
 
     skills: {
         padding: '4px',
     },
-    boxStyle: {
-
-    }
+    boxStyle: {},
 }))
 
 const makeBoxStyles = () => ({
-
-
     backgroundColor: '#f7fafc',
     border: `2px solid #e2e8f0`,
     borderRadius: '6px',
-    height: '100%'
+    height: '100%',
 
     //TODO: blurr the bottom
 
     // backgroundColor: '#f8f8f8',
-
 })
 
 export default ({ user = {} }) => {
     const classes = useStyles()
+    const { t } = useTranslation()
 
     const renderRecruitmentStatus = () => {
         switch (user.recruitmentOptions?.status) {
@@ -138,45 +133,45 @@ export default ({ user = {} }) => {
 
     return (
         <>
-            {(user.profile?.biography || user?.recruitmentOptions) && (
-                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
-                    {user.profile.biography && (
-                        <div>
-                            <Typography
-                                className="tw-tracking-tight tw-font-medium"
-                                variant="h5"
-                                component="h5"
-                            >
-                                Biography
-                            </Typography>
-                            <Typography
-                                className="tw-text-lg"
-                                variant="body1"
-                                component="p"
-                            >
-                                {user.profile.biography}
-                            </Typography>
-                        </div>
-                    )}
-                    {user.recruitmentOptions && (
-                        <div className="tw-flex tw-flex-wrap tw-gap-4">
-                            <Box ml={0.5} mr={0.5} mb={0.5}>
-                                {renderRecruitmentStatus()}
-                            </Box>
-                            <Box ml={0.5} mr={0.5} mb={0.5}>
-                                {renderRelocationStatus()}
-                            </Box>
-                        </div>
-                    )}
-                </div>
-            )}
+            {/* {(user.profile?.biography || user?.recruitmentOptions) && ( */}
+            <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
+                {user.profile.biography && (
+                    <div>
+                        <Typography
+                            className="tw-tracking-tight tw-font-medium"
+                            variant="h5"
+                            component="h5"
+                        >
+                            {t('Biography_')}
+                        </Typography>
+                        <Typography
+                            className="tw-text-lg"
+                            variant="body1"
+                            component="p"
+                        >
+                            {user.profile.biography}
+                        </Typography>
+                    </div>
+                )}
+                {user.recruitmentOptions && (
+                    <div className="tw-flex tw-flex-wrap tw-gap-4">
+                        <Box ml={0.5} mr={0.5} mb={0.5}>
+                            {renderRecruitmentStatus()}
+                        </Box>
+                        <Box ml={0.5} mr={0.5} mb={0.5}>
+                            {renderRelocationStatus()}
+                        </Box>
+                    </div>
+                )}
+            </div>
+            {/* )} */}
             <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
                 <Typography
                     className="tw-tracking-tight tw-font-medium tw-mb-4"
                     variant="h5"
                     component="h5"
                 >
-                    Basic information
+                    {t('Basic_information_')}
                 </Typography>
                 {user.profile.firstName && (
                     <div>
@@ -232,7 +227,7 @@ export default ({ user = {} }) => {
                         </Typography>
                     </div>
                 )}
-                {user.profile.email && (
+                {/* {user.profile.email && (
                     <div>
                         <Typography
                             className="tw-tracking-tight tw-font-normal tw-text-gray-600"
@@ -249,7 +244,7 @@ export default ({ user = {} }) => {
                             {user.profile.email}
                         </Typography>
                     </div>
-                )}
+                )} */}
                 {user.profile.countryOfResidence && (
                     <div>
                         <Typography
@@ -290,221 +285,163 @@ export default ({ user = {} }) => {
             {(user.skills?.length > 0 ||
                 user.education ||
                 user.roles?.length > 0) && (
-                    <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-12">
-                        {user.skills?.length > 0 && (
-                            <div className="tw-flex tw-flex-col tw-gap-4">
+                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-12">
+                    {user.skills?.length > 0 && (
+                        <div className="tw-flex tw-flex-col tw-gap-4">
+                            <Grid
+                                direction="row"
+                                alignItems="stretch"
+                                container
+                            >
+                                <Grid
+                                    direction="row"
+                                    alignItems="stretch"
+                                    container
+                                    key={`skills`}
+                                    item
+                                    xs={6}
+                                >
+                                    <div className={classes.container}>
+                                        <GradientBox
+                                            style={makeBoxStyles()}
+                                            color="theme_white"
+                                            p={3}
+                                        >
+                                            <Typography
+                                                className="tw-tracking-tight tw-font-medium"
+                                                variant="h5"
+                                                component="h5"
+                                            >
+                                                Skills
+                                            </Typography>
 
-                                <Grid direction="row" alignItems="stretch" container >
-                                    <Grid
-                                        direction="row"
-                                        alignItems="stretch"
-                                        container
-                                        key={`skills`}
-                                        item
-                                        xs={6}
+                                            {user.skills.map(skillObj => (
+                                                <SkillRating
+                                                    data={skillObj}
+                                                    key={skillObj.skill}
+                                                    small={false}
+                                                    size={'body1'}
+                                                />
 
-                                    >
+                                                // <Typography
+                                                //     className="tw-text-lg tw-p-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-300"
+                                                //     variant="body1"
+                                                //     component="p"
+                                                // >
+                                                //     {skillObj.skill}
+                                                // </Typography>
+                                            ))}
+                                        </GradientBox>
+                                    </div>
+                                </Grid>
+                                <Grid
+                                    direction="row"
+                                    alignItems="stretch"
+                                    container
+                                    key={`education`}
+                                    item
+                                    xs={6}
+                                >
+                                    {user.roles?.length > 0 && (
                                         <div className={classes.container}>
                                             <GradientBox
                                                 style={makeBoxStyles()}
                                                 color="theme_white"
                                                 p={3}
                                             >
-
                                                 <Typography
                                                     className="tw-tracking-tight tw-font-medium"
                                                     variant="h5"
                                                     component="h5"
                                                 >
-                                                    Skills
+                                                    Experience
                                                 </Typography>
-
-                                                {user.skills.map(skillObj => (
-
-                                                    <SkillRating
-                                                        data={skillObj}
-                                                        key={skillObj.skill}
-                                                        small={false}
-                                                        size={'body1'}
-                                                    />
-
-                                                    // <Typography
-                                                    //     className="tw-text-lg tw-p-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-300"
-                                                    //     variant="body1"
-                                                    //     component="p"
-                                                    // >
-                                                    //     {skillObj.skill}
-                                                    // </Typography>
-
-                                                ))}
-
-
+                                                <Grid
+                                                    direction="column"
+                                                    alignItems="stretch"
+                                                    container
+                                                >
+                                                    {user.roles.map(role => (
+                                                        <div
+                                                            className={
+                                                                classes.inline
+                                                            }
+                                                        >
+                                                            <Grid
+                                                                key={role.role}
+                                                                item
+                                                                xs={6}
+                                                                wrap="nowrap"
+                                                            >
+                                                                <Typography
+                                                                    className={
+                                                                        classes.experience
+                                                                    }
+                                                                >
+                                                                    {role.role}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid
+                                                                key={role.years}
+                                                                item
+                                                                xs={6}
+                                                                wrap="nowrap"
+                                                            >
+                                                                <Typography
+                                                                    className={
+                                                                        classes.years
+                                                                    }
+                                                                >
+                                                                    {Roles.getLabelForExperienceLevel(
+                                                                        role.years,
+                                                                    )}
+                                                                </Typography>
+                                                            </Grid>
+                                                        </div>
+                                                    ))}
+                                                </Grid>
                                             </GradientBox>
                                         </div>
-                                    </Grid>
-                                    <Grid
-                                        direction="row"
-                                        alignItems="stretch"
-                                        container
-                                        key={`education`}
-                                        item
-                                        xs={6}
-
-                                    >
-
-                                        {user.roles?.length > 0 && (
-                                            <div className={classes.container}>
-                                                <GradientBox
-                                                    style={makeBoxStyles()}
-                                                    color="theme_white"
-                                                    p={3}
-                                                >
-                                                    <Typography
-                                                        className="tw-tracking-tight tw-font-medium"
-                                                        variant="h5"
-                                                        component="h5"
-                                                    >
-                                                        Experience
-                                                    </Typography>
-                                                    <Grid direction="column" alignItems="stretch" container >
-                                                        {user.roles.map(role => (
-                                                            <div className={classes.inline}>
-                                                                <Grid
-
-                                                                    key={role.role}
-                                                                    item
-                                                                    xs={6}
-                                                                    wrap='nowrap'
-                                                                >
-
-                                                                    <Typography
-                                                                        className={classes.experience}
-
-
-                                                                    >
-                                                                        {role.role}
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid
-
-                                                                    key={role.years}
-                                                                    item
-                                                                    xs={6}
-                                                                    wrap='nowrap'
-                                                                >
-                                                                    <Typography
-                                                                        className={classes.years}
-
-
-                                                                    >
-                                                                        {Roles.getLabelForExperienceLevel(
-                                                                            role.years,
-                                                                        )}
-                                                                    </Typography>
-                                                                </Grid>
-                                                            </div>
-
-                                                        ))}
-                                                    </Grid>
-                                                </GradientBox>
-                                            </div>
-
-                                        )}
-
-
-                                    </Grid>
+                                    )}
                                 </Grid>
-                            </div>
-                        )}
-                        {user.education && (
-                            <div className="tw-flex tw-flex-col tw-gap-4">
-                                <GradientBox
-                                    style={makeBoxStyles()}
-                                    color="theme_white"
-                                    p={3}
+                            </Grid>
+                        </div>
+                    )}
+                    {user.education && (
+                        <div className="tw-flex tw-flex-col tw-gap-4">
+                            <GradientBox
+                                style={makeBoxStyles()}
+                                color="theme_white"
+                                p={3}
+                            >
+                                <Typography
+                                    className="tw-tracking-tight tw-font-medium"
+                                    variant="h5"
+                                    component="h5"
                                 >
-                                    <Typography
-                                        className="tw-tracking-tight tw-font-medium"
-                                        variant="h5"
-                                        component="h5"
-                                    >
-                                        Education
-                                    </Typography>
-                                    {typeof user.education !== 'undefined' ? (
-                                        <div className="tw-grid tw-grid-cols-12 tw-gap-4">
-                                            {user.education.university ? (
-                                                <>
-                                                    <div className="tw-col-span-3">
-                                                        <Typography
-                                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                                            variant="h6"
-                                                            component="h6"
-                                                        >
-                                                            Degree
-                                                        </Typography>
-                                                        <Typography
-                                                            className="tw-text-lg"
-                                                            variant="body1"
-                                                            component="p"
-                                                        >
-                                                            {user.education.degree}
-                                                        </Typography>
-                                                    </div>
-                                                    <div className="tw-col-span-2">
-                                                        <Typography
-                                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                                            variant="h6"
-                                                            component="h6"
-                                                        >
-                                                            Level
-                                                        </Typography>
-                                                        <Typography
-                                                            className="tw-text-lg"
-                                                            variant="body1"
-                                                            component="p"
-                                                        >
-                                                            {user.education.level}
-                                                        </Typography>
-                                                    </div>
-                                                    <div className="tw-col-span-4">
-                                                        <Typography
-                                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                                            variant="h6"
-                                                            component="h6"
-                                                        >
-                                                            Institution
-                                                        </Typography>
-                                                        <Typography
-                                                            className="tw-text-lg"
-                                                            variant="body1"
-                                                            component="p"
-                                                        >
-                                                            {user.education.university}
-                                                        </Typography>
-                                                    </div>
-                                                    <div className="tw-col-span-3">
-                                                        <Typography
-                                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                                            variant="h6"
-                                                            component="h6"
-                                                        >
-                                                            Graduation year
-                                                        </Typography>
-                                                        <Typography
-                                                            className="tw-text-lg"
-                                                            variant="body1"
-                                                            component="p"
-                                                        >
-                                                            {user.education
-                                                                .graduationYear <
-                                                                new Date().getFullYear()
-                                                                ? `${user.education.graduationYear}`
-                                                                : `Expected ${user.education.graduationYear}`}
-                                                        </Typography>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <>
+                                    Education
+                                </Typography>
+                                {typeof user.education !== 'undefined' ? (
+                                    <div className="tw-grid tw-grid-cols-12 tw-gap-4">
+                                        {user.education.university ? (
+                                            <>
+                                                <div className="tw-col-span-3">
+                                                    <Typography
+                                                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        Degree
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        {user.education.degree}
+                                                    </Typography>
+                                                </div>
+                                                <div className="tw-col-span-2">
                                                     <Typography
                                                         className="tw-tracking-tight tw-font-normal tw-text-gray-600"
                                                         variant="h6"
@@ -519,18 +456,72 @@ export default ({ user = {} }) => {
                                                     >
                                                         {user.education.level}
                                                     </Typography>
-                                                </>
-                                            )}
-                                        </div>
-                                    ) : null}
-                                </GradientBox>
-                            </div>
-                        )}
-
-
-                    </div >
-                )
-            }
+                                                </div>
+                                                <div className="tw-col-span-4">
+                                                    <Typography
+                                                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        Institution
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        {
+                                                            user.education
+                                                                .university
+                                                        }
+                                                    </Typography>
+                                                </div>
+                                                <div className="tw-col-span-3">
+                                                    <Typography
+                                                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        Graduation year
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        {user.education
+                                                            .graduationYear <
+                                                        new Date().getFullYear()
+                                                            ? `${user.education.graduationYear}`
+                                                            : `Expected ${user.education.graduationYear}`}
+                                                    </Typography>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Typography
+                                                    className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                    variant="h6"
+                                                    component="h6"
+                                                >
+                                                    Level
+                                                </Typography>
+                                                <Typography
+                                                    className="tw-text-lg"
+                                                    variant="body1"
+                                                    component="p"
+                                                >
+                                                    {user.education.level}
+                                                </Typography>
+                                            </>
+                                        )}
+                                    </div>
+                                ) : null}
+                            </GradientBox>
+                        </div>
+                    )}
+                </div>
+            )}
         </>
     )
 }
