@@ -490,9 +490,8 @@ controller.attachUserApplicant = (teams, userId) => {
                 userId,
             )
         ) {
-            const result = team.toJSON()
-            result.userIsApplicant = true
-            return result
+            team.userIsApplicant = true
+            return team
         } else {
             return team
         }
@@ -511,11 +510,6 @@ controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
                 .sort({ createdAt: 'desc' })
                 .skip(parseInt(size * page))
                 .limit(parseInt(size))
-                .then(teams => {
-                    if (userId) {
-                        return controller.attachUserApplicant(teams, userId)
-                    }
-                })
             teamCount = await eventTeams.length
         } else {
             eventTeams = await Team.find({
@@ -524,28 +518,27 @@ controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
                 .sort({ createdAt: 'desc' })
                 .skip(parseInt(size * page))
                 .limit(parseInt(size))
-                .then(teams => {
-                    if (userId) {
-                        return controller.attachUserApplicant(teams, userId)
-                    }
-                })
             teamCount = await eventTeams.length
         }
     } else {
         eventTeams = await Team.find({
             event: eventId,
-        })
-            .sort({ createdAt: 'desc' })
-            .then(teams => {
-                if (userId) {
-                    return controller.attachUserApplicant(teams, userId)
-                }
-                return teams
-            })
+        }).sort({ createdAt: 'desc' })
         teamCount = await eventTeams.length
     }
-    const teamObjects = eventTeams.map(team => team.toObject())
-    const returnTeams = teamObjects.map(team => _.omit(team, 'code'))
+    const teamsWithoutTeamCode = eventTeams.map(team => {
+        const teamObject = team.toObject()
+        return _.omit(teamObject, 'code')
+    })
+    let returnTeams = []
+    if (userId) {
+        returnTeams = controller.attachUserApplicant(
+            teamsWithoutTeamCode,
+            userId,
+        )
+    } else {
+        returnTeams = teamsWithoutTeamCode
+    }
     return { data: returnTeams, count: teamCount }
 }
 
