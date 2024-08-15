@@ -55,11 +55,11 @@ TeamsService.editTeamForEvent = (idToken, eventSlug, edits, populate) => {
 TeamsService.candidateApplyToTeam = (
     idToken,
     eventSlug,
-    teamCode,
+    teamId,
     applicationData,
 ) => {
     return _axios.patch(
-        `/teams/${eventSlug}/teams/${teamCode}`,
+        `/teams/${eventSlug}/team/${teamId}`,
         applicationData,
         config(idToken),
     )
@@ -114,27 +114,42 @@ TeamsService.removeMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
     )
 }
 
-TeamsService.organiserRemoveMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
+TeamsService.organiserRemoveMemberFromTeam = (
+    idToken,
+    eventSlug,
+    teamCode,
+    userId,
+) => {
     return _axios.delete(
         `/teams/organiser/${eventSlug}/${teamCode}/members/${userId}`,
         config(idToken),
     )
 }
 
-
-TeamsService.getTeamForEvent = (idToken, eventSlug, populate = false) => {
+TeamsService.getUserTeamForEvent = (idToken, eventSlug, populate = false) => {
     return _axios.get(
         `/teams/${eventSlug}?populate=${populate}`,
         config(idToken),
     )
 }
 
-TeamsService.getAllTeamsForEventParticipant = (idToken, eventSlug, page, page_size, filter) => {
+TeamsService.getAllTeamsForEventParticipant = (
+    idToken,
+    eventSlug,
+    page,
+    page_size,
+    filter,
+) => {
     if (filter) {
-        return _axios.get(`/teams/${eventSlug}/teams?page=${page}&size=${page_size}&filter=${filter}`, config(idToken))
+        return _axios.get(
+            `/teams/${eventSlug}/teams?page=${page}&size=${page_size}&filter=${filter}`,
+            config(idToken),
+        )
     } else {
-        return _axios.get(`/teams/${eventSlug}/teams?page=${page}&size=${page_size}`, config(idToken))
-
+        return _axios.get(
+            `/teams/${eventSlug}/teams?page=${page}&size=${page_size}`,
+            config(idToken),
+        )
     }
 }
 
@@ -146,6 +161,18 @@ TeamsService.getTeamWithMetaForEventParticipant = (
 ) => {
     return _axios.get(
         `/teams/${eventSlug}/teams/${teamCode}?populate=${populate}`,
+        config(idToken),
+    )
+}
+
+TeamsService.getTeamWithMetaForEventParticipantByTeamId = (
+    idToken,
+    eventSlug,
+    teamId,
+    populate = true,
+) => {
+    return _axios.get(
+        `/teams/${eventSlug}/team/${teamId}?populate=${populate}`,
         config(idToken),
     )
 }
