@@ -110,6 +110,10 @@ const getTeamByCode = asyncHandler(async (req, res) => {
 
 const getTeamById = asyncHandler(async (req, res) => {
     let team = await TeamController.getTeamById(req.params.teamId, req.user.sub)
+
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team)
+    }
     return res.status(200).json(team)
 })
 
