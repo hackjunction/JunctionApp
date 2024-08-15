@@ -39,10 +39,10 @@ export default () => {
     const totalPages = Math.ceil(totalResults / 25)
 
     const hadleTeamCardClick = useCallback(
-        async teamCode => {
-            if (teamCode) {
+        async teamId => {
+            if (teamId) {
                 setLoading(true)
-                dispatch(DashboardActions.updateSelectedTeam(slug, teamCode))
+                dispatch(DashboardActions.updateSelectedTeam(slug, teamId))
                     .then(team => {
                         setSelectedTeam(team)
                     })
@@ -242,13 +242,13 @@ export default () => {
                                             teamData={team}
                                             disableActions={hasTeam}
                                             onClickApply={() => {
-                                                hadleTeamCardClick(team.code)
+                                                hadleTeamCardClick(team._id)
                                                 if (!hasTeam) {
                                                     setApplying(true)
                                                 }
                                             }}
                                             onClick={() => {
-                                                hadleTeamCardClick(team.code)
+                                                hadleTeamCardClick(team._id)
                                                 setSelected(true)
                                             }}
                                         />

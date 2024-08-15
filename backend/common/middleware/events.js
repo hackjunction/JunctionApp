@@ -48,7 +48,6 @@ function isOrganiser(user, event) {
 }
 
 function isPartner(user, event) {
-    console.log('isPartner func running')
     if (!event) {
         return new NotFoundError('Event does not exist')
     }
@@ -153,7 +152,7 @@ async function getRegistration(user, event) {
 
 async function getTeamWithMeta(user, event) {
     try {
-        const team = await TeamController.getTeam(event._id, user.sub)
+        const team = await TeamController.getUserTeam(event._id, user.sub)
         return TeamController.attachMeta(team)
     } catch (err) {
         return null
@@ -183,7 +182,6 @@ async function hasPartnerToken(event, token) {
         challengeMatches: ChallengeMatches,
         trackMatches: TrackMatches,
     }
-    // console.log(result)
     return result
 }
 
@@ -206,7 +204,6 @@ const EventMiddleware = {
         }
     },
     isEventPartner: async (req, res, next) => {
-        console.log('isEventPartner running')
         // TODO this method is called quite often. Not really problem here, but a reminder to run a profiler on the frontend at some point
         const event = await getEventFromParams(req.params)
         const superAdminError = isSuperAdmin(req.user)
@@ -276,7 +273,7 @@ const EventMiddleware = {
         const superAdminError = isSuperAdmin(req.user)
         const organiserError = isOrganiser(req.user, event)
         const projectError = canSubmitProject(event, registration, team)
-        if ((organiserError && superAdminError) && projectError) {
+        if (organiserError && superAdminError && projectError) {
             next(error)
         } else {
             req.event = event
@@ -286,14 +283,6 @@ const EventMiddleware = {
         }
     },
     hasPartnerToken: async (req, res, next) => {
-        /*         const [match, ...other] = await hasPartnerToken(
-            req.event,
-            req.params.token,
-        )
-
-        if (other.length !== 0) {
-            next(new ForbiddenError('Invalid token'))
-        } */
         const match = await hasPartnerToken(req.event, req.params.token)
         if (Array.isArray(match.trackMatches) || match.trackMatches.length) {
             req.params.track = match.trackMatches
