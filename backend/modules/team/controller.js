@@ -461,16 +461,14 @@ controller.attachMeta = async team => {
         }
         team.save()
     }
-
     try {
         result = team.toJSON()
-        result.meta = meta
-        return result
     } catch (err) {
         console.log(err)
+        result = team
     } finally {
-        team.meta = meta
-        return team
+        result.meta = meta
+        return result
     }
 }
 
