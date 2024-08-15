@@ -462,10 +462,16 @@ controller.attachMeta = async team => {
         team.save()
     }
 
-    result = team.toJSON()
-    result.meta = meta
-
-    return result
+    try {
+        result = team.toJSON()
+        result.meta = meta
+        return result
+    } catch (err) {
+        console.log(err)
+    } finally {
+        team.meta = meta
+        return team
+    }
 }
 
 controller.attachUserApplicant = (teams, userId) => {
