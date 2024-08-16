@@ -213,18 +213,19 @@ export const updateTeams =
     }
 
 export const updateSelectedTeam =
-    (slug, code) => async (dispatch, getState) => {
+    (slug, teamId) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
-        if (!slug || !code) return
+        if (!slug || !teamId) return
         return new Promise((resolve, reject) => {
             dispatch({
                 type: ActionTypes.UPDATE_SELECTED_TEAM,
-                promise: TeamsService.getTeamWithMetaForEventParticipant(
-                    idToken,
-                    slug,
-                    code,
-                    true,
-                ),
+                promise:
+                    TeamsService.getTeamWithMetaForEventParticipantByTeamId(
+                        idToken,
+                        slug,
+                        teamId,
+                        true,
+                    ),
                 meta: {
                     onSuccess: team => resolve(team),
                     onFailure: e => reject(e),
@@ -238,7 +239,7 @@ export const updateTeam = slug => (dispatch, getState) => {
 
     dispatch({
         type: ActionTypes.UPDATE_TEAM,
-        promise: TeamsService.getTeamForEvent(idToken, slug, true).catch(
+        promise: TeamsService.getUserTeamForEvent(idToken, slug, true).catch(
             err => {
                 if (err.response.status === 404) {
                     return Promise.resolve(null)
@@ -306,12 +307,12 @@ export const getCandidateProfileById = userId => async (dispatch, getState) => {
 }
 
 export const candidateApplyToTeam =
-    (slug, code, applicationData) => async (dispatch, getState) => {
+    (slug, teamId, applicationData) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
         const team = await TeamsService.candidateApplyToTeam(
             idToken,
             slug,
-            code,
+            teamId,
             applicationData,
         )
 

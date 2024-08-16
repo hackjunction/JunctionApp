@@ -424,5 +424,7 @@
     "Team_email_hint_":"Your team must have at least an email, a slack, discord or a telegram channel",
     "Team_slack_label_":"Team's Slack",
     "Team_telegram_label_":"Team's Telegram",
-    "Team_discord_label_":"Team's Discord"
+    "Team_discord_label_":"Team's Discord",
+    "Biography_":"Biography",
+    "Basic_information_":"Basic information"
 }

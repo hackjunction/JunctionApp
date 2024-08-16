@@ -98,7 +98,6 @@ const useStyles = makeStyles(theme => ({
             color: theme.palette.primary.dark,
         },
     },
-
 }))
 
 export default ({ user = {} }) => {
@@ -110,7 +109,7 @@ export default ({ user = {} }) => {
                 <div className="tw-w-full tw-h-32 tw-rounded-lg tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500"></div>
                 <div className="tw-px-8 tw-pt-0 tw-pb-8 tw-flex tw-flex-col tw-gap-2 tw-rounded-lg">
                     <ParticipantPreview viewMode="profile" userData={user} />
-                    {user.profile.countryOfResidence && (
+                    {/* {user.profile.countryOfResidence && (
                         <div className="tw-flex tw-items-center tw-gap-2 tw-text-gray-600">
                             <LocationOn />
                             <Typography
@@ -121,91 +120,75 @@ export default ({ user = {} }) => {
                                 {user.profile.countryOfResidence}
                             </Typography>
                         </div>
-                    )}
+                    )} */}
 
-                    {(profile.email || !_.isEmpty(social)) && (
-                        <div className="tw-flex tw-content-center tw-justify-start">
-                            {social.github && (
-                                <Tooltip title="GitHub" placement="bottom">
-                                    <Box p={1}>
-                                        <IconButton
-                                            onClick={() =>
-                                                window.open(
-                                                    social.github,
-                                                    '_blank',
-                                                )
-                                            }
-                                            aria-label="github"
-
-                                        >
-                                            <GitHubIcon
-                                                className={classes.icon}
-
-                                            />
-                                        </IconButton>
-                                    </Box>
-                                </Tooltip>
-                            )}
-                            {social.linkedin && (
-                                <Tooltip title="LinkedIn" placement="bottom">
-                                    <Box p={1}>
-                                        <IconButton
-
-                                            onClick={() =>
-                                                window.open(
-                                                    social.linkedin,
-                                                    '_blank',
-                                                )
-                                            }
-                                            aria-label="linkedin"
-
-                                        >
-                                            <LinkedInIcon
-                                                className={classes.icon}
-
-                                            />
-                                        </IconButton>
-                                    </Box>
-                                </Tooltip>
-                            )}
-                            {social.portfolio && (
-                                <Tooltip title="Portfolio" placement="bottom">
-                                    <Box p={1}>
-                                        <IconButton
-                                            onClick={() =>
-                                                window.open(
-                                                    social.portfolio,
-                                                    '_blank',
-                                                )
-                                            }
-                                            aria-label="portfolio"
-
-                                        >
-                                            <BrushIcon
-                                                className={classes.icon}
-
-                                            />
-                                        </IconButton>
-                                    </Box>
-                                </Tooltip>
-                            )}
-                            {profile.email && (
-                                <IconButton
-
-                                    aria-label="Email"
-
-                                    onClick={() =>
-                                        popupCenter({
-                                            url: `mailto:${profile.email}`,
-                                            title: 'email',
-                                        })
-                                    }
-                                >
-                                    <Email className={classes.icon} />
-                                </IconButton>
-                            )}
-                        </div>
-                    )}
+                    {/* {!_.isEmpty(social) && ( */}
+                    <div className="tw-flex tw-content-center tw-justify-start">
+                        {social.github && (
+                            <Tooltip title="GitHub" placement="bottom">
+                                <Box p={1}>
+                                    <IconButton
+                                        onClick={() =>
+                                            window.open(social.github, '_blank')
+                                        }
+                                        aria-label="github"
+                                    >
+                                        <GitHubIcon className={classes.icon} />
+                                    </IconButton>
+                                </Box>
+                            </Tooltip>
+                        )}
+                        {social.linkedin && (
+                            <Tooltip title="LinkedIn" placement="bottom">
+                                <Box p={1}>
+                                    <IconButton
+                                        onClick={() =>
+                                            window.open(
+                                                social.linkedin,
+                                                '_blank',
+                                            )
+                                        }
+                                        aria-label="linkedin"
+                                    >
+                                        <LinkedInIcon
+                                            className={classes.icon}
+                                        />
+                                    </IconButton>
+                                </Box>
+                            </Tooltip>
+                        )}
+                        {social.portfolio && (
+                            <Tooltip title="Portfolio" placement="bottom">
+                                <Box p={1}>
+                                    <IconButton
+                                        onClick={() =>
+                                            window.open(
+                                                social.portfolio,
+                                                '_blank',
+                                            )
+                                        }
+                                        aria-label="portfolio"
+                                    >
+                                        <BrushIcon className={classes.icon} />
+                                    </IconButton>
+                                </Box>
+                            </Tooltip>
+                        )}
+                        {/* {profile.email && (
+                            <IconButton
+                                aria-label="Email"
+                                onClick={() =>
+                                    popupCenter({
+                                        url: `mailto:${profile.email}`,
+                                        title: 'email',
+                                    })
+                                }
+                            >
+                                <Email className={classes.icon} />
+                            </IconButton>
+                        )} */}
+                    </div>
+                    {/* )} */}
                 </div>
             </div>
         </div>
