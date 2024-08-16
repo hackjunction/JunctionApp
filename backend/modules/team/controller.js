@@ -31,17 +31,14 @@ controller.createNewTeam = (data, eventId, userId) => {
     // TODO abstract this deconstruction
 
     return controller
-        .getTeamsForEvent(eventId)
+        .getTeamsForEventAsDocument(eventId)
         .then(teams => {
-            console.log('Step 1')
             if (userHasTeam(teams.data, userId)) {
                 throw new ForbiddenError('You are already in a team')
             }
             return removeCandidateApplications(teams.data, userId)
         })
         .then(teamsToSave => {
-            console.log('Step 2')
-            console.log('Teams to save: ', teamsToSave)
             const {
                 teamRoles,
                 name,
@@ -78,9 +75,12 @@ controller.createNewTeam = (data, eventId, userId) => {
             }
             team.save()
             if (teamsToSave.length > 0) {
-                Promise.all(teamsToSave.map(team => team.save()))
+                // TODO fix issue preventing save of teams
+                Promise.all(teamsToSave.map(team => team.save())).catch(err => {
+                    console.log(err)
+                    throw new ForbiddenError(`Save failed`)
+                })
             }
-            console.log('On team creation', team)
 
             return team
         })
@@ -91,7 +91,7 @@ controller.createNewTeam = (data, eventId, userId) => {
 }
 
 controller.deleteTeam = (eventId, userId) => {
-    return controller.getTeam(eventId, userId).then(team => {
+    return controller.getUserTeam(eventId, userId).then(team => {
         if (team.owner !== userId) {
             throw new InsufficientPrivilegesError(
                 'Only the team owner can delete a team.',
@@ -102,13 +102,14 @@ controller.deleteTeam = (eventId, userId) => {
 }
 
 controller.deleteTeamByCode = (eventId, code) => {
+    //Not to be user by users, only by organizers. No checks for user privileges so make sure to check if user is organizer before calling this function
     return controller.getTeamByCode(eventId, code).then(team => {
         return team.remove()
     })
 }
 
 controller.editTeam = (eventId, userId, edits) => {
-    return controller.getTeam(eventId, userId).then(team => {
+    return controller.getUserTeam(eventId, userId).then(team => {
         if (team.owner !== userId && !_.includes(team.members, userId)) {
             throw new InsufficientPrivilegesError(
                 'Only the team owner can edit a team.',
@@ -153,7 +154,6 @@ const userHasTeam = (teams, userId) => {
             hasTeam = true
         }
     })
-    console.log('User has team?: ', hasTeam)
     return hasTeam
 }
 const removeCandidateApplications = (teams, userId) => {
@@ -183,31 +183,26 @@ controller.joinTeam = (eventId, userId, code) => {
             )
         }
         return controller
-            .getTeamsForEvent(eventId)
+            .getTeamsForEventAsDocument(eventId)
             .then(teams => {
-                console.log('Step 1')
                 if (userHasTeam(teams.data, userId)) {
                     throw new ForbiddenError('You are already in a team')
                 }
                 return teams.data
             })
             .then(teams => {
-                console.log('Step 2')
                 team.members = team.members.concat(userId)
                 team.candidates = team.candidates.filter(
                     candidate => candidate.userId !== userId,
                 )
                 team.save()
-                console.log('Team saved: ', team)
                 return teams
             })
             .then(teams => {
-                console.log('Step 3')
                 const teamsToSave = removeCandidateApplications(
                     teams,
                     userId,
                 ).filter(team => team.code !== code)
-                console.log('Teams to save: ', teamsToSave)
                 if (teamsToSave.length > 0) {
                     Promise.all(teamsToSave.map(team => team.save())).catch(
                         err => {
@@ -216,7 +211,6 @@ controller.joinTeam = (eventId, userId, code) => {
                         },
                     )
                 }
-                console.log('Step 3 - team: ', team)
                 return team
             })
             .catch(err => {
@@ -245,10 +239,9 @@ controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
             }
             teamToReturn = team
 
-            return controller.getTeamsForEvent(eventId)
+            return controller.getTeamsForEventAsDocument(eventId)
         })
         .then(teams => {
-            console.log('Step 1')
             if (userHasTeam(teams.data, candidateId)) {
                 teamToReturn.candidates = teamToReturn.candidates.filter(
                     candidate => candidate.userId !== candidateId,
@@ -259,7 +252,6 @@ controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
             return teams.data
         })
         .then(teams => {
-            console.log('Step 2')
             teamToReturn.members = teamToReturn.members.concat(candidateId)
             teamToReturn.candidates = teamToReturn.candidates.filter(
                 candidate => candidate.userId !== candidateId,
@@ -268,7 +260,6 @@ controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
             return teams
         })
         .then(teams => {
-            console.log('Step 3')
             const teamsToSave = removeCandidateApplications(
                 teams,
                 candidateId,
@@ -279,7 +270,6 @@ controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
                     throw new ForbiddenError(`Save failed`)
                 })
             }
-            console.log('Step 3 - team: ', teamToReturn)
             return teamToReturn
         })
         .catch(err => {
@@ -302,18 +292,13 @@ controller.declineCandidateToTeam = (eventId, userId, code, candidateId) => {
     })
 }
 
-controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
-    console.log('Validating application data:', applicationData)
-    return controller.getTeamByCode(eventId, code).then(team => {
+controller.candidateApplyToTeam = (userId, teamId, applicationData) => {
+    return controller.getTeamByIdForApplications(teamId).then(team => {
         if (
             !applicationData.roles ||
             applicationData.roles.length === 0 ||
             applicationData.length === 0
         ) {
-            console.log(
-                'Throwing error because no roles, with:',
-                applicationData,
-            )
             throw new ForbiddenError(
                 'You must select at least one role and write your motivation to join',
             )
@@ -326,21 +311,15 @@ controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
             ) ||
             team.owner === userId
         ) {
-            console.log(
-                'Throwing error because user is part of team, with:',
-                applicationData,
-            )
-
             throw new NotFoundError('You are already in this team')
         }
         team.candidates = team.candidates.concat(applicationData)
-        console.log('Saving team with:', team)
         return team.save()
     })
 }
 
 controller.leaveTeam = (eventId, userId) => {
-    return controller.getTeam(eventId, userId).then(team => {
+    return controller.getUserTeam(eventId, userId).then(team => {
         if (team.owner === userId) {
             team.owner = team.members[0]
             team.members = team.members.slice(1)
@@ -356,7 +335,7 @@ controller.leaveTeam = (eventId, userId) => {
 }
 
 controller.removeMemberFromTeam = (eventId, userId, userToRemove) => {
-    return controller.getTeam(eventId, userId).then(team => {
+    return controller.getUserTeam(eventId, userId).then(team => {
         if (team.owner !== userId) {
             throw new InsufficientPrivilegesError(
                 'Only the team owner can remove members',
@@ -367,13 +346,22 @@ controller.removeMemberFromTeam = (eventId, userId, userToRemove) => {
     })
 }
 
-controller.getTeamById = teamId => {
+controller.getTeamById = (teamId, userId) => {
     return Team.findById(teamId).then(team => {
         if (!team) {
             throw new NotFoundError('No team exists for this Id')
         }
-        return team
+        if (_.includes([team.owner].concat(team.members), userId)) {
+            return team
+        } else {
+            return convertToObjectAndStripProperties(team, ['code'])
+        }
     })
+}
+
+controller.getTeamByIdForApplications = teamId => {
+    // Only to be used for applications, no checks for user privileges so don't use for low privilege end points
+    return Team.findById(teamId)
 }
 
 controller.getTeamByCode = (eventId, code) => {
@@ -388,7 +376,7 @@ controller.getTeamByCode = (eventId, code) => {
     })
 }
 
-controller.getTeam = (eventId, userId) => {
+controller.getUserTeam = (eventId, userId) => {
     return Team.findOne({
         event: eventId,
     })
@@ -473,11 +461,15 @@ controller.attachMeta = async team => {
         }
         team.save()
     }
-
-    result = team.toJSON()
-    result.meta = meta
-
-    return result
+    try {
+        result = team.toJSON()
+    } catch (err) {
+        console.log(err)
+        result = team
+    } finally {
+        result.meta = meta
+        return result
+    }
 }
 
 controller.attachUserApplicant = (teams, userId) => {
@@ -489,9 +481,8 @@ controller.attachUserApplicant = (teams, userId) => {
                 userId,
             )
         ) {
-            const result = team.toJSON()
-            result.userIsApplicant = true
-            return result
+            team.userIsApplicant = true
+            return team
         } else {
             return team
         }
@@ -499,72 +490,85 @@ controller.attachUserApplicant = (teams, userId) => {
 }
 
 controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
+    let eventTeams = []
+    let teamCount = 0
     if (page && size) {
-        console.log('filter', filter)
         if (filter) {
-            const found = await Team.find({
+            eventTeams = await Team.find({
                 event: eventId,
                 challenge: filter,
             })
                 .sort({ createdAt: 'desc' })
                 .skip(parseInt(size * page))
                 .limit(parseInt(size))
-                .then(teams => {
-                    if (userId) {
-                        return controller.attachUserApplicant(teams, userId)
-                    }
-                })
-            const count = await Team.find({
-                event: eventId,
-                challenge: filter,
-            }).countDocuments()
-            console.log('with filter', { data: found, count: count })
-            return { data: found, count: count }
+            teamCount = await eventTeams.length
         } else {
-            const found = await Team.find({
+            eventTeams = await Team.find({
                 event: eventId,
             })
                 .sort({ createdAt: 'desc' })
                 .skip(parseInt(size * page))
                 .limit(parseInt(size))
-                .then(teams => {
-                    if (userId) {
-                        return controller.attachUserApplicant(teams, userId)
-                    }
-                })
-            const count = await Team.find({ event: eventId }).countDocuments()
-            return { data: found, count: count }
+            teamCount = await eventTeams.length
         }
     } else {
-        const found = await Team.find({
+        eventTeams = await Team.find({
             event: eventId,
-        })
-            .sort({ createdAt: 'desc' })
-            .then(teams => {
-                if (userId) {
-                    return controller.attachUserApplicant(teams, userId)
-                }
-                return teams
-            })
-        const count = await Team.find({ event: eventId }).countDocuments()
-        console.log('getting all teams', count)
-        return { data: found, count: count }
+        }).sort({ createdAt: 'desc' })
+        teamCount = await eventTeams.length
     }
-    // TODO make the code not visible to participants on Redux store
+    const teamsWithoutTeamCode = convertToObjectAndStripProperties(eventTeams, [
+        'code',
+    ])
+    let returnTeams = []
+    if (userId) {
+        returnTeams = controller.attachUserApplicant(
+            teamsWithoutTeamCode,
+            userId,
+        )
+    } else {
+        returnTeams = teamsWithoutTeamCode
+    }
+    return { data: returnTeams, count: teamCount }
 }
 
-controller.getAllTeamsForEvent = async (eventId, userId, page, size) => {
-    return await Team.find({
+const convertToObjectAndStripProperties = (doc, arrPropertiesToStrip) => {
+    // Convert Mongoose array of documents to objects and strip properties, add properties to strip as array of strings
+    if (doc.length > 0) {
+        return doc.map(docElement => {
+            const obj = docElement.toObject()
+            return _.omit(obj, arrPropertiesToStrip)
+        })
+    } else {
+        const obj = doc.toObject()
+        return _.omit(obj, arrPropertiesToStrip)
+    }
+}
+
+controller.getTeamsForEventAsOrganizer = async eventId => {
+    let eventTeams = []
+    let teamCount = 0
+    //Only to be used by organizers, no checks for user privileges so make sure to check if user is organizer before calling this function
+    eventTeams = await Team.find({
+        event: eventId,
+    }).sort({ createdAt: 'desc' })
+    if (eventTeams.length > 0) {
+        teamCount = await eventTeams.length
+    }
+    return { data: eventTeams, count: teamCount }
+}
+
+controller.getTeamsForEventAsDocument = async eventId => {
+    let eventTeams = []
+    let teamCount = 0
+    //Only to be used by functions intended to save the documents updated, use only for private functions and never expose to users
+    eventTeams = await Team.find({
         event: eventId,
     })
-        .sort({ createdAt: 'desc' })
-        .then(teams => {
-            if (userId) {
-                return controller.attachUserApplicant(teams, userId)
-            }
-            return teams
-        })
-    // TODO make the code not visible to participants on Redux store
+    if (eventTeams.length > 0) {
+        teamCount = await eventTeams.length
+    }
+    return { data: eventTeams, count: teamCount }
 }
 
 controller.getTeamStatsForEvent = async eventId => {
@@ -604,26 +608,20 @@ controller.organiserRemoveMemberFromTeam = (
     teamCode,
     userToRemove,
 ) => {
-    console.log('removing ', eventId, teamCode, userToRemove)
     return controller.getTeamByCode(eventId, teamCode).then(team => {
         if (team.members.length === 0 && team.owner === userToRemove) {
-            console.log('deleting team')
             controller.deleteTeamByCode(eventId, teamCode)
         } else {
             if (team.owner === userToRemove) {
-                console.log('new owner', team.members[0])
                 team.owner = team.members[0]
                 team.members = team.members.slice(1)
             } else {
-                console.log('removing member')
                 team.members = team.members.filter(
                     member => member !== userToRemove,
                 )
             }
-            console.log('deleted ', team.members)
             return team.save()
         }
-        console.log('deleted team', team.members)
         return team.save()
     })
 }
