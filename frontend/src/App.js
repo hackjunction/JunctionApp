@@ -25,10 +25,10 @@ export default ({ history, location }) => {
     useEffect(() => {
         if (getCookieConsentValue() === 'true') {
             AnalyticsService.init()
-            AnalyticsService.pageView(window.location)
-            const unlisten = history.listen(AnalyticsService.pageView)
+            AnalyticsService.pageView(window.location) // Initial page view tracking
+            const unlisten = history.listen(AnalyticsService.pageView) // Listen for route changes
             return () => {
-                unlisten()
+                unlisten() // Cleanup listener on component unmount
             }
         }
     }, [location, history])
