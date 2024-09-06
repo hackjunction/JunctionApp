@@ -52,7 +52,7 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
             >
                 {formikProps => {
                     return (
-                        <Form className="tw-flex tw-flex-col tw-gap-8">
+                        <Form className="tw-flex tw-flex-col tw-gap-8 tw-bg-white tw-rounded-md tw-shadow-md sm:tw-p-4 tw-p-2">
                             <Field name="scoreCriteria">
                                 {({ field, form }) => (
                                     <>
@@ -208,7 +208,6 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
                                     </FormControl>
                                 )}
                             </Field>
-                            <Box p={2} />
                             <BottomBar
                                 onSubmit={formikProps.handleSubmit}
                                 errors={formikProps.errors}

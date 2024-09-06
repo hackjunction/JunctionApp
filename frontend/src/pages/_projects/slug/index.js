@@ -21,8 +21,6 @@ export default () => {
     const [loading, setLoading] = useState(true)
     const [event, setEvent] = useState()
     const [projects, setProjects] = useState([])
-    // TODO use Graphql here to get event
-    // useEventPreview(eventId) but with slug
     const fetchData = useCallback(async () => {
         setLoading(true)
         try {
@@ -47,7 +45,7 @@ export default () => {
     }, [fetchData])
 
     //First two routes are for challenge link cases
-    // TODO make this more modulary
+    // TODO fetch data directly on the route that requires it
     return (
         <PageWrapper loading={loading} error={error}>
             <Switch>
@@ -64,11 +62,7 @@ export default () => {
                 <Route
                     path={`${match.url}/challenge/:token`}
                     component={({ match }) => (
-                        <GalleryChallengeAdmin
-                            projects={projects}
-                            event={event}
-                            match={match}
-                        />
+                        <GalleryChallengeAdmin event={event} />
                     )}
                 />
                 <Route

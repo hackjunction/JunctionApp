@@ -319,7 +319,7 @@ const _Table = ({
 _Table.defaultProps = {
     data: [],
     columns: [],
-    onRowClick: () => { },
+    onRowClick: () => {},
     bulkActions: [],
     enableExport: true,
     enablePagination: true,

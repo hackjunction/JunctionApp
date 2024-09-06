@@ -1,6 +1,8 @@
 import { faPlusCircle, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 //TODO modify component to return an array for all actions, instead of single values
 const EditableOptions = ({
@@ -8,12 +10,25 @@ const EditableOptions = ({
     handleAddOption,
     handleEdit,
     handleDelete,
-    handleChange = arr => {},
+    uniqueOptions = false,
 }) => {
+    const dispatch = useDispatch()
     const [optionsArr, setOptionsArr] = useState(options || [])
     const [editIndex, setEditIndex] = useState(null)
     const [editText, setEditText] = useState('')
     const [newOption, setNewOption] = useState('')
+
+    const validateOptionUniqueness = newValue => {
+        // Returns true if the new value is not unique
+        let notUnique = false
+        optionsArr.map(criteriaObject => {
+            if (criteriaObject.toLowerCase() === newValue.toLowerCase()) {
+                dispatch(SnackbarActions.error(`${newValue} already exist`))
+                notUnique = true
+            }
+        })
+        return notUnique
+    }
 
     const handleEditOption = index => {
         setEditIndex(index)
@@ -22,15 +37,27 @@ const EditableOptions = ({
 
     const handleSave = () => {
         if (editIndex !== null) {
-            optionsArr[editIndex] = editText
-            setOptionsArr([...optionsArr]) // Create a new array to trigger a re-render.
-            handleEdit(editIndex, editText)
+            if (editText !== optionsArr[editIndex]) {
+                if (uniqueOptions) {
+                    if (validateOptionUniqueness(editText)) {
+                        return
+                    }
+                }
+                optionsArr[editIndex] = editText
+                setOptionsArr([...optionsArr]) // Create a new array to trigger a re-render.
+                handleEdit(editIndex, editText)
+            }
             setEditIndex(null)
         }
     }
 
     const handleAddNewOption = () => {
         if (newOption) {
+            if (uniqueOptions) {
+                if (validateOptionUniqueness(newOption)) {
+                    return
+                }
+            }
             setOptionsArr([...optionsArr, newOption])
             handleAddOption(newOption)
             setNewOption('')
@@ -38,7 +65,7 @@ const EditableOptions = ({
     }
 
     const handleDeleteOption = index => {
-        const newOptionsArr = optionsArr.filter((_, i) => i !== index)
+        const newOptionsArr = optionsArr.filter((value, i) => i !== index)
         setOptionsArr([...newOptionsArr])
         handleDelete(newOptionsArr)
     }
