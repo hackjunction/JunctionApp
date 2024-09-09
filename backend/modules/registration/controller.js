@@ -23,6 +23,8 @@ const EmailTaskController = require('../email-task/controller')
 
 const STATUSES = RegistrationStatuses.asObject
 const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject
+const UserProfileController = require('../user-profile/controller')
+
 const controller = {}
 
 controller.getUserRegistrations = user => {
@@ -61,21 +63,38 @@ controller.createRegistration = async (user, event, data) => {
 }
 
 controller.createPartnerRegistration = async (user, event, data) => {
-    const answers = await RegistrationHelpers.registrationFromUser(data)
     const registration = new Registration({
         event: event._id.toString(),
         user: user,
-        answers,
     })
-    // if (event.eventType === 'online') {
-    //     registration.checklist = {
-    //         items: checklistItemsOnline(),
-    //     }
-    // } else {
-    //     registration.checklist = {
-    //         items: checklistItemsPhysical(),
-    //     }
-    // }
+
+    const registrationAnswers = await RegistrationHelpers.registrationFromUser(
+        data,
+    )
+    if (
+        registrationAnswers &&
+        registrationAnswers.email &&
+        registrationAnswers.firstName &&
+        registrationAnswers.lastName
+    ) {
+        registration.answers = answers
+    } else {
+        const profileAnswers = await UserProfileController.getUserProfile(user)
+
+        if (
+            profileAnswers &&
+            profileAnswers.email &&
+            profileAnswers.firstName &&
+            profileAnswers.lastName
+        ) {
+            registration.answers = {
+                email: profileAnswers.email,
+                firstName: profileAnswers.firstName,
+                lastName: profileAnswers.lastName,
+            }
+        }
+    }
+
     registration.status = RegistrationStatuses.asObject.incomplete.id
     return registration.save()
 }

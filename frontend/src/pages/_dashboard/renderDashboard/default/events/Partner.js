@@ -16,6 +16,7 @@ import * as UserActions from 'redux/user/actions'
 import * as UserSelectors from 'redux/user/selectors'
 
 import { Box, Grid } from '@material-ui/core'
+import _ from 'lodash'
 
 export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
@@ -36,12 +37,18 @@ export default () => {
     const { t } = useTranslation()
 
     useEffect(() => {
-        const foundPartnerEvents = registrations?.filter(registration => {
-            const recEvents = recruiterEvents?.map(e => e.eventId)
-            return recEvents?.some(r => r === registration?.event?._id)
+        const foundPartnerEvents = []
+
+        activeEvents.map(event => {
+            const match = _.find(recruiterEvents, { eventId: event._id })
+            if (match) {
+                foundPartnerEvents.push(event)
+            }
         })
+
         setPartnerEvents(foundPartnerEvents)
     }, [registrations, recruiterEvents])
+
     console.log('partnerEvents', partnerEvents)
 
     function renderEvents() {
@@ -54,21 +61,19 @@ export default () => {
 
                 <Box mt={3}>
                     <Grid container spacing={3}>
-                        {partnerEvents?.map(registration => {
+                        {partnerEvents?.map(event => {
                             //TODO: fiter current event away
 
                             return (
                                 <NewEventCard
-                                    event={registration.event}
+                                    event={event}
                                     buttons={[
                                         <Button
                                             size="small"
                                             onClick={() =>
                                                 dispatch(
                                                     push(
-                                                        '/events/' +
-                                                            registration.event
-                                                                .slug,
+                                                        '/events/' + event.slug,
                                                     ),
                                                 )
                                             }
@@ -81,7 +86,7 @@ export default () => {
                                             onClick={() => {
                                                 console.log(
                                                     '/dashboard/event/' +
-                                                        registration.event.slug,
+                                                        event.slug,
                                                 )
                                                 dispatch(
                                                     UserActions.setAccessRight(
@@ -90,7 +95,7 @@ export default () => {
                                                 )
                                                 dispatch(
                                                     push(
-                                                        `/dashboard/event/${registration.event?.slug}`,
+                                                        `/dashboard/event/${event?.slug}`,
                                                     ),
                                                 )
                                             }}
