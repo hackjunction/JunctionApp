@@ -85,6 +85,7 @@ export default ({
                         // return DefaultPage({ alerts })
                     },
                 },
+                //TODO enable talent matchmaking
                 // {
                 //     key: 'Review',
                 //     path: '/review',

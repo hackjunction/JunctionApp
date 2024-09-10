@@ -58,7 +58,7 @@ export default ({ event }) => {
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
-                    `Error found when loading projects: ${err.message}`,
+                    `${t('Error_loading_projects_')}: ${err.message}`,
                 ),
             )
             setError(true)
@@ -71,9 +71,7 @@ export default ({ event }) => {
         const { projectScoreId, score, scoreCriteria, message } = values
         if (score < 1) {
             return dispatch(
-                SnackbarActions.error(
-                    `You must assign a value for all criteria before submitting.`,
-                ),
+                SnackbarActions.error(`${t('Error_missing_criteria_value_')}`),
             )
         }
         const reviewData = {
@@ -101,10 +99,15 @@ export default ({ event }) => {
             }
             dispatch(
                 SnackbarActions.success(
-                    `Score saved${
-                        selected?.name &&
-                        ' for ' + _.truncate(selected?.name, { length: 15 })
-                    } `,
+                    `${
+                        selected?.name
+                            ? t('Score_saved_for_', {
+                                  projectName: _.truncate(selected?.name, {
+                                      length: 15,
+                                  }),
+                              })
+                            : t('Score_saved')
+                    }`,
                 ),
             )
             resetForm()
@@ -112,7 +115,7 @@ export default ({ event }) => {
         } catch (e) {
             dispatch(
                 SnackbarActions.error(
-                    `Score could not be saved. Error: ${
+                    `${t('Error_score_not_saved_')}. Error: ${
                         e?.response?.data?.message ||
                         e?.response?.data?.error ||
                         e.message
@@ -171,7 +174,7 @@ export default ({ event }) => {
             <>
                 <div className="tw-flex tw-justify-between tw-items-end">
                     <PageHeader
-                        heading="Project review"
+                        heading={t('Review_projects_')}
                         subheading={`Available for review:`}
                         alignment="left"
                         details={`${inputData?.projects.length} project${
@@ -225,7 +228,7 @@ export default ({ event }) => {
     }
 
     const renderEmpty = () => {
-        return <Empty isEmpty emptyText="No projects available" />
+        return <Empty isEmpty emptyText={t('No_projects_available_')} />
     }
 
     const renderNotification = () => {

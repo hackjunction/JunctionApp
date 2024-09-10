@@ -6,8 +6,10 @@ import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'
 import BottomBar from 'components/inputs/BottomBar'
 import _ from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
+    const { t } = useTranslation()
     const allScoresSet = evalScores => {
         const scoreList = evalScores.map(value => {
             return value?.score ? value.score : null
@@ -27,7 +29,6 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
         return scoreAverageFormatted
     }
 
-    //TODO Update scoreCriteria from backend, when the event scoreCriteria is updated
     if (
         scoreCriteria &&
         scoreCriteria.length > 0 &&
@@ -57,9 +58,8 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
                                 {({ field, form }) => (
                                     <>
                                         <FormControl
-                                            label="Project evaluation"
-                                            hint="Assign a score to each criteria to
-                                        calculate the final score"
+                                            label={t('Project_evaluation_')}
+                                            hint={t('Project_evatuation_hint_')}
                                             touched={
                                                 form.touched[field.name] ||
                                                 formikProps.submitCount > 0
@@ -158,7 +158,10 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
                                             variant="body1"
                                             component="p"
                                         >
-                                            Final project score:
+                                            {t(
+                                                'Project_evaluation_final_score_',
+                                            )}
+                                            :
                                         </Typography>
                                         {field.value > 0 ? (
                                             <Typography
@@ -172,8 +175,9 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
                                                 variant="body1"
                                                 component="p"
                                             >
-                                                First assign a score to each
-                                                criteria
+                                                {t(
+                                                    'Project_evaluation_final_score_hint_',
+                                                )}
                                             </Typography>
                                         )}
                                     </div>
@@ -182,8 +186,12 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
                             <Field name="message">
                                 {({ field, form }) => (
                                     <FormControl
-                                        label="Message"
-                                        hint="Share your feedback with the team"
+                                        label={t(
+                                            'Project_evaluation_feedback_',
+                                        )}
+                                        hint={t(
+                                            'Project_evaluation_feedback_hint_',
+                                        )}
                                         touched={
                                             form.touched[field.name] ||
                                             formikProps.submitCount > 0
@@ -192,7 +200,9 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
                                     >
                                         <TextAreaInput
                                             value={field.value}
-                                            placeholder="This project is great because..."
+                                            placeholder={t(
+                                                'Project_evaluation_feedback_placeholder_',
+                                            )}
                                             onChange={value =>
                                                 form.setFieldValue(
                                                     field.name,

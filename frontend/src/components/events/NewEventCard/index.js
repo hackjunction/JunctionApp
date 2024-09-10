@@ -16,7 +16,6 @@ import { useDispatch } from 'react-redux'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
 import ProgressBar from 'components/generic/ProgressBar'
-import CardTag from 'components/generic/CardTag'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -84,7 +83,6 @@ const NewEventCard = ({ event, buttons }) => {
     const { t } = useTranslation()
     const classes = useStyles()
     const organization = event?.organizations
-    // {event.published && !event.approved ? 'Waiting approval' : null}
 
     const styling = {
         cardHover: '',
@@ -101,8 +99,7 @@ const NewEventCard = ({ event, buttons }) => {
     }
 
     if (event === undefined || event === null) {
-        dispatch(SnackbarActions.error('some of your events are not defined!'))
-        console.log('Event is not defined!')
+        dispatch(SnackbarActions.error(t('Invalid_access_')))
         return null
     }
 
@@ -126,18 +123,8 @@ const NewEventCard = ({ event, buttons }) => {
                         <Avatar
                             className={classes.organiser}
                             src={organization?.icon}
-                            //src={FlagUK}
                         />
                     )}
-
-                    {/* <CardTag
-                        className={classes.tag}
-                        variant='outlined'
-                        color="secondary"
-                        label="Prize: 20 000 $"//TODO: make this dynamic
-                    >
-
-                    </CardTag> */}
                 </div>
                 <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
                     <Typography variant="h4">{event.name}</Typography>
@@ -163,70 +150,11 @@ const NewEventCard = ({ event, buttons }) => {
             </CardContent>
 
             <CardActions className="tw-flex tw-gap-4 tw-justify-start tw-max-w-full tw-px-4 tw-pb-4 tw-pt-6">
-                {/* <Button
-                    color="theme_lightgray"
-                    variant="outlined-small"
-                    strong
-                    onClick={() =>
-                        dispatch(push('/events/' + event.slug))
-                    }
-                >
-                    {t('See_more_')} 
-                </Button>*/}
-
                 {buttons?.slice(0, 2).map((btn, index) => {
                     return <Box key={index}>{btn}</Box>
                 })}
             </CardActions>
         </Card>
-        //     <div className={classes.wrapper}>
-        //         <div className={classes.top}>
-        //             <Image
-        //                 className={classes.image}
-        //                 defaultImage={require('assets/images/default_cover_image.png')}
-        //                 publicId={event?.coverImage?.publicId}
-        //                 transformation={{
-        //                     width: 400,
-        //                 }}
-        //             />
-        //             {organization?.icon && (
-        //                 <Avatar
-        //                     className={classes.organiser}
-        //                     src={organization?.icon}
-        //                 />
-        //             )}
-        //             <Button
-        //                 variant="containedCard"
-        //                 color="theme_lightgray"
-        //                 onClick={() => dispatch(push('/events/' + event.slug))}
-        //             >
-        //                 See more
-        //             </Button>
-        //         </div>
-        //         <div className={classes.bottom}>
-        //             <Box width="100%" height="4em" margin="0">
-        //                 <Typography variant="h6">{event.name}</Typography>
-        //             </Box>
-        //             <Box
-        //                 display="flex"
-        //                 flexDirection="column"
-        //                 flexWrap="wrap"
-        //                 justifyContent="center"
-        //                 mt={2}
-        //                 className={classes.uppercase}
-        //             >
-        //                 <Typography variant="body1" className={classes.bolded}>
-        //                     {event?._eventTimeFormatted}
-        //                 </Typography>
-        //                 <Typography variant="body1">
-        //                     {event?._eventLocationFormatted}
-        //                 </Typography>
-        //                 {buttons?.map((btn, index) => (
-        //                     <Box key={index}>{btn}</Box>
-        //                 ))}
-        //             </Box>
-        //         </div>
-        //     </div>
     )
 }
 
