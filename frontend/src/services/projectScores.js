@@ -131,4 +131,8 @@ ProjectScoresService.updateScoreByEventSlugAndProjectIdAndPartnerAccount = (
     )
 }
 
+ProjectScoresService.getAllProjectScoresForEvent = (idToken, eventSlug) => {
+    return _axios.get(`/project-scores/event/${eventSlug}`, config(idToken))
+}
+
 export default ProjectScoresService

@@ -15,13 +15,12 @@ import {
 import getSlug from 'speakingurl'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import EditIcon from '@material-ui/icons/Edit'
-import SaveIcon from '@material-ui/icons/Save'
-import CloseIcon from '@material-ui/icons/Close'
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import ImageUpload from 'components/inputs/ImageUpload'
-import { SettingsBrightnessSharp } from '@material-ui/icons'
+import EditableOptions from '../submission/components/EditableOptions'
+import { slugify } from 'utils/dataModifiers'
 
 export default ({ value, onChange }) => {
     const [name, setName] = useState(undefined)
@@ -37,6 +36,8 @@ export default ({ value, onChange }) => {
     const [criteria, setCriteria] = useState(undefined)
     const [companyInfo, setCompanyInfo] = useState(undefined)
     const [logo, setLogo] = useState(undefined)
+    const [scoreCriteriaChallengeSettings, setScoreCriteriaChallengeSettings] =
+        useState(undefined)
 
     const [editIndex, setEditIndex] = useState(-1)
     const [editing, setEditing] = useState(false)
@@ -79,6 +80,9 @@ export default ({ value, onChange }) => {
             setCriteria(value[index].criteria)
             setCompanyInfo(value[index].companyInfo)
             setLogo(value[index].logo)
+            setScoreCriteriaChallengeSettings(
+                value[index].scoreCriteriaChallengeSettings,
+            )
         },
         [value],
     )
@@ -98,6 +102,7 @@ export default ({ value, onChange }) => {
         setCriteria(undefined)
         setCompanyInfo(undefined)
         setLogo(undefined)
+        setScoreCriteriaChallengeSettings(undefined)
     }, [])
 
     const handleEditDone = useCallback(() => {
@@ -120,6 +125,7 @@ export default ({ value, onChange }) => {
                             criteria,
                             companyInfo: companyInfo,
                             logo,
+                            scoreCriteriaChallengeSettings,
                         }
                     }
                     return item
@@ -141,6 +147,7 @@ export default ({ value, onChange }) => {
                     criteria,
                     companyInfo: companyInfo,
                     logo,
+                    scoreCriteriaChallengeSettings,
                 }),
             )
         }
@@ -163,6 +170,7 @@ export default ({ value, onChange }) => {
         criteria,
         companyInfo,
         logo,
+        scoreCriteriaChallengeSettings,
     ])
 
     const isValid = useMemo(() => {
@@ -335,6 +343,45 @@ export default ({ value, onChange }) => {
                     maxLength={styling.textAreaMaxLength}
                 />
                 <Typography variant="caption">Challenge criteria.</Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography variant="h5">Score Criteria for Judges</Typography>
+                <EditableOptions
+                    options={
+                        scoreCriteriaChallengeSettings
+                            ? scoreCriteriaChallengeSettings.map(c => c.label)
+                            : []
+                    }
+                    handleAddOption={value => {
+                        setScoreCriteriaChallengeSettings([
+                            ...(scoreCriteriaChallengeSettings || []),
+                            {
+                                criteria: slugify(value),
+                                label: value,
+                            },
+                        ])
+                    }}
+                    handleEdit={(index, value) => {
+                        const newArr = [...scoreCriteriaChallengeSettings]
+                        newArr[index] = {
+                            criteria: slugify(value),
+                            label: value,
+                        }
+                        setScoreCriteriaChallengeSettings(newArr)
+                    }}
+                    handleDelete={updatedArray => {
+                        const arrayFormated = updatedArray.map(c => ({
+                            criteria: slugify(c),
+                            label: c,
+                        }))
+                        setScoreCriteriaChallengeSettings(arrayFormated)
+                    }}
+                />
+                <Typography variant="caption">
+                    Here you can setup a custom scoring criteria for this
+                    challenge. If you leave this list empty, the default score
+                    criteria will be used.
+                </Typography>
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h5">Company Info</Typography>

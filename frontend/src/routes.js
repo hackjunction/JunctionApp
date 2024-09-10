@@ -28,7 +28,7 @@ const RecruitmentRouter = lazy(() =>
 ) //import('./pages/_recruitment'))//
 const ProjectsRouter = lazy(() => import('./pages/_projects'))
 const AdminRouter = lazy(() => import('./pages/_admin'))
-const SandboxRouter = lazy(() => import('./pages/_sandbox'))
+// const SandboxRouter = lazy(() => import('./pages/_sandbox'))
 // const FilesRouter = lazy(() => import('./pages/_sandbox/files'))
 
 const routes = [
@@ -119,20 +119,20 @@ const routes = [
         component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
         exact: false,
     },
-    {
-        path: '/sandbox',
-        component: RequiresRole(SandboxRouter, [
-            AuthConstants.Roles.SUPER_ADMIN,
-        ]),
-        exact: false,
-    },
-    {
-        path: '/files',
-        component: RequiresRole(SandboxRouter, [
-            AuthConstants.Roles.SUPER_ADMIN,
-        ]),
-        exact: false,
-    },
+    // {
+    //     path: '/sandbox',
+    //     component: RequiresRole(SandboxRouter, [
+    //         AuthConstants.Roles.SUPER_ADMIN,
+    //     ]),
+    //     exact: false,
+    // },
+    // {
+    //     path: '/files',
+    //     component: RequiresRole(SandboxRouter, [
+    //         AuthConstants.Roles.SUPER_ADMIN,
+    //     ]),
+    //     exact: false,
+    // },
 ]
 
 export default {

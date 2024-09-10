@@ -10,7 +10,6 @@ import { CSVLink } from 'react-csv'
 import { projectURLgenerator } from 'utils/dataModifiers'
 
 const ProjectsTable = ({ projects }) => {
-    const teams = useSelector(OrganiserSelectors.teams)
     const event = useSelector(OrganiserSelectors.event)
 
     const skipArray = ['_id', '__v', 'id', 'key', 'section']
@@ -57,46 +56,33 @@ const ProjectsTable = ({ projects }) => {
                 sortType: Sorters.Numeric,
             },
             {
-                Header: 'Team',
+                Header: 'Team code',
                 accessor: 'teamCode',
                 ...Filters.ContainsSearch,
+                ...Sorters.Alphabetic,
+            },
+            {
+                Header: 'Team name',
+                accessor: 'teamName',
+                ...Filters.ContainsSearch,
+                ...Sorters.Alphabetic,
             },
             {
                 Header: 'Name',
                 accessor: 'name',
                 ...Filters.ContainsSearch,
+                ...Sorters.Alphabetic,
             },
             {
-                Header: 'Punchline',
-                accessor: 'punchline',
+                Header: 'Status',
+                accessor: 'status',
                 ...Filters.ContainsSearch,
-            },
-            {
-                Header: 'Demo',
-                accessor: 'demo',
-                ...Filters.ContainsSearch,
-            },
-            {
-                Header: 'Source',
-                accessor: 'source',
-                ...Filters.ContainsSearch,
+                ...Sorters.Alphabetic,
             },
         ]
     }, [])
 
-    const data = projects
-        .map(project => {
-            const teamFound = teams.find(team => {
-                return team._id === project.team
-            })
-            if (teamFound) {
-                project.teamCode = teamFound.code
-            } else {
-                project.teamCode = 'No team'
-            }
-            return project
-        })
-        .filter(project => project.teamCode !== 'No team')
+    //TODO add a cron function or organizer action to delete projects without a valid team
 
     const exportProjects = selectedRows => {
         setSelected(selectedRows)
@@ -109,7 +95,7 @@ const ProjectsTable = ({ projects }) => {
                 onClose={() => setSelectedProject(null)}
             />
             <Table
-                data={data}
+                data={projects}
                 columns={columns}
                 onRowClick={openSingleEdit}
                 enableExport={false}
@@ -136,6 +122,50 @@ const ProjectsTable = ({ projects }) => {
                                 filename="export.csv"
                             >
                                 Export selected
+                            </CSVLink>
+                        ),
+                        action: exportProjects,
+                    },
+                    {
+                        key: 'export-gavel',
+                        label: (
+                            <CSVLink
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                }}
+                                data={_.compact(
+                                    selected.map(item => {
+                                        if (item.original.status === 'final') {
+                                            const projectName = item.original
+                                                .name
+                                                ? item.original.name.replace(
+                                                      /"/g,
+                                                      '""',
+                                                  )
+                                                : ''
+                                            const projectPunchline = item
+                                                .original.punchline
+                                                ? item.original.punchline.replace(
+                                                      /"/g,
+                                                      '""',
+                                                  )
+                                                : ''
+                                            const returnObject = {
+                                                projectName,
+                                                projectURL: projectURLgenerator(
+                                                    event.slug,
+                                                    item.original._id,
+                                                ),
+                                                projectPunchline,
+                                            }
+                                            return returnObject
+                                        }
+                                    }),
+                                )}
+                                filename="export.csv"
+                            >
+                                Export for gavel
                             </CSVLink>
                         ),
                         action: exportProjects,

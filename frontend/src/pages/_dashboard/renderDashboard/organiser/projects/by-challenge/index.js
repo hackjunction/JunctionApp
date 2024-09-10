@@ -14,30 +14,12 @@ import ProjectsTable from 'components/tables/ProjectsTable'
 import ChallengeLink from './ChallengeLink'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
+import { getProjectsForChallenge } from 'utils/dataModifiers'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const projects = useSelector(OrganiserSelectors.projects)
     const teams = useSelector(OrganiserSelectors.teams)
-
-    const getProjectsForChallenge = slug => {
-        const projectsWithTeam = projects
-            .map(project => {
-                const teamFound = teams.find(team => {
-                    return team._id === project.team
-                })
-                if (teamFound) {
-                    project.teamCode = teamFound.code
-                } else {
-                    project.teamCode = 'No team'
-                }
-                return project
-            })
-            .filter(project => project.teamCode !== 'No team')
-        return projectsWithTeam.filter(project => {
-            return project.challenges && project.challenges.indexOf(slug) !== -1
-        })
-    }
 
     const challenges = useMemo(() => {
         return sortBy(event.challenges, 'name')
@@ -45,7 +27,11 @@ export default () => {
     return (
         <Box>
             {challenges.map(challenge => {
-                const projects = getProjectsForChallenge(challenge.slug)
+                const projectsForChallenge = getProjectsForChallenge(
+                    projects,
+                    teams,
+                    challenge.slug,
+                )
                 return (
                     <Accordion key={challenge.slug}>
                         <AccordionSummary
@@ -55,7 +41,7 @@ export default () => {
                         >
                             <ListItemText
                                 primary={challenge.name}
-                                secondary={`${challenge.partner} // ${projects.length} projects`}
+                                secondary={`${challenge.partner} // ${projectsForChallenge.length} projects`}
                             ></ListItemText>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -67,7 +53,9 @@ export default () => {
                                 <Box p={1}>
                                     <ChallengeLink challenge={challenge.slug} />
                                 </Box>
-                                <ProjectsTable projects={projects} />
+                                <ProjectsTable
+                                    projects={projectsForChallenge}
+                                />
                             </Box>
                         </AccordionDetails>
                     </Accordion>

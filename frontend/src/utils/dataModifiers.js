@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import getSlug from 'speakingurl'
 
 export const objToArr = (objectOfObjects, itemIndexToReturn = 0) => {
@@ -27,4 +28,51 @@ export const projectURLgenerator = (eventSlug, projectId) => {
         projectURL = `${originURL}/projects/${eventSlug}/view/${projectId}`
     }
     return projectURL
+}
+
+export const slugify = inputString => {
+    //Replaces spaces in strings with lodashes
+    if (!inputString || typeof inputString !== 'string') {
+        return
+    }
+    return inputString.toLowerCase().replace(/\s/g, '_')
+}
+
+//TODO create CRON job or organizer action to delete projects without a valid team instead of using this function
+export const filterProjectsWithTeam = (projects, teams) => {
+    const projectsFiltered = _.compact(
+        projects.map(project => {
+            const teamFound = teams.find(team => {
+                return team._id === project.team
+            })
+            if (teamFound) {
+                project.teamCode = teamFound.code
+                project.teamName = teamFound.name
+                return project
+            }
+        }),
+    )
+    if (projectsFiltered.length > 0) {
+        return projectsFiltered
+    }
+    return []
+}
+
+export const getProjectsForChallenge = (
+    allProjects,
+    allTeams,
+    challengeSlug,
+) => {
+    const projectsWithTeam = filterProjectsWithTeam(allProjects, allTeams)
+    return projectsWithTeam.filter(project => {
+        return (
+            project.challenges &&
+            project.challenges.indexOf(challengeSlug) !== -1
+        )
+    })
+}
+
+export const getProjectsForTrack = (allProjects, allTeams, trackSlug) => {
+    const projectsWithTeam = filterProjectsWithTeam(allProjects, allTeams)
+    return projectsWithTeam.filter(project => project.track === trackSlug)
 }

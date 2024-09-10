@@ -8,3 +8,7 @@ docker-compose.yml
 *.env.example
 azure-pipelines-1.yml
 azure-pipelines.yml
+.env dev frontend
+.env dev backend
+.env stag frontend
+.env stag backend
