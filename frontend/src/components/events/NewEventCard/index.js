@@ -13,6 +13,7 @@ import Image from 'components/generic/Image'
 import Markdown from 'components/generic/Markdown'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import _ from 'lodash'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
 import ProgressBar from 'components/generic/ProgressBar'
@@ -92,12 +93,6 @@ const NewEventCard = ({ event, buttons }) => {
         styling.cardHover = 'tw-cursor-pointer hover:tw-shadow-xl'
     }
 
-    const parseDescription = description => {
-        const parsed = description.replace(/#.*\n/g, '')
-
-        return parsed.length > 300 ? parsed.slice(0, 200) + ' &hellip;' : parsed
-    }
-
     if (event === undefined || event === null) {
         dispatch(SnackbarActions.error(t('Invalid_access_')))
         return null
@@ -132,7 +127,9 @@ const NewEventCard = ({ event, buttons }) => {
                 {event?.description && (
                     <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
                         <Markdown
-                            source={parseDescription(event?.description)}
+                            source={_.truncate(event?.description, {
+                                length: 200,
+                            })}
                         />
                     </div>
                 )}
