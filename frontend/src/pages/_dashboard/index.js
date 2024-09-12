@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRouteMatch } from 'react-router'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import SlugPage from './renderDashboard'
 import DefaultPage from './renderDashboard/default'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 
 export default () => {
     const match = useRouteMatch()
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     //redirect to right event page, default, or out
     return (

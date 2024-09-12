@@ -443,5 +443,6 @@
     "Project_evaluation_final_score_hint_":"First assign a score to each criteria",
     "Project_evaluation_feedback_":"Feedback message",
     "Project_evaluation_feedback_hint_":"Share your feedback with the team",
-    "Project_evaluation_feedback_placeholder_":"This project is great because..."
+    "Project_evaluation_feedback_placeholder_":"This project is great because...",
+    "Event_waiting_approval_":"The event will be published once approved by admins. Questions about the approval process can be directed to hello@hackjunction.com"
 }
