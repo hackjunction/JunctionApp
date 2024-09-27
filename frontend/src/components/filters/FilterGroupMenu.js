@@ -25,8 +25,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({
-    onChange = () => { },
-    onSelectedChange = () => { },
+    onChange = () => {},
+    onSelectedChange = () => {},
     showEdit = true,
 }) => {
     const filterGroups = useSelector(OrganiserSelectors.filterGroups)
@@ -80,7 +80,7 @@ export default ({
         let items = [
             {
                 label: t('All_participants_'),
-                description: t('No filters'),
+                description: t('No_filters_'),
                 filters: [],
                 isDefault: true,
             },

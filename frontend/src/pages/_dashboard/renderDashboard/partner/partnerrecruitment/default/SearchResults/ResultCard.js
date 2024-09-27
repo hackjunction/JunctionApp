@@ -1,8 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useRouteMatch } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { findIndex } from 'lodash-es'
-import { push } from 'connected-react-router'
 import {
     Avatar,
     Paper,
@@ -89,7 +87,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default React.memo(
-    ({ data, organisation }) => {
+    ({ data, organisation, onClick = () => {}, eventId }) => {
         const dispatch = useDispatch()
         const actionHistoryByUser = useSelector(
             RecruitmentSelectors.actionHistoryByUser,
@@ -101,8 +99,6 @@ export default React.memo(
         // Toggle the favorited state locally for immediate feedback on favorite action
         const [_isFavorite, setIsFavorite] = useState(isFavorite)
         const classes = useStyles({ isFavorite: _isFavorite })
-        const match = useRouteMatch()
-        const baseRoute = match.url
 
         useEffect(() => {
             setIsFavorite(isFavorite)
@@ -118,6 +114,7 @@ export default React.memo(
                         data.userId,
                         _isFavorite,
                         organisation,
+                        eventId,
                     ),
                 ).then(({ error }) => {
                     if (error) {
@@ -132,12 +129,7 @@ export default React.memo(
         )
 
         return (
-            <Paper
-                className={classes.root}
-                onClick={() => {
-                    dispatch(push(`${baseRoute}/${data.userId}`))
-                }}
-            >
+            <Paper className={classes.root} onClick={onClick}>
                 <Box className={classes.iconRight}>
                     <Tooltip
                         title={
@@ -152,18 +144,16 @@ export default React.memo(
                     </Tooltip>
                 </Box>
                 <div style={{ flex: 1 }}>
-                    {data.profile.avatar && (
-                        <Avatar
-                            className={classes.avatar}
-                            alt="Profile Picture"
-                            src={data.profile.avatar}
-                            imgProps={{
-                                onError: e => {
-                                    e.target.src = emblem_black
-                                },
-                            }}
-                        />
-                    )}
+                    <Avatar
+                        className={classes.avatar}
+                        alt="Profile Picture"
+                        src={data.profile.avatar}
+                        imgProps={{
+                            onError: e => {
+                                e.target.src = emblem_black
+                            },
+                        }}
+                    />
                     <Box className={classes.topWrapper} mb={1}>
                         <Typography className={classes.name} variant="h6">
                             {data.profile.firstName} {data.profile.lastName}

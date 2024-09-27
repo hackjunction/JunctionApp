@@ -107,6 +107,7 @@ export default () => {
                 baseRoute={match.url}
                 location={location}
                 routes={[
+                    // TODO make one of the routes default or create a default route to render, instead of the events page
                     {
                         key: 'edit',
                         path: '/edit',
@@ -116,9 +117,9 @@ export default () => {
                     },
                     // {
                     //     key: 'stats',
-                    //     path: '/stats',
+                    //     path: '/',
                     //     exact: true,
-                    //     icon: <EqualizerIcon />,
+                    //     // icon: <EqualizerIcon />,
                     //     label: 'Stats',
                     //     component: StatsPage,
                     // },

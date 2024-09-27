@@ -663,6 +663,7 @@ export const updateAnnotator = slug => async (dispatch, getState) => {
     return error
 }
 
+//TODO use new score criteria to update project scores
 export const updateProjectScores = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 

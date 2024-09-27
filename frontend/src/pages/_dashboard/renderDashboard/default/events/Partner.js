@@ -65,7 +65,7 @@ export default () => {
                             //TODO: fiter current event away
 
                             return (
-                                <Grid item xs={12}>
+                                <Grid key={`partner-${event._id}`} item xs={12}>
                                     <NewEventCard
                                         event={event}
                                         buttons={[

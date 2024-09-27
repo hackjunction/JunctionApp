@@ -70,7 +70,7 @@ export default ({ data = [] }) => {
                     <>
                         <Grid item xs={12} md={12} xl={12}>
                             <GradientBox color="theme_white" p={3}>
-                                <Grid container justify="center">
+                                <Grid container justifyContent="center">
                                     <Grid item xs={3}>
                                         <img
                                             alt={org.name}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import PageHeader from 'components/generic/PageHeader'
 import { Helmet } from 'react-helmet'
 import config from 'constants/config'
@@ -8,7 +8,7 @@ import ProjectBlock from './Blocks/ProjectBlock'
 import TeamStatusBlock from './Blocks/TeamStatusBlock'
 // import VisaInvitationBlock from './Blocks/VisaInvitationBlock'
 // import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock'
-import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
+// import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
 import ProjectSubmissionsBlock from './Blocks/ProjectSubmissionsBlock'
 import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
 import CertificateBlock from './Blocks/CertificateBlock'
@@ -68,15 +68,6 @@ export default ({ alerts }) => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
-            {/* <Grid container spacing={5}>
-                <div
-                    style={{
-                        height: '400px',
-                        width: '100%',
-                        display: 'flex',
-                        padding: '2em',
-                    }}
-                ></div> */}
             <AlertBlock alerts={alerts} />
 
             <EventOverBlock />

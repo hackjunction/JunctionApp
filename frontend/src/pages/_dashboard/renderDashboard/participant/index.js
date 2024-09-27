@@ -45,6 +45,8 @@ import {
 
 import { Chat } from 'components/messaging/chat'
 import { Grid, Paper } from '@material-ui/core'
+import DefaultImage from 'assets/images/dashboardDefault.jpg'
+import { debugGroup } from 'utils/debuggingTools'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -78,6 +80,7 @@ export default ({
     useEffect(() => {
         setAlerts(originalAlerts)
         setAlertCount(originalAlertCount)
+        debugGroup('Dashboard alerts', [originalAlerts, originalAlertCount])
     }, [originalAlerts, originalAlertCount])
 
     return (
@@ -88,12 +91,11 @@ export default ({
                 <div className={classes.sidebarTop}>
                     <Image
                         className={classes.sidebarLogo}
-                        publicId={
-                            event && event.logo ? event.logo.publicId : '' //TODO: if no logo, use default
-                        }
+                        publicId={event && event.logo && event.logo.publicId}
                         transformation={{
                             width: 200,
                         }}
+                        defaultImage={DefaultImage}
                     />
                 </div>
             }

@@ -24,17 +24,28 @@ RecruitmentService.search = (idToken, filters, page, page_size, eventId) => {
         config(idToken),
     )
 }
-RecruitmentService.getUserProfile = (idToken, userId) => {
-    return _axios.get(`/recruitment/profile/${userId}`, config(idToken))
+RecruitmentService.getUserProfile = (idToken, userId, eventId) => {
+    return _axios.get(
+        `/recruitment/profile/${userId}?event=${eventId}`,
+        config(idToken),
+    )
 }
 
-RecruitmentService.submitAction = (type, idToken, userId, organisation, message) => {
+RecruitmentService.submitAction = (
+    type,
+    idToken,
+    userId,
+    organisation,
+    eventId,
+    message,
+) => {
     return _axios.post(
         '/recruitment/action',
         {
             type,
             user: userId,
             organisation: organisation,
+            event: eventId,
             data: { message: message },
         },
         config(idToken),

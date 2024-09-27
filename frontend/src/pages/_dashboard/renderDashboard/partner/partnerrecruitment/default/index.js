@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-// import { makeStyles } from '@material-ui/core/styles'
 import { Box } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -18,40 +17,47 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import ToggleFavorites from './ToggleFavorites'
 import { useTranslation } from 'react-i18next'
 import { useToggle } from 'hooks/customHooks'
-import { debugGroup } from 'utils/debuggingTools'
+import Button from 'components/generic/Button'
+import { CSVLink } from 'react-csv'
+import { flattenObject } from 'utils/dataModifiers'
 
-// const useStyles = makeStyles(theme => ({
-//     root: {
-//         flex: 1,
-//         backgroundColor: theme.palette.background.default,
-//         padding: theme.spacing(3),
-//     },
-// }))
+// Used on flatenObject function
+const skipArray = ['_id', 'userId', 'registrations']
+const stringEscapeArray = [
+    'firstName',
+    'lastName',
+    'motivation',
+    'headline',
+    'cityOfResidence',
+    'biography',
+    'cityOfTravel',
+]
 
 export default () => {
     const { t } = useTranslation()
-    // const classes = useStyles()
     const dispatch = useDispatch()
     const idTokenData = useSelector(AuthSelectors.idTokenData)
     const favorites = useSelector(RecruitmentSelectors.favorites)
-    const eventId = useSelector(DashboardSelectors.event)._id
+    const event = useSelector(DashboardSelectors.event)
+    const eventId = event?._id
     const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
+    const csvLink = useRef(null)
 
     const [recruiterOrganisation, SetRecruiterOrganisation] = useState('')
     const [showFavorites, toggleFavorites] = useToggle(false)
 
     useEffect(() => {
-        console.log('accessing recruitment', idTokenData)
+        //TODO add snackbar for error display
         if (!idTokenData) {
             throw new Error(t('Invalid_token_'))
         }
         if (!(idTokenData.recruiter_events?.length > 0)) {
             throw new Error(t('Invalid_access_'))
         }
-    }, [idTokenData, t])
+    }, [idTokenData])
 
     useEffect(() => {
-        //dispatch(RecruitmentActions.updateEvents())
+        dispatch(RecruitmentActions.updateEvents())
 
         const organisation = recEvents.find(e => {
             return e.eventId === eventId
@@ -60,8 +66,6 @@ export default () => {
 
         dispatch(RecruitmentActions.updateActionHistory(organisation))
     }, [dispatch])
-
-    debugGroup('Recruitment', [recruiterOrganisation, recEvents])
 
     return (
         <>
@@ -81,20 +85,43 @@ export default () => {
                     </Box>
 
                     {showFavorites ? (
-                        <SearchResults
-                            items={favorites}
-                            organisation={recruiterOrganisation}
-                        />
+                        <>
+                            <Button
+                                onClick={() => {
+                                    csvLink.current.link.click()
+                                }}
+                                variant="contained"
+                            >
+                                Download as CSV
+                            </Button>
+                            <CSVLink
+                                className=" tw-hidden"
+                                data={favorites.map(fav => {
+                                    return flattenObject(
+                                        fav,
+                                        skipArray,
+                                        stringEscapeArray,
+                                    )
+                                })}
+                                filename={`${event.name}-favorite-profiles.csv`}
+                                ref={csvLink}
+                            />
+                            <SearchResults
+                                items={favorites}
+                                organisation={recruiterOrganisation}
+                                eventId={eventId}
+                            />
+                        </>
                     ) : (
                         <>
                             <Filters />
                             <SearchResults
                                 organisation={recruiterOrganisation}
+                                eventId={eventId}
                             />
                         </>
                     )}
                 </Container>
-                {/* <SearchResults /> */}
             </PageWrapper>
         </>
     )
