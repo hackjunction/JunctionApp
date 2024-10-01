@@ -2,6 +2,7 @@ import React from 'react'
 
 import { useRouteMatch, useLocation } from 'react-router'
 import RateReviewIcon from '@material-ui/icons/RateReview'
+import WorkIcon from '@material-ui/icons/Work'
 import { makeStyles } from '@material-ui/core/styles'
 import {
     // Hidden,
@@ -15,6 +16,7 @@ import DefaultImage from 'assets/images/dashboardDefault.jpg'
 import Image from 'components/generic/Image'
 
 import ProjectsPage from './projects'
+import RecruitmentPage from './partnerrecruitment'
 import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
@@ -42,8 +44,6 @@ export default ({
     const classes = useStyles()
     const match = useRouteMatch()
     const location = useLocation()
-    // const [alertCount, setAlertCount] = useState(originalAlertCount)
-    // const [alerts, setAlerts] = useState(originalAlerts)
     const { t } = useTranslation()
 
     return (
@@ -54,9 +54,7 @@ export default ({
                 <div className={classes.sidebarTop}>
                     <Image
                         className={classes.sidebarLogo}
-                        // publicId={
-                        //     event && event.logo ? event.logo.publicId : ''
-                        // }
+                        publicId={event && event.logo && event.logo.publicId}
                         transformation={{
                             width: 200,
                         }}
@@ -74,31 +72,19 @@ export default ({
                     path: '',
                     exact: true,
                     icon: <RateReviewIcon />,
-                    // icon: (
-                    //     <Badge badgeContent={alertCount} color="primary">
-                    //         <DashboardIcon />
-                    //     </Badge>
-                    // ),
                     label: t('Review_projects_'),
                     component: () => {
                         return <ProjectsPage event={event} />
-                        // return DefaultPage({ alerts })
                     },
                 },
-                //TODO enable talent matchmaking
-                // {
-                //     key: 'Review',
-                //     path: '/review',
-                //     // hidden: !shownPages?.reviewingByScoreCriteria,
-                //     locked: lockedPages.reviewing,
-                //     lockedDescription: 'Reviewing closed',
-                //     exact: false,
-                //     icon: <RateReviewIcon />,
-                //     label: t('Review_projects_'),
-                //     component: () => {
-                //         return <ProjectsPage event={event} />
-                //     },
-                // },
+                {
+                    key: 'recruitment',
+                    path: '/recruitment',
+                    exact: false,
+                    icon: <WorkIcon />,
+                    label: 'Recruitment',
+                    component: RecruitmentPage,
+                },
                 // TODO rework meetings, consider using rally.co
                 // {
                 //     key: 'meetings',
@@ -119,17 +105,6 @@ export default ({
                 //     component: HackerpackPage,
                 // },
                 //Experimental
-                // {
-                //     key: 'recruitment',
-                //     path: '/recruitment',
-                //     exact: false,
-                //     icon: <WorkIcon />,
-                //     label: 'Recruitment',
-                //     component: RecruitmentPage,
-                //     Hidden: !shownPages?.experimental,
-                //     locked: true,
-                //     lockedDescription: 'Currently unavailable',
-                // },
                 // {
                 //     key: 'map',
                 //     path: '/map',

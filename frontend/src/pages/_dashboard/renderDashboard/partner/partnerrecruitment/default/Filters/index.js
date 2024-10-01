@@ -1,7 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { Box, CircularProgress, Grid } from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search'
+import {
+    Box,
+    // CircularProgress,
+    Grid,
+} from '@material-ui/core'
+// import SearchIcon from '@material-ui/icons/Search'
 import { motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -18,7 +22,7 @@ import SkillsFilter from './SkillsFilter'
 import RolesFilter from './RolesFilter'
 import FilteredBy from './FilteredBy'
 import LoadingCard from '../SearchResults/LoadingCard'
-import TextInput from 'components/inputs/TextInput'
+// import TextInput from 'components/inputs/TextInput'
 
 export default () => {
     const dispatch = useDispatch()
@@ -68,8 +72,7 @@ export default () => {
 
     return (
         <Box display="flex" flexDirection="column">
-
-            <Box
+            {/* <Box
                 display="flex"
                 flexDirection="row"
                 alignItems="center"
@@ -84,7 +87,7 @@ export default () => {
                     />
                 </Box>
 
-            </Box>
+            </Box> */}
             <motion.div
                 animate={{
                     overflow: 'hidden',
@@ -110,7 +113,7 @@ export default () => {
                     <FilteredBy />
                 </Box>
             </motion.div>
-            {loading && (renderLoading())}
+            {loading && renderLoading()}
         </Box>
     )
 }

@@ -41,7 +41,7 @@ const Filters = ({ event, active = 'by-track', onChange }) => {
     const classes = useStyles()
     console.log('active :>> ', active)
     return (
-        <Grid container justify="center" spacing={1}>
+        <Grid container justifyContent="center" spacing={1}>
             {event.tracksEnabled && event.tracks && (
                 <Grid item xs={12} md={6}>
                     <Box

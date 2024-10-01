@@ -331,11 +331,21 @@ controller.updateTravelGrantStatus = (user, event, status) => {
         })
 }
 
+controller.getRegistrationsForQuery = async (query, pagination) => {
+    const found = await Registration.find(query)
+        .sort('updatedAt')
+        .skip(pagination.skip)
+        .limit(pagination.limit)
+
+    const count = Array.isArray(found) ? found.length : 0
+    return { found, count }
+}
+
 controller.getRegistrationsForEvent = (eventId, getFullStrings = false) => {
     return Registration.find({
         event: eventId,
     }).then(registrations => {
-        /** Do some minor optimisation here to cut down on size */
+        /** TODO Do some minor optimisation here to cut down on size */
         return registrations.map(document => {
             const reg = document.toObject()
             if (!getFullStrings) {

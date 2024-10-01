@@ -279,10 +279,13 @@ const ProjectsGridItem = ({
                                                 key={index}
                                                 title={`Reviewed by ${
                                                     project?.scoreData
-                                                        ?.reviewers?.length - 1
+                                                        ?.reviewers?.length -
+                                                    (reviewIndexLimit + 1) +
+                                                    1
                                                 } more ${
                                                     project?.scoreData
                                                         ?.reviewers?.length -
+                                                        (reviewIndexLimit + 1) +
                                                         1 >
                                                     1
                                                         ? 'people'
@@ -292,7 +295,9 @@ const ProjectsGridItem = ({
                                                 <Avatar>
                                                     +
                                                     {project?.scoreData
-                                                        ?.reviewers?.length - 1}
+                                                        ?.reviewers?.length -
+                                                        (reviewIndexLimit + 1) +
+                                                        1}
                                                 </Avatar>
                                             </Tooltip>
                                         )

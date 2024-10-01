@@ -135,6 +135,7 @@ const Markdown = React.memo(
                             return (
                                 <Link to={props.href}>
                                     <Typography
+                                        component={'span'}
                                         className={classes.hyperlink}
                                         display="inline"
                                         variant="body1"

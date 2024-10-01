@@ -7,40 +7,18 @@ import { Table, Filters, Sorters } from 'components/generic/_Table'
 import EditProjectModal from 'components/modals/EditProjectModal'
 import _ from 'lodash'
 import { CSVLink } from 'react-csv'
-import { projectURLgenerator } from 'utils/dataModifiers'
+import { flattenObject, projectURLgenerator } from 'utils/dataModifiers'
+
+const skipArray = ['_id', '__v', 'id', 'key', 'section']
+const stringEscapeArray = ['description', 'name', 'punchline']
 
 const ProjectsTable = ({ projects }) => {
     const event = useSelector(OrganiserSelectors.event)
-
-    const skipArray = ['_id', '__v', 'id', 'key', 'section']
-    const stringEscapeArray = ['description', 'name', 'punchline']
-    const flattenObject = ob => {
-        let toReturn = {}
-        for (let i in ob) {
-            if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
-                continue
-
-            if (stringEscapeArray.some(val => val === i)) {
-                toReturn[i] = ob[i].replace(/"/g, '""')
-                continue
-            } else if (typeof ob[i] === 'object' && ob[i] !== null) {
-                let flatObject = flattenObject(ob[i])
-                for (let x in flatObject) {
-                    if (!flatObject.hasOwnProperty(x)) continue
-                    toReturn[i + '.' + x] = flatObject[x].replace(/"/g, '""')
-                }
-            } else {
-                toReturn[i] = ob[i]
-            }
-        }
-        return toReturn
-    }
 
     const [selected, setSelected] = useState([])
 
     const [selectedProject, setSelectedProject] = useState(null)
 
-    // TODO config columsn (table only in physical events)
     const openSingleEdit = useCallback(row => {
         setSelectedProject(row.original)
     }, [])
@@ -115,11 +93,15 @@ const ProjectsTable = ({ projects }) => {
                                             event.slug,
                                             item.original._id,
                                         ),
-                                        ...flattenObject(item.original),
+                                        ...flattenObject(
+                                            item.original,
+                                            skipArray,
+                                            stringEscapeArray,
+                                        ),
                                     }
                                     return returnObject
                                 })}
-                                filename="export.csv"
+                                filename="project-exports.csv"
                             >
                                 Export selected
                             </CSVLink>
@@ -163,7 +145,7 @@ const ProjectsTable = ({ projects }) => {
                                         }
                                     }),
                                 )}
-                                filename="export.csv"
+                                filename="project-exports-gavel.csv"
                             >
                                 Export for gavel
                             </CSVLink>

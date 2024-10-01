@@ -2,22 +2,23 @@ import React, { useEffect } from 'react'
 import Empty from 'components/generic/Empty'
 import ResultCard from './ResultCard'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useRouteMatch } from 'react-router'
-import { Grid, Box, Typography, CircularProgress } from '@material-ui/core'
+import { useRouteMatch } from 'react-router'
+import { Grid, Box, Typography } from '@material-ui/core'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as DashboardActions from 'redux/dashboard/actions'
+// import * as DashboardActions from 'redux/dashboard/actions'
 import { useTranslation } from 'react-i18next'
 import Pagination from './Pagination'
 import LoadingCard from './LoadingCard'
-import { debugGroup } from 'utils/debuggingTools'
+import { push } from 'connected-react-router'
 
-export default ({ items, organisation }) => {
+export default ({ items, organisation, eventId }) => {
     const dispatch = useDispatch()
-    // const match = useRouteMatch()
-    const searchResults =
-        items ?? useSelector(RecruitmentSelectors.searchResults)
+    const match = useRouteMatch()
+    const baseRoute = match.url
+    const itemsFromStore = useSelector(RecruitmentSelectors.searchResults)
+    const searchResults = items ?? itemsFromStore
     const searchResultsCount = useSelector(
         RecruitmentSelectors.searchResultsCount,
     )
@@ -27,14 +28,8 @@ export default ({ items, organisation }) => {
     const page = useSelector(RecruitmentSelectors.page)
     const paginationEnabled = !items
     const isFavorited = !!items
-    // const { slug } = match.params
+    // // const { slug } = match.params
     const { t } = useTranslation()
-
-    debugGroup('RecruitmentSearchResults', [
-        useSelector(RecruitmentSelectors.searchResults),
-        searchResults,
-        searchResultsCount,
-    ])
 
     useEffect(() => {
         //dispatch(DashboardActions.updateEvent(slug))
@@ -43,7 +38,7 @@ export default ({ items, organisation }) => {
 
     const renderLoading = () => {
         if (!loading) return null
-        if (searchResults.length === 0) {
+        if (Array.isArray(searchResults) && searchResults.length === 0) {
             return (
                 <>
                     <Grid container spacing={2}>
@@ -57,7 +52,6 @@ export default ({ items, organisation }) => {
                                 xs={12}
                                 sm={6}
                                 md={4}
-                                //lg={3}
                             >
                                 <LoadingCard />
                             </Grid>
@@ -70,9 +64,13 @@ export default ({ items, organisation }) => {
     }
 
     const renderResults = () => {
-        if (searchResults.length === 0 && !loading) {
+        if (
+            Array.isArray(searchResults) &&
+            searchResults.length === 0 &&
+            !loading
+        ) {
             if (isFavorited) {
-                return <Empty isEmpty emptyText={t('No_favorites')} />
+                return <Empty isEmpty emptyText={t('No_favorites_')} />
             } else if (filters.textSearch) {
                 return <Empty isEmpty emptyText={t('No_results_')} />
             } else {
@@ -81,21 +79,30 @@ export default ({ items, organisation }) => {
         }
         return (
             <Grid direction="row" alignItems="stretch" container spacing={2}>
-                {searchResults.map(user => (
-                    <Grid
-                        direction="row"
-                        alignItems="stretch"
-                        container
-                        key={`item-${user.userId}`}
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        //lg={3}
-                    >
-                        <ResultCard data={user} organisation={organisation} />
-                    </Grid>
-                ))}
+                {Array.isArray(searchResults) &&
+                    searchResults.map(user => (
+                        <Grid
+                            direction="row"
+                            alignItems="stretch"
+                            container
+                            key={`item-${user.userId}`}
+                            item
+                            xs={12}
+                            sm={6}
+                            md={4}
+                        >
+                            <ResultCard
+                                data={user}
+                                organisation={organisation}
+                                onClick={() => {
+                                    dispatch(
+                                        push(`${baseRoute}/${user.userId}`),
+                                    )
+                                }}
+                                eventId={eventId}
+                            />
+                        </Grid>
+                    ))}
             </Grid>
         )
     }
