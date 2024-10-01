@@ -65,7 +65,7 @@ export default () => {
         SetRecruiterOrganisation(organisation)
 
         dispatch(RecruitmentActions.updateActionHistory(organisation))
-    }, [dispatch])
+    }, [recEvents])
 
     return (
         <>
