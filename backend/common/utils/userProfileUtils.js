@@ -65,8 +65,8 @@ const userProfileUtils = {
                 ? registrationData.answers.education
                 : profileData.education,
             social: {
-                github: registrationData.answers.education
-                    ? registrationData.answers.education
+                github: registrationData.answers.github
+                    ? registrationData.answers.github
                     : profileData.github,
                 linkedin: registrationData.answers.linkedin
                     ? registrationData.answers.linkedin
