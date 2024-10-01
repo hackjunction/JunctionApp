@@ -43,7 +43,6 @@ export default () => {
     const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
     const csvLink = useRef(null)
 
-    const [recruiterOrganisation, SetRecruiterOrganisation] = useState('')
     const [showFavorites, toggleFavorites] = useToggle(false)
 
     useEffect(() => {
@@ -55,14 +54,13 @@ export default () => {
             throw new Error(t('Invalid_access_'))
         }
     }, [idTokenData])
-
+    // TODO make organization and eventId fetch on one element as now it is repeated here, in the ResultCard and in the RecruitmentFavorites
     useEffect(() => {
         dispatch(RecruitmentActions.updateEvents())
 
         const organisation = recEvents.find(e => {
             return e.eventId === eventId
         }).organisation
-        SetRecruiterOrganisation(organisation)
 
         dispatch(RecruitmentActions.updateActionHistory(organisation))
     }, [recEvents])
@@ -108,17 +106,13 @@ export default () => {
                             />
                             <SearchResults
                                 items={favorites}
-                                organisation={recruiterOrganisation}
                                 eventId={eventId}
                             />
                         </>
                     ) : (
                         <>
                             <Filters />
-                            <SearchResults
-                                organisation={recruiterOrganisation}
-                                eventId={eventId}
-                            />
+                            <SearchResults eventId={eventId} />
                         </>
                     )}
                 </Container>
