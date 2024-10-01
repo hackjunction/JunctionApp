@@ -46,7 +46,6 @@ import {
 import { Chat } from 'components/messaging/chat'
 import { Grid, Paper } from '@material-ui/core'
 import DefaultImage from 'assets/images/dashboardDefault.jpg'
-import { debugGroup } from 'utils/debuggingTools'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -80,7 +79,6 @@ export default ({
     useEffect(() => {
         setAlerts(originalAlerts)
         setAlertCount(originalAlertCount)
-        debugGroup('Dashboard alerts', [originalAlerts, originalAlertCount])
     }, [originalAlerts, originalAlertCount])
 
     return (
