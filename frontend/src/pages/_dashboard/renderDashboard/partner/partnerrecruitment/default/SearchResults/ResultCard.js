@@ -20,6 +20,7 @@ import emblem_black from 'assets/logos/emblem_black.png'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as UserSelectors from 'redux/user/selectors'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -87,7 +88,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default React.memo(
-    ({ data, organisation, onClick = () => {}, eventId }) => {
+    ({ data, onClick = () => {}, eventId }) => {
         const dispatch = useDispatch()
         const actionHistoryByUser = useSelector(
             RecruitmentSelectors.actionHistoryByUser,
@@ -99,6 +100,7 @@ export default React.memo(
         // Toggle the favorited state locally for immediate feedback on favorite action
         const [_isFavorite, setIsFavorite] = useState(isFavorite)
         const classes = useStyles({ isFavorite: _isFavorite })
+        const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
 
         useEffect(() => {
             setIsFavorite(isFavorite)
@@ -108,6 +110,9 @@ export default React.memo(
             async e => {
                 e.stopPropagation()
                 setIsFavorite(!_isFavorite)
+                const organisation = recEvents?.find(e => {
+                    return e.eventId === eventId
+                }).organisation
 
                 dispatch(
                     RecruitmentActions.toggleFavorite(
