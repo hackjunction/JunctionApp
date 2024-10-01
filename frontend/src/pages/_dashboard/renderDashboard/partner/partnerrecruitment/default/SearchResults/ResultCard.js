@@ -119,7 +119,9 @@ export default React.memo(
                 ).then(({ error }) => {
                     if (error) {
                         dispatch(
-                            SnackbarActions.error('Something went wrong...'),
+                            SnackbarActions.error(
+                                'Something went wrong, please refresh the page and try again',
+                            ),
                         )
                         setIsFavorite(_isFavorite)
                     }
