@@ -42,7 +42,7 @@ const settings = {
             'https://eu.junctionplatform.com/',
     },
     IS_DEBUG: {
-        default: process.env.REACT_APP_IS_DEBUG === 'true',
+        default: false,
         required: true,
         value: process.env.REACT_APP_IS_DEBUG === 'true',
     },
