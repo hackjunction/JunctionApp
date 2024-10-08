@@ -337,7 +337,7 @@ controller.getRegistrationsForQuery = async (query, pagination) => {
         .skip(pagination.skip)
         .limit(pagination.limit)
 
-    const count = Array.isArray(found) ? found.length : 0
+    const count = (await Registration.find(query).lean().countDocuments()) || 0
     return { found, count }
 }
 
