@@ -333,7 +333,7 @@ controller.updateTravelGrantStatus = (user, event, status) => {
 
 controller.getRegistrationsForQuery = async (query, pagination) => {
     const found = await Registration.find(query)
-        .sort('updatedAt')
+        .sort({ updatedAt: 1, _id: 1 })
         .skip(pagination.skip)
         .limit(pagination.limit)
 
