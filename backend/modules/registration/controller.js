@@ -341,6 +341,24 @@ controller.getRegistrationsForQuery = async (query, pagination) => {
     return { found, count }
 }
 
+controller.getAllRegistrationsForEventWithRecruitmentConsent = async (
+    eventId,
+    consentQuery,
+) => {
+    const consentFilter = consentQuery || {
+        'answers.recruitmentOptions.consent': true,
+    }
+
+    const found = await Registration.find({
+        event: eventId,
+        ...consentFilter,
+    })
+        .lean()
+        .sort('updatedAt')
+    console.log(found.length)
+    return found
+}
+
 controller.getRegistrationsForEvent = (eventId, getFullStrings = false) => {
     return Registration.find({
         event: eventId,

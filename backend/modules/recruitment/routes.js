@@ -13,6 +13,14 @@ const queryUsers = asyncHandler(async (req, res) => {
     return res.status(200).json(users)
 })
 
+const getAllRecruitmentProfilesForEvent = asyncHandler(async (req, res) => {
+    const profiles =
+        await RecruitmentController.getAllRecruitmentProfilesForEvent(
+            req.params.eventId,
+        )
+    return res.status(200).json(profiles)
+})
+
 const getUserProfileRecruitment = asyncHandler(async (req, res) => {
     const userProfile = await RecruitmentController.getRecruitmentProfile(
         req.params.id,
@@ -43,6 +51,13 @@ router.post(
     hasToken,
     hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
     queryUsers,
+)
+
+router.get(
+    '/profiles/:eventId',
+    hasToken,
+    hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
+    getAllRecruitmentProfilesForEvent,
 )
 
 router
