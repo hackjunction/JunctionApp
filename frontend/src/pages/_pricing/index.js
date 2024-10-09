@@ -79,12 +79,7 @@ export default () => {
                             spacing={3}
                         >
                             <PricingCard
-                                topic="Community"
-                                body={body1}
-                                price="Free"
-                            />
-                            <PricingCard
-                                topic="Enterprise"
+                                topic="What we offer"
                                 body={body2}
                                 price="Ask: hello@hackjunction.com"
                             />

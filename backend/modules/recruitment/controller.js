@@ -22,6 +22,33 @@ controller.getRecruitmentProfile = async (userId, recruiterId, eventId) => {
     )
 }
 
+//TODO add a query input to get all unpaginated profiles for a specific query
+controller.getAllRecruitmentProfilesForEvent = async eventId => {
+    // This function is to be used to get all recruitment profiles for an event, currently used to allow recruiters to download all profiles that consented to recruitment
+    const consentFilter = { 'answers.recruitmentOptions.consent': true }
+
+    try {
+        return RegistrationController.getAllRegistrationsForEventWithRecruitmentConsent(
+            eventId,
+            consentFilter,
+        ).then(results => {
+            return Promise.all(
+                results.map(profile => {
+                    return controller.createRecruitmentProfile(profile)
+                }),
+            )
+                .then(profiles => {
+                    return profiles
+                })
+                .catch(err => {
+                    throw new Error(`Error creating recruitment profiles`)
+                })
+        })
+    } catch (err) {
+        throw new Error(`Error querying registrations`)
+    }
+}
+
 controller.queryProfiles = async (query = {}, user) => {
     let userQuery = {}
     let pagination = {}

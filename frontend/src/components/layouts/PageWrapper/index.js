@@ -25,10 +25,13 @@ const PageWrapper = ({
                 <Box
                     p={2}
                     display="flex"
+                    flexDirection="column"
                     alignItems="center"
                     justifyContent="center"
+                    gridGap={10}
                 >
                     <CircularProgress size={24} />
+                    <Typography variant="body1">{loadingText}</Typography>
                 </Box>
             )
         }

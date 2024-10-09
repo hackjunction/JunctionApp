@@ -24,6 +24,12 @@ RecruitmentService.search = (idToken, filters, page, page_size, eventId) => {
         config(idToken),
     )
 }
+
+RecruitmentService.getAllRecruitmentProfilesForEvent = (idToken, eventId) => {
+    console.log(`getting all recruitment profiles for event ${eventId}`)
+    return _axios.get(`/recruitment/profiles/${eventId}`, config(idToken))
+}
+
 RecruitmentService.getUserProfile = (idToken, userId, eventId) => {
     return _axios.get(
         `/recruitment/profile/${userId}?event=${eventId}`,

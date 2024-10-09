@@ -333,12 +333,30 @@ controller.updateTravelGrantStatus = (user, event, status) => {
 
 controller.getRegistrationsForQuery = async (query, pagination) => {
     const found = await Registration.find(query)
-        .sort('updatedAt')
+        .sort({ updatedAt: 1, _id: 1 })
         .skip(pagination.skip)
         .limit(pagination.limit)
 
-    const count = Array.isArray(found) ? found.length : 0
+    const count = (await Registration.find(query).lean().countDocuments()) || 0
     return { found, count }
+}
+
+controller.getAllRegistrationsForEventWithRecruitmentConsent = async (
+    eventId,
+    consentQuery,
+) => {
+    const consentFilter = consentQuery || {
+        'answers.recruitmentOptions.consent': true,
+    }
+
+    const found = await Registration.find({
+        event: eventId,
+        ...consentFilter,
+    })
+        .lean()
+        .sort('updatedAt')
+    console.log(found.length)
+    return found
 }
 
 controller.getRegistrationsForEvent = (eventId, getFullStrings = false) => {
