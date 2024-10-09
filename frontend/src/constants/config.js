@@ -85,7 +85,7 @@ const settings = {
         required: false,
         value:
             process.env.REACT_APP_PRIVACY_URL ||
-            'https://hackjunction.com/privacy',
+            'https://www.hackjunction.com/privacy-policy',
     },
     SEO_IMAGE_URL: {
         required: false,
@@ -112,7 +112,8 @@ const settings = {
     TERMS_URL: {
         required: false,
         value:
-            process.env.REACT_APP_TERMS_URL || 'https://hackjunction.com/terms',
+            process.env.REACT_APP_TERMS_URL ||
+            'https://www.hackjunction.com/terms-conditions',
     },
     SEO_PAGE_LOGIN_DESCRIPTION: {
         required: true,
