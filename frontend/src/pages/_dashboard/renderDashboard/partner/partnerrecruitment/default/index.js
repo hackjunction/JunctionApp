@@ -22,6 +22,7 @@ import Button from 'components/generic/Button'
 import { CSVLink } from 'react-csv'
 import { flattenObject } from 'utils/dataModifiers'
 import RecruitmentService from 'services/recruitment'
+import { debugGroup } from 'utils/debuggingTools'
 
 // Used on flatenObject function
 const skipArray = ['_id', 'userId', 'registrations']
@@ -45,6 +46,14 @@ export default () => {
     const eventId = event?._id
     const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
     const csvFavLink = useRef(null)
+
+    const actionHistoryByUser = useSelector(
+        RecruitmentSelectors.actionHistoryByUser,
+    )
+
+    const actionHistory = useSelector(RecruitmentSelectors.actionHistory)
+    debugGroup('actionHistoryByUser', actionHistoryByUser)
+    debugGroup('actionHistory', actionHistory)
 
     const csvAllLink = useRef(null)
     const [allProfiles, setAllProfiles] = useState([])
