@@ -6,7 +6,11 @@ import Button from 'components/generic/Button'
 const ToggleFavorites = ({ count, active, onChange }) => {
     return (
         <Badge badgeContent={!active ? count : 0} color="secondary">
-            <Button variant={'contained'} onClick={onChange}>
+            <Button
+                className={'tw-w-full'}
+                variant={'contained'}
+                onClick={onChange}
+            >
                 {active ? 'Back to search' : 'Your favorites'}
             </Button>
         </Badge>

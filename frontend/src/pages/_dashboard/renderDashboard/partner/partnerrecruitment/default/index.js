@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Box } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 
 import SearchResults from './SearchResults'
@@ -22,7 +21,6 @@ import Button from 'components/generic/Button'
 import { CSVLink } from 'react-csv'
 import { flattenObject } from 'utils/dataModifiers'
 import RecruitmentService from 'services/recruitment'
-import { debugGroup } from 'utils/debuggingTools'
 
 // Used on flatenObject function
 const skipArray = ['_id', 'userId', 'registrations']
@@ -46,14 +44,6 @@ export default () => {
     const eventId = event?._id
     const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
     const csvFavLink = useRef(null)
-
-    const actionHistoryByUser = useSelector(
-        RecruitmentSelectors.actionHistoryByUser,
-    )
-
-    const actionHistory = useSelector(RecruitmentSelectors.actionHistory)
-    debugGroup('actionHistoryByUser', actionHistoryByUser)
-    debugGroup('actionHistory', actionHistory)
 
     const csvAllLink = useRef(null)
     const [allProfiles, setAllProfiles] = useState([])
@@ -107,62 +97,68 @@ export default () => {
         <>
             <PageWrapper>
                 <Container center>
-                    <div className="tw-flex md:tw-flex-row tw-flex-col md:tw-justify-end tw-mb-2 tw-gap-4 tw-items-end">
-                        <Button onClick={handleDownload} variant="contained">
-                            Download all profiles as CSV
-                        </Button>
-                        <CSVLink
-                            className=" tw-hidden"
-                            data={allProfiles.map(profile => {
-                                return flattenObject(
-                                    profile,
-                                    skipArray,
-                                    stringEscapeArray,
-                                )
-                            })}
-                            filename={`${event.name}-all-profiles.csv`}
-                            ref={csvAllLink}
-                        />
-                        <ToggleFavorites
-                            count={favorites.length}
-                            active={showFavorites}
-                            onChange={toggleFavorites}
-                        />
-                    </div>
-
-                    {showFavorites ? (
-                        <>
+                    <div className="tw-flex tw-flex-col tw-mb-2 tw-gap-4">
+                        <div className="tw-flex md:tw-flex-row  tw-flex-col md:tw-justify-end  tw-gap-4">
                             <Button
-                                onClick={() => {
-                                    csvFavLink.current.link.click()
-                                }}
+                                onClick={handleDownload}
                                 variant="contained"
                             >
-                                Download as CSV
+                                Download all profiles as CSV
                             </Button>
                             <CSVLink
                                 className=" tw-hidden"
-                                data={favorites.map(fav => {
+                                data={allProfiles.map(profile => {
                                     return flattenObject(
-                                        fav,
+                                        profile,
                                         skipArray,
                                         stringEscapeArray,
                                     )
                                 })}
-                                filename={`${event.name}-favorite-profiles.csv`}
-                                ref={csvFavLink}
+                                filename={`${event.name}-all-profiles.csv`}
+                                ref={csvAllLink}
                             />
-                            <SearchResults
-                                items={favorites}
-                                eventId={eventId}
+                            <ToggleFavorites
+                                count={favorites.length}
+                                active={showFavorites}
+                                onChange={toggleFavorites}
                             />
-                        </>
-                    ) : (
-                        <>
-                            <Filters />
-                            <SearchResults eventId={eventId} />
-                        </>
-                    )}
+                        </div>
+                        <div>
+                            {showFavorites ? (
+                                <>
+                                    <Button
+                                        onClick={() => {
+                                            csvFavLink.current.link.click()
+                                        }}
+                                        variant="contained"
+                                    >
+                                        Download favorites as CSV
+                                    </Button>
+                                    <CSVLink
+                                        className=" tw-hidden"
+                                        data={favorites.map(fav => {
+                                            return flattenObject(
+                                                fav,
+                                                skipArray,
+                                                stringEscapeArray,
+                                            )
+                                        })}
+                                        filename={`${event.name}-favorite-profiles.csv`}
+                                        ref={csvFavLink}
+                                    />
+                                    <SearchResults
+                                        items={favorites}
+                                        eventId={eventId}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <Filters />
+                                    <SearchResults eventId={eventId} />
+                                </>
+                            )}
+                        </div>
+                    </div>
                 </Container>
             </PageWrapper>
         </>

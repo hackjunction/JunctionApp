@@ -182,24 +182,23 @@ controller.saveRecruiterAction = async (recruiter, actionToSave) => {
     return controller.getRecruiterActions(recruiter, actionToSave.organisation)
 }
 
+//TODO add getRecruiterActions by organisation
 controller.getRecruiterActions = async (recruiter, organisation) => {
-    return (
-        RecruitmentAction.find({
-            organisation: organisation,
-        })
-            // .populate('_user _recruiter')
-            .lean()
-            .then(actions => {
-                return Promise.map(actions, async action => {
-                    action._user = await controller.getRecruitmentProfile(
-                        action.user,
-                        action.recruiter,
-                        action.event,
-                    )
-                    return action
-                })
+    // Organisation favorites can be found too if property organisation: organisation, is added to .find query
+    return RecruitmentAction.find({
+        recruiter: recruiter.sub,
+    })
+        .lean()
+        .then(actions => {
+            return Promise.map(actions, async action => {
+                action._user = await controller.getRecruitmentProfile(
+                    action.user,
+                    action.recruiter,
+                    action.event,
+                )
+                return action
             })
-    )
+        })
 }
 
 module.exports = controller
