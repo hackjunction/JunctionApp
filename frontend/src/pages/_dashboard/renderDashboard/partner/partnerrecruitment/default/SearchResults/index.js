@@ -110,13 +110,7 @@ export default ({ items, organisation, eventId }) => {
     return (
         <>
             {paginationEnabled && (
-                <Box
-                    p={2}
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
+                <div className="tw-flex tw-flex-col md:tw-flex-row tw-justify-between tw-items-center tw-p-2">
                     <Typography variant="subtitle1">
                         {searchResultsCount} results
                     </Typography>
@@ -129,7 +123,7 @@ export default ({ items, organisation, eventId }) => {
                     >
                         <Pagination />
                     </Box>
-                </Box>
+                </div>
             )}
             {renderLoading()}
             {renderResults()}
