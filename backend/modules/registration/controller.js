@@ -63,40 +63,30 @@ controller.createRegistration = async (user, event, data) => {
 }
 
 controller.createPartnerRegistration = async (user, event, data) => {
-    const registration = new Registration({
-        event: event._id.toString(),
-        user: user,
-    })
-
-    const registrationAnswers = await RegistrationHelpers.registrationFromUser(
-        data,
-    )
-    if (
-        registrationAnswers &&
-        registrationAnswers.email &&
-        registrationAnswers.firstName &&
-        registrationAnswers.lastName
-    ) {
-        registration.answers = answers
-    } else {
-        const profileAnswers = await UserProfileController.getUserProfile(user)
-
-        if (
-            profileAnswers &&
-            profileAnswers.email &&
-            profileAnswers.firstName &&
-            profileAnswers.lastName
-        ) {
-            registration.answers = {
-                email: profileAnswers.email,
-                firstName: profileAnswers.firstName,
-                lastName: profileAnswers.lastName,
-            }
+    let registration = {}
+    try {
+        const userProfile = await UserProfileController.getUserProfile(user)
+        if (!userProfile) {
+            throw new NotFoundError('User profile not found')
         }
+        registration = new Registration({
+            event: event._id.toString(),
+            user: user,
+            answers: {
+                firstName: userProfile.firstName,
+                lastName: userProfile.lastName,
+                email: userProfile.email,
+            },
+        })
+        //TODO change to partner status later - Check if partner status works
+        registration.status = RegistrationStatuses.asObject.incomplete.id
+        return registration.save()
+    } catch (error) {
+        throw new ForbiddenError(
+            'User Registration failed, try again or contact support',
+            error,
+        )
     }
-
-    registration.status = RegistrationStatuses.asObject.incomplete.id
-    return registration.save()
 }
 
 controller.getRegistration = async (userId, eventId) => {
