@@ -3,11 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { goBack } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles, lighten } from '@material-ui/core/styles'
-import {
-    Button as MuiButton,
-    IconButton,
-    Tooltip,
-} from '@material-ui/core'
+import { Button as MuiButton, IconButton, Tooltip } from '@material-ui/core'
 
 import StarIcon from '@material-ui/icons/Star'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
@@ -97,17 +93,21 @@ export default ({ user = {} }) => {
     // Toggle favorited state locally for instant feedback on favorite action
     const [_isFavorite, setIsFavorite] = useState(isFavorite)
     const classes = useStyles({ isFavorite: _isFavorite })
-    const event = useSelector(DashboardSelectors.event)._id
+    const eventId = useSelector(DashboardSelectors.event)._id
     const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
-
 
     const handleFavorite = useCallback(async () => {
         const organisation = recEvents.find(e => {
-            return e.eventId === event
+            return e.eventId === eventId
         }).organisation
         setIsFavorite(!_isFavorite)
         const { error } = await dispatch(
-            RecruitmentActions.toggleFavorite(user.userId, _isFavorite, organisation),
+            RecruitmentActions.toggleFavorite(
+                user.userId,
+                _isFavorite,
+                organisation,
+                eventId,
+            ),
         )
         if (error) {
             dispatch(SnackbarActions.error('Something went wrong...'))

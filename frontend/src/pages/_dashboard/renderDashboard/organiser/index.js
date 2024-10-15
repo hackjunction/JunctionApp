@@ -6,7 +6,7 @@ import { Typography, Box } from '@material-ui/core'
 import { EventTypes } from '@hackjunction/shared'
 import TuneIcon from '@material-ui/icons/Tune'
 import SettingsIcon from '@material-ui/icons/Settings'
-import EqualizerIcon from '@material-ui/icons/Equalizer'
+// import EqualizerIcon from '@material-ui/icons/Equalizer'
 import PeopleIcon from '@material-ui/icons/People'
 import CropFreeIcon from '@material-ui/icons/CropFree'
 import CodeIcon from '@material-ui/icons/Code'
@@ -51,22 +51,10 @@ export default () => {
 
     useEffect(() => {
         if (event) {
-            // dispatch(
-            //     OrganiserActions.updateOrganisersForEvent(
-            //         event.owner,
-            //         event.organisers,
-            //     ),
-            // )
             dispatch(
                 OrganiserActions.updateRecruitersForEvent(event.recruiters),
             )
-            // dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
-            // dispatch(OrganiserActions.updateTeamsForEvent(slug))
             dispatch(OrganiserActions.updateFilterGroups(slug))
-            // dispatch(OrganiserActions.updateProjects(slug))
-            // dispatch(OrganiserActions.updateGavelProjects(slug))
-            // dispatch(OrganiserActions.updateRankings(slug))
-            // dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
         }
     }, [dispatch, slug, event])
     return (
@@ -110,19 +98,16 @@ export default () => {
                                     zIndex: 100,
                                 }}
                             >
-                                <>
-                                    The event will be published once approved by
-                                    admins. Questions about the approval process
-                                    can be directed to hello@hackjunction.com
-                                </>
+                                {t('Event_waiting_approval_')}
                             </Alert>
                         ) : null}
-                        <BasicNavBar text={event.name} />
+                        <BasicNavBar />
                     </>
                 }
                 baseRoute={match.url}
                 location={location}
                 routes={[
+                    // TODO make one of the routes default or create a default route to render, instead of the events page
                     {
                         key: 'edit',
                         path: '/edit',
@@ -132,9 +117,9 @@ export default () => {
                     },
                     // {
                     //     key: 'stats',
-                    //     path: '/stats',
+                    //     path: '/',
                     //     exact: true,
-                    //     icon: <EqualizerIcon />,
+                    //     // icon: <EqualizerIcon />,
                     //     label: 'Stats',
                     //     component: StatsPage,
                     // },

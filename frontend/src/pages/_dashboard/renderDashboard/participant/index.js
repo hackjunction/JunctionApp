@@ -45,6 +45,7 @@ import {
 
 import { Chat } from 'components/messaging/chat'
 import { Grid, Paper } from '@material-ui/core'
+import DefaultImage from 'assets/images/dashboardDefault.jpg'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -88,12 +89,11 @@ export default ({
                 <div className={classes.sidebarTop}>
                     <Image
                         className={classes.sidebarLogo}
-                        publicId={
-                            event && event.logo ? event.logo.publicId : '' //TODO: if no logo, use default
-                        }
+                        publicId={event && event.logo && event.logo.publicId}
                         transformation={{
                             width: 200,
                         }}
+                        defaultImage={DefaultImage}
                     />
                 </div>
             }

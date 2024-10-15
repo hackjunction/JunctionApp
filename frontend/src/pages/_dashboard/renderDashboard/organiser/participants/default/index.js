@@ -51,9 +51,6 @@ const partitionFilters = filters =>
 
 export default () => {
     const registrations = useSelector(OrganiserSelectors.registrations)
-    const registrationsLoading = useSelector(
-        OrganiserSelectors.registrationsLoading,
-    )
 
     const [filters, setFilters] = useState([])
     const { normalFieldFilters, customQuestionFilters } = useMemo(
@@ -81,10 +78,7 @@ export default () => {
         <>
             <FilterGroupMenu onChange={setFilters} />
             <Divider size={1} />
-            <AttendeeTable
-                attendees={filtered}
-                loading={registrationsLoading}
-            />
+            <AttendeeTable attendees={filtered} />
         </>
     )
 }

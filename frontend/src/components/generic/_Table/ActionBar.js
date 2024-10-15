@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { Box, Typography, Button } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
+import Button from '../Button'
 import { makeStyles } from '@material-ui/core/styles'
 import { motion } from 'framer-motion'
 import { CSVLink } from 'react-csv'

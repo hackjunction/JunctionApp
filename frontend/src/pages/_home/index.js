@@ -25,10 +25,7 @@ import EventsGrid from './EventsGrid'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        background: theme.palette.theme_white.main, //`linear-gradient(to right bottom, ${theme.palette.secondary.contrastText}, ${theme.palette.success.contrastText}, ${theme.palette.primary.contrastText})`,
-
-        //'linear-gradient(to bottom right, blue, pink)',
-        //`linearGradient(${theme.palette.primary}, ${theme.palette.secondary})`,
+        background: theme.palette.theme_white.main,
     },
 }))
 
@@ -117,7 +114,7 @@ export default () => {
                             })}
                         </Typography>
                     </Grid>
-                    <Grid container justify="center" alignItems="center">
+                    <Grid container justifyContent="center" alignItems="center">
                         <Button
                             color="theme_lightgray"
                             variant="outlinedNew"

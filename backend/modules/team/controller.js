@@ -558,6 +558,23 @@ controller.getTeamsForEventAsOrganizer = async eventId => {
     return { data: eventTeams, count: teamCount }
 }
 
+controller.getAllTeamsForEventAsPartner = async eventId => {
+    //Only to be used by partners, no checks for user privileges so make sure to check if user is partner before calling this function
+    let eventTeams = []
+    await Team.find({
+        event: eventId,
+    })
+        .sort({ createdAt: 'desc' })
+        .then(teams => {
+            eventTeams = teams
+        })
+        .catch(err => {
+            console.log(err)
+            throw new ForbiddenError('No teams found for this event')
+        })
+    return eventTeams
+}
+
 controller.getTeamsForEventAsDocument = async eventId => {
     let eventTeams = []
     let teamCount = 0

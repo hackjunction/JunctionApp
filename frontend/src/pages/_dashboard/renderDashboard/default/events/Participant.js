@@ -49,7 +49,12 @@ export default () => {
                         </Grid>
 
                         {registrations?.map((registration, index) => (
-                            <Grid key={`${registration.id}-${index}`} item xs={12} md={6}>
+                            <Grid
+                                key={`${registration.id}-${index}`}
+                                item
+                                xs={12}
+                                md={6}
+                            >
                                 <EventCardSmall
                                     key={index}
                                     event={registration.event}
@@ -90,6 +95,7 @@ export default () => {
                                 const eventStarted = isodate > event.startTime
                                 return (
                                     <NewEventCard
+                                        key={`active-${event._id}`}
                                         event={event}
                                         buttons={[
                                             <Button
@@ -156,6 +162,7 @@ export default () => {
                             const eventStarted = isodate > event.startTime
                             return (
                                 <NewEventCard
+                                    key={`past-${event._id}`}
                                     event={event}
                                     buttons={[
                                         <Button

@@ -331,7 +331,7 @@ const ProjectDetail = ({
                         onChange={setIndex}
                     />
                     <Box className={classes.content}>
-                        <div className="tw-flex tw-flex-col tw-gap-8 tw-p-8">
+                        <div className="tw-flex tw-flex-col tw-gap-8 md:tw-p-8 tw-p-2">
                             <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                 <div className="tw-flex tw-gap-6 tw-items-center">
                                     <Typography variant="h4" gutterBottom>

@@ -23,6 +23,8 @@ const EmailTaskController = require('../email-task/controller')
 
 const STATUSES = RegistrationStatuses.asObject
 const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject
+const UserProfileController = require('../user-profile/controller')
+
 const controller = {}
 
 controller.getUserRegistrations = user => {
@@ -319,11 +321,39 @@ controller.updateTravelGrantStatus = (user, event, status) => {
         })
 }
 
+controller.getRegistrationsForQuery = async (query, pagination) => {
+    const found = await Registration.find(query)
+        .sort({ updatedAt: 1, _id: 1 })
+        .skip(pagination.skip)
+        .limit(pagination.limit)
+
+    const count = (await Registration.find(query).lean().countDocuments()) || 0
+    return { found, count }
+}
+
+controller.getAllRegistrationsForEventWithRecruitmentConsent = async (
+    eventId,
+    consentQuery,
+) => {
+    const consentFilter = consentQuery || {
+        'answers.recruitmentOptions.consent': true,
+    }
+
+    const found = await Registration.find({
+        event: eventId,
+        ...consentFilter,
+    })
+        .lean()
+        .sort('updatedAt')
+    console.log(found.length)
+    return found
+}
+
 controller.getRegistrationsForEvent = (eventId, getFullStrings = false) => {
     return Registration.find({
         event: eventId,
     }).then(registrations => {
-        /** Do some minor optimisation here to cut down on size */
+        /** TODO Do some minor optimisation here to cut down on size */
         return registrations.map(document => {
             const reg = document.toObject()
             if (!getFullStrings) {
