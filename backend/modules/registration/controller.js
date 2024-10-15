@@ -61,23 +61,30 @@ controller.createRegistration = async (user, event, data) => {
 }
 
 controller.createPartnerRegistration = async (user, event, data) => {
-    const answers = await RegistrationHelpers.registrationFromUser(data)
-    const registration = new Registration({
-        event: event._id.toString(),
-        user: user,
-        answers,
-    })
-    // if (event.eventType === 'online') {
-    //     registration.checklist = {
-    //         items: checklistItemsOnline(),
-    //     }
-    // } else {
-    //     registration.checklist = {
-    //         items: checklistItemsPhysical(),
-    //     }
-    // }
-    registration.status = RegistrationStatuses.asObject.incomplete.id
-    return registration.save()
+    let registration = {}
+    try {
+        const userProfile = await UserProfileController.getUserProfile(user)
+        if (!userProfile) {
+            throw new NotFoundError('User profile not found')
+        }
+        registration = new Registration({
+            event: event._id.toString(),
+            user: user,
+            answers: {
+                firstName: userProfile.firstName,
+                lastName: userProfile.lastName,
+                email: userProfile.email,
+            },
+        })
+        //TODO change to partner status later - Check if partner status works
+        registration.status = RegistrationStatuses.asObject.incomplete.id
+        return registration.save()
+    } catch (error) {
+        throw new ForbiddenError(
+            'User Registration failed, try again or contact support',
+            error,
+        )
+    }
 }
 
 controller.getRegistration = async (userId, eventId) => {

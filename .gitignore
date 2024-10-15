@@ -8,3 +8,6 @@ docker-compose.yml
 *.env.example
 azure-pipelines-1.yml
 azure-pipelines.yml
+azure-pipelines-africa.yml
+azure-pipelines-asia.yml
+azure-pipelines-eu.yml

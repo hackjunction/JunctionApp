@@ -95,6 +95,14 @@ const RegistrationStatuses = {
         allowAssign: false,
         allowEdit: false,
     },
+    partner: {
+        id: 'partner',
+        label: 'Partner',
+        description: "The registration hasn't been completed",
+        color: '#0083f3',
+        allowAssign: true,
+        allowEdit: true,
+    },
 }
 
 module.exports = {
