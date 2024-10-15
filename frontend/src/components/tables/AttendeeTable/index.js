@@ -33,7 +33,6 @@ const stringEscapeArray = [
 
 export default ({
     emptyRenderer,
-    loading,
     attendees = [],
     footer = null,
     title = 'Participants',
@@ -230,6 +229,7 @@ export default ({
             },
         ]
     }, [event.tags, organiserProfilesMap])
+
     return (
         <>
             <EditRegistrationModal

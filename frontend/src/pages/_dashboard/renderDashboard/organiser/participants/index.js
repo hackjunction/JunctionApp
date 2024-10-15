@@ -19,9 +19,6 @@ export default () => {
     const dispatch = useDispatch()
     const match = useRouteMatch()
     const location = useLocation()
-    const registrationsLoading = useSelector(
-        OrganiserSelectors.registrationsLoading,
-    )
 
     useEffect(() => {
         if (event) {
@@ -32,10 +29,7 @@ export default () => {
         }
     }, [event, location])
     return (
-        <PageWrapper
-            loading={!event || registrationsLoading}
-            loadingText="Fetching all registration data"
-        >
+        <PageWrapper>
             <PageHeader
                 heading="Participants"
                 subheading="Search participants"
