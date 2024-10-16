@@ -15,7 +15,7 @@ controller.getRecruitmentProfile = async (userId, recruiterId, eventId) => {
         userRegistration => {
             return controller.createRecruitmentProfile(
                 userRegistration,
-                true,
+                // true,
                 recruiterId,
             )
         },
@@ -114,7 +114,7 @@ controller.queryProfiles = async (query = {}, user) => {
 
 controller.createRecruitmentProfile = async (
     userRegistration,
-    eager = false,
+    // eager = false,
     recruiterId = null,
 ) => {
     // This function is to be used to create a recruitment profile from a user registration to an event
@@ -129,48 +129,68 @@ controller.createRecruitmentProfile = async (
             throw new NotFoundError(`User ${userRegistration.user} not found`)
         })
 
+    if (!userProfile) {
+        throw new NotFoundError(`User ${userRegistration.user} not found`)
+    }
     const profileComplete = userProfileUtils.recruitmentProfileBuilder(
         userRegistration,
         userProfile,
     )
-    if (eager) {
-        profileComplete.previousEvents = await Registration.find({
-            user: userRegistration.userId,
-        })
-            .populate('event')
-            .then(registrations => {
-                return registrations.map(reg => {
-                    if (reg.event) {
-                        return { id: reg.event._id, name: reg.event.name }
-                    }
-                })
-            })
-        // TODO review if recruitmentActionHistory is needed
-        // profileComplete.recruitmentActionHistory = await RecruitmentAction.find({
-        //     user: profileComplete.userId,
-        //     recruiter: recruiterId
-        // });
-    }
+    // if (eager) {
+    // profileComplete.previousEvents = await Registration.find({
+    //     user: userRegistration.userId,
+    // })
+    //     .populate('event')
+    //     .then(registrations => {
+    //         return registrations.map(reg => {
+    //             if (reg.event) {
+    //                 return { id: reg.event._id, name: reg.event.name }
+    //             }
+    //         })
+    //     })
+    // TODO review if recruitmentActionHistory is needed
+    // profileComplete.recruitmentActionHistory = await RecruitmentAction.find({
+    //     user: profileComplete.userId,
+    //     recruiter: recruiterId
+    // });
+    // }
 
     return profileComplete
 }
 
 controller.saveRecruiterAction = async (recruiter, actionToSave) => {
-    const action = new RecruitmentAction({
-        recruiter: recruiter.sub,
-        organisation: actionToSave.organisation,
-        ...actionToSave,
-    })
-    if (action.type === 'favorite') {
-        // Nothing todo, just save the action
-        await action.save()
+    const { organisation, user, type, event } = actionToSave
+    if (!organisation || !user || !type || !event) {
+        throw new Error('Missing required fields')
     }
-    if (action.type === 'remove-favorite') {
+
+    if (type === 'favorite') {
+        const actionExists = await RecruitmentAction.exists({
+            recruiter: recruiter.sub,
+            user,
+            organisation,
+            type,
+            event,
+        })
+        if (!actionExists) {
+            const action = new RecruitmentAction({
+                recruiter: recruiter.sub,
+                user,
+                organisation,
+                type,
+                event,
+            })
+            await action.save()
+        }
+    }
+    if (type === 'remove-favorite') {
         // Remove previous favorite
         await RecruitmentAction.deleteMany({
-            organisation: action.organisation,
-            user: action.user,
+            organisation,
+            recruiter: recruiter.sub,
+            user,
             type: 'favorite',
+            event,
         })
     }
     // TODO implement message action for recruiters
@@ -179,7 +199,7 @@ controller.saveRecruiterAction = async (recruiter, actionToSave) => {
     //     await action.save()
     // }
 
-    return controller.getRecruiterActions(recruiter, actionToSave.organisation)
+    return controller.getRecruiterActions(recruiter, organisation)
 }
 
 //TODO add getRecruiterActions by organisation

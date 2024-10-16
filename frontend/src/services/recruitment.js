@@ -52,7 +52,7 @@ RecruitmentService.submitAction = (
             user: userId,
             organisation: organisation,
             event: eventId,
-            data: { message: message },
+            // data: { message: message },
         },
         config(idToken),
     )
