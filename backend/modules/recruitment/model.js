@@ -22,10 +22,10 @@ const RecruitmentActionSchema = new mongoose.Schema(
             required: true,
             enum: ACTION_TYPES,
         },
-        data: {
-            type: mongoose.Mixed,
-            default: {},
-        },
+        // data: {
+        //     type: mongoose.Mixed,
+        //     default: {},
+        // },
         event: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Event',
