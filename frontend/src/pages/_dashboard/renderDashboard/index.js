@@ -40,6 +40,7 @@ export default role => {
         dispatch(DashboardActions.updateEvent(slug))
         dispatch(DashboardActions.updateRegistration(slug))
         dispatch(DashboardActions.updateTeam(slug))
+        dispatch(DashboardActions.updateProjects(slug))
     }, [slug])
 
     // Must use lazy query because event is fetched asynchnronously
