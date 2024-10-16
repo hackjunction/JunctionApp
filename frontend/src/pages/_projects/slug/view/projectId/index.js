@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
-import ShareProject from 'components/projects/ProjectDetail/ShareProject'
 import moment from 'moment-timezone'
 import { EventHelpers } from '@hackjunction/shared'
 import ProjectsService from 'services/projects'
@@ -48,8 +47,6 @@ export default ({ event, showFullTeam }) => {
                 showFullTeam={showFullTeam}
                 showTableLocation={!EventHelpers.isEventOver(event, moment)}
             />
-
-            <ShareProject project={project} event={event} />
         </PageWrapper>
     )
 }
