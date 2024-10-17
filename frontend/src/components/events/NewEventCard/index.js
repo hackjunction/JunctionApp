@@ -7,6 +7,7 @@ import {
     CardActions,
     Typography,
     Box,
+    CardActionArea,
 } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import Image from 'components/generic/Image'
@@ -78,7 +79,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const NewEventCard = ({ event, buttons }) => {
+const NewEventCard = ({ event, buttons, handleClick = () => {} }) => {
     const [hover, setHover] = useState(false)
     const dispatch = useDispatch()
     const { t } = useTranslation()
@@ -104,47 +105,49 @@ const NewEventCard = ({ event, buttons }) => {
             onMouseLeave={() => setHover(false)}
             className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-600px tw-max-w-xs tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
         >
-            <CardContent className="tw-flex tw-flex-col tw-p-0">
-                <div className="tw-h-40 tw-w-full tw-my-0 tw-mx-auto tw-relative tw-flex tw-justify-end tw-items-end">
-                    <Image
-                        className={classes.image}
-                        defaultImage={require('assets/images/default_cover_image.png')}
-                        publicId={event?.coverImage?.publicId}
-                        transformation={{
-                            width: 400,
-                        }}
-                    />
-                    {organization?.icon && ( //TODO: Fix
-                        <Avatar
-                            className={classes.organiser}
-                            src={organization?.icon}
+            <CardActionArea onClick={handleClick}>
+                <CardContent className="tw-flex tw-flex-col tw-p-0">
+                    <div className="tw-h-40 tw-w-full tw-my-0 tw-mx-auto tw-relative tw-flex tw-justify-end tw-items-end">
+                        <Image
+                            className={classes.image}
+                            defaultImage={require('assets/images/default_cover_image.png')}
+                            publicId={event?.coverImage?.publicId}
+                            transformation={{
+                                width: 400,
+                            }}
                         />
-                    )}
-                </div>
-                <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
-                    <Typography variant="h4">{event.name}</Typography>
-                </div>
-                {event?.description && (
+                        {organization?.icon && ( //TODO: Fix
+                            <Avatar
+                                className={classes.organiser}
+                                src={organization?.icon}
+                            />
+                        )}
+                    </div>
                     <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
-                        <Markdown
-                            source={_.truncate(event?.description, {
-                                length: 200,
-                            })}
-                        />
+                        <Typography variant="h4">{event.name}</Typography>
                     </div>
-                )}
+                    {event?.description && (
+                        <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
+                            <Markdown
+                                source={_.truncate(event?.description, {
+                                    length: 200,
+                                })}
+                            />
+                        </div>
+                    )}
 
-                {event?.startTime && event?.endTime && (
-                    <div className="tw-p-4">
-                        <ProgressBar
-                            start={event?.startTime}
-                            end={event?.endTime}
-                            current={new Date()}
-                            event={event.slug}
-                        />
-                    </div>
-                )}
-            </CardContent>
+                    {event?.startTime && event?.endTime && (
+                        <div className="tw-p-4">
+                            <ProgressBar
+                                start={event?.startTime}
+                                end={event?.endTime}
+                                current={new Date()}
+                                event={event.slug}
+                            />
+                        </div>
+                    )}
+                </CardContent>
+            </CardActionArea>
 
             <CardActions className="tw-flex tw-gap-4 tw-justify-start tw-max-w-full tw-px-4 tw-pb-4 tw-pt-6">
                 {buttons?.slice(0, 2).map((btn, index) => {

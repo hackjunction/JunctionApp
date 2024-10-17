@@ -156,6 +156,12 @@ export default () => {
 
                             <NewEventCard
                                 event={event}
+                                handleClick={() => {
+                                    dispatch(
+                                        UserActions.setAccessRight('organizer'),
+                                    )
+                                    dispatch(push(`/organise/${event.slug}`))
+                                }}
                                 buttons={[
                                     <Button
                                         size="small"
