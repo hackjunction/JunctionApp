@@ -28,11 +28,8 @@ export default () => {
     const [pastEvents] = usePastEvents({ limit: 3 })
     const dispatch = useDispatch()
     const { t } = useTranslation()
-    console.log("activeEvents", activeEvents)
-
 
     return (
-
         <PageWrapper header={() => <GlobalNavBar />} footer={() => <Footer />}>
             <Helmet>
                 <title>{config.PLATFORM_OWNER_NAME}</title>
@@ -99,7 +96,7 @@ export default () => {
                         })}
                     </Typography>
                 </Grid>
-                <Grid container justify="center" alignItems="center">
+                <Grid container justifyContent="center" alignItems="center">
                     <Button
                         color="theme_lightgray"
                         variant="outlinedNew"

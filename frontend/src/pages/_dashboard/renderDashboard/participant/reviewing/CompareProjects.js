@@ -164,7 +164,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
         }
 
         return (
-            <Grid container spacing={3} direction="row" justify="center">
+            <Grid container spacing={3} direction="row" justifyContent="center">
                 <ProjectsGridItem
                     project={projects.prev.project}
                     event={event}

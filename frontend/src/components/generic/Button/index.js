@@ -236,6 +236,7 @@ const Button = ({
     color = 'primary',
     strong = false,
     loading = false,
+    className = '',
     ...props
 }) => {
     const classes = useStyles({ color, strong, variant: props.variant })
@@ -248,6 +249,7 @@ const Button = ({
         <MuiButton
             {...props}
             classes={classes}
+            className={className}
             disabled={loading || props.disabled}
             children={loading ? <CircularProgress size={20} /> : props.children}
         />

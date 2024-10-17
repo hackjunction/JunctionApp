@@ -79,6 +79,18 @@ const getScoreByProjectId = asyncHandler(async (req, res) => {
     return res.status(200).json(score)
 })
 
+const getScoreByEventSlugAndProjectIdAndPartnerAccount = asyncHandler(
+    async (req, res) => {
+        const score =
+            await ProjectScoreController.getScoreByEventSlugAndProjectIdAndPartnerAccount(
+                req.params.projectId,
+                req.user.sub,
+                req.event,
+            )
+        return res.status(200).json(score)
+    },
+)
+
 const getPublicScores = asyncHandler(async (req, res) => {
     if (!req.event) {
         return res.status(404).json({ message: 'Event not found.' })
@@ -88,14 +100,8 @@ const getPublicScores = asyncHandler(async (req, res) => {
 })
 
 const updateProjectScoreWithReviewers = asyncHandler(async (req, res) => {
-    const { slug, projectScoreId } = req.params
+    const { projectScoreId } = req.params
     try {
-        // if (req.params.track) {
-        //     req.body.track = req.params.track._id
-        // }
-        // if (req.params.challenge) {
-        //     req.body.challenge = req.params.challenge._id
-        // }
         const projectScore =
             await ProjectScoreController.updateProjectScoreWithReviewers(
                 projectScoreId,
@@ -119,6 +125,7 @@ router.get(
     canSubmitProject,
     getScoresByEventAndTeam,
 )
+
 router.get('/event/:slug', getEventFromParams, getPublicScores)
 router.get(
     '/event/:slug/project/:projectId',
@@ -157,7 +164,7 @@ router.get(
     '/review/event/:slug/:projectId',
     hasToken,
     isEventPartner,
-    getScoreByProjectId,
+    getScoreByEventSlugAndProjectIdAndPartnerAccount,
 )
 
 router.post(

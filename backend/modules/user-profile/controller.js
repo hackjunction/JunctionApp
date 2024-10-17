@@ -56,7 +56,6 @@ controller.getUserProfilesPublic = userIds => {
     })
 }
 
-
 controller.createUserProfile = (data, userId) => {
     const userProfile = new UserProfile({
         userId,
@@ -124,10 +123,12 @@ controller.getUsersByEmail = email => {
 }
 
 // a function to get the user id by email
-controller.getUserIdByEmail = async (email) => {
+controller.getUserIdByEmail = async email => {
     const profiles = await controller.getUsersByEmail(email)
     if (profiles.length === 0) {
-        throw new NotFoundError(`User profile with email ${email} does not exist`)
+        throw new NotFoundError(
+            `User profile with email ${email} does not exist`,
+        )
     }
     return profiles[0].userId
 }
@@ -147,22 +148,19 @@ controller.getRecruiters = () => {
 
 controller.updateRecruiter = (userId, event, organisation) => {
     return UserProfile.findOne({ userId }).then(user => {
-        user.recruiterEvents = user.recruiterEvents.concat(
-            {
-                eventId: event,
-                organisation: organisation,
-            },
-        )
+        user.recruiterEvents = user.recruiterEvents.concat({
+            eventId: event,
+            organisation: organisation,
+        })
         return user.save()
     })
-
-
 }
 
 controller.deleteRecruiter = (userId, event) => {
     return UserProfile.findOne({ userId }).then(user => {
-        user.recruiterEvents = user.recruiterEvents.filter(recruiterEvent =>
-            recruiterEvent.eventId !== event)
+        user.recruiterEvents = user.recruiterEvents.filter(
+            recruiterEvent => recruiterEvent.eventId !== event,
+        )
         return user.save()
     })
 }
@@ -173,18 +171,17 @@ controller.updateRecruitersAdmin = (userId, events, organisation) => {
             events.map(event => ({
                 eventId: event,
                 organisation: organisation,
-            })))
+            })),
+        )
         return user.save()
     })
 }
 
-controller.deleteRecruitersAdmin = (userId) => {
+controller.deleteRecruitersAdmin = userId => {
     return UserProfile.findOne({ userId }).then(user => {
         user.recruiterEvents = []
         return user.save()
     })
 }
-
-
 
 module.exports = controller

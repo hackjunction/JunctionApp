@@ -45,7 +45,7 @@ export default ({ category, label, onSelectionChange, value = null }) => {
                         value={score}
                         className="tw-p-0"
                         checkedIcon={
-                            <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
+                            <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-rounded-full tw-w-5 tw-h-5 sm:tw-w-8 sm:tw-h-8 ">
                                 <span
                                     className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-font-bold tw-text-white ${classes.bgPrimary}`}
                                 >
@@ -55,7 +55,7 @@ export default ({ category, label, onSelectionChange, value = null }) => {
                         }
                         icon={
                             index < selectedIndex ? (
-                                <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
+                                <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-rounded-full tw-w-5 tw-h-5 sm:tw-w-8 sm:tw-h-8">
                                     <span
                                         className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-text-gray-400 ${classes.bgPrimary}`}
                                     >
@@ -64,7 +64,7 @@ export default ({ category, label, onSelectionChange, value = null }) => {
                                 </div>
                             ) : (
                                 <span
-                                    className={`tw-flex tw-justify-center tw-items-center tw-text-sm ${classes.icon}`}
+                                    className={`tw-flex tw-justify-center tw-items-center tw-bg-gray-200 tw-text-sm tw-rounded-full tw-w-5 tw-h-5 sm:tw-w-8 sm:tw-h-8`}
                                 >
                                     {score}
                                 </span>
