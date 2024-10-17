@@ -10,8 +10,6 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useTranslation } from 'react-i18next'
 
-
-
 export default ({ events, loading = false, title }) => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
@@ -50,8 +48,8 @@ export default ({ events, loading = false, title }) => {
                                         dispatch(
                                             push(
                                                 '/events/' +
-                                                event.slug +
-                                                '/register/',
+                                                    event.slug +
+                                                    '/register/',
                                             ),
                                         )
                                     }
@@ -94,7 +92,7 @@ export default ({ events, loading = false, title }) => {
                         spacing={6}
                         direction="row"
                         alignItems="stretch"
-                        justify="center"
+                        justifyContent="center"
                     >
                         <Grid item xs={12}>
                             <Typography variant="h3" align="center">

@@ -36,13 +36,11 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
     const [loading, setLoading] = useState(false)
     const idToken = useSelector(AuthSelectors.getIdToken)
     const hasRecruiterAccess = useSelector(AuthSelectors.hasRecruiterAccess)
-    // TODO IMPORTANT hide team members in backend
     const fetchTeamMembers = useCallback(async () => {
         if (!teamId) return
         setLoading(true)
         try {
             if (hasRecruiterAccess) {
-                console.log('has recruiter access')
                 const data = await UserProfilesService.getUserProfilesByTeamId(
                     teamId,
                     idToken,
@@ -80,12 +78,6 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
         return null
     }
 
-    const secondaryText = member => {
-        if (!showFullTeam) return null
-        return `${member.email} // ${
-            member.phoneNumber ? member.phoneNumber.countryCode : ''
-        } ${member.phoneNumber ? member.phoneNumber.number : ''}`
-    }
     return (
         <List>
             {teamMembers.map(member => {
@@ -94,10 +86,6 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
                         <ListItemAvatar>
                             <Avatar src={member.avatar} />
                         </ListItemAvatar>
-                        <ListItemText
-                            primary={`${member.firstName} ${member.lastName}`}
-                            secondary={secondaryText(member)}
-                        />
                         {typeof member.recruitmentOptions !== 'undefined' &&
                             member.recruitmentOptions.consent && (
                                 <IfRecruiter memberId={member.userId} />

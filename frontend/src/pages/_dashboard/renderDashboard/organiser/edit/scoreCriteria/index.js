@@ -3,17 +3,19 @@ import { FastField } from 'formik'
 import { Grid, Typography } from '@material-ui/core'
 import FormControl from 'components/inputs/FormControl'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import _ from 'lodash'
 import Switch from 'components/generic/Switch'
 import EditableOptions from '../submission/components/EditableOptions'
 import { EventHelpers } from '@hackjunction/shared'
 import moment from 'moment-timezone'
+import { slugify } from 'utils/dataModifiers'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const isReviewingOpen = EventHelpers.isReviewingOpen(event, moment)
     const isReviewingPast = EventHelpers.isReviewingPast(event, moment)
+
     return (
         <Grid container spacing={8}>
             <Grid
@@ -136,6 +138,13 @@ export default () => {
                         cause unexpected problems. Modify at your own risk!
                     </p>
                 )}
+                <Typography className=" tw-py-4 " variant="body2" component="p">
+                    This criteria will be applied to all challenges by default.
+                    If you want to apply custom evaluation criteria for each
+                    challenge, you can do so by going to the challenge settings
+                    page and customizing the scoring criteria for the specific
+                    challenge you want to customize.
+                </Typography>
                 <FastField
                     name="scoreCriteriaSettings.scoreCriteria"
                     render={({ field, form }) => (
@@ -144,6 +153,7 @@ export default () => {
                             hint="Add, edit, or delete the criteria judges will use to evaluate projects. For example, creativity, innovation, simplicity, efficiency, etc."
                         >
                             <EditableOptions
+                                uniqueOptions
                                 options={
                                     field.value
                                         ? field.value.map(c => c.label)
@@ -153,9 +163,7 @@ export default () => {
                                     form.setFieldValue(field.name, [
                                         ...(field.value || []),
                                         {
-                                            criteria: value
-                                                .toLowerCase()
-                                                .replace(/\s/g, '_'),
+                                            criteria: slugify(value),
                                             label: value,
                                         },
                                     ])
@@ -163,9 +171,7 @@ export default () => {
                                 handleEdit={(index, value) => {
                                     const newArr = [...field.value]
                                     newArr[index] = {
-                                        criteria: value
-                                            .toLowerCase()
-                                            .replace(/\s/g, '_'),
+                                        criteria: slugify(value),
                                         label: value,
                                     }
                                     form.setFieldValue(field.name, newArr)
@@ -173,9 +179,7 @@ export default () => {
                                 handleDelete={updatedArray => {
                                     const arrayFormated = updatedArray.map(
                                         c => ({
-                                            criteria: c
-                                                .toLowerCase()
-                                                .replace(/\s/g, '_'),
+                                            criteria: slugify(c),
                                             label: c,
                                         }),
                                     )

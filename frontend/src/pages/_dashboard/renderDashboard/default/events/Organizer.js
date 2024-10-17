@@ -16,7 +16,7 @@ import * as UserActions from 'redux/user/actions'
 
 import CreateEventCard from './CreateEventCard'
 import TextInput from '../../../../../components/inputs/TextInput'
-import { debugGroup } from 'utils/debuggingTools'
+import { useDebounce } from 'hooks/customHooks'
 
 //TODO: make this to use theme colors and make prettier
 const useStyles = makeStyles({
@@ -55,22 +55,14 @@ const useStyles = makeStyles({
 })
 
 export default () => {
-    const userId = useSelector(AuthSelectors.getUserId)
-    const idToken = useSelector(AuthSelectors.getIdToken)
     const organizerEvents = useSelector(UserSelectors.organizerEvents)
     const classes = useStyles()
 
     const dispatch = useDispatch()
     const { t } = useTranslation()
-    var date = new Date()
-    const isodate = date.toISOString()
 
     const [searchTerm, setSearchTerm] = useState('')
-    const [searchResults, setSearchResults] = useState(organizerEvents)
-    const [name, setName] = useState('')
-    const [error, setError] = useState()
-    const [loading, setLoading] = useState(false)
-    const hasError = Boolean(error)
+    const [searchResults, setSearchResults] = useState([])
 
     const isOrganizer = useSelector(AuthSelectors.idTokenData)?.roles?.some(r =>
         ['Organiser', 'AssistantOrganiser', 'SuperAdmin'].includes(r),
@@ -78,17 +70,32 @@ export default () => {
 
     //TODO implement pagination to improve performance of organize tab
 
+    let searchTermDebounced = useDebounce(searchTerm, 1000)
+
     useEffect(() => {
-        const results = organizerEvents.filter(
-            event =>
-                event.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !==
-                -1,
-        )
-        setSearchResults(results)
-    }, [organizerEvents, searchTerm])
+        if (
+            organizerEvents &&
+            Array.isArray(organizerEvents) &&
+            organizerEvents.length > 0
+        ) {
+            if (searchTermDebounced) {
+                const results = organizerEvents.filter(
+                    event =>
+                        event.name
+                            .toLowerCase()
+                            .indexOf(searchTermDebounced.toLowerCase()) !== -1,
+                )
+                setSearchResults(results)
+            } else {
+                setSearchResults(organizerEvents)
+            }
+        }
+    }, [organizerEvents, searchTermDebounced])
 
     //TODO: super slow on superadmin. fix the rendering
-    return organizerEvents.length === 0 || !isOrganizer ? (
+    return searchResults &&
+        Array.isArray(searchResults) &&
+        (searchResults.length === 0 || !isOrganizer) ? (
         <>
             <PageHeader
                 heading="Your Admin Events"
@@ -149,6 +156,12 @@ export default () => {
 
                             <NewEventCard
                                 event={event}
+                                handleClick={() => {
+                                    dispatch(
+                                        UserActions.setAccessRight('organizer'),
+                                    )
+                                    dispatch(push(`/organise/${event.slug}`))
+                                }}
                                 buttons={[
                                     <Button
                                         size="small"

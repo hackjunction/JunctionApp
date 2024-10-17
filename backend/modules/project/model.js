@@ -47,6 +47,7 @@ const ProjectSchema = new mongoose.Schema({
     images: {
         type: [CloudinaryImageSchema.mongoose],
     },
+    //TODO modify challenges to only allow one challenge
     challenges: {
         type: [String],
     },

@@ -412,3 +412,15 @@ export const generateResults = slug => async (dispatch, getState) => {
         },
     })
 }
+
+export const getProjectScores = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+
+    dispatch({
+        type: ActionTypes.GET_PROJECT_SCORES,
+        promise: ProjectsService.getProjectScores(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error getting project scores', e),
+        },
+    })
+}

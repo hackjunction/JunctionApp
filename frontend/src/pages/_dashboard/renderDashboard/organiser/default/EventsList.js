@@ -75,7 +75,7 @@ export default ({ events = [] }) => {
             <Grid
                 container
                 direction="row"
-                justify="flex-start"
+                justifyContent="flex-start"
                 alignItems="center"
                 spacing={1}
             >

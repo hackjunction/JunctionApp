@@ -17,7 +17,6 @@ const useStyles = makeStyles(theme => ({
         transition: 'all 0.2s ease',
         border: active ? '2px solid #000000' : '2px solid #DBDBDB',
         borderRadius: '4px',
-        height: '28px',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',

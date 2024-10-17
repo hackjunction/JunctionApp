@@ -75,21 +75,16 @@ export default () => {
                         <Grid
                             container
                             direction="row"
-                            justify="center"
+                            justifyContent="center"
                             spacing={3}
                         >
                             <PricingCard
-                                topic="Community"
-                                body={body1}
-                                price="Free"
-                            />
-                            <PricingCard
-                                topic="Enterprise"
+                                topic="What we offer"
                                 body={body2}
                                 price="Ask: hello@hackjunction.com"
                             />
                             <Divider size={4} />
-                            <Typography variant="body1" justify="center">
+                            <Typography variant="body1" justifyContent="center">
                                 Our expertise of organising hackathons combined
                                 with the power of a highly-customizable platform
                                 for events makes hosting diverse events
