@@ -199,14 +199,15 @@ controller.saveRecruiterAction = async (recruiter, actionToSave) => {
     //     await action.save()
     // }
 
-    return controller.getRecruiterActions(recruiter, organisation)
+    return controller.getRecruiterActions(recruiter, organisation, event)
 }
 
 //TODO add getRecruiterActions by organisation
-controller.getRecruiterActions = async (recruiter, organisation) => {
+controller.getRecruiterActions = async (recruiter, organisation, eventId) => {
     // Organisation favorites can be found too if property organisation: organisation, is added to .find query
     return RecruitmentAction.find({
         recruiter: recruiter.sub,
+        event: eventId,
     })
         .lean()
         .then(actions => {

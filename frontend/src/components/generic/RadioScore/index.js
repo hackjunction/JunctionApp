@@ -6,7 +6,7 @@ import junctionStyle from 'utils/styles'
 
 const scoreArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-export default ({ category, label, onSelectionChange, value = null }) => {
+export default ({ criteria, label, onSelectionChange, value = null }) => {
     const classes = junctionStyle()
     const [selectedValue, setSelectedValue] = useState(value)
     const [selectedIndex, setSelectedIndex] = useState(null)
@@ -28,8 +28,8 @@ export default ({ category, label, onSelectionChange, value = null }) => {
                 {label}
             </FormLabel>
             <RadioGroup
-                aria-label={category}
-                name={category}
+                aria-label={criteria}
+                name={criteria}
                 value={selectedValue}
                 onChange={e => {
                     setSelectedValue(toInteger(e.target.value))
@@ -39,6 +39,7 @@ export default ({ category, label, onSelectionChange, value = null }) => {
             >
                 {scoreArray.map((score, index) => (
                     <Radio
+                        id={`${criteria}-${score}`}
                         key={index}
                         checked={score === selectedValue}
                         onChange={() => handleChange(index)}

@@ -491,32 +491,23 @@ controller.attachUserApplicant = (teams, userId) => {
 
 controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
     let eventTeams = []
-    let teamCount = 0
-    if (page && size) {
-        if (filter) {
-            eventTeams = await Team.find({
-                event: eventId,
-                challenge: filter,
-            })
-                .sort({ createdAt: 'desc' })
-                .skip(parseInt(size * page))
-                .limit(parseInt(size))
-            teamCount = await eventTeams.length
-        } else {
-            eventTeams = await Team.find({
-                event: eventId,
-            })
-                .sort({ createdAt: 'desc' })
-                .skip(parseInt(size * page))
-                .limit(parseInt(size))
-            teamCount = await eventTeams.length
-        }
-    } else {
-        eventTeams = await Team.find({
-            event: eventId,
-        }).sort({ createdAt: 'desc' })
-        teamCount = await eventTeams.length
+    const query = { event: eventId }
+
+    if (filter) {
+        query.challenge = filter
     }
+
+    const teamCount = await Team.countDocuments(query)
+
+    if (page && size) {
+        eventTeams = await Team.find(query)
+            .sort({ createdAt: 'desc' })
+            .skip(parseInt(size * page))
+            .limit(parseInt(size))
+    } else {
+        eventTeams = await Team.find(query).sort({ createdAt: 'desc' })
+    }
+
     const teamsWithoutTeamCode = convertToObjectAndStripProperties(eventTeams, [
         'code',
     ])

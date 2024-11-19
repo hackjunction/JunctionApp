@@ -31,6 +31,7 @@ import ChallengesIndex from '../generalPages/challenges'
 import CalendarPage from './calendar'
 import MapPage from '../generalPages/map'
 import ChecklistPage from './checklist'
+import sideChallengesPage from './side-challenges'
 
 import { useTranslation } from 'react-i18next'
 
@@ -41,6 +42,7 @@ import {
     LocalAirportRounded,
     LocalPlayRounded,
     QuestionAnswerSharp,
+    Directions,
 } from '@material-ui/icons'
 
 import { Chat } from 'components/messaging/chat'
@@ -75,6 +77,8 @@ export default ({
     const location = useLocation()
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
+
+    let isNotMainEvent = event?.slug !== 'junction-2024'
 
     useEffect(() => {
         setAlerts(originalAlerts)
@@ -124,6 +128,16 @@ export default ({
                     icon: <HowToVoteIcon />,
                     label: t('Finalist_voting_'),
                     component: FinalistVotingPage,
+                },
+                //TODO make re-enable map for all events
+                {
+                    key: 'map',
+                    hidden: isNotMainEvent,
+                    path: '/map',
+                    exact: false,
+                    icon: <PlaceIcon />,
+                    label: 'Venue map',
+                    component: MapPage,
                 },
                 {
                     key: 'team',
@@ -184,6 +198,17 @@ export default ({
                     label: t('Challenges_'),
                     component: ChallengesIndex,
                 },
+                //TODO make side-challenges into a full feature
+                {
+                    key: 'side-challenges',
+                    path: '/side-challenges',
+                    exact: true,
+                    icon: <Directions />,
+                    hidden: isNotMainEvent,
+                    label: 'Side-challenges',
+                    component: sideChallengesPage,
+                },
+                //TODO fix meeting booking system
                 {
                     key: 'calendar',
                     path: '/calendar',
@@ -194,15 +219,6 @@ export default ({
                     component: CalendarPage,
                 },
                 // Experimental
-                {
-                    key: 'map',
-                    hidden: !shownPages.experimental,
-                    path: '/map',
-                    exact: false,
-                    icon: <PlaceIcon />,
-                    label: 'Map',
-                    component: MapPage,
-                },
                 {
                     key: 'chat',
                     hidden: !shownPages.experimental,

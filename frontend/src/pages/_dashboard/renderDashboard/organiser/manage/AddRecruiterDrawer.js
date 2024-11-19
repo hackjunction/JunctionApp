@@ -4,34 +4,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     Drawer,
     Box,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
     Grid,
     Collapse,
-    FormControl,
-    InputLabel,
-    Input,
     IconButton,
     Typography,
     List,
     ListItemText,
     ListItem,
     ListItemSecondaryAction,
-    ListItemIcon,
     ListItemAvatar,
     Avatar,
 } from '@material-ui/core'
-import {
-    Add,
-    ExpandLess,
-    ExpandMore,
-    PersonAdd
-} from '@material-ui/icons'
+import { ExpandLess, ExpandMore, PersonAdd } from '@material-ui/icons'
 
-import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import Button from 'components/generic/Button'
@@ -39,38 +24,32 @@ import TextInput from 'components/inputs/TextInput'
 import UserProfilesService from 'services/userProfiles'
 
 export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
-
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [results, setResults] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [loading, setLoading] = useState(false)
     const [organizationDialogOpen, setOrganizationDialogOpen] = useState(false)
-    const [openedItemId, setOpenedItemId] = useState("")
-    const [organization, setOrganisation] = useState("")
-
-    //const handleDialogOpen = () => setOrganizationDialogOpen(!dialogOpen)
+    const [openedItemId, setOpenedItemId] = useState('')
+    const [organization, setOrganisation] = useState('')
 
     useEffect(() => {
-        setOrganisation("")
+        setOrganisation('')
         setOrganizationDialogOpen(false)
-        setOpenedItemId("")
+        setOpenedItemId('')
     }, [onClose])
 
     const handleOrganizationDialogOpen = orgEvent => {
         let clickedItemId = orgEvent.currentTarget.id
-        setOrganisation("")
+        setOrganisation('')
         if (openedItemId === clickedItemId) {
             setOrganizationDialogOpen(false)
-            setOpenedItemId("")
+            setOpenedItemId('')
         } else {
             setOpenedItemId(clickedItemId)
             setOrganizationDialogOpen(true)
         }
-        //setOpen(!open);
     }
-
-    const handleOrganizationDialogClose = () => setOrganizationDialogOpen(false)
 
     const handleSearch = useCallback(() => {
         UserProfilesService.queryUsers(idToken, searchValue)
@@ -90,11 +69,10 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
     }, [searchValue, idToken, dispatch])
 
     const handleGrantAccess = useCallback(
-
         (user, organization) => {
             onGrant(user.userId, organization)
-            setOrganisation("")
-            setOpenedItemId("")
+            setOrganisation('')
+            setOpenedItemId('')
             onClose()
         },
         [onGrant, onClose],
@@ -123,7 +101,6 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
                 <Box p={1} />
                 <List>
                     {results.map(user => (
-
                         <ListItem key={user.userId}>
                             <Grid
                                 container
@@ -132,7 +109,6 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
                                 alignItems="flex-start"
                             >
                                 <Grid item>
-
                                     <ListItemAvatar>
                                         <Avatar
                                             alt={'User avatar image'}
@@ -149,7 +125,9 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
                                                     variant="body2"
                                                 >
                                                     E-mail:{' '}
-                                                    <strong>{user.email}</strong>
+                                                    <strong>
+                                                        {user.email}
+                                                    </strong>
                                                 </Typography>
                                                 <Typography
                                                     component="p"
@@ -165,9 +143,20 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
                                             </React.Fragment>
                                         }
                                     />
-                                    {recruiters.map(x => x.recruiterId).indexOf(user.userId) === -1 ? (
-                                        <ListItemSecondaryAction id={user.userId} onClick={handleOrganizationDialogOpen}>
-                                            {organizationDialogOpen ? <ExpandLess /> : <ExpandMore />}
+                                    {recruiters
+                                        .map(x => x.recruiterId)
+                                        .indexOf(user.userId) === -1 ? (
+                                        <ListItemSecondaryAction
+                                            id={user.userId}
+                                            onClick={
+                                                handleOrganizationDialogOpen
+                                            }
+                                        >
+                                            {organizationDialogOpen ? (
+                                                <ExpandLess />
+                                            ) : (
+                                                <ExpandMore />
+                                            )}
                                         </ListItemSecondaryAction>
                                     ) : (
                                         <ListItemSecondaryAction>
@@ -176,12 +165,12 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
                                             </Typography>
                                         </ListItemSecondaryAction>
                                     )}
-
                                 </Grid>
                                 <Grid item>
-
-                                    <Collapse in={openedItemId === user.userId} unmountOnExit>
-
+                                    <Collapse
+                                        in={openedItemId === user.userId}
+                                        unmountOnExit
+                                    >
                                         <Grid
                                             container
                                             direction="row"
@@ -192,23 +181,26 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
                                                 <TextInput
                                                     value={organization}
                                                     onChange={setOrganisation}
-
                                                     placeholder="BigCorp Ltd."
                                                 />
-
                                             </Grid>
                                             <Grid item>
-                                                <IconButton disabled={
-                                                    loading || !organization
-                                                }
-                                                    onClick={() => handleGrantAccess(user, organization)}>
+                                                <IconButton
+                                                    disabled={
+                                                        loading || !organization
+                                                    }
+                                                    onClick={() =>
+                                                        handleGrantAccess(
+                                                            user,
+                                                            organization,
+                                                        )
+                                                    }
+                                                >
                                                     <PersonAdd fontSize="medium" />
                                                 </IconButton>
                                             </Grid>
                                         </Grid>
-
                                     </Collapse>
-
                                 </Grid>
                             </Grid>
                         </ListItem>

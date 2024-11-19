@@ -20,7 +20,15 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ name, value, placeholder, onChange, onBlur, maxLength }) => {
+export default ({
+    id = undefined,
+    name,
+    value,
+    placeholder,
+    onChange,
+    onBlur,
+    maxLength,
+}) => {
     const classes = useStyles()
     const [isPreview, setIsPreview] = useState(false)
 
@@ -54,6 +62,7 @@ export default ({ name, value, placeholder, onChange, onBlur, maxLength }) => {
                     <Markdown source={value} className={classes.preview} />
                 ) : (
                     <TextAreaInput
+                        id={id}
                         placeholder={placeholder}
                         value={value}
                         onChange={onChange}

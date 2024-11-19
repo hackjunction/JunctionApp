@@ -58,8 +58,11 @@ RecruitmentService.submitAction = (
     )
 }
 
-RecruitmentService.getActionHistory = (idToken, organisation) => {
-    return _axios.get(`/recruitment/action/${organisation}`, config(idToken))
+RecruitmentService.getActionHistory = (idToken, organisation, eventId) => {
+    return _axios.get(
+        `/recruitment/action/${organisation}?event=${eventId}`,
+        config(idToken),
+    )
 }
 
 export default RecruitmentService

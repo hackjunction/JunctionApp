@@ -195,6 +195,7 @@ export default ({
                                     error={form.errors[field.name]}
                                 >
                                     <TextInput
+                                        id={'team-name'}
                                         value={field.value}
                                         onChange={value =>
                                             form.setFieldValue(
@@ -257,6 +258,7 @@ export default ({
                                             error={form.errors[field.name]}
                                         >
                                             <Select
+                                                name={'challenge'}
                                                 label={t('Select_challenge_')}
                                                 options={challengeOptions}
                                                 value={field.value}
@@ -438,6 +440,7 @@ export default ({
                                     error={form.errors[field.name]}
                                 >
                                     <TextInput
+                                        id={'team-email'}
                                         value={field.value}
                                         onChange={value =>
                                             form.setFieldValue(

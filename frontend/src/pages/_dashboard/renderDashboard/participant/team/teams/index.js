@@ -19,6 +19,7 @@ import JoinTeamByCode from 'components/Team/JoinTeamByCode'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
+    const numberOfTeamsShown = 30
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const { t } = useTranslation()
@@ -36,44 +37,34 @@ export default () => {
 
     const [currentPage, SetCurrentPage] = useState(0)
     const totalResults = useSelector(DashboardSelectors.teamsCount)
-    const totalPages = Math.ceil(totalResults / 25)
+    const totalPages = Math.ceil(totalResults / numberOfTeamsShown)
 
-    const hadleTeamCardClick = useCallback(
-        async teamId => {
-            if (teamId) {
-                setLoading(true)
-                dispatch(DashboardActions.updateSelectedTeam(slug, teamId))
-                    .then(team => {
-                        setSelectedTeam(team)
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                    .finally(() => {
-                        setLoading(false)
-                    })
-            }
-        },
-        [selectedTeam],
-    )
+    const hadleTeamCardClick = async teamId => {
+        if (teamId) {
+            setLoading(true)
+            dispatch(DashboardActions.updateSelectedTeam(slug, teamId))
+                .then(team => {
+                    setSelectedTeam(team)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
+        }
+    }
 
     useEffect(() => {
         dispatch(
             DashboardActions.updateTeams(
                 slug,
                 currentPage,
-                25,
+                numberOfTeamsShown,
                 challengeFilter,
             ),
         )
-    }, [
-        currentPage,
-        applying,
-        selected,
-        selectedTeam,
-        joinByCode,
-        challengeFilter,
-    ])
+    }, [currentPage, joinByCode, challengeFilter])
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
@@ -180,7 +171,7 @@ export default () => {
                 )}
             {!selected && !applying && (
                 <>
-                    <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
+                    <div className="tw-flex tw-flex-col md:tw-flex-row tw-justify-between tw-items-center tw-mb-4 tw-gap-2">
                         {!hasTeam ? (
                             <Button
                                 color="outlined_button"
@@ -188,7 +179,6 @@ export default () => {
                                 onClick={() => setJoinByCode(!joinByCode)}
                             >
                                 {t('Join_team_using_code_')}
-                                {/* Join team using a code */}
                             </Button>
                         ) : (
                             <span></span>
@@ -199,7 +189,10 @@ export default () => {
                                 label: challenge.name,
                                 value: challenge._id,
                             }))}
-                            onChange={setChallengeFilter}
+                            onChange={value => {
+                                SetCurrentPage(0)
+                                setChallengeFilter(value)
+                            }}
                         />
                     </div>
                     {joinByCode && (

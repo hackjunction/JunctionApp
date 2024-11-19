@@ -1,7 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
-import ShowIfPermission from 'hocs/ShowIfPermission'
-import { Auth as AuthConstants } from '@hackjunction/shared'
-import ExternalLink from 'components/generic/ExternalLink'
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    // useMemo
+} from 'react'
+// import ShowIfPermission from 'hocs/ShowIfPermission'
+// import { Auth as AuthConstants } from '@hackjunction/shared'
+// import ExternalLink from 'components/generic/ExternalLink'
 import { useSelector } from 'react-redux'
 import * as AuthSelectors from 'redux/auth/selectors'
 
@@ -17,19 +22,20 @@ import {
 
 import UserProfilesService from 'services/userProfiles'
 
-const RecruitmentLink = ({ memberId }) => {
-    return (
-        <ExternalLink
-            href={`${process.env.REACT_APP_BASE_URL}/recruitment/${memberId}`}
-        >
-            <ListItemText>Interested in recruitment</ListItemText>
-        </ExternalLink>
-    )
-}
+// TODO Renable recruitment quick access
+// const RecruitmentLink = ({ memberId }) => {
+//     return (
+//         <ExternalLink
+//             href={`${process.env.REACT_APP_BASE_URL}/recruitment/${memberId}`}
+//         >
+//             <ListItemText>Interested in recruitment</ListItemText>
+//         </ExternalLink>
+//     )
+// }
 
-const IfRecruiter = ShowIfPermission(RecruitmentLink, [
-    AuthConstants.Permissions.ACCESS_RECRUITMENT,
-])
+// const IfRecruiter = ShowIfPermission(RecruitmentLink, [
+//     AuthConstants.Permissions.ACCESS_RECRUITMENT,
+// ])
 
 const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
     const [teamMembers, setTeamMembers] = useState()
@@ -64,7 +70,7 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
 
     useEffect(() => {
         fetchTeamMembers()
-    }, [fetchTeamMembers])
+    }, [])
 
     if (loading) {
         return (
@@ -86,10 +92,11 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
                         <ListItemAvatar>
                             <Avatar src={member.avatar} />
                         </ListItemAvatar>
-                        {typeof member.recruitmentOptions !== 'undefined' &&
+                        <ListItemText>{`${member.firstName} ${member.lastName}`}</ListItemText>
+                        {/* {typeof member.recruitmentOptions !== 'undefined' &&
                             member.recruitmentOptions.consent && (
                                 <IfRecruiter memberId={member.userId} />
-                            )}
+                            )} */}
                     </ListItem>
                 )
             })}

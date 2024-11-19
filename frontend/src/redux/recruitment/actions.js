@@ -53,10 +53,16 @@ export const updateEvents = () => (dispatch, getState) => {
 }
 
 export const updateActionHistory = organisation => (dispatch, getState) => {
+    const state = getState()
     const idToken = AuthSelectors.getIdToken(getState())
+    const event = DashboardSelectors.event(state)
     dispatch({
         type: ActionTypes.UPDATE_ACTION_HISTORY,
-        promise: RecruitmentService.getActionHistory(idToken, organisation),
+        promise: RecruitmentService.getActionHistory(
+            idToken,
+            organisation,
+            event._id,
+        ),
         meta: {
             onFailure: e => console.log('Error getting action history', e),
         },

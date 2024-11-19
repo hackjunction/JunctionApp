@@ -53,53 +53,53 @@ export default ({
     //     console.log("delete")
     // }
 
-    const handleRemove = useEffect(() => {
-        console.log('delete', slug, teamData?.code, teamMemberToRemove)
-        setLoading(true)
-        dispatch(
-            DashboardActions.organiserRemoveMemberFromTeam(
-                slug,
-                teamData.code,
-                teamMemberToRemove,
-            ),
-        )
-            .then(team => {
-                console.log('removed succesfully.', team)
-                dispatch(OrganiserActions.updateTeamsForEvent(slug))
-            })
-            .then(() => {
-                console.log(
-                    'teams updated',
-                    teamMembersArr.filter(
-                        t => t.profile.userId !== teamMemberToRemove,
-                    ),
-                )
-                setTeamMembersArr(
-                    teamMembersArr.filter(
-                        t => t.profile.userId !== teamMemberToRemove,
-                    ),
-                )
-                dispatch(
-                    SnackbarActions.success(
-                        'removed ' +
-                            teamMemberToRemove +
-                            ' from team ' +
-                            teamData?.code,
-                    ),
-                )
-            })
-            .catch(() => {
-                dispatch(
-                    SnackbarActions.error(
-                        'Something went wrong... please try again.',
-                    ),
-                )
-            })
-            .finally(() => {
-                setTeamMemberToRemove('')
-                setLoading(false)
-            })
-    }, [teamMemberToRemove, slug, teamData?.code, dispatch])
+    // const handleRemove = useEffect(() => {
+    //     console.log('delete', slug, teamData?.code, teamMemberToRemove)
+    //     setLoading(true)
+    //     dispatch(
+    //         DashboardActions.organiserRemoveMemberFromTeam(
+    //             slug,
+    //             teamData.code,
+    //             teamMemberToRemove,
+    //         ),
+    //     )
+    //         .then(team => {
+    //             console.log('removed succesfully.', team)
+    //             dispatch(OrganiserActions.updateTeamsForEvent(slug))
+    //         })
+    //         .then(() => {
+    //             console.log(
+    //                 'teams updated',
+    //                 teamMembersArr.filter(
+    //                     t => t.profile.userId !== teamMemberToRemove,
+    //                 ),
+    //             )
+    //             setTeamMembersArr(
+    //                 teamMembersArr.filter(
+    //                     t => t.profile.userId !== teamMemberToRemove,
+    //                 ),
+    //             )
+    //             dispatch(
+    //                 SnackbarActions.success(
+    //                     'removed ' +
+    //                         teamMemberToRemove +
+    //                         ' from team ' +
+    //                         teamData?.code,
+    //                 ),
+    //             )
+    //         })
+    //         .catch(() => {
+    //             dispatch(
+    //                 SnackbarActions.error(
+    //                     'Something went wrong... please try again.',
+    //                 ),
+    //             )
+    //         })
+    //         .finally(() => {
+    //             setTeamMemberToRemove('')
+    //             setLoading(false)
+    //         })
+    // }, [teamMemberToRemove, slug, teamData?.code, dispatch])
 
     const classes = junctionStyle()
     return (

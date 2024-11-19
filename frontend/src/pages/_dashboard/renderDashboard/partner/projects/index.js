@@ -43,30 +43,6 @@ export default ({ event }) => {
         return <Empty isEmpty emptyText="Reviewing not yet available" />
     }
 
-    const fetchProjects = async (idToken, slug) => {
-        setLoading(true)
-        try {
-            const dataOt = await ProjectsService.getProjectsByEventAsPartner(
-                idToken,
-                slug,
-            )
-            const data = {
-                event,
-                ...dataOt,
-            }
-            setData(data)
-        } catch (err) {
-            dispatch(
-                SnackbarActions.error(
-                    `${t('Error_loading_projects_')}: ${err.message}`,
-                ),
-            )
-            setError(true)
-        } finally {
-            setLoading(false)
-        }
-    }
-
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         const { projectScoreId, score, scoreCriteria, message } = values
         if (score < 1) {
@@ -128,8 +104,35 @@ export default ({ event }) => {
     }
 
     useEffect(() => {
+        let mounted = true
         if (idToken && event) {
             if (!selected) {
+                const fetchProjects = async (idToken, slug) => {
+                    setLoading(true)
+                    try {
+                        const dataOt =
+                            await ProjectsService.getProjectsByEventAsPartner(
+                                idToken,
+                                slug,
+                            )
+                        const data = {
+                            event,
+                            ...dataOt,
+                        }
+                        if (mounted) setData(data)
+                    } catch (err) {
+                        dispatch(
+                            SnackbarActions.error(
+                                `${t('Error_loading_projects_')}: ${
+                                    err.message
+                                }`,
+                            ),
+                        )
+                        if (mounted) setError(true)
+                    } finally {
+                        if (mounted) setLoading(false)
+                    }
+                }
                 fetchProjects(idToken, slug)
             } else if (
                 selected &&
@@ -137,6 +140,9 @@ export default ({ event }) => {
             ) {
                 fetchProjectScore(idToken, slug, selected._id)
             }
+        }
+        return function cleanup() {
+            mounted = false
         }
     }, [event, idToken, selected])
 

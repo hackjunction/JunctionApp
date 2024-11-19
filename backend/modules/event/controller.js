@@ -103,7 +103,8 @@ controller.removeOrganiser = (event, organiserId) => {
     return event.save()
 }
 
-controller.addRecruiter = (event, recruiterId, organization) => {
+controller.addRecruiter = async (slug, recruiterId, organization) => {
+    const event = await controller.getEventBySlug(slug)
     event.recruiters = _.concat(event.recruiters, {
         recruiterId: recruiterId,
         organization: organization,

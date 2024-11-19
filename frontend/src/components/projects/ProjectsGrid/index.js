@@ -48,6 +48,7 @@ const ProjectsGrid = ({
     }
     const fetchData = useCallback(async () => {
         // TODO add loading indicator
+        //TODO find a way to get if a project has been reviewed by partner in a more efficient manner so it doesnt run for all project fetched
         const projectScoreData = await Promise.allSettled(
             projects.map(async project => {
                 return projectScoreLogic(project)

@@ -260,6 +260,7 @@ const updateProjectScoreCriteriaForReviewer = (
 
     updatedProjectScoreCriteria.projectScoreCriteria = projectScoreCriteria.map(
         criterion => {
+            //TODO optimize this as it is O(n * m)
             const match = _.find(
                 partnerReview.scoreCriteria,
                 reviewerCriteria => {

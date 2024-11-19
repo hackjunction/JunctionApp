@@ -21,10 +21,8 @@ export default ({
     let challengeName = null
     let event = useSelector(DashboardSelectors.event)
     if (event === null) {
-        console.log('from organiser')
         event = useSelector(OrganiserSelectors.event)
     }
-    console.log('event', event)
     if (teamChallenge && typeof teamChallenge === 'string') {
         const challengeDetails = event.challenges.find(
             challenge => challenge._id === teamChallenge,

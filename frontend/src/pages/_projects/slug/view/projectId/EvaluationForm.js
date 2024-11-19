@@ -78,7 +78,7 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
                                                                     key={
                                                                         criteria
                                                                     }
-                                                                    category={
+                                                                    criteria={
                                                                         criteria
                                                                     }
                                                                     label={
@@ -199,6 +199,7 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
                                         error={form.errors[field.name]}
                                     >
                                         <TextAreaInput
+                                            id="feedback-message"
                                             value={field.value}
                                             placeholder={t(
                                                 'Project_evaluation_feedback_placeholder_',

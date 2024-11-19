@@ -32,6 +32,7 @@ const TextAreaInput = React.memo(
         minRows = 10,
         maxRows = 100,
         maxLength,
+        id = undefined,
     }) => {
         const [errorLength, setErrorLength] = useState(errorLengthBase)
 
@@ -59,6 +60,7 @@ const TextAreaInput = React.memo(
         if (maxLength) {
             textFieldFormat = (
                 <TextField
+                    id={id}
                     classes={classes}
                     type="text"
                     variant="filled"
@@ -82,6 +84,7 @@ const TextAreaInput = React.memo(
         } else {
             textFieldFormat = (
                 <TextField
+                    id={id}
                     classes={classes}
                     type="text"
                     variant="filled"

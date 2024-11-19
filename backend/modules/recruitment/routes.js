@@ -34,6 +34,7 @@ const getRecruiterActions = asyncHandler(async (req, res) => {
     const actionHistory = await RecruitmentController.getRecruiterActions(
         req.user,
         req.params.organisation,
+        req.query.event,
     )
     return res.status(200).json(actionHistory)
 })
