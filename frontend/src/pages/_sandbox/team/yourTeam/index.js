@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import NoTeam from 'components/Team/NoTeam'
 import TeamProfile from 'components/Team/TeamProfile'
 import Button from 'components/generic/Button'

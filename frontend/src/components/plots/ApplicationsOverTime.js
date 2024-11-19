@@ -12,7 +12,7 @@ import {
     CartesianGrid,
     Bar,
 } from 'recharts'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 export default () => {
     const data = useSelector(OrganiserSelectors.registrationsByDay)

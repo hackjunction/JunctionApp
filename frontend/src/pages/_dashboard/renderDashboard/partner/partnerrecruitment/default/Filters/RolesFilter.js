@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography } from '@material-ui/core'
+
+import { Box, Typography } from '@mui/material'
 
 import { useArray } from 'hooks/customHooks'
 import Select from 'components/inputs/Select'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 
 import RolesFilterItem from './RolesFilterItem'
 import FilterItem from './FilterItem'

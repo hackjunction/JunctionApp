@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import moment from 'moment-timezone'
 import { EventHelpers } from '@hackjunction/shared'
-import { Typography, Grid } from '@material-ui/core'
+import { Typography, Grid } from '@mui/material'
 import GradientBox from 'components/generic/GradientBox'
 import Button from 'components/generic/Button'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import config from 'constants/config'
 
 export default () => {

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Box, Button, ButtonGroup } from '@material-ui/core'
+import { Box, Button, ButtonGroup } from '@mui/material'
 
 export default ({ gotoPage, pageSize, setPageSize }) => {
     const opts = [

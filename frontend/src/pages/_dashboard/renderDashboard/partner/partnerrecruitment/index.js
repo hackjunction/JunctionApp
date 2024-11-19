@@ -1,16 +1,10 @@
 import React, { useEffect, useLayoutEffect } from 'react'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { useDispatch } from 'react-redux'
-import {
-    Switch,
-    Route,
-    Redirect,
-    useLocation,
-    useParams,
-} from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import PageWrapper from 'components/layouts/PageWrapper'
-import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 /*import BasicNavBar from 'components/navbars/BasicNavBar'*/
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 
@@ -21,12 +15,12 @@ import DetailPage from './id'
 export default () => {
     // const dispatch = useDispatch()
     // const location = useLocation()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
 
     //console.log(match.url)
 
     return (
-        <Switch>
+        <Routes>
             <Route exact={true} path={`${match.url}`} component={SearchPage} />
             {/* <Route exact={true} path=`${match.url}/recruitment/admin` component={AdminPage} /> */}
             <Route
@@ -39,20 +33,20 @@ export default () => {
                 path={`${match.url}/admin`}
                 component={AdminPage}
             /> */}
-            <Redirect to={`${match.url}`} />
-        </Switch>
+            <Navigate to={`${match.url}`} />
+        </Routes>
     )
 }
 
 // import React, { useEffect, useRef } from 'react'
-// import FormControl from '@material-ui/core/FormControl'
-// import FormGroup from '@material-ui/core/FormGroup'
-// import FormControlLabel from '@material-ui/core/FormControlLabel'
-// import Checkbox from '@material-ui/core/Checkbox'
+// import FormControl from '@mui/material/FormControl'
+// import FormGroup from '@mui/material/FormGroup'
+// import FormControlLabel from '@mui/material/FormControlLabel'
+// import Checkbox from '@mui/material/Checkbox'
 // import { useDispatch, useSelector } from 'react-redux'
 // import PageHeader from 'components/generic/PageHeader'
 // import GradientBox from 'components/generic/GradientBox'
-// import { Grid, Typography } from '@material-ui/core'
+// import { Grid, Typography } from '@mui/material'
 
 // export default () => {
 
@@ -64,7 +58,7 @@ export default () => {
 //                 color="primary"
 //                 variant="contained"
 //             >
-//                 Switch between participant / partner view (only for dev)
+//                 Routes between participant / partner view (only for dev)
 //             </Button> */
 //             }
 //             <div className="recruitment">

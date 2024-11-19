@@ -1,14 +1,14 @@
 import React from 'react'
 
 import { Helmet } from 'react-helmet'
-import { push } from 'connected-react-router'
+
 import { useDispatch } from 'react-redux'
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
 import config from 'constants/config'
 import { useTranslation } from 'react-i18next'
 
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography } from '@mui/material'
 
 import BannerCarousel from 'components/generic/BannerCarousel'
 import Button from 'components/generic/Button'
@@ -28,11 +28,9 @@ export default () => {
     const [pastEvents] = usePastEvents({ limit: 3 })
     const dispatch = useDispatch()
     const { t } = useTranslation()
-    console.log("activeEvents", activeEvents)
-
+    console.log('activeEvents', activeEvents)
 
     return (
-
         <PageWrapper header={() => <GlobalNavBar />} footer={() => <Footer />}>
             <Helmet>
                 <title>{config.PLATFORM_OWNER_NAME}</title>

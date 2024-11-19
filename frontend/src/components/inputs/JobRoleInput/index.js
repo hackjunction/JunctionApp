@@ -12,29 +12,20 @@ import {
     ListItemText,
     ListItemSecondaryAction,
     Divider,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Roles } from '@hackjunction/shared'
 import { find } from 'lodash-es'
 import { useDispatch } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
+
 import Select from 'components/inputs/Select'
 
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useTranslation } from 'react-i18next'
-
-const useStyles = makeStyles(theme => ({
-    radioGroup: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-}))
 
 export default ({ value = [], onChange, autoFocus }) => {
     console.log('From JobRoleInput')
     console.log(value)
     const dispatch = useDispatch()
-    const classes = useStyles()
     const selectEl = useRef()
     const [years, setYears] = useState()
     const [role, setRole] = useState()
@@ -89,7 +80,7 @@ export default ({ value = [], onChange, autoFocus }) => {
             </Grid>
             <Grid item xs={8}>
                 <RadioGroup
-                    className={classes.radioGroup}
+                    className="flex flex-row flex-wrap"
                     aria-label="Years of experience"
                     value={years}
                     onChange={handleYearsChange}

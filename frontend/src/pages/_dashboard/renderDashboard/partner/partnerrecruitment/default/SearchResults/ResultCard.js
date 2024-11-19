@@ -1,8 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { findIndex } from 'lodash-es'
-import { push } from 'connected-react-router'
+
 import {
     Avatar,
     Paper,
@@ -10,18 +10,18 @@ import {
     Box,
     Tooltip,
     IconButton,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { KeyboardArrowDown } from '@material-ui/icons/'
-import StarIcon from '@material-ui/icons/Star'
+} from '@mui/material'
+
+import { KeyboardArrowDown } from '@mui/icons-material/'
+import StarIcon from '@mui/icons-material/Star'
 
 import { sortBy } from 'lodash-es'
 import SkillRating from './SkillRating'
 import emblem_black from 'assets/logos/emblem_black.png'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -101,7 +101,7 @@ export default React.memo(
         // Toggle the favorited state locally for immediate feedback on favorite action
         const [_isFavorite, setIsFavorite] = useState(isFavorite)
         const classes = useStyles({ isFavorite: _isFavorite })
-        const match = useRouteMatch()
+        const url = useResolvedPath('').pathname
         const baseRoute = match.url
 
         useEffect(() => {
@@ -114,7 +114,11 @@ export default React.memo(
                 setIsFavorite(!_isFavorite)
 
                 dispatch(
-                    RecruitmentActions.toggleFavorite(data.userId, _isFavorite, organisation),
+                    RecruitmentActions.toggleFavorite(
+                        data.userId,
+                        _isFavorite,
+                        organisation,
+                    ),
                 ).then(({ error }) => {
                     if (error) {
                         dispatch(

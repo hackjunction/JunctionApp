@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 
-import { makeStyles } from '@material-ui/core/styles'
-import GroupIcon from '@material-ui/icons/Group'
-import DashboardIcon from '@material-ui/icons/Dashboard'
-import FingerprintIcon from '@material-ui/icons/Fingerprint'
-import AmpStoriesIcon from '@material-ui/icons/AmpStories'
-import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
-import StarRateIcon from '@material-ui/icons/StarRate'
-import HowToVoteIcon from '@material-ui/icons/HowToVote'
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
+import GroupIcon from '@mui/icons-material/Group'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import FingerprintIcon from '@mui/icons-material/Fingerprint'
+import WebStoriesOutlined from '@mui/icons-material/WebStoriesOutlined'
+import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined'
+import StarRateIcon from '@mui/icons-material/StarRate'
+import HowToVoteIcon from '@mui/icons-material/HowToVote'
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 
-import EventIcon from '@material-ui/icons/Event'
-import PlaceIcon from '@material-ui/icons/Place'
+import EventIcon from '@mui/icons-material/Event'
+import PlaceIcon from '@mui/icons-material/Place'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import Image from 'components/generic/Image'
@@ -34,17 +33,17 @@ import ChecklistPage from './checklist'
 
 import { useTranslation } from 'react-i18next'
 
-import Badge from '@material-ui/core/Badge'
+import Badge from '@mui/material/Badge'
 import {
     CheckBox,
     EmojiEventsRounded,
     LocalAirportRounded,
     LocalPlayRounded,
     QuestionAnswerSharp,
-} from '@material-ui/icons'
+} from '@mui/icons-material'
 
 import { Chat } from 'components/messaging/chat'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper } from '@mui/material'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -70,7 +69,7 @@ export default ({
 }) => {
     const classes = useStyles()
     const { t } = useTranslation()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
@@ -170,7 +169,7 @@ export default ({
                     key: 'hackerpack',
                     path: '/hackerpack',
                     exact: true,
-                    icon: <AmpStoriesIcon />,
+                    icon: <WebStoriesOutlined />,
                     hidden: !shownPages.hackerPack,
                     label: t('Hackerpack_'),
                     component: HackerpackPage,

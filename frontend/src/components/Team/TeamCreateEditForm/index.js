@@ -10,7 +10,7 @@ import * as yup from 'yup'
 
 import React from 'react'
 import Button from 'components/generic/Button'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import { debugGroup } from 'utils/debuggingTools'
 
 export default ({

@@ -1,7 +1,7 @@
 import * as ActionTypes from './actionTypes'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import { buildFilterArray } from './helpers'
 
 import RecruitmentService from 'services/recruitment'

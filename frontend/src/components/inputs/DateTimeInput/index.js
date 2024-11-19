@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import moment from 'moment-timezone'
 
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import DateInput from '../DateInput'
 import TimeInput from '../TimeInput'
 

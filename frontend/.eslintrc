@@ -23,7 +23,7 @@
         "no-plusplus": "off",
         "import/no-anonymous-default-export": "off"
     },
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
     "plugins": ["react"],
     "globals": {
         "browser": true,

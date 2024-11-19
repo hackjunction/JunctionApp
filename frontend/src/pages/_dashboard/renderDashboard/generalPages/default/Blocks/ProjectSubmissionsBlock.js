@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Typography, Box, Grid, Dialog } from '@material-ui/core'
+import { Typography, Box, Grid, Dialog } from '@mui/material'
 import GradientBox from 'components/generic/GradientBox'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 import ProjectDetail from 'components/projects/ProjectDetail'

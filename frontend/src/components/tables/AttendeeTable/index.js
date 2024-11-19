@@ -1,15 +1,15 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import moment from 'moment'
-import { push } from 'connected-react-router'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
-import { Box } from '@material-ui/core'
-import Rating from '@material-ui/lab/Rating'
+import { Box } from '@mui/material'
+import Rating from '@mui/lab/Rating'
 import StatusBadge from 'components/generic/StatusBadge'
 import Tag from 'components/generic/Tag'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import EditRegistrationModal from 'components/modals/EditRegistrationModal'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'

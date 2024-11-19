@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'
 import React from 'react'
 

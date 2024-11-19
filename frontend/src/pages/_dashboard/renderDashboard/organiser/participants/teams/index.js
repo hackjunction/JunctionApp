@@ -2,11 +2,11 @@ import React from 'react'
 
 import { useSelector } from 'react-redux'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import TeamsTable from 'components/tables/TeamsTable'
-import { List, ListItem, ListItemText, Typography } from '@material-ui/core'
+import { List, ListItem, ListItemText, Typography } from '@mui/material'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
@@ -17,7 +17,12 @@ export default () => {
     const challengeList = []
     const teamsLoading = useSelector(OrganiserSelectors.teamsLoading)
     if (event?.challenges && event?.challenges.length > 0) {
-        challengeList.push(...event?.challenges.map(challenge => ({ ...challenge, teamCount: 0 })))
+        challengeList.push(
+            ...event?.challenges.map(challenge => ({
+                ...challenge,
+                teamCount: 0,
+            })),
+        )
         if (teams.length > 0) {
             teams.map(team => {
                 challengeList.find(challenge => {

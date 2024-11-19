@@ -1,28 +1,25 @@
 import React from 'react'
 import moment from 'moment-timezone'
-import { Grid, Typography, makeStyles } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import GradientBox from 'components/generic/GradientBox'
 
+// const useStyles = makeStyles(theme => ({
+//     root: {
+//         height: '90%',
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        height: '90%',
-
-        overflow: 'auto',
-
-    },
-
-}))
+//         overflow: 'auto',
+//     },
+// }))
 
 export function Alerts({ alerts = [] }) {
     const sortedAlerts = alerts.sort(
         (a, b) => +new Date(b.sentAt) - +new Date(a.sentAt),
     )
-    const classes = useStyles()
-
+    // const classes = useStyles()
 
     return (
-        <div className={classes.root}>
+        // <div className={classes.root}>
+        <div>
             {sortedAlerts.map(a => (
                 <Grid style={{ paddingTop: '10px' }}>
                     <GradientBox color="theme_purple" p={2}>

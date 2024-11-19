@@ -1,4 +1,4 @@
-import { Box, Dialog, Grid, makeStyles, Paper } from '@material-ui/core'
+import { Box, Dialog, Grid, Paper } from '@mui/material'
 import Button from 'components/generic/Button'
 import Select from 'components/inputs/Select'
 import ProjectDetail from 'components/projects/ProjectDetail'
@@ -10,11 +10,12 @@ import { useDispatch } from 'react-redux'
 import EventsService from 'services/events'
 import VotingTokenService from 'services/votingToken'
 import EventDetailContext from '../context'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { EventHelpers } from '@hackjunction/shared'
 import moment from 'moment'
+import { styled } from '@mui/system'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = styled(theme => ({
     header: {
         background: theme.palette.theme_black.main,
         color: 'white',

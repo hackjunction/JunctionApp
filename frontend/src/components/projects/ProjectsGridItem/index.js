@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
 import {
     Avatar,
     Card,
@@ -10,7 +9,7 @@ import {
     Grid,
     Tooltip,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'
@@ -19,8 +18,9 @@ import { EventHelpers } from '@hackjunction/shared'
 import moment from 'moment-timezone'
 
 import ProjectReviewModal from 'components/modals/ProjectReviewModal'
+import { styled } from '@mui/system'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = styled(theme => ({
     wrapper: {
         flex: 1,
         background: 'white',
@@ -175,10 +175,10 @@ const ProjectsGridItem = ({
                                     previewImage
                                         ? previewImage
                                         : event?.coverImage?.publicId
-                                        ? event?.coverImage.publicId
-                                        : event?.logo?.publicId
-                                        ? event?.logo.publicId
-                                        : false
+                                          ? event?.coverImage.publicId
+                                          : event?.logo?.publicId
+                                            ? event?.logo.publicId
+                                            : false
                                 }
                                 defaultImage={require('assets/images/default_cover_image.png')}
                             />

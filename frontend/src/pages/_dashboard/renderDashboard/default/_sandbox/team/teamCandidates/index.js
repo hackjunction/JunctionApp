@@ -6,9 +6,9 @@ import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { forOwn } from 'lodash-es'
 
 export default () => {

@@ -1,23 +1,16 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-
-import { makeStyles, lighten } from '@material-ui/core/styles'
-import { Chip } from '@material-ui/core'
-
+import { Chip } from '@mui/material'
 import { RegistrationStatuses } from '@hackjunction/shared'
+import clsx from 'clsx'
 
-const useStyles = makeStyles(theme => ({
-    root: ({ color }) => ({
-        backgroundColor: lighten(color, 0.33),
-        borderColor: color,
-        borderWidth: 2,
-    }),
-    label: ({ color }) => ({
-        ...theme.typography.overline,
-        fontWeight: 'bold',
-        color: 'white',
-    }),
-}))
+const getStatusStyles = color => {
+    const backgroundColor = `bg-${color}-200`
+    const borderColor = `border-${color}-500`
+    const textColor = `text-white`
+
+    return clsx(backgroundColor, borderColor, textColor, 'border-2 font-bold')
+}
 
 const propTypes = {
     status: PropTypes.oneOf(RegistrationStatuses.ids).isRequired,
@@ -41,11 +34,14 @@ const StatusBadge = ({ status, hideSoftStatuses }) => {
         }
         return RegistrationStatuses.asObject[status]
     }, [hideSoftStatuses, status])
-    const classes = useStyles(params)
+
     if (!params) return <Chip size="small" label="???" />
+
+    const statusClasses = getStatusStyles(params.color)
+
     return (
         <Chip
-            classes={classes}
+            className={statusClasses}
             variant="outlined"
             size="small"
             label={params.label}

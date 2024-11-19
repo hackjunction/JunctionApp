@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 
 import BooleanInput from 'components/inputs/BooleanInput'
 import TextInput from 'components/inputs/TextInput'

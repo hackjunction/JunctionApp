@@ -9,9 +9,9 @@ import {
     ListItemText,
     ListSubheader,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 import TrackResults from './TrackResults'
 

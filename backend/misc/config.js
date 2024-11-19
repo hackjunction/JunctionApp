@@ -103,7 +103,7 @@ const settings = {
     },
     SENDGRID_CONTACT_MAIL: {
         required: true,
-        value: process.env.SENDGRID_CONTACT_MAIL,
+        value: process.env.SENDGRID_CONTACT_MAIL || 'hello@hackjunction.com',
     },
     SENDGRID_MAILING_LIST_ID: {
         required: false,

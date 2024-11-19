@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import Empty from 'components/generic/Empty'
 import ResultCard from './ResultCard'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useRouteMatch } from 'react-router'
-import { Grid, Box, Typography, CircularProgress } from '@material-ui/core'
+// import { useResolvedPath } from 'react-router'
+import { Grid, Box, Typography, CircularProgress } from '@mui/material'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 import { useTranslation } from 'react-i18next'
 import Pagination from './Pagination'
 import LoadingCard from './LoadingCard'
@@ -15,7 +15,7 @@ import { debugGroup } from 'utils/debuggingTools'
 
 export default ({ items, organisation }) => {
     const dispatch = useDispatch()
-    // const match = useRouteMatch()
+    // const url = useResolvedPath("").pathname;
     const searchResults =
         items ?? useSelector(RecruitmentSelectors.searchResults)
     const searchResultsCount = useSelector(

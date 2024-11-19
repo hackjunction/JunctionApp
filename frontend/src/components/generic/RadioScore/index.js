@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Radio, RadioGroup } from '@material-ui/core'
+import { FormControl, FormLabel, Radio, RadioGroup } from '@mui/material'
 import _ from 'lodash'
 import { toInteger } from 'lodash-es'
 import React, { useState } from 'react'

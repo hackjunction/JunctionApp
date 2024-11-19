@@ -1,8 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { useRouteMatch } from 'react-router'
-import { push } from 'connected-react-router'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { useResolvedPath } from 'react-router'
+
+import { Routes, Route, Navigate } from 'react-router-dom'
 import PageWrapper from 'components/layouts/PageWrapper'
 import EventsService from 'services/events'
 import ProjectsService from 'services/projects'
@@ -14,7 +14,7 @@ import GalleryChallengeAdmin from './challenge/token'
 import GalleryTrackAdmin from './track/token'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const dispatch = useDispatch()
     const { slug } = match.params
     const [error, setError] = useState(false)
@@ -50,7 +50,7 @@ export default () => {
     // TODO make this more modulary
     return (
         <PageWrapper loading={loading} error={error}>
-            <Switch>
+            <Routes>
                 <Route
                     path={`${match.url}/challenge/:token/view/:projectId`}
                     component={({ match }) => (
@@ -132,8 +132,8 @@ export default () => {
                         />
                     </>
                 )}
-                <Redirect to="/" />
-            </Switch>
+                <Navigate to="/" />
+            </Routes>
         </PageWrapper>
     )
 }

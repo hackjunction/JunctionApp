@@ -1,12 +1,11 @@
 import React from 'react'
 import config from 'constants/config'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
 import PageWrapper from 'components/layouts/PageWrapper'
 import PageHeader from 'components/generic/PageHeader'
-import * as OrganiseSelectors from 'redux/organiser/selectors'
+import * as OrganiseSelectors from 'reducers/organiser/selectors'
 var jwt = require('jsonwebtoken')
-
 
 var METABASE_SITE_URL = config.METABASE_SITE_URL
 var METABASE_SECRET_KEY = config.METABASE_SECRET_KEY

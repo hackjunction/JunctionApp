@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { Box, Typography, IconButton } from '@material-ui/core'
-import NavigateNextIcon from '@material-ui/icons/NavigateNext'
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
+import { Box, Typography, IconButton } from '@mui/material'
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 
 export default ({
     pageIndex,

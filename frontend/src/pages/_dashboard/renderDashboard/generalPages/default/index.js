@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid } from '@mui/material'
 import PageHeader from 'components/generic/PageHeader'
 import { Helmet } from 'react-helmet'
 import config from 'constants/config'
@@ -20,8 +20,8 @@ import AlertBlock from './Blocks/AlertBlock'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-// import * as AuthSelectors from 'redux/auth/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+// import * as AuthSelectors from 'reducers/auth/selectors'
 // import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 export default ({ alerts }) => {
     const event = useSelector(DashboardSelectors.event)

@@ -1,11 +1,11 @@
 import React, { useEffect, useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
-import { push } from 'connected-react-router'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as AuthActions from 'redux/auth/actions'
-import * as UserSelectors from 'redux/user/selectors'
+
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as AuthActions from 'reducers/auth/actions'
+import * as UserSelectors from 'reducers/user/selectors'
 
 /** Hide a component if the user doesn't have a given role, and also redirect to login/error */
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import ParticipantCalendarView from './ParticipantCalendarView'
 import { useSelector } from 'react-redux'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import Button from 'components/generic/Button'
 import { Auth } from '@hackjunction/shared'
 

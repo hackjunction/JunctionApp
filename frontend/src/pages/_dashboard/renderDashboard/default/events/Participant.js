@@ -1,10 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 import { useRegistrationsByUser } from 'graphql/queries/registrations'
 import { useTranslation } from 'react-i18next'
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography } from '@mui/material'
 
 //import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 import PageHeader from 'components/generic/PageHeader'
@@ -14,9 +14,9 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as UserActions from 'redux/user/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as UserActions from 'reducers/user/actions'
 
 export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
@@ -49,7 +49,12 @@ export default () => {
                         </Grid>
 
                         {registrations?.map((registration, index) => (
-                            <Grid key={`${registration.id}-${index}`} item xs={12} md={6}>
+                            <Grid
+                                key={`${registration.id}-${index}`}
+                                item
+                                xs={12}
+                                md={6}
+                            >
                                 <EventCardSmall
                                     key={index}
                                     event={registration.event}
@@ -59,11 +64,11 @@ export default () => {
                                                 'participant',
                                             ),
                                         ) //TODO: make this a schema
-                                        dispatch(
-                                            push(
-                                                `/dashboard/event/${event?.slug}`,
-                                            ),
-                                        )
+                                        // dispatch(
+                                        //     push(
+                                        //         `/dashboard/event/${event?.slug}`,
+                                        //     ),
+                                        // )
                                     }}
                                 />
                             </Grid>
@@ -90,6 +95,7 @@ export default () => {
                                 const eventStarted = isodate > event.startTime
                                 return (
                                     <NewEventCard
+                                        key={event.slug}
                                         event={event}
                                         buttons={[
                                             <Button
@@ -157,6 +163,7 @@ export default () => {
                             return (
                                 <NewEventCard
                                     event={event}
+                                    key={event.slug}
                                     buttons={[
                                         <Button
                                             size="small"
@@ -200,7 +207,10 @@ export default () => {
                     <Button
                         variant="outlinedNew"
                         color="theme_lightgray"
-                        onClick={() => dispatch(push('/events'))} // TODO: Add past events page, fix the looks of this button
+                        onClick={() => {
+                            console.log('TODO: Add past events page')
+                            // dispatch(push('/events'))
+                        }} // TODO: Add past events page, fix the looks of this button
                     >
                         {t('Past_events_all_')}
                     </Button>

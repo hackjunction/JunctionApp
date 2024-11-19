@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 import { useRegistrationsByUser } from 'graphql/queries/registrations'
 
@@ -10,12 +10,12 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import { useTranslation } from 'react-i18next'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as UserActions from 'redux/user/actions'
-import * as UserSelectors from 'redux/user/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as UserActions from 'reducers/user/actions'
+import * as UserSelectors from 'reducers/user/selectors'
 
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid } from '@mui/material'
 
 export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
@@ -63,14 +63,18 @@ export default () => {
                                     buttons={[
                                         <Button
                                             size="small"
-                                            onClick={() =>
-                                                dispatch(
-                                                    push(
-                                                        '/events/' +
-                                                            registration.event
-                                                                .slug,
-                                                    ),
-                                                )
+                                            onClick={
+                                                () =>
+                                                    console.log(
+                                                        'See more clicked',
+                                                    )
+                                                // dispatch(
+                                                //     push(
+                                                //         '/events/' +
+                                                //             registration.event
+                                                //                 .slug,
+                                                //     ),
+                                                // )
                                             }
                                         >
                                             {t('See_more_')}
@@ -88,11 +92,11 @@ export default () => {
                                                         'partner',
                                                     ),
                                                 )
-                                                dispatch(
-                                                    push(
-                                                        `/dashboard/event/${registration.event?.slug}`,
-                                                    ),
-                                                )
+                                                // dispatch(
+                                                //     push(
+                                                //         `/dashboard/event/${registration.event?.slug}`,
+                                                //     ),
+                                                // )
                                             }}
                                         >
                                             {t('Dashboard_')}

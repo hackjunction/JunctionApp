@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Footer from 'components/layouts/Footer'
@@ -17,15 +16,15 @@ import {
     Tab,
     Tabs,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Yes, No, NotAvailable } from 'components/generic/Tag/Variants'
 
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import AccordionActions from '@material-ui/core/AccordionActions'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Divider from '@material-ui/core/Divider'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionActions from '@mui/material/AccordionActions'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Divider from '@mui/material/Divider'
 
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import FormControl from 'components/inputs/FormControl'
@@ -34,10 +33,10 @@ import ImageUpload from 'components/inputs/ImageUpload'
 import Select from 'components/inputs/Select'
 
 import { Formik, FastField } from 'formik'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import { useRouteMatch, useLocation } from 'react-router'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import { useResolvedPath, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
@@ -49,7 +48,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Container from 'components/generic/Container'
 import Button from 'components/generic/Button'
 import Tag from 'components/generic/Tag'
-import { Skeleton, TabPanel } from '@material-ui/lab'
+import { Skeleton, TabPanel } from '@mui/lab'
 import TeamCard from 'components/cards/TeamCard'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import BottomBar from 'components/inputs/BottomBar'
@@ -84,7 +83,7 @@ export default () => {
             )
         },
     })
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
 
     const event = useSelector(OrganiserSelectors.event)
@@ -133,12 +132,21 @@ export default () => {
                                         error={form.errors[field.name]}
                                         touched={form.touched[field.name]}
                                     >
-                                        <Box width="100%" pt="56.25%" position="relative">
+                                        <Box
+                                            width="100%"
+                                            pt="56.25%"
+                                            position="relative"
+                                        >
                                             <ImageUpload
                                                 value={field.value}
                                                 onChange={value => {
-                                                    form.setFieldValue(field.name, value)
-                                                    form.setFieldTouched(field.name)
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value,
+                                                    )
+                                                    form.setFieldTouched(
+                                                        field.name,
+                                                    )
                                                 }}
                                                 uploadUrl={`/api/upload/files`}
                                                 resizeMode="cover"

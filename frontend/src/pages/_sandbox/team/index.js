@@ -15,21 +15,21 @@ import {
     Tab,
     Tabs,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Yes, No, NotAvailable } from 'components/generic/Tag/Variants'
 
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import AccordionActions from '@material-ui/core/AccordionActions'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Divider from '@material-ui/core/Divider'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionActions from '@mui/material/AccordionActions'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Divider from '@mui/material/Divider'
 
 import { Formik } from 'formik'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import { useRouteMatch, useLocation } from 'react-router'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import { useResolvedPath, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
@@ -44,7 +44,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Container from 'components/generic/Container'
 import Button from 'components/generic/Button'
 import Tag from 'components/generic/Tag'
-import { Skeleton, TabPanel } from '@material-ui/lab'
+import { Skeleton, TabPanel } from '@mui/lab'
 import TeamCard from 'components/cards/TeamCard'
 import JoinTeamPage from './joinTeam'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
@@ -52,7 +52,7 @@ import BottomBar from 'components/inputs/BottomBar'
 import PageHeader from 'components/generic/PageHeader'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
