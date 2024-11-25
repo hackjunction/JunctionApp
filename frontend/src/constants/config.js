@@ -35,6 +35,14 @@ const settings = {
         required: false,
         value: process.env.REACT_APP_GOOGLE_ANALYTICS_ID,
     },
+    POSTHOG_API_KEY: {
+        required: false,
+        value: process.env.REACT_APP_POSTHOG_PROJECT_API_KEY,
+    },
+    POSTHOG_API_HOST: {
+        required: false,
+        value: process.env.REACT_APP_POSTHOG_API_HOST || 'https://us.i.posthog.com',
+    },
     ID_TOKEN_NAMESPACE: {
         required: true,
         value:

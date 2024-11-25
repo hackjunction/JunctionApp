@@ -1,41 +1,31 @@
 import ReactGA from 'react-ga'
 import ReactPixel from 'react-facebook-pixel'
 import config from 'constants/config'
+import posthog from 'posthog-js'
 
 const AnalyticsService = {}
 
 AnalyticsService.init = () => {
-    if (config.GOOGLE_ANALYTICS_ID) {
-        ReactGA.initialize(config.GOOGLE_ANALYTICS_ID)
-    }
-
-    if (config.FACEBOOK_PIXEL_ID) {
-        ReactPixel.init(
-            config.FACEBOOK_PIXEL_ID,
-            {
-                autoConfig: true,
-                debug: false,
-            },
-            {},
-        )
+    if (config.POSTHOG_API_KEY) {
+        posthog.init(config.POSTHOG_API_KEY, { api_host: config.POSTHOG_API_HOST })
     }
 }
 
 AnalyticsService.pageView = location => {
-    if (config.GOOGLE_ANALYTICS_ID) {
-        ReactGA.pageview(location.pathname)
+    if (config.POSTHOG_API_KEY) {
+        posthog.capture('$pageview', { path: location.pathname })
     }
 }
 
 AnalyticsService.events = {
     LOG_IN: () => {
-        ReactPixel.track('CompleteRegistration', {
+        posthog.capture('CompleteRegistration', {
             value: 0.1,
             currency: 'EUR',
         })
     },
     VIEW_EVENT: slug => {
-        ReactPixel.track('ViewContent', {
+        posthog.capture('ViewContent', {
             value: 0.1,
             currency: 'EUR',
             content_ids: slug,
@@ -43,7 +33,7 @@ AnalyticsService.events = {
         })
     },
     BEGIN_REGISTRATION: slug => {
-        ReactPixel.track('AddToCart', {
+        posthog.capture('AddToCart', {
             value: 0.5,
             currency: 'EUR',
             contents: [
@@ -56,7 +46,7 @@ AnalyticsService.events = {
         })
     },
     COMPLETE_REGISTRATION: slug => {
-        ReactPixel.track('Purchase', {
+        posthog.capture('Purchase', {
             value: 1,
             currency: 'EUR',
             contents: [
