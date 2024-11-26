@@ -47,6 +47,7 @@ const MarkdownInput = ({
                     />
                 ) : (
                     <TextAreaInput
+                        id={id}
                         placeholder={placeholder}
                         value={value}
                         onChange={onChange}

@@ -47,96 +47,98 @@ import EventDetailContext from '../context'
 import { useTranslation } from 'react-i18next'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
-import { styled } from '@mui/system'
+// import { styled } from '@mui/system'
+import config from 'constants/config'
 
-const useStyles = styled(theme => ({
-    wrapper: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        minHeight: '100%',
-        background: 'black',
-        zIndex: 100,
-    },
-    backgroundImage: {
-        position: 'fixed',
-        zIndex: 1,
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        opacity: 0.3,
-        filter: 'blur(5px)',
-    },
-    mainTitle: {
-        color: 'white',
-        textAlign: 'center',
-    },
-    sectionTitle: {
-        color: 'white',
-        fontSize: '1.4rem',
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    content: {
-        position: 'relative',
-        zIndex: 1000,
-    },
-    stepper: {
-        background: 'transparent',
-        padding: 0,
-    },
-    stepContent: {
-        border: 'none',
-        marginLeft: 0,
-        paddingLeft: '8px',
-    },
-    top: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        padding: theme.spacing(2),
-        background: 'black',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        zIndex: 2000,
-    },
-    topTitle: {
-        fontSize: '1rem',
-        color: 'white',
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
-        margin: '2px',
-    },
-    topTitleExtra: {
-        fontSize: '1rem',
-        color: 'white',
-        textTransform: 'uppercase',
-        fontWeight: 'normal',
-        margin: '2px',
-    },
-    doneTitle: {
-        color: 'white',
-        textAlign: 'center',
-    },
-    socialIcon: {
-        color: 'white',
-        width: 'auto',
-        margin: '1rem',
-        cursor: 'pointer',
-    },
-}))
+// const useStyles = styled(theme => ({
+//     wrapper: {
+//         position: 'absolute',
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         minHeight: '100%',
+//         background: 'black',
+//         zIndex: 100,
+//     },
+//     backgroundImage: {
+//         position: 'fixed',
+//         zIndex: 1,
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         height: '100%',
+//         objectFit: 'cover',
+//         opacity: 0.3,
+//         filter: 'blur(5px)',
+//     },
+//     mainTitle: {
+//         color: 'white',
+//         textAlign: 'center',
+//     },
+//     sectionTitle: {
+//         color: 'white',
+//         fontSize: '1.4rem',
+//         textTransform: 'uppercase',
+//         fontWeight: 'bold',
+//         textAlign: 'center',
+//     },
+//     content: {
+//         position: 'relative',
+//         zIndex: 1000,
+//     },
+//     stepper: {
+//         background: 'transparent',
+//         padding: 0,
+//     },
+//     stepContent: {
+//         border: 'none',
+//         marginLeft: 0,
+//         paddingLeft: '8px',
+//     },
+//     top: {
+//         position: 'fixed',
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         padding: theme.spacing(2),
+//         background: 'black',
+//         display: 'flex',
+//         flexDirection: 'row',
+//         justifyContent: 'center',
+//         zIndex: 2000,
+//     },
+//     topTitle: {
+//         fontSize: '1rem',
+//         color: 'white',
+//         textTransform: 'uppercase',
+//         fontWeight: 'bold',
+//         margin: '2px',
+//     },
+//     topTitleExtra: {
+//         fontSize: '1rem',
+//         color: 'white',
+//         textTransform: 'uppercase',
+//         fontWeight: 'normal',
+//         margin: '2px',
+//     },
+//     doneTitle: {
+//         color: 'white',
+//         textAlign: 'center',
+//     },
+//     socialIcon: {
+//         color: 'white',
+//         width: 'auto',
+//         margin: '1rem',
+//         cursor: 'pointer',
+//     },
+// }))
 
 const Connector = ({ index, active, completed, disabled }) => <div />
 
 export default RequiresPermission(() => {
     const { t } = useTranslation()
-    const classes = useStyles()
+    // const classes = useStyles()
+    const classes = {}
     const dispatch = useDispatch()
     const {
         slug,
@@ -145,6 +147,7 @@ export default RequiresPermission(() => {
         createRegistration,
         editRegistration,
         finishRegistration,
+        registration,
     } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
     const [loading, setLoading] = useState(false)
@@ -153,7 +156,9 @@ export default RequiresPermission(() => {
     const [eventNewsLetterHidden, setEventNewsLetterHidden] = useState(true)
 
     const globalNavbarElement = document.getElementById('global-navbar')
-    globalNavbarElement.style.display = 'none'
+    if (globalNavbarElement) {
+        globalNavbarElement.style.display = 'none'
+    }
 
     useEffect(() => {
         setTimeout(function () {
@@ -267,6 +272,7 @@ export default RequiresPermission(() => {
         [editRegistration, formData],
     )
 
+    // TODO add formdata save for setPrevStep too
     const setPrevStep = useCallback(() => {
         setActiveStep(activeStep - 1)
     }, [activeStep])
@@ -281,7 +287,7 @@ export default RequiresPermission(() => {
                 section.questions.forEach(question => {
                     const que = question.name
                     const label = question?.label || 'custom question'
-                    const value = formData[sec][que]
+                    const value = formData[sec]?.[que]
                     const custom = {
                         label: label,
                         section: sec,
@@ -386,7 +392,7 @@ export default RequiresPermission(() => {
         })
     }
 
-    const shareurl = 'https://app.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
+    const shareurl = `${config.BASE_URL}/events/${event.slug}`
     const sharetext = `I just applied to ${event.name}!`
 
     return (
@@ -513,19 +519,6 @@ export default RequiresPermission(() => {
                                                     popupCenter({
                                                         url: `https://www.linkedin.com/sharing/share-offsite/?url=${shareurl}`,
                                                         title: 'Linkedin',
-                                                    })
-                                                }
-                                                className={classes.socialIcon}
-                                                size="3x"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <FontAwesomeIcon
-                                                icon={['fab', 'vk']}
-                                                onClick={() =>
-                                                    popupCenter({
-                                                        url: `https://vkontakte.ru/share.php?url=${shareurl}&`,
-                                                        title: 'VKOntakte',
                                                     })
                                                 }
                                                 className={classes.socialIcon}

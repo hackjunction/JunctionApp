@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const classes = useStyles()
     return (
-        <Grid container spacing={3} direction="row" justify="center">
+        <Grid container spacing={3} direction="row" justifyContent="center">
             <Grid item xs={12} md={8}>
                 <Box
                     p={3}

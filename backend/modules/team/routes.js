@@ -28,7 +28,6 @@ const createNewTeam = asyncHandler(async (req, res) => {
         req.event._id,
         req.user.sub,
     )
-    console.log('Team to save returned from controller:', team)
     if (req.query.populate === 'true') {
         team = await TeamController.attachMeta(team)
     }
@@ -84,12 +83,11 @@ const organiserRemoveMemberFromTeam = asyncHandler(async (req, res) => {
         req.params.code,
         req.params.userId,
     )
-    console.log("deleted: ", team)
     return res.status(200).json(team)
 })
 
-const getTeam = asyncHandler(async (req, res) => {
-    let team = await TeamController.getTeam(
+const getUserTeam = asyncHandler(async (req, res) => {
+    let team = await TeamController.getUserTeam(
         req.event._id.toString(),
         req.user.sub,
     )
@@ -111,22 +109,24 @@ const getTeamByCode = asyncHandler(async (req, res) => {
 })
 
 const getTeamById = asyncHandler(async (req, res) => {
-    let team = await TeamController.getTeamById(req.params.teamId)
+    let team = await TeamController.getTeamById(req.params.teamId, req.user.sub)
+
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team)
+    }
     return res.status(200).json(team)
 })
 
 const candidateApplyToTeam = asyncHandler(async (req, res) => {
     let team = await TeamController.candidateApplyToTeam(
-        req.event._id,
         req.user.sub,
-        req.params.code,
+        req.params.teamId,
         req.body,
     )
     return res.status(200).json(team)
 })
 
 const acceptCandidateToTeam = asyncHandler(async (req, res) => {
-    console.log('Params:', req.params)
     const team = await TeamController.acceptCandidateToTeam(
         req.event._id,
         req.user.sub,
@@ -152,23 +152,22 @@ const getTeamRoles = asyncHandler(async (req, res) => {
 })
 
 const getTeamsForEvent = asyncHandler(async (req, res) => {
-    var teams
+    let teams
     if (req.query.page && req.query.size) {
         if (req.query.filter) {
-            console.log("req with filter", req.query)
             teams = await TeamController.getTeamsForEvent(
                 req.event._id,
                 req.user.sub,
                 req.query.page,
                 req.query.size,
-                req.query.filter
+                req.query.filter,
             )
         } else {
             teams = await TeamController.getTeamsForEvent(
                 req.event._id,
                 req.user.sub,
                 req.query.page,
-                req.query.size
+                req.query.size,
             )
         }
     } else {
@@ -180,7 +179,12 @@ const getTeamsForEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(teams)
 })
 
-
+const getTeamsForEventAsOrganizer = asyncHandler(async (req, res) => {
+    const teams = await TeamController.getTeamsForEventAsOrganizer(
+        req.event._id,
+    )
+    return res.status(200).json(teams)
+})
 
 const exportTeams = asyncHandler(async (req, res) => {
     const teams = await TeamController.exportTeams(req.body.teamIds)
@@ -194,7 +198,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        getTeamsForEvent,
+        getTeamsForEventAsOrganizer,
     )
 
 router
@@ -218,7 +222,7 @@ router
 /** Participant-facing routes */
 router
     .route('/:slug')
-    .get(hasToken, hasRegisteredToEvent, getTeam)
+    .get(hasToken, hasRegisteredToEvent, getUserTeam)
     .post(
         hasToken,
         hasRegisteredToEvent,
@@ -252,6 +256,10 @@ router
 router
     .route('/:slug/teams/:code')
     .get(hasToken, hasRegisteredToEvent, getTeamByCode)
+
+router
+    .route('/:slug/team/:teamId')
+    .get(hasToken, hasRegisteredToEvent, getTeamById)
     .patch(
         hasToken,
         hasRegisteredToEvent,

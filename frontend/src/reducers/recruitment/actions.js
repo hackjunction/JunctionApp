@@ -52,12 +52,17 @@ export const updateEvents = () => (dispatch, getState) => {
     })
 }
 
-export const updateActionHistory = (organisation) => (dispatch, getState) => {
+export const updateActionHistory = organisation => (dispatch, getState) => {
+    const state = getState()
     const idToken = AuthSelectors.getIdToken(getState())
-    console.log("updateActionHistory", organisation)
+    const event = DashboardSelectors.event(state)
     dispatch({
         type: ActionTypes.UPDATE_ACTION_HISTORY,
-        promise: RecruitmentService.getActionHistory(idToken, organisation),
+        promise: RecruitmentService.getActionHistory(
+            idToken,
+            organisation,
+            event._id,
+        ),
         meta: {
             onFailure: e => console.log('Error getting action history', e),
         },
@@ -69,39 +74,50 @@ export const updateSearchResults = () => (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(state)
     const page = RecruitmentSelectors.page(state)
     const pageSize = RecruitmentSelectors.pageSize(state)
-    const filters = buildFilterArray(RecruitmentSelectors.filters(state))
-    const event = DashboardSelectors.event(state)//will be needed to get event spesific participants. Comes from dashboard state, first recrytool needs to migrated to be component. 
+    const event = DashboardSelectors.event(state) //will be needed to get event spesific participants. Comes from dashboard state, first recrytool needs to migrated to be component.
+    const filters = buildFilterArray(RecruitmentSelectors.filters(state), event)
     dispatch({
         type: ActionTypes.UPDATE_SEARCH_RESULTS,
-        promise: RecruitmentService.search(idToken, filters, page, pageSize, event._id),
+        promise: RecruitmentService.search(
+            idToken,
+            filters,
+            page,
+            pageSize,
+            event._id,
+        ),
         meta: {
             onFailure: e => console.log('Error getting search results', e),
         },
     })
 }
 
-export const sendMessage = (message, userId, organisation) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+//TODO rework messaging for recruitment
 
-    const res = await dispatch({
-        type: ActionTypes.UPDATE_ACTION_HISTORY,
-        promise: RecruitmentService.submitAction(
-            'message',
-            idToken,
-            userId,
-            organisation,
-            message,
-        ),
-        meta: {
-            onFailure: e => console.log('Error sending message', e),
-        },
-    })
+// export const sendMessage =
+//     (message, userId, organisation) => async (dispatch, getState) => {
+//         const idToken = AuthSelectors.getIdToken(getState())
 
-    return res
-}
+//         const res = await dispatch({
+//             type: ActionTypes.UPDATE_ACTION_HISTORY,
+//             promise: RecruitmentService.submitAction(
+//                 'message',
+//                 idToken,
+//                 userId,
+//                 organisation,
+//                 eventId,
+//                 message,
+//             ),
+//             meta: {
+//                 onFailure: e => console.log('Error sending message', e),
+//             },
+//         })
+
+//         return res
+//     }
 
 export const toggleFavorite =
-    (userId, isFavorite, organisation) => async (dispatch, getState) => {
+    (userId, isFavorite, organisation, eventId) =>
+    async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
 
         let res
@@ -114,6 +130,7 @@ export const toggleFavorite =
                     idToken,
                     userId,
                     organisation,
+                    eventId,
                 ),
                 meta: {
                     onFailure: e => console.log('Error adding to favorites', e),
@@ -127,6 +144,7 @@ export const toggleFavorite =
                     idToken,
                     userId,
                     organisation,
+                    eventId,
                 ),
                 meta: {
                     onFailure: e => console.log('Error adding to favorites', e),
@@ -136,12 +154,13 @@ export const toggleFavorite =
         return res
     }
 
-export const updateRecruitersEvent = (partners) => async (dispatch, getState) => {
+export const updateRecruitersEvent = partners => async (dispatch, getState) => {
     dispatch({
         type: ActionTypes.UPDATE_RECRUITERS_EVENT,
         promise: UserProfilesService.getPublicUserProfiles(partners),
         meta: {
-            onFailure: e => console.log('Error getting recruiters for this event', e),
+            onFailure: e =>
+                console.log('Error getting recruiters for this event', e),
         },
     })
 }
@@ -176,8 +195,6 @@ export const addRecruiterEvent =
         return user
     }
 
-
-
 export const deleteRecruiterEvent =
     (userId, event) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
@@ -195,8 +212,6 @@ export const deleteRecruiterEvent =
 
         return user
     }
-
-
 
 /* Admin actions */
 export const updateAdminRecruiters = () => (dispatch, getState) => {
@@ -222,7 +237,6 @@ export const updateAdminSearchResults = query => (dispatch, getState) => {
     })
 }
 
-
 export const adminGrantRecruiterAccess =
     (userId, events, organisation) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
@@ -244,7 +258,7 @@ export const adminGrantRecruiterAccess =
     }
 
 export const adminRevokeRecruiterAccess =
-    (userId) => async (dispatch, getState) => {
+    userId => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
 
         const user = await UserProfilesService.deleteRecruitersAdmin(

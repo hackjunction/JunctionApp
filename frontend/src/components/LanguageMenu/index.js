@@ -7,17 +7,31 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
     const { i18n } = useTranslation()
-
+    console.log('LanguageMenu')
+    console.log(i18n)
+    console.log(i18n.language)
     const handleChange = event => {
         i18n.changeLanguage(event.target.value)
+    }
+    let currentLanguage
+    if (i18n.language !== 'en' && i18n.language !== 'zh') {
+        currentLanguage = 'en'
+    } else {
+        currentLanguage = i18n.language
     }
     return (
         <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={i18n.language}
+            value={currentLanguage}
             onChange={handleChange}
-            style={{ padding: '8px 0px 8px 16px' }}
+            defaultValue={'en'}
+            className="tw-text-black tw-border-1 tw-border-2 tw-border-solid tw-border-black tw-px-2 tw-py-0 tw-bg-white tw-rounded-lg"
+            // style={{
+            //     padding: '8px 0px 8px 16px',
+            //     color: 'white',
+            //     backgroundColor: 'black',
+            // }}
             disableUnderline
         >
             {/* <MenuItem value={'fi'}>
@@ -28,12 +42,12 @@ export default () => {
 
             <MenuItem value={'en'}>
                 <span role="img" aria-label="en">
-                    English
+                    EN 🇺🇸
                 </span>
             </MenuItem>
             <MenuItem value={'zh'}>
                 <span role="img" aria-label="zh">
-                    Chinese
+                    ZH 🇨🇳
                 </span>
             </MenuItem>
         </Select>

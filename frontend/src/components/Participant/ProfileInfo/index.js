@@ -4,6 +4,7 @@ import { Box, Chip, Typography, Grid } from '@mui/material'
 
 import GradientBox from 'components/generic/GradientBox'
 import SkillRating from '../../../pages/_dashboard/renderDashboard/partner/partnerrecruitment/default/SearchResults/SkillRating'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     inline: {
@@ -55,6 +56,7 @@ const makeBoxStyles = () => ({
 
 export default ({ user = {} }) => {
     const classes = useStyles()
+    const { t } = useTranslation()
 
     const renderRecruitmentStatus = () => {
         switch (user.recruitmentOptions?.status) {
@@ -131,45 +133,44 @@ export default ({ user = {} }) => {
 
     return (
         <>
-            {(user.profile?.biography || user?.recruitmentOptions) && (
-                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
-                    {user.profile.biography && (
-                        <div>
-                            <Typography
-                                className="tw-tracking-tight tw-font-medium"
-                                variant="h5"
-                                component="h5"
-                            >
-                                Biography
-                            </Typography>
-                            <Typography
-                                className="tw-text-lg"
-                                variant="body1"
-                                component="p"
-                            >
-                                {user.profile.biography}
-                            </Typography>
-                        </div>
-                    )}
-                    {user.recruitmentOptions && (
-                        <div className="tw-flex tw-flex-wrap tw-gap-4">
-                            <Box ml={0.5} mr={0.5} mb={0.5}>
-                                {renderRecruitmentStatus()}
-                            </Box>
-                            <Box ml={0.5} mr={0.5} mb={0.5}>
-                                {renderRelocationStatus()}
-                            </Box>
-                        </div>
-                    )}
-                </div>
-            )}
+            <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
+                {user.profile.biography && (
+                    <div>
+                        <Typography
+                            className="tw-tracking-tight tw-font-medium"
+                            variant="h5"
+                            component="h5"
+                        >
+                            {t('Biography_')}
+                        </Typography>
+                        <Typography
+                            className="tw-text-lg"
+                            variant="body1"
+                            component="p"
+                        >
+                            {user.profile.biography}
+                        </Typography>
+                    </div>
+                )}
+                {user.recruitmentOptions && (
+                    <div className="tw-flex tw-flex-wrap tw-gap-4">
+                        <Box ml={0.5} mr={0.5} mb={0.5}>
+                            {renderRecruitmentStatus()}
+                        </Box>
+                        <Box ml={0.5} mr={0.5} mb={0.5}>
+                            {renderRelocationStatus()}
+                        </Box>
+                    </div>
+                )}
+            </div>
+            {/* )} */}
             <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
                 <Typography
                     className="tw-tracking-tight tw-font-medium tw-mb-4"
                     variant="h5"
                     component="h5"
                 >
-                    Basic information
+                    {t('Basic_information_')}
                 </Typography>
                 {user.profile.firstName && (
                     <div>

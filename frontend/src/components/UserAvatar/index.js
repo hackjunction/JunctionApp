@@ -25,7 +25,7 @@ export default () => {
             <div className="tw-rounded-full tw-border-8 tw-border-white">
                 <IconButton onClick={handleClick}>
                     <Avatar
-                        className="tw-rounded-full tw-border-8 tw-border-white tw-w-12 tw-h-12"
+                        className="tw-w-12 tw-h-12"
                         src={profile?.avatar}
                         alt="Avatar"
                         style={{

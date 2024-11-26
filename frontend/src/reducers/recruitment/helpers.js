@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 const initialEvents = [
     {
         statuses: [
@@ -10,15 +12,58 @@ const initialEvents = [
     },
 ]
 
-export const buildFilterArray = ({
-    skills = [],
-    roles = [],
-    countryOfResidence = [],
-    spokenLanguages = [],
-    recruitmentStatus = [],
-    relocationStatus = [],
-    textSearch = '',
-}) => {
+const recruitmentBaseFilterProperties = {
+    statuses: [
+        'checkedIn',
+        'confirmed',
+        'accepted',
+        'confirmedToHub',
+        'acceptedToHub',
+    ],
+    filters: [
+        'countryOfResidence',
+        'recruitmentOptions',
+        'spokenLanguages',
+        'status',
+        'skills',
+        'roles',
+    ],
+}
+
+export const buildFilterArray = (
+    {
+        skills = [],
+        roles = [],
+        countryOfResidence = [],
+        spokenLanguages = [],
+        recruitmentStatus = [],
+        relocationStatus = [],
+        textSearch = '',
+    },
+    event,
+) => {
+    let isRegistrationDataInUse = false
+
+    const arrayMerge = [
+        ...event.registrationConfig.optionalFields,
+        ...event.registrationConfig.requiredFields,
+    ]
+
+    if (
+        _.intersection(arrayMerge, recruitmentBaseFilterProperties.filters)
+            .length > 0
+    ) {
+        isRegistrationDataInUse = true
+    }
+
+    const formatField = (field, usingRegistrationData) => {
+        //This utility returns the field formated if it must be taken from the registration of the user, of if it must use the user profile information
+        if (usingRegistrationData) {
+            return `answers.${field}`
+        }
+        return field
+    }
+
     const filters = []
 
     const events = initialEvents
@@ -29,7 +74,7 @@ export const buildFilterArray = ({
 
     if (countryOfResidence && countryOfResidence.length) {
         filters.push({
-            field: 'countryOfResidence',
+            field: formatField('countryOfResidence', isRegistrationDataInUse),
             operator: 'contains',
             value: countryOfResidence,
         })
@@ -37,7 +82,10 @@ export const buildFilterArray = ({
 
     if (relocationStatus && relocationStatus.length) {
         filters.push({
-            field: 'recruitmentOptions.relocation',
+            field: formatField(
+                'recruitmentOptions.relocation',
+                isRegistrationDataInUse,
+            ),
             operator: 'contains',
             value: relocationStatus,
         })
@@ -45,7 +93,10 @@ export const buildFilterArray = ({
 
     if (recruitmentStatus && recruitmentStatus.length) {
         filters.push({
-            field: 'recruitmentOptions.status',
+            field: formatField(
+                'recruitmentOptions.status',
+                isRegistrationDataInUse,
+            ),
             operator: 'contains',
             value: recruitmentStatus,
         })
@@ -53,37 +104,47 @@ export const buildFilterArray = ({
 
     if (spokenLanguages && spokenLanguages.length) {
         filters.push({
-            field: 'spokenLanguages',
+            field: formatField('spokenLanguages', isRegistrationDataInUse),
             operator: 'contains-all',
             value: spokenLanguages,
         })
     }
 
+    //TODO fix issue that does not allow isRegistrationDataInUse to be true if none of the previous conditionals are triggered
     events.forEach(({ event, statuses }) => {
         if (statuses?.length) {
-            filters.push({
-                field: 'registrations',
-                operator: 'array-element-match',
-                value: {
-                    event,
-                    status: {
-                        $in: statuses,
+            if (isRegistrationDataInUse) {
+                filters.push({
+                    field: 'status',
+                    operator: 'contains',
+                    value: statuses,
+                })
+            } else {
+                filters.push({
+                    field: 'registrations',
+                    operator: 'array-element-match',
+                    value: {
+                        event,
+                        status: {
+                            $in: statuses,
+                        },
                     },
-                },
-            })
+                })
+            }
         } else {
             filters.push({
                 field: 'registrations.event',
                 operator: '==',
                 value: event,
             })
+            // }
         }
     })
 
     skills.forEach(({ skill, levels }) => {
         if (levels.length) {
             filters.push({
-                field: 'skills',
+                field: 'answers.skills',
                 operator: 'array-element-match',
                 value: {
                     skill,
@@ -94,7 +155,7 @@ export const buildFilterArray = ({
             })
         } else {
             filters.push({
-                field: 'skills.skill',
+                field: 'answers.skills.skill',
                 operator: '==',
                 value: skill,
             })
@@ -104,7 +165,7 @@ export const buildFilterArray = ({
     roles.forEach(({ role, years }) => {
         if (years.length) {
             filters.push({
-                field: 'roles',
+                field: 'answers.roles',
                 operator: 'array-element-match',
                 value: {
                     role,
@@ -115,7 +176,7 @@ export const buildFilterArray = ({
             })
         } else {
             filters.push({
-                field: 'roles.role',
+                field: 'answers.roles.role',
                 operator: '==',
                 value: role,
             })

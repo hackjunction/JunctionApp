@@ -38,7 +38,7 @@ export default () => {
     return (
         <div
             id="global-navbar"
-            className="tw-w-full tw-py-2 tw-bg-wave-pattern "
+            className="tw-w-full tw-p-2 tw-gap-1 tw-bg-wave-pattern tw-flex tw-flex-col tw-justify-between tw-items-center md:tw-flex-row"
         >
             <div>
                 <div>

@@ -24,49 +24,32 @@ const ProjectDetail = ({
 }) => {
     const [index, setIndex] = useState(0)
     const [pause, setPause] = useState(true)
-    const dispatch = useDispatch()
 
     if (!project) return null
-
-    const downloadFile = async fileDataString => {
-        const parsedValue = JSON.parse(fileDataString)
-        await dispatch(
-            DashboardActions.getFileForProject(
-                parsedValue.id,
-                parsedValue.filename,
-            ),
-        )
-    }
-
-    const extractFileDetails = (fileDataString, toExtract) => {
-        const parsedValue = JSON.parse(fileDataString)
-        switch (toExtract) {
-            case 'filename':
-                return parsedValue.filename
-            case 'id':
-                return parsedValue.id
-            default:
-                return parsedValue.filename
-        }
-    }
 
     const renderTrack = () => {
         const value = find(event.tracks, t => t.slug === project.track)
 
         if (!value) {
-            return <Typography variant="subtitle1">No track</Typography>
+            return (
+                <Typography variant="subtitle1">No track selected</Typography>
+            )
         }
         return <Typography variant="subtitle1">{value.name}</Typography>
     }
 
-    const renderChallenges = challenges => {
+    const renderChallenges = () => {
         const values = filter(
             event.challenges,
             c => project.challenges.indexOf(c.slug) !== -1,
         )
 
         if (values.length === 0) {
-            return <Typography variant="subtitle1">No challenges</Typography>
+            return (
+                <Typography variant="subtitle1">
+                    No challenges selected
+                </Typography>
+            )
         }
 
         return values.map(challenge => (
@@ -247,9 +230,11 @@ const ProjectDetail = ({
                                     {project.punchline}
                                 </Typography>
                             </div>
-                            <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
-                                <Markdown source={project.description} />
-                            </div>
+                            {project.description && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Markdown source={project.description} />
+                                </div>
+                            )}
                             {submissionFormAnswersArray?.length > 0 &&
                                 submissionFormAnswersArray.map(
                                     (section, index) => {
@@ -268,43 +253,35 @@ const ProjectDetail = ({
                                                     {section.answers.length >
                                                         0 &&
                                                         section.answers.map(
-                                                            (answer, index) => (
-                                                                <div
-                                                                    key={index}
-                                                                    className="flex flex-col gap-2"
-                                                                >
-                                                                    <Typography variant="h6">
-                                                                        {
-                                                                            answer.question
-                                                                        }
-                                                                    </Typography>
-                                                                    {answer.fieldType ===
-                                                                    'attachment' ? (
-                                                                        <div>
-                                                                            <button
-                                                                                className="p-2 rounded-sm bg-white border border-gray-300"
-                                                                                onClick={() =>
-                                                                                    downloadFile(
-                                                                                        answer.value,
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                Download{' '}
-                                                                                {extractFileDetails(
-                                                                                    answer.value,
-                                                                                    'filename',
-                                                                                )}
-                                                                            </button>
-                                                                        </div>
-                                                                    ) : (
-                                                                        <Typography variant="subtitle1">
+                                                            (answer, index) => {
+                                                                if (
+                                                                    answer.fieldType ===
+                                                                    'attachment'
+                                                                ) {
+                                                                    return null
+                                                                }
+                                                                return (
+                                                                    <div
+                                                                        key={`${answer.question}-${index}`}
+                                                                        className="tw-flex tw-flex-col tw-gap-2"
+                                                                    >
+                                                                        <Typography variant="h6">
                                                                             {
-                                                                                answer.value
+                                                                                answer.question
                                                                             }
                                                                         </Typography>
-                                                                    )}
-                                                                </div>
-                                                            ),
+                                                                        <Typography variant="subtitle1">
+                                                                            {answer.fieldType ===
+                                                                            'boolean'
+                                                                                ? answer.value ===
+                                                                                  'true'
+                                                                                    ? 'Yes'
+                                                                                    : 'No'
+                                                                                : answer.value}
+                                                                        </Typography>
+                                                                    </div>
+                                                                )
+                                                            },
                                                         )}
                                                 </div>
                                             )
@@ -324,125 +301,125 @@ const ProjectDetail = ({
                                     </Typography>
                                 </div>
                             )}
-                            {project.video ? (
-                                <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
+                            {event?.submissionFormDefaultFields?.video && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
                                         className="uppercase"
                                     >
                                         Video
                                     </Typography>
-                                    <a
-                                        href={project.video}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {project.video}
-                                    </a>
-                                    <div className="relative h-90">
-                                        <ReactPlayer
-                                            url={project.video}
-                                            className="absolute top-0 left-0"
-                                            width="100%"
-                                            height="100%"
-                                            controls
-                                            light={false}
-                                            loop={false}
-                                            playbackRate={1.0}
-                                            volume={0.8}
-                                            muted={false}
-                                            onReady={() =>
-                                                console.log('onReady')
-                                            }
-                                            onStart={() =>
-                                                console.log('onStart')
-                                            }
-                                            onBuffer={() =>
-                                                console.log('onBuffer')
-                                            }
-                                            onSeek={e =>
-                                                console.log('onSeek', e)
-                                            }
-                                            onError={e =>
-                                                console.log('onError', e)
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className="uppercase"
-                                    >
-                                        Video
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                        No video available
-                                    </Typography>
+                                    {project.video ? (
+                                        <>
+                                            <a
+                                                href={project.video}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {project.video}
+                                            </a>
+                                            <div
+                                                className={
+                                                    classes.playerWrapper
+                                                }
+                                            >
+                                                <ReactPlayer
+                                                    url={project.video}
+                                                    className={
+                                                        classes.reactPlayer
+                                                    }
+                                                    width="100%"
+                                                    height="100%"
+                                                    controls
+                                                    light={false}
+                                                    loop={false}
+                                                    playbackRate={1.0}
+                                                    volume={0.8}
+                                                    muted={false}
+                                                    onReady={() =>
+                                                        console.log('onReady')
+                                                    }
+                                                    onStart={() =>
+                                                        console.log('onStart')
+                                                    }
+                                                    onBuffer={() =>
+                                                        console.log('onBuffer')
+                                                    }
+                                                    onSeek={e =>
+                                                        console.log('onSeek', e)
+                                                    }
+                                                    onError={e =>
+                                                        console.log(
+                                                            'onError',
+                                                            e,
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <Typography variant="subtitle1">
+                                            Not available
+                                        </Typography>
+                                    )}
                                 </div>
                             )}
-
-                            {project.demo ? (
-                                <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
+                            {event?.submissionFormDefaultFields?.demo && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
                                         className="uppercase"
                                     >
                                         Demo
                                     </Typography>
-                                    <a
-                                        href={project.demo}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {project.demo}
-                                    </a>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className="uppercase"
-                                    >
-                                        Demo
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                        No demo available
-                                    </Typography>
+                                    {project.demo ? (
+                                        <a
+                                            href={project.demo}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {project.demo}
+                                        </a>
+                                    ) : (
+                                        <Typography variant="subtitle1">
+                                            Not available
+                                        </Typography>
+                                    )}
                                 </div>
                             )}
-                            {!project.sourcePublic ? (
-                                <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
+                            {event?.submissionFormDefaultFields?.source && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
                                         className="uppercase"
                                     >
                                         Source code
                                     </Typography>
-                                    <Typography variant="subtitle1">
-                                        Source code not public
-                                    </Typography>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className="uppercase"
-                                    >
-                                        Source code
-                                    </Typography>
-                                    <a
-                                        href={project.source}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {project.source}
-                                    </a>
+                                    {project.sourcePublic ? (
+                                        <>
+                                            {project.source ? (
+                                                <a
+                                                    href={project.source}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {project.source}
+                                                </a>
+                                            ) : (
+                                                <Typography variant="subtitle1">
+                                                    Not public
+                                                </Typography>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <Typography variant="subtitle1">
+                                            Not public
+                                        </Typography>
+                                    )}
                                 </div>
                             )}
-                            {event && project.track && (
-                                <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
+                            {event.tracksEnabled && project.track && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
                                         className="uppercase"
@@ -452,19 +429,23 @@ const ProjectDetail = ({
                                     {renderTrack()}
                                 </div>
                             )}
-                            {event && project.challenges.length > 0 && (
-                                <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className="uppercase"
-                                    >
-                                        Challenges
-                                    </Typography>
-                                    {renderChallenges()}
-                                </div>
-                            )}
-                            <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
-                                <Typography variant="h6" className="uppercase">
+                            {event.challengesEnabled &&
+                                project.challenges.length > 0 && (
+                                    <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                        <Typography
+                                            variant="h6"
+                                            className={'tw-uppercase'}
+                                        >
+                                            Challenges
+                                        </Typography>
+                                        {renderChallenges()}
+                                    </div>
+                                )}
+                            <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                <Typography
+                                    variant="h6"
+                                    className={'tw-uppercase'}
+                                >
                                     Team
                                 </Typography>
                                 <ProjectTeam

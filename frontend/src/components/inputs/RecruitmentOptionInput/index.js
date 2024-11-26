@@ -36,7 +36,7 @@ const RecruitmentOptionInput = ({
                     ...value,
                     status: fieldValue,
                     consent: false,
-                    relocation: undefined,
+                    relocation: 'not-currently',
                 })
             } else {
                 onChange({

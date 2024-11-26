@@ -98,7 +98,7 @@ controller.initAnnotator = async (event, userId) => {
             new ForbiddenError('Cannot start voting while voting is not open'),
         )
     }
-    const team = await TeamController.getTeam(event._id, userId).catch(
+    const team = await TeamController.getUserTeam(event._id, userId).catch(
         () => null,
     )
     const [projects, annotators] = await Promise.all([

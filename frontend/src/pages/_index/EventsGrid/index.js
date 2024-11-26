@@ -92,7 +92,7 @@ export default ({ events, loading = false, title }) => {
                         spacing={6}
                         direction="row"
                         alignItems="stretch"
-                        justify="center"
+                        justifyContent="center"
                     >
                         <Grid item xs={12}>
                             <Typography variant="h3" align="center">

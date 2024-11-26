@@ -222,7 +222,7 @@ controller.getFinalists = async event => {
 
 controller.getDataForPartnerReviewing = async (event, user) => {
     const data = {}
-    const teams = await TeamController.getAllTeamsForEvent(event._id)
+    const teams = await TeamController.getAllTeamsForEventAsPartner(event._id)
     const projects = await controller.getProjectPreviewsByEvent(event._id)
     const projectsWithExistingTeamsAndFinal = _.filter(projects, project => {
         if (project.status === 'final') {

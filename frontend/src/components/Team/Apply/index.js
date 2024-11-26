@@ -91,7 +91,7 @@ export default ({
             dispatch(
                 DashboardActions.candidateApplyToTeam(
                     event.slug,
-                    selectedTeam.code,
+                    selectedTeam._id,
                     submittionData,
                 ),
             )

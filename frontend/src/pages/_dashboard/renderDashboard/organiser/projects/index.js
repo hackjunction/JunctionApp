@@ -104,10 +104,8 @@ export default () => {
         return data
     }, [event])
 
-    if (!event || projectsLoading) return <PageWrapper loading />
-
     return (
-        <PageWrapper>
+        <PageWrapper loading={!event || projectsLoading}>
             <PageHeader
                 heading="Projects"
                 subheading="All of the cool stuff people have made"

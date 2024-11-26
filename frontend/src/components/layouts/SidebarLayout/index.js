@@ -25,6 +25,7 @@ import EventsPage from 'pages/_dashboard/renderDashboard/default/events'
 import ProfilePage from 'pages/_account/profile' //TODO: fix the profile view
 
 import config from 'constants/config'
+import { useTranslation } from 'react-i18next'
 
 export default React.memo(
     ({
@@ -44,6 +45,7 @@ export default React.memo(
         const routes = _routes.filter(route => !route.hidden)
         const navigate = useNavigate()
 
+        const { t } = useTranslation()
         const activeIndex = useMemo(() => {
             const relativePath = location.pathname.replace(baseRoute, '')
             let idx = findIndex(routes, item => {
@@ -180,7 +182,7 @@ export default React.memo(
                             </ListItemIcon>
                             <ListItemText
                                 className="text-inherit"
-                                primary={'Events'}
+                                primary={t('Events_')}
                             />
                         </ListItem>
                         <ListItem
@@ -199,7 +201,7 @@ export default React.memo(
                             </ListItemIcon>
                             <ListItemText
                                 className="text-inherit"
-                                primary={'Profile'}
+                                primary={t('Profile_')}
                             />
                         </ListItem>
                         <ListItem
@@ -218,7 +220,7 @@ export default React.memo(
                             </ListItemIcon>
                             <ListItemText
                                 className="text-inherit"
-                                primary={'Log Out'}
+                                primary={t('Log_out_')}
                             />
                         </ListItem>
                     </div>

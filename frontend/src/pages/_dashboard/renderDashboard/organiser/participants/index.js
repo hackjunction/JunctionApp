@@ -22,7 +22,9 @@ export default () => {
 
     useEffect(() => {
         if (event) {
-            dispatch(OrganiserActions.updateRegistrationsForEvent(event.slug))
+            dispatch(
+                OrganiserActions.updateRegistrationsForEvent(event.slug, true),
+            )
             dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
         }
     }, [event, location])

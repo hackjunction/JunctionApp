@@ -54,6 +54,7 @@ const Button = ({
     color = 'primary',
     strong = false,
     loading = false,
+    className = '',
     ...props
 }) => {
     const buttonClasses = getButtonClasses(color, props.variant, strong)

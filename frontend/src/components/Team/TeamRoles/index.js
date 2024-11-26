@@ -3,6 +3,7 @@ import Button from 'components/generic/Button'
 import React from 'react'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import theme from 'junctionTheme'
+import { useTranslation } from 'react-i18next'
 
 export default ({
     onRoleClick = () => {},
@@ -14,6 +15,7 @@ export default ({
         },
     ],
 }) => {
+    const { t } = useTranslation()
     const styling = profileView
         ? {
               masonryColumns: {
@@ -39,7 +41,8 @@ export default ({
                         variant="h6"
                         component="h6"
                     >
-                        Available roles
+                        {t('Team_available_roles_')}
+                        {/* Available roles */}
                     </Typography>
                     <ResponsiveMasonry
                         columnsCountBreakPoints={{ ...styling.masonryColumns }}
@@ -91,7 +94,8 @@ export default ({
                     variant="body1"
                     component="p"
                 >
-                    No roles available
+                    {t('Team_no_available_roles_')}
+                    {/* No roles available */}
                 </Typography>
             )}
         </div>

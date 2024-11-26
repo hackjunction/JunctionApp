@@ -8,7 +8,7 @@ import ProjectBlock from './Blocks/ProjectBlock'
 import TeamStatusBlock from './Blocks/TeamStatusBlock'
 // import VisaInvitationBlock from './Blocks/VisaInvitationBlock'
 // import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock'
-import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
+// import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
 import ProjectSubmissionsBlock from './Blocks/ProjectSubmissionsBlock'
 import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
 import CertificateBlock from './Blocks/CertificateBlock'
@@ -27,7 +27,7 @@ export default ({ alerts }) => {
     const event = useSelector(DashboardSelectors.event)
     const projects = useSelector(DashboardSelectors.projects)
     return (
-        <Box>
+        <Box className="tw-flex tw-flex-col tw-gap-2">
             <PageHeader heading="Dashboard" />
 
             <Helmet>
@@ -68,32 +68,21 @@ export default ({ alerts }) => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
-            <Box mt={2} />
-            <Grid container spacing={5}>
-                <div
-                    style={{
-                        height: '400px',
-                        width: '100%',
-                        display: 'flex',
-                        padding: '2em',
-                    }}
-                >
-                    <AlertBlock alerts={alerts} />
-                </div>
+            <AlertBlock alerts={alerts} />
 
-                <EventOverBlock />
-                <ProjectSubmissionsBlock projects={projects} event={event} />
-                <ReviewingPeriodBlock />
-                <RegistrationStatusBlock />
-                {/*<TravelGrantStatusBlock />*/}
-                {/* <VisaInvitationBlock /> */}
-                <CertificateBlock />
-                <ProjectBlock />
-                <TeamStatusBlock />
+            <EventOverBlock />
+            <ProjectSubmissionsBlock projects={projects} event={event} />
+            <ReviewingPeriodBlock />
+            <RegistrationStatusBlock />
+            {/*<TravelGrantStatusBlock />*/}
+            {/* <VisaInvitationBlock /> */}
+            <CertificateBlock />
+            <ProjectBlock />
+            <TeamStatusBlock />
 
-                <GavelReviewingBlock />
-                <SocialMediaBlock />
-            </Grid>
+            {/* <GavelReviewingBlock /> */}
+            <SocialMediaBlock />
+            {/* </Grid> */}
             {event && (
                 <EventPageScriptIFrame
                     slug={event.slug}

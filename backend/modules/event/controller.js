@@ -87,6 +87,9 @@ controller.createEvent = (eventData, user) => {
 }
 
 controller.updateEvent = (event, eventData) => {
+    if (eventData.hasOwnProperty('approved')) {
+        delete eventData.approved
+    }
     return Event.updateAllowed(event, eventData)
 }
 
@@ -100,7 +103,8 @@ controller.removeOrganiser = (event, organiserId) => {
     return event.save()
 }
 
-controller.addRecruiter = (event, recruiterId, organization) => {
+controller.addRecruiter = async (slug, recruiterId, organization) => {
+    const event = await controller.getEventBySlug(slug)
     event.recruiters = _.concat(event.recruiters, {
         recruiterId: recruiterId,
         organization: organization,
@@ -153,7 +157,6 @@ controller.updateWinners = (eventId, winners) => {
 }
 
 controller.updateFinalists = (eventId, finalist) => {
-    console.log(eventId, finalist)
     return Event.findById(eventId).then(event => {
         const index = event.finalists.indexOf(finalist)
         if (index > -1) {
@@ -166,7 +169,6 @@ controller.updateFinalists = (eventId, finalist) => {
 }
 
 controller.batchUpdateFinalists = (eventId, finalists) => {
-    console.log(eventId, finalists)
     return Event.findById(eventId).then(event => {
         event.finalists = finalists || []
         return event.save()

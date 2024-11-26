@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
@@ -11,6 +12,7 @@ export default ({
     teamCode,
     viewMode = 'profile',
 }) => {
+    const { t } = useTranslation()
     const styling = {
         teamNameTypography: '',
         teamChallengeTypography: '',
@@ -19,10 +21,8 @@ export default ({
     let challengeName = null
     let event = useSelector(DashboardSelectors.event)
     if (event === null) {
-        console.log('from organiser')
         event = useSelector(OrganiserSelectors.event)
     }
-    console.log('event', event)
     if (teamChallenge && typeof teamChallenge === 'string') {
         const challengeDetails = event.challenges.find(
             challenge => challenge._id === teamChallenge,
@@ -79,7 +79,7 @@ export default ({
                     variant="body1"
                     component="p"
                 >
-                    Team code {teamCode}
+                    {t('Team_code_is_')} {teamCode}
                 </Typography>
             )}
         </div>

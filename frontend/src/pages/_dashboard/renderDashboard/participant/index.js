@@ -30,6 +30,7 @@ import ChallengesIndex from '../generalPages/challenges'
 import CalendarPage from './calendar'
 import MapPage from '../generalPages/map'
 import ChecklistPage from './checklist'
+import sideChallengesPage from './side-challenges'
 
 import { useTranslation } from 'react-i18next'
 
@@ -40,10 +41,12 @@ import {
     LocalAirportRounded,
     LocalPlayRounded,
     QuestionAnswerSharp,
+    Directions,
 } from '@mui/icons-material'
 
 import { Chat } from 'components/messaging/chat'
 import { Grid, Paper } from '@mui/material'
+import DefaultImage from 'assets/images/dashboardDefault.jpg'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -74,6 +77,8 @@ export default ({
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
 
+    let isNotMainEvent = event?.slug !== 'junction-2024'
+
     useEffect(() => {
         setAlerts(originalAlerts)
         setAlertCount(originalAlertCount)
@@ -87,12 +92,11 @@ export default ({
                 <div className={classes.sidebarTop}>
                     <Image
                         className={classes.sidebarLogo}
-                        publicId={
-                            event && event.logo ? event.logo.publicId : '' //TODO: if no logo, use default
-                        }
+                        publicId={event && event.logo && event.logo.publicId}
                         transformation={{
                             width: 200,
                         }}
+                        defaultImage={DefaultImage}
                     />
                 </div>
             }
@@ -121,8 +125,18 @@ export default ({
                     lockedDescription:
                         'Finalist voting closed until peer review is done',
                     icon: <HowToVoteIcon />,
-                    label: 'Finalist voting',
+                    label: t('Finalist_voting_'),
                     component: FinalistVotingPage,
+                },
+                //TODO make re-enable map for all events
+                {
+                    key: 'map',
+                    hidden: isNotMainEvent,
+                    path: '/map',
+                    exact: false,
+                    icon: <PlaceIcon />,
+                    label: 'Venue map',
+                    component: MapPage,
                 },
                 {
                     key: 'team',
@@ -153,7 +167,7 @@ export default ({
                     locked: lockedPages.reviewing,
                     lockedDescription: 'Reviewing closed',
                     icon: <StarRateIcon />,
-                    label: t('Reviewing_'),
+                    label: t('Review_projects_'),
                     component: ReviewingPage,
                 },
                 {
@@ -162,7 +176,7 @@ export default ({
                     exact: true,
                     hidden: !shownPages.eventID,
                     icon: <FingerprintIcon />,
-                    label: 'Event ID',
+                    label: t('Event_id_'),
                     component: EventIDPage,
                 },
                 {
@@ -180,9 +194,20 @@ export default ({
                     exact: true,
                     hidden: !shownPages.challengesEnabled,
                     icon: <FormatListBulletedIcon />,
-                    label: 'Challenges',
+                    label: t('Challenges_'),
                     component: ChallengesIndex,
                 },
+                //TODO make side-challenges into a full feature
+                {
+                    key: 'side-challenges',
+                    path: '/side-challenges',
+                    exact: true,
+                    icon: <Directions />,
+                    hidden: isNotMainEvent,
+                    label: 'Side-challenges',
+                    component: sideChallengesPage,
+                },
+                //TODO fix meeting booking system
                 {
                     key: 'calendar',
                     path: '/calendar',
@@ -193,15 +218,6 @@ export default ({
                     component: CalendarPage,
                 },
                 // Experimental
-                {
-                    key: 'map',
-                    hidden: !shownPages.experimental,
-                    path: '/map',
-                    exact: false,
-                    icon: <PlaceIcon />,
-                    label: 'Map',
-                    component: MapPage,
-                },
                 {
                     key: 'chat',
                     hidden: !shownPages.experimental,

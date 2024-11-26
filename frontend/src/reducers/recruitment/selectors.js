@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-
 export const events = state => state.recruitment.events.data
 export const eventsLoading = state => state.recruitment.events.loading
 export const eventsError = state => state.recruitment.events.error
@@ -49,11 +48,13 @@ export const adminSearchResultsError = state =>
 export const adminSearchResultsUpdated = state =>
     state.recruitment.adminSearchResults.updated
 
-export const favorites = createSelector(actionHistory, actions =>
-    actions
+export const favorites = createSelector(actionHistory, actions => {
+    return actions
         .filter(action => action.type === 'favorite')
-        .map(action => action._user),
-)
+        .map(action => {
+            return action._user
+        })
+})
 
 export const filters = state => state.recruitment.filters
 export const filtersRecruitmentStatuses = createSelector(

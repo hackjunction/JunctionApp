@@ -514,9 +514,12 @@ const RegistrationQuestion = ({
                                     }),
                                 )}
                                 value={field.value}
-                                onChange={items =>
+                                onChange={items => {
+                                    if (!items) {
+                                        items = []
+                                    }
                                     form.setFieldValue(field.name, items)
-                                }
+                                }}
                                 onBlur={() => form.setFieldTouched(field.name)}
                                 isMulti={true}
                             />

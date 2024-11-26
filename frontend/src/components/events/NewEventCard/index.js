@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { Card, CardContent, CardActions, Typography, Box } from '@mui/material'
+import {
+    Card,
+    CardContent,
+    CardActions,
+    Typography,
+    Box,
+    CardActionArea,
+} from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Image from 'components/generic/Image'
 import Markdown from 'components/generic/Markdown'
@@ -8,7 +15,7 @@ import { useDispatch } from 'react-redux'
 import * as SnackbarActions from 'reducers/snackbar/actions'
 import ProgressBar from 'components/generic/ProgressBar'
 
-const NewEventCard = ({ event, buttons }) => {
+const NewEventCard = ({ event, buttons, handleClick = () => {} }) => {
     const [hover, setHover] = useState(false)
     const dispatch = useDispatch()
     const { t } = useTranslation()
@@ -28,8 +35,7 @@ const NewEventCard = ({ event, buttons }) => {
     }
 
     if (event === undefined || event === null) {
-        dispatch(SnackbarActions.error('some of your events is not defined!'))
-        console.log('Event is not defined!')
+        dispatch(SnackbarActions.error(t('Invalid_access_')))
         return null
     }
 
@@ -39,44 +45,46 @@ const NewEventCard = ({ event, buttons }) => {
             onMouseLeave={() => setHover(false)}
             className={`bg-white m-4 text-left rounded-lg shadow-md min-h-[600px] max-w-xs flex flex-col justify-between ${styling.cardHover}`}
         >
-            <CardContent className="flex flex-col p-0">
-                <div className="h-40 w-full my-0 mx-auto relative flex justify-end items-end">
-                    <Image
-                        className="absolute top-0 left-0 w-full h-full object-cover rounded-t-lg"
-                        defaultImage={require('assets/images/default_cover_image.png')}
-                        publicId={event?.coverImage?.publicId}
-                        transformation={{
-                            width: 400,
-                        }}
-                    />
-                    {organization?.icon && (
-                        <Avatar
-                            className="absolute top-5 left-2"
-                            src={organization?.icon}
+            <CardActionArea onClick={handleClick}>
+                <CardContent className="flex flex-col p-0">
+                    <div className="h-40 w-full my-0 mx-auto relative flex justify-end items-end">
+                        <Image
+                            className="absolute top-0 left-0 w-full h-full object-cover rounded-t-lg"
+                            defaultImage={require('assets/images/default_cover_image.png')}
+                            publicId={event?.coverImage?.publicId}
+                            transformation={{
+                                width: 400,
+                            }}
                         />
-                    )}
-                </div>
-                <div className="p-4 flex flex-col gap-4">
-                    <Typography variant="h4">{event.name}</Typography>
-                </div>
-                {event?.description && (
+                        {organization?.icon && (
+                            <Avatar
+                                className="absolute top-5 left-2"
+                                src={organization?.icon}
+                            />
+                        )}
+                    </div>
                     <div className="p-4 flex flex-col gap-4">
-                        <Markdown
-                            source={parseDescription(event?.description)}
-                        />
+                        <Typography variant="h4">{event.name}</Typography>
                     </div>
-                )}
-                {event?.startTime && event?.endTime && (
-                    <div className="p-4">
-                        <ProgressBar
-                            start={event?.startTime}
-                            end={event?.endTime}
-                            current={new Date()}
-                            event={event.slug}
-                        />
-                    </div>
-                )}
-            </CardContent>
+                    {event?.description && (
+                        <div className="p-4 flex flex-col gap-4">
+                            <Markdown
+                                source={parseDescription(event?.description)}
+                            />
+                        </div>
+                    )}
+                    {event?.startTime && event?.endTime && (
+                        <div className="p-4">
+                            <ProgressBar
+                                start={event?.startTime}
+                                end={event?.endTime}
+                                current={new Date()}
+                                event={event.slug}
+                            />
+                        </div>
+                    )}
+                </CardContent>
+            </CardActionArea>
             <CardActions className="flex gap-4 justify-start max-w-full px-4 pb-4 pt-6">
                 {buttons?.slice(0, 2).map((btn, index) => {
                     return <Box key={index}>{btn}</Box>
