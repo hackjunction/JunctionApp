@@ -1,4 +1,3 @@
-import { push } from 'connected-react-router'
 import * as ActionTypes from './actionTypes'
 import * as AuthSelectors from './selectors'
 import * as UserActions from '../user/actions'
@@ -22,7 +21,7 @@ export const pushNextRoute = () => (dispatch, getState) => {
         type: ActionTypes.RESET_NEXT_ROUTE,
     })
 
-    dispatch(push(nextRoute))
+    // dispatch(push(nextRoute))
 }
 
 export const logout = () => dispatch => {

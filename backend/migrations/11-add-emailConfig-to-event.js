@@ -35,8 +35,8 @@ module.exports = {
         )
         console.log(
             'Done updating emailConfig field',
-            resEmailConfig.n,
-            resEmailConfig.nModified,
+            resEmailConfig.matchedCount,
+            resEmailConfig.modifiedCount,
         )
 
         return Promise.resolve()

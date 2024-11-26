@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 // import AccountNavBar from 'components/navbars/AccountNavBar'
@@ -15,7 +15,7 @@ import Profile from './profile'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const location = useLocation()
     const { t } = useTranslation()
     return (

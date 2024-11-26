@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 import { groupBy, sortBy } from 'lodash-es'
 import {
     ResponsiveContainer,

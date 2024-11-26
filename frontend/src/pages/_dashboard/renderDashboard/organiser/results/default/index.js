@@ -1,11 +1,10 @@
 import React from 'react'
 
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
-import { useRouteMatch } from 'react-router'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Paper, Box, Typography, ButtonBase } from '@material-ui/core'
+import { useResolvedPath } from 'react-router'
+
+import { Grid, Paper, Box, Typography, ButtonBase } from '@mui/material'
 
 const useStyles = makeStyles(theme => ({
     paperButton: {
@@ -18,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
     const classes = useStyles()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     return (
         <Grid container spacing={3}>

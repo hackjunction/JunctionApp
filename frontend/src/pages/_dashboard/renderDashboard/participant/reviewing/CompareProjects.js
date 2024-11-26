@@ -1,19 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    Grid,
-    Typography,
-    CircularProgress,
-    Box,
-    Dialog,
-} from '@material-ui/core'
+import { Grid, Typography, CircularProgress, Box, Dialog } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import ProjectsGridItem from 'components/projects/ProjectsGridItem'
 import Button from 'components/generic/Button'
 import ConfirmDialog from 'components/generic/ConfirmDialog'

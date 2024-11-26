@@ -1,5 +1,4 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const { errors } = require('celebrate')
 const path = require('path')
 const helmet = require('helmet')
@@ -19,20 +18,20 @@ const logger = require('./misc/logger')
 app.use(helmet())
 
 /* Prerender */
-app.use(
-    require('prerender-node').set(
-        'prerenderToken',
-        process.env.PRERENDER_TOKEN,
-    ),
-)
+// app.use(
+//     require('prerender-node').set(
+//         'prerenderToken',
+//         process.env.PRERENDER_TOKEN,
+//     ),
+// )
 
 /* Force SSL Redirect in production */
 //app.use(sslRedirect(['production'], 301))
 
 /* Enable body-parser */
-app.use(bodyParser.json())
+app.use(express.json())
 app.use(
-    bodyParser.urlencoded({
+    express.urlencoded({
         extended: true,
     }),
 )
@@ -47,7 +46,9 @@ app.use(parseToken)
 require('./modules/routes')(app)
 
 /* Register GraphQL server */
-const httpServer = require('./modules/graphql')(app)
+const httpServer = require('./modules/graphql')
+
+// const httpServer = require('./modules/graphql')(app)
 
 /* Serve frontend at all other routes */
 if (process.env.NODE_ENV === 'production') {
@@ -112,16 +113,23 @@ throng({
         await migrations.run()
     },
     /** Start the slave processes (1-n), which listen for incoming requests */
-    start: () => {
-        const PORT = process.env.PORT || 2222
+    start: async () => {
+        await httpServer(app)
+        // const PORT = process.env.PORT || 2222
 
-        httpServer.listen(PORT, () => {
-            logger.info(
-                `Worker ${process.pid} started, listening on port ${
-                    httpServer.address().port
-                }`,
-            )
-        })
+        // await new Promise(resolve => {
+        //     console.log('httpServer.listen', { port: PORT })
+        //     return httpServer.listen({ port: PORT }, resolve)
+        // }).catch(err => {
+        //     console.error('httpServer.listen error')
+        //     console.error(err)
+        // })
+
+        logger.info(
+            `Worker ${process.pid} started, listening on port ${
+                process.env.PORT || 2222
+            }`,
+        )
 
         memoryUsage()
     },

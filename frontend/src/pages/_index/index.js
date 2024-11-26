@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 
 import { useTranslation } from 'react-i18next'
-import * as AuthSelectors from '../../redux/auth/selectors'
+import { Navigate } from 'react-router-dom'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 export default () => {
     //TODO these shouldn't be queried. Events and organizations should be in the state
@@ -15,9 +15,9 @@ export default () => {
         <>
             {
                 userIsAuthenticated ? (
-                    <Redirect to="/dashboard/default" />
+                    <Navigate to="/dashboard/default" />
                 ) : (
-                    <Redirect to="/home" />
+                    <Navigate to="/home" />
                 )
                 // <Route
                 //     exact={true}

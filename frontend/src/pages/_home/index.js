@@ -1,15 +1,14 @@
 import React from 'react'
 
 import { Helmet } from 'react-helmet'
-import { push } from 'connected-react-router'
+
 import { useDispatch } from 'react-redux'
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
 import config from 'constants/config'
 import { useTranslation } from 'react-i18next'
 
-import { Box, Grid, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Grid, Typography } from '@mui/material'
 
 import BannerCarousel from 'components/generic/BannerCarousel'
 import Button from 'components/generic/Button'
@@ -22,25 +21,32 @@ import Image from 'components/generic/Image'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import EventsGrid from './EventsGrid'
+import { useNavigate } from 'react-router-dom'
+// import { styled } from '@mui/system'
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        background: theme.palette.theme_white.main,
-    },
-}))
+// const useStyles = styled(theme => ({
+//     root: {
+//         background: theme.palette.theme_white.main, //`linear-gradient(to right bottom, ${theme.palette.secondary.contrastText}, ${theme.palette.success.contrastText}, ${theme.palette.primary.contrastText})`,
+
+//         //'linear-gradient(to bottom right, blue, pink)',
+//         //`linearGradient(${theme.palette.primary}, ${theme.palette.secondary})`,
+//     },
+// }))
 
 export default () => {
     //TODO these shouldn't be queried. Events and organizations should be in the state
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { t } = useTranslation()
-    const classes = useStyles()
+    // const classes = useStyles()
     console.log('activeEvents', activeEvents)
 
     return (
         <PageWrapper header={() => <GlobalNavBar />} footer={() => <Footer />}>
-            <div className={classes.root}>
+            {/* <div className={classes.root}> */}
+            <div>
                 <Helmet>
                     <title>{config.PLATFORM_OWNER_NAME}</title>
                     <meta
@@ -93,7 +99,7 @@ export default () => {
                         <Button
                             variant="outlinedNew"
                             color="theme_lightgray"
-                            onClick={() => dispatch(push('/events'))} // TODO: Add past events page
+                            onClick={() => navigate('/events')} // TODO: Add past events page
                         >
                             {t('Past_events_all_')}
                         </Button>
@@ -119,7 +125,7 @@ export default () => {
                             color="theme_lightgray"
                             variant="outlinedNew"
                             strong
-                            onClick={() => dispatch(push('/contact'))}
+                            onClick={() => navigate('/contact')}
                         >
                             {t('Contact_us_')}
                         </Button>
@@ -127,7 +133,7 @@ export default () => {
                             color="theme_lightgray"
                             variant="outlinedNew"
                             strong
-                            onClick={() => dispatch(push('/pricing'))}
+                            onClick={() => navigate('/pricing')}
                         >
                             {t('Pricing_')}
                         </Button>
@@ -167,7 +173,8 @@ export default () => {
                         </ExternalLink>
                     </Typography>
                 </Container>
-                <Divider size={20} />
+
+                {/* <Divider size={20} />
                 <Container center>
                     <Typography variant="h4" align="center">
                         {t('Join_hackerpack_')}
@@ -176,18 +183,11 @@ export default () => {
                         color="theme_lightgray"
                         variant="outlinedNew"
                         strong
-                        onClick={() => dispatch(push('/hackerpack'))}
+                        onClick={() => navigate('/hackerpack')}
                     >
                         {t('To_hackerpack_')}
                     </Button>
-                </Container>
-                <Divider size={20} />
-                <Container center>
-                    <img
-                        src="https://i.imgur.com/R7pG4Ln.png"
-                        style={{ width: '10em' }}
-                    />
-                </Container>
+                </Container> */}
             </div>
         </PageWrapper>
     )

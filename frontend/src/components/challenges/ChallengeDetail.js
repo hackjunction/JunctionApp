@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Divider } from '@material-ui/core'
+import { Box, Divider } from '@mui/material'
 
 import GradientBox from 'components/generic/GradientBox'
 import ChallengeSection from './ChallengeSection'

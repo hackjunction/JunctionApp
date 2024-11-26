@@ -6,7 +6,7 @@ import {
     DialogTitle,
     DialogContent,
     Avatar,
-} from '@material-ui/core'
+} from '@mui/material'
 
 const ReviewElement = ({ reviewer, showScore }) => {
     console.log('Reviewer from component', reviewer)

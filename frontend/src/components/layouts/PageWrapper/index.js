@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { Box, Typography, CircularProgress } from '@material-ui/core'
+import { Box, Typography, CircularProgress } from '@mui/material'
 
 const PageWrapper = ({
     loading = false,

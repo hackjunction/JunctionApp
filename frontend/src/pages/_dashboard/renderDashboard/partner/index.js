@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
-import RateReviewIcon from '@material-ui/icons/RateReview'
-import WorkIcon from '@material-ui/icons/Work'
-import { makeStyles } from '@material-ui/core/styles'
-import {
-    // Hidden,
-    Typography,
-} from '@material-ui/core'
+import { useResolvedPath, useLocation } from 'react-router'
+import WebStoriesOutlined from '@mui/icons-material/WebStoriesOutlined'
+import EventIcon from '@mui/icons-material/Event'
+import WorkIcon from '@mui/icons-material/Work'
+import RateReviewIcon from '@mui/icons-material/RateReview'
+
+import { Typography } from '@mui/material'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import BasicNavBar from 'components/navbars/BasicNavBar'
@@ -19,20 +18,20 @@ import ProjectsPage from './projects'
 import RecruitmentPage from './partnerrecruitment'
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles(theme => ({
-    sidebarTop: {
-        padding: theme.spacing(3),
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    sidebarLogo: {
-        width: '100%',
-        objectFit: 'contain',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     sidebarTop: {
+//         padding: theme.spacing(3),
+//         height: '100%',
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//     },
+//     sidebarLogo: {
+//         width: '100%',
+//         objectFit: 'contain',
+//     },
+// }))
 
 export default ({
     event,
@@ -41,19 +40,20 @@ export default ({
     shownPages,
     lockedPages,
 }) => {
-    const classes = useStyles()
-    const match = useRouteMatch()
+    // const classes = useStyles()
+    const classes = ''
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const { t } = useTranslation()
 
     return (
         <SidebarLayout
-            baseRoute={match.url}
+            baseRoute={url}
             location={location}
             sidebarTopContent={
-                <div className={classes.sidebarTop}>
+                <div className={classes}>
                     <Image
-                        className={classes.sidebarLogo}
+                        className={classes}
                         publicId={event && event.logo && event.logo.publicId}
                         transformation={{
                             width: 200,

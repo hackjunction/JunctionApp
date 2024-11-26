@@ -8,7 +8,8 @@ const {
     GraphQLBoolean,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDateTime } = require('graphql-iso-date')
+// const { GraphQLDateTime } = require('graphql-iso-date')
+const { DateTimeResolver } = require('graphql-scalars')
 
 const moment = require('moment-timezone')
 const { EventHelpers } = require('@hackjunction/shared')
@@ -151,28 +152,28 @@ const EventInput = new GraphQLInputObjectType({
         },
         /** Times */
         registrationStartTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         registrationEndTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         startTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         endTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         submissionsStartTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         submissionsEndTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         reviewingStartTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         reviewingEndTime: {
-            type: GraphQLDateTime,
+            type: DateTimeResolver,
         },
         finalsActive: {
             type: GraphQLBoolean,
@@ -184,19 +185,19 @@ const EventInput = new GraphQLInputObjectType({
             type: GraphQLBoolean,
         },
         tracks: {
-            type: GraphQLList(TrackInput),
+            type: new GraphQLList(TrackInput),
         },
         challengesEnabled: {
             type: GraphQLBoolean,
         },
         challenges: {
-            type: GraphQLList(ChallengeInput),
+            type: new GraphQLList(ChallengeInput),
         },
         hackerpacksEnabled: {
             type: GraphQLBoolean,
         },
         hackerpacks: {
-            type: GraphQLList(HackerpackInput),
+            type: new GraphQLList(HackerpackInput),
         },
         travelGrantConfig: {
             type: TravelGrantConfigInput,
@@ -208,10 +209,10 @@ const EventInput = new GraphQLInputObjectType({
             type: GraphQLString,
         },
         customQuestions: {
-            type: GraphQLList(RegistrationSectionInput),
+            type: new GraphQLList(RegistrationSectionInput),
         },
         tags: {
-            type: GraphQLList(EventTagInput),
+            type: new GraphQLList(EventTagInput),
         },
         /** System metadata */
         published: {
@@ -230,13 +231,13 @@ const EventInput = new GraphQLInputObjectType({
             type: GraphQLString,
         },
         organisers: {
-            type: GraphQLList(GraphQLString),
+            type: new GraphQLList(GraphQLString),
         },
         recruiters: {
-            type: GraphQLList(EventRecruitersInput),
+            type: new GraphQLList(EventRecruitersInput),
         },
         organizations: {
-            type: GraphQLList(GraphQLID),
+            type: new GraphQLList(GraphQLID),
         },
         registrationConfig: {
             type: RegistrationConfigInput,
@@ -278,7 +279,7 @@ const EventInput = new GraphQLInputObjectType({
             type: GraphQLString,
         },
         finalists: {
-            type: GraphQLList(GraphQLString),
+            type: new GraphQLList(GraphQLString),
         },
         frontPagePriority: {
             type: GraphQLInt,
@@ -290,26 +291,26 @@ const EventInput = new GraphQLInputObjectType({
             type: EventThemeInput,
         },
         webhooks: {
-            type: GraphQLList(WebhookInput),
+            type: new GraphQLList(WebhookInput),
         },
         pageScripts: {
-            type: GraphQLList(EventPageScriptInput),
+            type: new GraphQLList(EventPageScriptInput),
         },
         meetingsEnabled: {
             type: GraphQLBoolean,
         },
         meetingRooms: {
-            type: GraphQLList(MeetingRoomInput),
+            type: new GraphQLList(MeetingRoomInput),
         },
         // map: {
         //     type: MongoFileInput,
         // },
         /** DELETE LATER: test area */
         submissionFormQuestions: {
-            type: GraphQLList(RegistrationSectionInput),
+            type: new GraphQLList(RegistrationSectionInput),
         },
         submissionFormEnabledFields: {
-            type: GraphQLList(GraphQLString),
+            type: new GraphQLList(GraphQLString),
         },
         submissionFormDefaultFields: {
             type: SubmissionDefaultFieldsInput,
@@ -357,28 +358,28 @@ const EventType = new GraphQLObjectType({
             },
             /** Times */
             registrationStartTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             registrationEndTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             startTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             endTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             submissionsStartTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             submissionsEndTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             reviewingStartTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             reviewingEndTime: {
-                type: GraphQLDateTime,
+                type: DateTimeResolver,
             },
             finalsActive: {
                 type: GraphQLBoolean,
@@ -390,19 +391,19 @@ const EventType = new GraphQLObjectType({
                 type: GraphQLBoolean,
             },
             tracks: {
-                type: GraphQLList(Track),
+                type: new GraphQLList(Track),
             },
             challengesEnabled: {
                 type: GraphQLBoolean,
             },
             challenges: {
-                type: GraphQLList(Challenge),
+                type: new GraphQLList(Challenge),
             },
             hackerpacksEnabled: {
                 type: GraphQLBoolean,
             },
             hackerpacks: {
-                type: GraphQLList(Hackerpack),
+                type: new GraphQLList(Hackerpack),
             },
             travelGrantConfig: {
                 type: TravelGrantConfig,
@@ -414,10 +415,10 @@ const EventType = new GraphQLObjectType({
                 type: GraphQLString,
             },
             customQuestions: {
-                type: GraphQLList(RegistrationSection),
+                type: new GraphQLList(RegistrationSection),
             },
             tags: {
-                type: GraphQLList(EventTag),
+                type: new GraphQLList(EventTag),
             },
             /** System metadata */
             published: {
@@ -427,16 +428,16 @@ const EventType = new GraphQLObjectType({
                 type: GraphQLBoolean,
             },
             owner: {
-                type: GraphQLNonNull(GraphQLString),
+                type: new GraphQLNonNull(GraphQLString),
             },
             organisers: {
-                type: GraphQLList(GraphQLString),
+                type: new GraphQLList(GraphQLString),
             },
             recruiters: {
-                type: GraphQLList(EventRecruiters),
+                type: new GraphQLList(EventRecruiters),
             },
             organizations: {
-                type: GraphQLList(OrganizationType),
+                type: new GraphQLList(OrganizationType),
             },
             registrationConfig: {
                 type: RegistrationConfig,
@@ -478,7 +479,7 @@ const EventType = new GraphQLObjectType({
                 type: GraphQLString,
             },
             finalists: {
-                type: GraphQLList(GraphQLString),
+                type: new GraphQLList(GraphQLString),
             },
             frontPagePriority: {
                 type: GraphQLInt,
@@ -490,16 +491,16 @@ const EventType = new GraphQLObjectType({
                 type: EventTheme,
             },
             webhooks: {
-                type: GraphQLList(Webhook),
+                type: new GraphQLList(Webhook),
             },
             pageScripts: {
-                type: GraphQLList(EventPageScript),
+                type: new GraphQLList(EventPageScript),
             },
             meetingsEnabled: {
                 type: GraphQLBoolean,
             },
             meetingRooms: {
-                type: GraphQLList(MeetingRoom),
+                type: new GraphQLList(MeetingRoom),
             },
             // map: {
             //     type: MongoFile,
@@ -533,10 +534,10 @@ const EventType = new GraphQLObjectType({
             */
             /** DELETE LATER: test area */
             submissionFormQuestions: {
-                type: GraphQLList(RegistrationSection),
+                type: new GraphQLList(RegistrationSection),
             },
             submissionFormEnabledFields: {
-                type: GraphQLList(GraphQLString),
+                type: new GraphQLList(GraphQLString),
             },
             submissionFormDefaultFields: {
                 type: SubmissionDefaultFields,
@@ -550,6 +551,9 @@ const EventType = new GraphQLObjectType({
             Certificate: {
                 type: Certificate,
             },
+            slug_history: {
+                type: new GraphQLList(GraphQLString),
+            },
         }
     },
 })
@@ -561,7 +565,7 @@ const QueryType = new GraphQLObjectType({
             type: EventType,
             args: {
                 _id: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
             },
         },
@@ -569,18 +573,18 @@ const QueryType = new GraphQLObjectType({
             type: EventType,
             args: {
                 slug: {
-                    type: GraphQLNonNull(GraphQLString),
+                    type: new GraphQLNonNull(GraphQLString),
                 },
             },
         },
         events: {
-            type: GraphQLList(EventType),
+            type: new GraphQLList(EventType),
         },
         myEvents: {
-            type: GraphQLList(EventType),
+            type: new GraphQLList(EventType),
         },
         highlightedEvents: {
-            type: GraphQLList(EventType),
+            type: new GraphQLList(EventType),
             args: {
                 limit: {
                     type: GraphQLInt,
@@ -588,7 +592,7 @@ const QueryType = new GraphQLObjectType({
             },
         },
         activeEvents: {
-            type: GraphQLList(EventType),
+            type: new GraphQLList(EventType),
             args: {
                 limit: {
                     type: GraphQLInt,
@@ -596,7 +600,7 @@ const QueryType = new GraphQLObjectType({
             },
         },
         pastEvents: {
-            type: GraphQLList(EventType),
+            type: new GraphQLList(EventType),
             args: {
                 limit: {
                     type: GraphQLInt,
@@ -604,10 +608,10 @@ const QueryType = new GraphQLObjectType({
             },
         },
         roomsByEvent: {
-            type: GraphQLList(MeetingRoom),
+            type: new GraphQLList(MeetingRoom),
             args: {
                 eventId: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
             },
         },
@@ -615,7 +619,7 @@ const QueryType = new GraphQLObjectType({
             type: ScoreCriteriaSettings,
             args: {
                 eventId: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
             },
         },
@@ -623,7 +627,7 @@ const QueryType = new GraphQLObjectType({
             type: GraphQLBoolean,
             args: {
                 eventId: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
             },
         },
@@ -637,10 +641,10 @@ const MutationType = new GraphQLObjectType({
             type: EventType,
             args: {
                 _id: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
                 event: {
-                    type: GraphQLNonNull(EventInput),
+                    type: new GraphQLNonNull(EventInput),
                 },
             },
         },
@@ -648,10 +652,10 @@ const MutationType = new GraphQLObjectType({
             type: GraphQLBoolean,
             args: {
                 timeSlotId: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
                 reserved: {
-                    type: GraphQLNonNull(GraphQLBoolean),
+                    type: new GraphQLNonNull(GraphQLBoolean),
                 },
             },
         },

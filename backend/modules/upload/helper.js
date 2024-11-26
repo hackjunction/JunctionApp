@@ -2,20 +2,20 @@ const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require('multer')
 
-const { AlreadyExistsError, NotFoundError } = require("../../common/errors/errors")
+const {
+    AlreadyExistsError,
+    NotFoundError,
+} = require('../../common/errors/errors')
 const mongoose = require('mongoose')
 const File = require('../files/model')
-
-
 
 // initialize stream
 // let gfs = new mongoose.mongo.GridFSBucket(mongoose.connection, {
 //     bucketName: "uploads"
 // })
 
-const storage = require('../../misc/gridfs').storage
-const upload = require('../../misc/gridfs').upload
-
+// const storage = require('../../misc/gridfs').storage
+// const upload = require('../../misc/gridfs').upload
 
 cloudinary.config({
     cloud_name: global.gConfig.CLOUDINARY_CLOUD_NAME,
@@ -287,30 +287,29 @@ const UploadHelper = {
         return UploadHelper.deleteWithTag(UploadHelper.generateEventTag(slug))
     },
 
-    uploadOneFile: (caption, file) => {
+    // uploadOneFile: (caption, file) => {
 
+    //     File.findOne({
+    //         caption: caption
+    //     })
+    //         .then((file) => {
+    //             console.log("file", file)
+    //             if (file) {
+    //                 return new AlreadyExistsError(
+    //                     `File ${file} already exist`
+    //                 )
+    //             }
 
-        File.findOne({
-            caption: caption
-        })
-            .then((file) => {
-                console.log("file", file)
-                if (file) {
-                    return new AlreadyExistsError(
-                        `File ${file} already exist`
-                    )
-                }
+    //             let newFile = new File({
+    //                 caption: caption,
+    //                 filename: file.filename,
+    //                 fileId: file.id,
+    //             })
 
-                let newFile = new File({
-                    caption: caption,
-                    filename: file.filename,
-                    fileId: file.id,
-                })
+    //             newFile.save()
+    //         })
 
-                newFile.save()
-            })
-
-    }
+    // }
 }
 
 module.exports = UploadHelper

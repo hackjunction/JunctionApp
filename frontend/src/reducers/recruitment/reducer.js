@@ -1,5 +1,5 @@
 import * as ActionTypes from './actionTypes'
-import { buildHandler } from 'redux/utils'
+import { buildHandler } from 'reducers/utils'
 
 const initialState = {
     events: {

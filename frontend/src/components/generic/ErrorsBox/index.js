@@ -1,29 +1,20 @@
 import React from 'react'
-
-import { Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography } from '@mui/material'
 import MiscUtils from 'utils/misc'
 
-const useStyles = makeStyles(theme => ({
-    title: {
-        color: theme.palette.error.main,
-        fontWeight: 'bold',
-    },
-    error: {
-        color: theme.palette.error.main,
-    },
-}))
-
 const ErrorsBox = ({ title = 'Please correct the following', errors }) => {
-    const classes = useStyles()
     return (
         <Box>
-            <Typography className={classes.title} variant="subtitle1">
+            <Typography className="text-red-600 font-bold" variant="subtitle1">
                 {title}
             </Typography>
-            <Box pl={1}>
-                {MiscUtils.parseFormikErrors(errors).map(error => (
-                    <Typography className={classes.error} variant="body1">
+            <Box className="pl-4">
+                {MiscUtils.parseFormikErrors(errors).map((error, index) => (
+                    <Typography
+                        key={index}
+                        className="text-red-600"
+                        variant="body1"
+                    >
                         * {error}
                     </Typography>
                 ))}

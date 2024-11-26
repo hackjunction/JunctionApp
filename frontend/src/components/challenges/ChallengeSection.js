@@ -1,43 +1,16 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 
 import Markdown from 'components/generic/Markdown'
 
 import { OutboundLink } from 'react-ga'
 
-const useStyles = makeStyles(theme => ({
-    companyLogo: {
-        width: '200px',
-    },
-    outboundLink: {
-        '& a': {
-            textDecoration: 'none !important',
-        },
-    },
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        [theme.breakpoints.up('md')]: {
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-        },
-    },
-}))
-
 export default ({ partner, title, subtitle, logo, link }) => {
-    const classes = useStyles()
-
     return (
-        <Box className={classes.wrapper}>
+        <Box className="flex flex-col item-center md:flex-row md:items-start">
             <Box p={3}>
                 {logo && (
-                    <img
-                        alt={partner}
-                        src={logo.url}
-                        className={classes.companyLogo}
-                    />
+                    <img alt={partner} src={logo.url} className="w-[200px]" />
                 )}
             </Box>
             <Box p={3}>

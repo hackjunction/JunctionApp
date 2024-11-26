@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { IconButton, Popper, Paper, Typography, Box } from '@material-ui/core'
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
-import CloseIcon from '@material-ui/icons/Close'
+import { IconButton, Popper, Paper, Typography, Box } from '@mui/material'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
+import CloseIcon from '@mui/icons-material/Close'
 import { useTranslation } from 'react-i18next'
 import MiscUtils from 'utils/misc'
+import { styled } from '@mui/system'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = styled(theme => ({
     errorButton: ({ hasErrors }) => ({
         transition: 'all 0.2s ease',
         marginRight: theme.spacing(1),

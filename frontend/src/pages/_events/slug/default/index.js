@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from 'react'
 
-import { Grid, Box, Typography, makeStyles } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
@@ -21,8 +21,9 @@ import EventDetailContext from '../context'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import EventButtons from './EventButtons'
+import { styled } from '@mui/system'
 
-const useStyles = makeStyles({
+const useStyles = styled({
     header: {
         background: props => props.headerBackgroundColor,
         color: props => props.headerTextColor,

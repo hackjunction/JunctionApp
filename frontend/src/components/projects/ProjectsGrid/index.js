@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import moment from 'moment-timezone'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import { EventHelpers } from '@hackjunction/shared'
 import ProjectsGridItem from '../ProjectsGridItem'
 
 import ProjectScoresService from 'services/projectScores'
 import { useSelector } from 'react-redux'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import _ from 'lodash'
 import Filter from 'components/Team/Filter'
 

@@ -23,7 +23,7 @@ const UserProfileSchema = new mongoose.Schema({
         default: [],
     },
     recruiterEvents: {
-        type: [RecruiterEventSchema.mongoose],
+        type: [new mongoose.Schema(RecruiterEventSchema.mongoose)],
         required: false,
         default: [],
         set(recruiterEvents) {
@@ -40,8 +40,15 @@ const UserProfileSchema = new mongoose.Schema({
 /** Build user profile fields based on possible registration questions */
 const fields = {}
 _.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
+    console.log('Field')
+    console.log(fieldName)
+    console.log(value.mongooseSchema)
     if (value.copyToUserProfile && value.mongooseSchema) {
+        // if (Array.isArray(value.mongooseSchema)) {
+        // fields[fieldName] = value.mongooseSchema[0]
+        // } else {
         fields[fieldName] = value.mongooseSchema
+        // }
     }
 })
 

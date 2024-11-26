@@ -8,7 +8,8 @@ const {
     GraphQLNonNull,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDate } = require('graphql-iso-date')
+// const { GraphQLDate } = require('graphql-iso-date')
+const { DateResolver } = require('graphql-scalars')
 const RegistrationController = require('../registration/controller')
 const Event = require('../event/model')
 const Redis = require('ioredis')
@@ -22,10 +23,10 @@ const AlertInput = new GraphQLInputObjectType({
     name: 'AlertInput',
     fields: {
         eventId: {
-            type: GraphQLNonNull(GraphQLString),
+            type: new GraphQLNonNull(GraphQLString),
         },
         content: {
-            type: GraphQLNonNull(GraphQLString),
+            type: new GraphQLNonNull(GraphQLString),
         },
     },
 })
@@ -46,7 +47,7 @@ const AlertType = new GraphQLObjectType({
             type: GraphQLString,
         },
         sentAt: {
-            type: GraphQLDate,
+            type: DateResolver,
         },
     },
 })
@@ -55,10 +56,10 @@ const QueryType = new GraphQLObjectType({
     name: 'Query',
     fields: {
         alerts: {
-            type: GraphQLList(AlertType),
+            type: new GraphQLList(AlertType),
             args: {
                 eventId: {
-                    type: GraphQLNonNull(GraphQLString),
+                    type: new GraphQLNonNull(GraphQLString),
                 },
             },
         },
@@ -71,7 +72,7 @@ const MutationType = new GraphQLObjectType({
         sendAlert: {
             type: AlertType,
             args: {
-                alert: { type: GraphQLNonNull(AlertInput) },
+                alert: { type: new GraphQLNonNull(AlertInput) },
             },
         },
     },

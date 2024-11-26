@@ -1,9 +1,9 @@
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import { stringShortener } from 'utils/stylingHelpers'
 
 export default ({

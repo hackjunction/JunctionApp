@@ -1,15 +1,20 @@
-import React from 'react'
-import { useRouteMatch, useLocation } from 'react-router'
+import React, { useEffect, useRef } from 'react'
+import { useResolvedPath, useLocation } from 'react-router'
 
+import FormControl from '@mui/material/FormControl'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import { useDispatch, useSelector } from 'react-redux'
 import PageWrapper from 'components/layouts/PageWrapper'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import PageHeader from 'components/generic/PageHeader'
 
 import GradientBox from 'components/generic/GradientBox'
-import { Box, Link, Typography } from '@material-ui/core'
+import { Grid, Box, Link, Typography } from '@mui/material'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const mapFloorNeg1 =
         'https://res.cloudinary.com/hackjunction/image/upload/v1731052748/event-specific/Junction%202024/Map/basement-floor.png'
@@ -81,7 +86,7 @@ export default () => {
                         },
                     ]}
                     location={location}
-                    baseRoute={match.url}
+                    baseRoute={url}
                 />
             </PageWrapper>
         </>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Grid, Box } from '@material-ui/core'
+import { Grid, Box } from '@mui/material'
 import { FastField, Field } from 'formik'
 
 import FormControl from 'components/inputs/FormControl'
@@ -8,7 +8,7 @@ import BooleanInput from 'components/inputs/BooleanInput'
 
 import ChallengesForm from './ChallengesForm'
 import { useSelector } from 'react-redux'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import { EventHelpers } from '@hackjunction/shared'
 import moment from 'moment-timezone'
 

@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import Button from 'components/generic/Button'
 import React from 'react'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 import { useRegistrationsByUser } from 'graphql/queries/registrations'
 
@@ -10,14 +10,15 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import { useTranslation } from 'react-i18next'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as UserActions from 'redux/user/actions'
-import * as UserSelectors from 'redux/user/selectors'
-import { useActiveEvents } from 'graphql/queries/events'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as UserActions from 'reducers/user/actions'
+import * as UserSelectors from 'reducers/user/selectors'
 
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid } from '@mui/material'
+import { useActiveEvents } from 'graphql/queries/events'
+import * as DashboardActions from 'reducers/dashboard/actions'
+
 import _ from 'lodash'
 
 export default () => {

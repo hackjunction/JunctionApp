@@ -24,10 +24,10 @@ module.exports = {
 
         console.log(
             'Done with event priority and approved',
-            res.n,
-            res.nModified,
-            nres.n,
-            nres.nModified,
+            res.matchedCount,
+            res.modifiedCount,
+            nres.matchedCount,
+            nres.modifiedCount,
         )
         return Promise.resolve()
     },

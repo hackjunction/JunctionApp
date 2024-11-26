@@ -1,16 +1,15 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { push } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
 import OrganizationService from 'services/organization'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useTranslation } from 'react-i18next'
 export default () => {
     const { t } = useTranslation()

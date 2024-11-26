@@ -1,10 +1,11 @@
 import React from 'react'
 
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
-import { Box } from '@material-ui/core'
 
-const useStyles = makeStyles(theme => ({
+import { Box } from '@mui/material'
+import { styled } from '@mui/system'
+
+const useStyles = styled(theme => ({
     wrapper: {
         display: 'flex',
         flexDirection: 'row',

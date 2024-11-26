@@ -8,7 +8,7 @@ import React, {
 
 import { sortBy } from 'lodash-es'
 import { useDispatch } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
+
 import {
     Typography,
     Stepper,
@@ -17,13 +17,13 @@ import {
     Box,
     Button,
     Grid,
-} from '@material-ui/core'
+} from '@mui/material'
 import { RegistrationFields } from '@hackjunction/shared'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as UserSelectors from 'redux/user/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as UserSelectors from 'reducers/user/selectors'
 
 import Container from 'components/generic/Container'
 import Image from 'components/generic/Image'
@@ -47,96 +47,98 @@ import EventDetailContext from '../context'
 import { useTranslation } from 'react-i18next'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
+// import { styled } from '@mui/system'
 import config from 'constants/config'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        minHeight: '100%',
-        background: 'black',
-        zIndex: 100,
-    },
-    backgroundImage: {
-        position: 'fixed',
-        zIndex: 1,
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        opacity: 0.3,
-        filter: 'blur(5px)',
-    },
-    mainTitle: {
-        color: 'white',
-        textAlign: 'center',
-    },
-    sectionTitle: {
-        color: 'white',
-        fontSize: '1.4rem',
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    content: {
-        position: 'relative',
-        zIndex: 1000,
-    },
-    stepper: {
-        background: 'transparent',
-        padding: 0,
-    },
-    stepContent: {
-        border: 'none',
-        marginLeft: 0,
-        paddingLeft: '8px',
-    },
-    top: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        padding: theme.spacing(2),
-        background: 'black',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        zIndex: 2000,
-    },
-    topTitle: {
-        fontSize: '1rem',
-        color: 'white',
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
-        margin: '2px',
-    },
-    topTitleExtra: {
-        fontSize: '1rem',
-        color: 'white',
-        textTransform: 'uppercase',
-        fontWeight: 'normal',
-        margin: '2px',
-    },
-    doneTitle: {
-        color: 'white',
-        textAlign: 'center',
-    },
-    socialIcon: {
-        color: 'white',
-        width: 'auto',
-        margin: '1rem',
-        cursor: 'pointer',
-    },
-}))
+// const useStyles = styled(theme => ({
+//     wrapper: {
+//         position: 'absolute',
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         minHeight: '100%',
+//         background: 'black',
+//         zIndex: 100,
+//     },
+//     backgroundImage: {
+//         position: 'fixed',
+//         zIndex: 1,
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         height: '100%',
+//         objectFit: 'cover',
+//         opacity: 0.3,
+//         filter: 'blur(5px)',
+//     },
+//     mainTitle: {
+//         color: 'white',
+//         textAlign: 'center',
+//     },
+//     sectionTitle: {
+//         color: 'white',
+//         fontSize: '1.4rem',
+//         textTransform: 'uppercase',
+//         fontWeight: 'bold',
+//         textAlign: 'center',
+//     },
+//     content: {
+//         position: 'relative',
+//         zIndex: 1000,
+//     },
+//     stepper: {
+//         background: 'transparent',
+//         padding: 0,
+//     },
+//     stepContent: {
+//         border: 'none',
+//         marginLeft: 0,
+//         paddingLeft: '8px',
+//     },
+//     top: {
+//         position: 'fixed',
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         padding: theme.spacing(2),
+//         background: 'black',
+//         display: 'flex',
+//         flexDirection: 'row',
+//         justifyContent: 'center',
+//         zIndex: 2000,
+//     },
+//     topTitle: {
+//         fontSize: '1rem',
+//         color: 'white',
+//         textTransform: 'uppercase',
+//         fontWeight: 'bold',
+//         margin: '2px',
+//     },
+//     topTitleExtra: {
+//         fontSize: '1rem',
+//         color: 'white',
+//         textTransform: 'uppercase',
+//         fontWeight: 'normal',
+//         margin: '2px',
+//     },
+//     doneTitle: {
+//         color: 'white',
+//         textAlign: 'center',
+//     },
+//     socialIcon: {
+//         color: 'white',
+//         width: 'auto',
+//         margin: '1rem',
+//         cursor: 'pointer',
+//     },
+// }))
 
 const Connector = ({ index, active, completed, disabled }) => <div />
 
 export default RequiresPermission(() => {
     const { t } = useTranslation()
-    const classes = useStyles()
+    // const classes = useStyles()
+    const classes = {}
     const dispatch = useDispatch()
     const {
         slug,

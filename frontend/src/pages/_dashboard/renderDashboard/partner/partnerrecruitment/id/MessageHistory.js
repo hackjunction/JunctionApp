@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
 import {
@@ -10,15 +9,9 @@ import {
     ListItemText,
     ListItemAvatar,
     Avatar,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: '100%',
-    },
-}))
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
 
 export default ({ user }) => {
     const { t } = useTranslation()
@@ -28,7 +21,6 @@ export default ({ user }) => {
     const userHistory = actionHistoryByUser[user.userId] || []
     const messages = userHistory.filter(action => action.type === 'message')
 
-    const classes = useStyles()
     if (messages.length === 0) {
         return (
             <Typography variant="body2">
@@ -46,7 +38,7 @@ export default ({ user }) => {
                     user: user.profile.firstName,
                 })}
             </Typography>
-            <List className={classes.root}>
+            <List className="tw-w-full">
                 {messages.map(message => (
                     <ListItem key={message._id} alignItems="flex-start">
                         <ListItemAvatar>
@@ -62,7 +54,6 @@ export default ({ user }) => {
                                     <Typography
                                         component="span"
                                         variant="body2"
-                                        className={classes.inline}
                                         color="textPrimary"
                                     >
                                         {`From ${message._recruiter.firstName} ${message._recruiter.lastName}`}

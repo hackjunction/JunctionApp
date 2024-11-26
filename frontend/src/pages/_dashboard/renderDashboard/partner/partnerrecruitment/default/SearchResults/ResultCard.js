@@ -1,6 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react'
+import { useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { findIndex } from 'lodash-es'
+
 import {
     Avatar,
     Paper,
@@ -8,84 +10,84 @@ import {
     Box,
     Tooltip,
     IconButton,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { KeyboardArrowDown } from '@material-ui/icons/'
-import StarIcon from '@material-ui/icons/Star'
+} from '@mui/material'
+
+import { KeyboardArrowDown } from '@mui/icons-material/'
+import StarIcon from '@mui/icons-material/Star'
 
 import { sortBy } from 'lodash-es'
 import SkillRating from './SkillRating'
 import emblem_black from 'assets/logos/emblem_black.png'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as UserSelectors from 'redux/user/selectors'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as UserSelectors from 'reducers/user/selectors'
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flex: 1,
-        padding: '2rem',
-        position: 'relative',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-        transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
-        backgroundColor: '#FBFBFB',
-        display: 'flex',
-        flexDirection: 'column',
+// const useStyles = makeStyles(theme => ({
+//     root: {
+//         flex: 1,
+//         padding: '2rem',
+//         position: 'relative',
+//         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+//         transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
+//         backgroundColor: '#FBFBFB',
+//         display: 'flex',
+//         flexDirection: 'column',
 
-        '&:hover': {
-            boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-            cursor: 'pointer',
-        },
-    },
-    avatar: {
-        margin: '15px auto',
-        width: 100,
-        height: 100,
-    },
-    name: {
-        textAlign: 'center',
-        fontSize: '1.15rem',
-        lineHeight: 1.2,
-    },
-    country: {
-        textAlign: 'center',
-    },
-    skills: {
-        textAlign: 'left',
-    },
-    topWrapper: {
-        minHeight: '75px',
-    },
-    bottomWrapper: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        flexGrow: 1,
-        height: '3rem',
-    },
-    button: {
-        marginTop: 'auto',
-    },
-    iconRight: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        padding: theme.spacing(2),
-    },
-    iconLeft: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        padding: theme.spacing(1),
-    },
-    favoriteIcon: ({ isFavorite }) => ({
-        transition: 'color 0.2s ease',
-        color: isFavorite
-            ? theme.palette.secondary.light
-            : theme.palette.text.secondary,
-    }),
-}))
+//         '&:hover': {
+//             boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+//             cursor: 'pointer',
+//         },
+//     },
+//     avatar: {
+//         margin: '15px auto',
+//         width: 100,
+//         height: 100,
+//     },
+//     name: {
+//         textAlign: 'center',
+//         fontSize: '1.15rem',
+//         lineHeight: 1.2,
+//     },
+//     country: {
+//         textAlign: 'center',
+//     },
+//     skills: {
+//         textAlign: 'left',
+//     },
+//     topWrapper: {
+//         minHeight: '75px',
+//     },
+//     bottomWrapper: {
+//         width: '100%',
+//         display: 'flex',
+//         justifyContent: 'center',
+//         flexGrow: 1,
+//         height: '3rem',
+//     },
+//     button: {
+//         marginTop: 'auto',
+//     },
+//     iconRight: {
+//         position: 'absolute',
+//         top: 0,
+//         right: 0,
+//         padding: theme.spacing(2),
+//     },
+//     iconLeft: {
+//         position: 'absolute',
+//         top: 0,
+//         left: 0,
+//         padding: theme.spacing(1),
+//     },
+//     favoriteIcon: ({ isFavorite }) => ({
+//         transition: 'color 0.2s ease',
+//         color: isFavorite
+//             ? theme.palette.secondary.light
+//             : theme.palette.text.secondary,
+//     }),
+// }))
 
 export default React.memo(
     ({ data, onClick = () => {}, eventId }) => {
@@ -99,7 +101,8 @@ export default React.memo(
 
         // Toggle the favorited state locally for immediate feedback on favorite action
         const [_isFavorite, setIsFavorite] = useState(isFavorite)
-        const classes = useStyles({ isFavorite: _isFavorite })
+        // const classes = useStyles({ isFavorite: _isFavorite })
+        const classes = { isFavorite: _isFavorite }
         const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
 
         useEffect(() => {

@@ -14,11 +14,12 @@ import {
     ListItemSecondaryAction,
     ListItemAvatar,
     Avatar,
-} from '@material-ui/core'
-import { ExpandLess, ExpandMore, PersonAdd } from '@material-ui/icons'
+} from '@mui/material'
+import { Add, ExpandLess, ExpandMore, PersonAdd } from '@mui/icons-material'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import Button from 'components/generic/Button'
 import TextInput from 'components/inputs/TextInput'
 import UserProfilesService from 'services/userProfiles'

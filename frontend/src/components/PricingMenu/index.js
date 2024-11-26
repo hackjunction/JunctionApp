@@ -1,8 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import Button from 'components/generic/Button'
 
 export default () => {

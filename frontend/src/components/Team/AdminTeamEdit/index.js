@@ -1,9 +1,9 @@
-import { IconButton, Typography } from '@material-ui/core'
+import { IconButton, Typography } from '@mui/material'
 
 import Button from 'components/generic/Button'
-import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { useRouteMatch } from 'react-router'
+import React, { useMemo, useState, useEffect, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useResolvedPath, useLocation } from 'react-router'
 
 import TeamHeader from '../TeamHeader'
 import TeamDescription from '../TeamDescription'
@@ -11,13 +11,14 @@ import TeamRoles from '../TeamRoles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import junctionStyle from 'utils/styles'
 import { popupCenter } from 'utils/misc'
-import { Email } from '@material-ui/icons'
+import { Email } from '@mui/icons-material'
 import { objToArr } from 'utils/dataModifiers'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { gradientRandomizer } from 'utils/stylingHelpers'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as DashboardActions from 'redux/dashboard/actions'
+import TeamsService from 'services/teams'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 
 // TODO add socialLinks component from Damilare (@mrprotocoll)
 

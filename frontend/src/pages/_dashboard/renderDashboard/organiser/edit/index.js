@@ -5,10 +5,10 @@ import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 import { Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { forOwn } from 'lodash-es'
-import { useRouteMatch, useLocation } from 'react-router'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import { useResolvedPath, useLocation } from 'react-router'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
@@ -59,7 +59,7 @@ export default () => {
             )
         },
     })
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
 
     const event = useSelector(OrganiserSelectors.event)
@@ -67,12 +67,19 @@ export default () => {
     const { slug, _id } = event
 
     function onSubmit(values, actions) {
+        console.log('values')
+        console.log(values)
         const changed = {}
         forOwn(values, (value, field) => {
-            if (event[field] !== value) {
+            if (!isEqual(event[field], value)) {
                 changed[field] = value
             }
+            // if (event[field] !== value) {
+            //     changed[field] = value
+            // }
         })
+        console.log('changed')
+        console.log(changed)
         saveChanges({
             variables: { _id, input: changed },
         })
@@ -140,12 +147,6 @@ export default () => {
                                 //     component: TimelineTab,
                                 // },
                                 {
-                                    path: '/rooms',
-                                    key: 'meetingRooms',
-                                    label: 'Meeting Rooms',
-                                    component: MeetingRoomsTab,
-                                },
-                                {
                                     path: '/questions',
                                     key: 'questions',
                                     label: 'Questions',
@@ -168,6 +169,14 @@ export default () => {
                                     key: 'other',
                                     label: 'Miscellaneous',
                                     component: OtherTab,
+                                },
+                                //experimental
+                                {
+                                    path: '/rooms',
+                                    key: 'meetingRooms',
+                                    label: 'Meeting Rooms',
+                                    component: MeetingRoomsTab,
+                                    hidden: !event?.experimental,
                                 },
                             ]}
                             location={location}

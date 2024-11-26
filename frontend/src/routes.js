@@ -1,6 +1,6 @@
 import { lazy } from 'react'
 
-import { Auth as AuthConstants } from '@hackjunction/shared'
+// import { Auth as AuthConstants } from '@hackjunction/shared'
 
 import DefaultPage from './pages/_index/index'
 import HomePage from './pages/_home/index'
@@ -8,27 +8,26 @@ import CallbackPage from './pages/_callback'
 import ErrorPage from './pages/_error'
 import LogoutPage from './pages/_logout'
 import LoginPage from './pages/_login'
-import HackerpackPage from './pages/_hackerpack'
-import PricingPage from './pages/_pricing'
-import EventsRouter from './pages/_events'
+// import HackerpackPage from './pages/_hackerpack'
+// import PricingPage from './pages/_pricing'
+// import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
-
 import RequiresPermission from './hocs/RequiresPermission'
-import RequiresRole from 'hocs/RequiresRole'
+// import RequiresRole from 'hocs/RequiresRole'
 import config from 'constants/config'
 import DevTools from 'pages/_devtools'
 
-/** Lazy-load the access-restricted pages */
+// /** Lazy-load the access-restricted pages */
 const DashboardRouter = lazy(() => import('./pages/_dashboard'))
-const OrganiserRouter = lazy(() =>
-    import('./pages/_dashboard/renderDashboard/organiser/router'),
-)
-const AccountRouter = lazy(() => import('./pages/_account'))
-const RecruitmentRouter = lazy(() =>
-    import('./pages/_dashboard/renderDashboard/partner/partnerrecruitment'),
-)
-const ProjectsRouter = lazy(() => import('./pages/_projects'))
-const AdminRouter = lazy(() => import('./pages/_admin'))
+// const OrganiserRouter = lazy(() =>
+//     import('./pages/_dashboard/renderDashboard/organiser/router'),
+// )
+// const AccountRouter = lazy(() => import('./pages/_account'))
+// const RecruitmentRouter = lazy(() =>
+//     import('./pages/_dashboard/renderDashboard/partner/partnerrecruitment'),
+// )
+// const ProjectsRouter = lazy(() => import('./pages/_projects'))
+// const AdminRouter = lazy(() => import('./pages/_admin'))
 //TODO: switch the recruitment view and router
 //import('./pages/_recruitment'))//
 // const SandboxRouter = lazy(() => import('./pages/_sandbox'))
@@ -37,91 +36,78 @@ const AdminRouter = lazy(() => import('./pages/_admin'))
 const routes = [
     {
         path: '/',
-        component: DefaultPage,
-        exact: true,
+        element: <DefaultPage />,
     },
     {
         path: '/home',
-        component: HomePage,
-        exact: false,
+        element: <HomePage />,
     },
+    // {
+    //     path: '/events',
+    //     element: <EventsRouter />,
+    // },
     {
-        path: '/events',
-        component: EventsRouter,
-        exact: false,
-    },
-    {
-        path: '/login',
-        component: LoginPage,
-        exact: false,
+        path: '/login/*',
+        element: <LoginPage />,
     },
     {
         path: '/contact',
-        component: ContactPage,
-        exact: false,
+        element: <ContactPage />,
     },
     {
         path: '/error',
-        component: ErrorPage,
-        exact: false,
+        element: <ErrorPage />,
     },
     {
         path: '/callback',
-        component: CallbackPage,
-        exact: false,
+        element: <CallbackPage />,
     },
     {
         path: '/logout',
-        component: LogoutPage,
-        exact: false,
+        element: <LogoutPage />,
     },
-    {
-        path: '/organise',
-        component: RequiresPermission(OrganiserRouter),
-        /*component: RequiresPermission(OrganiserRouter, [
-            AuthConstants.Permissions.MANAGE_EVENT,
-        ]),*/
-        exact: false,
-    },
+    // {
+    //     path: '/organise',
+    //     component: RequiresPermission(OrganiserRouter),
+    //     /*component: RequiresPermission(OrganiserRouter, [
+    //         AuthConstants.Permissions.MANAGE_EVENT,
+    //         ]),*/
+    // },
     {
         //default after login
-        path: '/dashboard',
-        component: RequiresPermission(DashboardRouter),
-        exact: false,
+        path: '/dashboard/*',
+        // element: <DashboardRouter />,
+        element: <RequiresPermission ComposedComponent={DashboardRouter} />,
     },
-    {
-        path: '/account',
-        component: RequiresPermission(AccountRouter),
-        exact: false,
-    },
-    {
-        path: '/recruitment',
-        component: RequiresPermission(RecruitmentRouter, [
-            AuthConstants.Permissions.ACCESS_RECRUITMENT,
-        ]),
-        exact: false,
-    },
-    {
-        path: '/projects',
-        component: ProjectsRouter,
-        exact: false,
-    },
-    {
-        path: '/hackerpack',
-        component: HackerpackPage,
-        exact: false,
-    },
+    // {
+    //     path: '/account',
+    //     component: RequiresPermission(AccountRouter),
+    // },
+    // {
+    //     path: '/recruitment',
+    //     component: RequiresPermission(RecruitmentRouter, [
+    //         AuthConstants.Permissions.ACCESS_RECRUITMENT,
+    //     ]),
+    // },
+    // {
+    //     path: '/projects',
+    //     component: ProjectsRouter,
+    // },
+    // {
+    //     path: '/hackerpack',
+    //     component: HackerpackPage,
+    // },
 
-    {
-        path: '/pricing',
-        component: PricingPage,
-        exact: false,
-    },
-    {
-        path: '/admin',
-        component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
-        exact: false,
-    },
+    // {
+    //     path: '/pricing',
+    //     component: PricingPage,
+    //     exact: false,
+    // },
+    // {
+    //     path: '/admin',
+    //     component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
+    //     exact: false,
+    // },
     // {
     //     path: '/sandbox',
     //     component: RequiresRole(SandboxRouter, [
