@@ -21,7 +21,11 @@ module.exports = {
                 { $rename: { sigma_sq: 'sigmaSq' } },
                 { multi: true },
             )
-        console.log('Done with gavelproject', res.n, res.nModified)
+        console.log(
+            'Done with gavelproject',
+            res.matchedCount,
+            res.modifiedCount,
+        )
 
         const psres = await mongoose
             .model('ProjectScore')
@@ -31,7 +35,11 @@ module.exports = {
                 { multi: true },
             )
 
-        console.log('Done with ProjectScore', psres.n, psres.nModified)
+        console.log(
+            'Done with ProjectScore',
+            psres.matchedCount,
+            psres.modifiedCount,
+        )
         return Promise.resolve()
     },
 }

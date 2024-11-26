@@ -1,19 +1,19 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
-import { useRouteMatch } from 'react-router'
+
+import { useResolvedPath } from 'react-router'
 import { EventStatuses } from '@hackjunction/shared'
-import { Typography, Grid } from '@material-ui/core'
+import { Typography, Grid } from '@mui/material'
 
 import Button from 'components/generic/Button'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import { useTranslation } from 'react-i18next'
 
 export default ({ event, registration }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
     const hasRegistration = registration
         ? registration.status !== 'incomplete'
@@ -50,7 +50,9 @@ export default ({ event, registration }) => {
                                 <Button
                                     onClick={() =>
                                         dispatch(
-                                            push(`/dashboard/event/${event.slug}`),
+                                            push(
+                                                `/dashboard/event/${event.slug}`,
+                                            ),
                                         )
                                     }
                                     variant="applicationsClosed"

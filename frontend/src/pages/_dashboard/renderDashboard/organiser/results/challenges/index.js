@@ -9,8 +9,8 @@ import {
     ListSubheader,
     ListItemText,
     Typography,
-} from '@material-ui/core'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+} from '@mui/material'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import ChallengeResults from './ChallengeResults'
 
 export default () => {

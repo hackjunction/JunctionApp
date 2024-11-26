@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 import moment from 'moment'
 import Select from 'components/inputs/Select'
 

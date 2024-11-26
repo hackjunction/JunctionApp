@@ -5,6 +5,7 @@ const {
     GraphQLString,
     GraphQLNonNull,
     GraphQLInputObjectType,
+    GraphQLID,
 } = require('graphql')
 
 const RegistrationConfigSchema = new mongoose.Schema({
@@ -19,6 +20,9 @@ const RegistrationConfigSchema = new mongoose.Schema({
 const RegistrationConfigType = new GraphQLObjectType({
     name: 'RegistrationConfig',
     fields: {
+        _id: {
+            type: GraphQLID,
+        },
         optionalFields: {
             type: GraphQLList(GraphQLString),
         },

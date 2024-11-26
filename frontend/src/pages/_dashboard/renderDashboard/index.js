@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import PageWrapper from 'components/layouts/PageWrapper'
 
@@ -8,16 +8,18 @@ import PartnerDashboard from './partner'
 import ParticipantDashboard from './participant'
 import OrganizerDashboard from './organiser'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as UserSelectors from 'redux/user/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as UserActions from 'reducers/user/actions'
 
 import { useLazyQuery, useSubscription } from '@apollo/client'
 import { ALERTS_QUERY } from 'graphql/queries/alert'
 import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
 
 export default role => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const eventLoading = useSelector(DashboardSelectors.eventLoading)

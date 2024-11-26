@@ -1,5 +1,4 @@
 import theme from 'junctionTheme'
-import { makeStyles } from '@material-ui/core/styles'
 
 const junctionStyle = makeStyles({
     socialIcon: {

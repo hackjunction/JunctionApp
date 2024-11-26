@@ -2,21 +2,21 @@ import React, { useEffect } from 'react'
 import Empty from 'components/generic/Empty'
 import ResultCard from './ResultCard'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch } from 'react-router'
-import { Grid, Box, Typography } from '@material-ui/core'
+// import { useResolvedPath } from 'react-router'
+import { Grid, Box, Typography, CircularProgress } from '@mui/material'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-// import * as DashboardActions from 'redux/dashboard/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 import { useTranslation } from 'react-i18next'
 import Pagination from './Pagination'
 import LoadingCard from './LoadingCard'
-import { push } from 'connected-react-router'
+// import { push } from 'connected-react-router'
+const push = () => {}
+import { useResolvedPath } from 'react-router-dom'
 
 export default ({ items, organisation, eventId }) => {
     const dispatch = useDispatch()
-    const match = useRouteMatch()
-    const baseRoute = match.url
+    const baseRoute = useResolvedPath('').pathname
     const itemsFromStore = useSelector(RecruitmentSelectors.searchResults)
     const searchResults = items ?? itemsFromStore
     const searchResultsCount = useSelector(

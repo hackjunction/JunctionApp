@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography, Button } from '@material-ui/core'
-import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined'
+import { Box, Typography, Button } from '@mui/material'
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined'
+import { styled } from '@mui/system'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = styled(theme => ({
     wrapper: ({ active, completed, isVisible }) => ({
         transition: 'all 0.25s ease',
         opacity: !active && !completed ? 0 : 1,
@@ -73,7 +73,7 @@ const RegistrationSectionLabel = ({
         <Box className={classes.wrapper}>
             <CheckCircleOutlineOutlinedIcon className={classes.check} />
             <Button disabled={active} onClick={onClick}>
-                <Typography className={classes.label} variant="subtitle1">
+                <Typography className="font-bold" variant="subtitle1">
                     {label}
                 </Typography>
             </Button>

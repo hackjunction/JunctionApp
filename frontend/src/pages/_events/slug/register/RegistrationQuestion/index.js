@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import { RegistrationFields } from '@hackjunction/shared'
 import TextInput from 'components/inputs/TextInput'
 import TextAreaInput from 'components/inputs/TextAreaInput'

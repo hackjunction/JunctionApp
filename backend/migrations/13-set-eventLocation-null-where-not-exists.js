@@ -12,7 +12,11 @@ module.exports = {
                 { eventLocation: { $exists: false } },
                 { $set: { eventLocation: null } },
             )
-        console.info('Done with event timeline', nres.n, nres.nModified)
+        console.info(
+            'Done with event timeline',
+            nres.matchedCount,
+            nres.modifiedCount,
+        )
         return Promise.resolve()
     },
 }

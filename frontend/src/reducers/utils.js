@@ -1,8 +1,7 @@
-import { handle } from 'redux-pack'
 import { reduce, cloneDeep, set } from 'lodash-es'
 
 /**
- * Custom redux-pack handler for reducers. If you want to produce this kind of state:
+ * Custom handler for reducers. If you want to produce this kind of state:
  *
  * const initialState = {
  *   something: {
@@ -39,31 +38,34 @@ import { reduce, cloneDeep, set } from 'lodash-es'
  */
 
 export const buildHandler =
-    (field, mapByField, mapIsArray) => (state, action) =>
-        handle(state, action, {
-            start: prevState => ({
-                ...prevState,
-                [field]: {
-                    ...prevState[field],
-                    loading: true,
-                    error: false,
-                },
-            }),
-            finish: prevState => ({
-                ...prevState,
-                [field]: {
-                    ...prevState[field],
-                    loading: false,
-                },
-            }),
-            failure: prevState => ({
-                ...prevState,
-                [field]: {
-                    ...prevState[field],
-                    error: true,
-                },
-            }),
-            success: prevState => {
+    (field, mapByField, mapIsArray) => (state, action) => {
+        switch(action.status) {
+            case 'start':
+                return {
+                    ...state,
+                    [field]: {
+                        ...state[field],
+                        loading: true,
+                        error: false,
+                    },
+                }
+            case 'finish':
+                return {
+                    ...state,
+                    [field]: {
+                        ...state[field],
+                        loading: false,
+                    },
+                }
+            case 'failure':
+                return {
+                    ...state,
+                    [field]: {
+                        ...state[field],
+                        error: true,
+                    },
+                }
+            case 'success':
                 if (mapByField) {
                     const map = reduce(
                         action.payload,
@@ -84,9 +86,9 @@ export const buildHandler =
                     )
 
                     return {
-                        ...prevState,
+                        ...state,
                         [field]: {
-                            ...prevState[field],
+                            ...state[field],
                             data: action.payload,
                             map,
                             updated: Date.now(),
@@ -95,15 +97,17 @@ export const buildHandler =
                 }
 
                 return {
-                    ...prevState,
+                    ...state,
                     [field]: {
-                        ...prevState[field],
+                        ...state[field],
                         data: action.payload,
                         updated: Date.now(),
                     },
                 }
-            },
-        })
+            default:
+                return state
+        }
+    }
 
 /** Simple function for reducing this boilerplate:
  *

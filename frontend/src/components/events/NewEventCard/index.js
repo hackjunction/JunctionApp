@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-
-import { makeStyles } from '@material-ui/core/styles'
 import {
     Card,
     CardContent,
@@ -8,82 +6,19 @@ import {
     Typography,
     Box,
     CardActionArea,
-} from '@material-ui/core'
-import Avatar from '@material-ui/core/Avatar'
+} from '@mui/material'
+import Avatar from '@mui/material/Avatar'
 import Image from 'components/generic/Image'
 import Markdown from 'components/generic/Markdown'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import _ from 'lodash'
-
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import ProgressBar from 'components/generic/ProgressBar'
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        background: 'white',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        flex: 1,
-    },
-    top: {
-        height: '150px',
-        width: 'min(100%, 400px)',
-        aspectRatio: '16/9',
-        margin: '0 auto',
-        position: 'relative',
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        borderBottom: `2px ${theme.palette.primary.main} solid`,
-    },
-    topWrapper: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        width: '100%',
-    },
-    topLeft: {
-        justifyContent: 'flex-start',
-    },
-
-    image: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        borderRadius: '15px 15px 0 0',
-    },
-    tag: {
-        position: 'absolute',
-        top: '30%',
-        borderRadius: '16px 0 0 16px',
-        right: 0,
-    },
-    organiser: {
-        position: 'absolute',
-        top: '5%',
-        left: '2%',
-    },
-    bottom: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-    },
-    bolded: {
-        fontWeight: 'bold',
-        marginBottom: theme.spacing(1),
-    },
-    uppercase: {
-        textTransform: 'uppercase',
-    },
-}))
 
 const NewEventCard = ({ event, buttons, handleClick = () => {} }) => {
     const [hover, setHover] = useState(false)
     const dispatch = useDispatch()
     const { t } = useTranslation()
-    const classes = useStyles()
     const organization = event?.organizations
 
     const styling = {
@@ -91,7 +26,12 @@ const NewEventCard = ({ event, buttons, handleClick = () => {} }) => {
     }
 
     if (hover) {
-        styling.cardHover = 'tw-cursor-pointer hover:tw-shadow-xl'
+        styling.cardHover = 'cursor-pointer hover:shadow-xl'
+    }
+
+    const parseDescription = description => {
+        const parsed = description.replace(/#.*\n/g, '')
+        return parsed.length > 300 ? parsed.slice(0, 200) + ' &hellip;' : parsed
     }
 
     if (event === undefined || event === null) {
@@ -103,22 +43,22 @@ const NewEventCard = ({ event, buttons, handleClick = () => {} }) => {
         <Card
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-600px tw-max-w-xs tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
+            className={`bg-white m-4 text-left rounded-lg shadow-md min-h-[600px] max-w-xs flex flex-col justify-between ${styling.cardHover}`}
         >
             <CardActionArea onClick={handleClick}>
-                <CardContent className="tw-flex tw-flex-col tw-p-0">
-                    <div className="tw-h-40 tw-w-full tw-my-0 tw-mx-auto tw-relative tw-flex tw-justify-end tw-items-end">
+                <CardContent className="flex flex-col p-0">
+                    <div className="h-40 w-full my-0 mx-auto relative flex justify-end items-end">
                         <Image
-                            className={classes.image}
+                            className="absolute top-0 left-0 w-full h-full object-cover rounded-t-lg"
                             defaultImage={require('assets/images/default_cover_image.png')}
                             publicId={event?.coverImage?.publicId}
                             transformation={{
                                 width: 400,
                             }}
                         />
-                        {organization?.icon && ( //TODO: Fix
+                        {organization?.icon && (
                             <Avatar
-                                className={classes.organiser}
+                                className="absolute top-5 left-2"
                                 src={organization?.icon}
                             />
                         )}
@@ -129,9 +69,7 @@ const NewEventCard = ({ event, buttons, handleClick = () => {} }) => {
                     {event?.description && (
                         <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
                             <Markdown
-                                source={_.truncate(event?.description, {
-                                    length: 200,
-                                })}
+                                source={parseDescription(event?.description)}
                             />
                         </div>
                     )}

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
-import { Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography } from '@mui/material'
 
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 import ErrorDisplay from './ErrorDisplay'
 import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/system'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = styled(theme => ({
     wrapper: {
         position: 'fixed',
         bottom: 0,

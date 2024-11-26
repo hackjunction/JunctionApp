@@ -1,12 +1,12 @@
 import React, { Suspense } from 'react'
 
 import { useSelector } from 'react-redux'
-import { CircularProgress, Typography, Grid } from '@material-ui/core'
+import { CircularProgress, Typography, Grid } from '@mui/material'
 
 import { RegistrationStatuses, EventTypes } from '@hackjunction/shared'
 import GradientBox from 'components/generic/GradientBox'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 const STATUSES = RegistrationStatuses.asObject
 const VisaInvitationDrawer = React.lazy(() =>

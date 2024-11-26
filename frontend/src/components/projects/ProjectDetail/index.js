@@ -1,108 +1,19 @@
 import React, { useState } from 'react'
-
 import { find, filter } from 'lodash-es'
-import { Box, Typography, Button, Tooltip } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import SwipeableViews from 'react-swipeable-views'
-import { autoPlay } from 'react-swipeable-views-utils'
+import { Box, Typography, Button, Tooltip } from '@mui/material'
+import { SwipeableViews } from 'components/animated/SwipeableViews'
 import Image from 'components/generic/Image'
 import Container from 'components/generic/Container'
 import Markdown from 'components/generic/Markdown'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import config from 'constants/config'
 import { Helmet } from 'react-helmet'
 import ReactPlayer from 'react-player'
 import { useDispatch } from 'react-redux'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 import ProjectTeam from './ProjectTeam'
 import Pagination from './Pagination'
-import theme from 'material-ui-theme'
 import Tag from 'components/generic/Tag'
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        width: '100%',
-        position: 'relative',
-    },
-    top: {
-        width: '100%',
-        paddingTop: '50%',
-        position: 'relative',
-        overflow: 'hidden',
-        background: 'black',
-        [theme.breakpoints.up('lg')]: {
-            paddingTop: theme.breakpoints.values.lg / 2,
-        },
-    },
-    image: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: 'black',
-        objectFit: 'contain',
-    },
-    placeholderTop: {
-        background: 'black',
-        padding: theme.spacing(2),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        '&:hover': {
-            opacity: 0.6,
-        },
-    },
-    placeholderImage: {
-        width: '100%',
-        maxWidth: '600px',
-    },
-    content: {
-        marginTop: theme.spacing(5),
-    },
-    backButtonWrapper: {
-        background: 'black',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-    },
-    sectionTitle: {
-        textTransform: 'uppercase',
-    },
-    pagination: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        background: 'rgba(0,0,0,0.4)',
-        zIndex: 100,
-        color: 'white',
-        padding: theme.spacing(2),
-    },
-    paginationText: {
-        color: 'white',
-    },
-    doneTitle: {
-        color: 'black',
-        textAlign: 'center',
-    },
-    socialIcon: {
-        color: 'black',
-        width: 'auto',
-        margin: '0.10rem',
-        cursor: 'pointer',
-    },
-    playerWrapper: {
-        position: 'relative',
-        height: '360px',
-    },
-    reactPlayer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-    },
-}))
 
 const ProjectDetail = ({
     project,
@@ -111,7 +22,6 @@ const ProjectDetail = ({
     showTableLocation,
     showFullTeam,
 }) => {
-    const classes = useStyles()
     const [index, setIndex] = useState(0)
     const [pause, setPause] = useState(true)
 
@@ -172,25 +82,25 @@ const ProjectDetail = ({
                         fieldType: question.fieldType,
                     })
                 }
-                return
+                return null
             })
 
             submissionFormAnswersArray.push(sectionGroup)
+            return null
         })
     }
 
     const statusTag = status => {
         switch (status) {
             case 'final':
-                return <Tag label="Final" color={theme.palette.primary.main} />
+                return <Tag label="Final" color="bg-primary-main" />
             case 'draft':
-                return (
-                    <Tag label="Draft" color={theme.palette.secondary.main} />
-                )
+                return <Tag label="Draft" color="bg-secondary-main" />
             default:
                 return null
         }
     }
+
     return (
         <>
             <Helmet>
@@ -256,13 +166,10 @@ const ProjectDetail = ({
                 />
             </Helmet>
 
-            <Box className={classes.wrapper}>
+            <Box className="w-full relative">
                 <Tooltip title={pause ? 'Click to pause' : 'Click to play'}>
-                    <Box
-                        style={{ position: 'relative' }}
-                        onClick={e => setPause(!pause)}
-                    >
-                        <AutoPlaySwipeableViews
+                    <Box className="relative" onClick={() => setPause(!pause)}>
+                        <SwipeableViews
                             enableMouseEvents
                             index={index}
                             onChangeIndex={setIndex}
@@ -273,30 +180,28 @@ const ProjectDetail = ({
                                 project.images.map(image => (
                                     <Box
                                         key={image.publicId}
-                                        className={classes.top}
+                                        className="w-full pt-1/2 relative overflow-hidden bg-black lg:pt-[calc(100%*2)]"
                                     >
                                         <Image
-                                            className={classes.image}
+                                            className="absolute top-0 left-0 w-full h-full bg-black object-contain"
                                             publicId={image.publicId}
                                             defaultImage={require('assets/images/default_cover_image.png')}
                                         />
                                     </Box>
                                 ))
                             ) : (
-                                <Box className={classes.placeholderTop}>
+                                <Box className="bg-black p-2 flex flex-col items-center hover:opacity-60">
                                     <Image
-                                        className={classes.placeholderImage}
+                                        className="w-full max-w-lg"
                                         publicId={event?.coverImage?.logo}
                                         defaultImage={require('assets/images/default_cover_image.png')}
                                     />
                                 </Box>
                             )}
-                        </AutoPlaySwipeableViews>
-                        <Box className={classes.backButtonWrapper}>
-                            <Button onClick={onBack} style={{ color: 'white' }}>
-                                <ArrowBackIosIcon
-                                    style={{ fontSize: '14px' }}
-                                />
+                        </SwipeableViews>
+                        <Box className="bg-black absolute top-0 left-0">
+                            <Button onClick={onBack} className="text-white">
+                                <ArrowBackIosIcon className="text-xs" />
                                 Back
                             </Button>
                         </Box>
@@ -308,7 +213,7 @@ const ProjectDetail = ({
                         active={index}
                         onChange={setIndex}
                     />
-                    <Box className={classes.content}>
+                    <Box className={'tw-mt-5'}>
                         <div className="tw-flex tw-flex-col tw-gap-8 md:tw-p-8 tw-p-2">
                             <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                 <div className="tw-flex tw-gap-6 tw-items-center">
@@ -320,7 +225,7 @@ const ProjectDetail = ({
                                 </div>
                                 <Typography
                                     variant="subtitle1"
-                                    style={{ fontWeight: 'bold' }}
+                                    className="font-bold"
                                 >
                                     {project.punchline}
                                 </Typography>
@@ -341,12 +246,7 @@ const ProjectDetail = ({
                                                 >
                                                     <Typography
                                                         variant="h6"
-                                                        style={{
-                                                            fontWeight: 'bold',
-                                                        }}
-                                                        className={
-                                                            classes.sectionTitle
-                                                        }
+                                                        className="font-bold uppercase"
                                                     >
                                                         {section.section}
                                                     </Typography>
@@ -389,10 +289,10 @@ const ProjectDetail = ({
                                     },
                                 )}
                             {showTableLocation && project.location && (
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
                                     <Typography
                                         variant="h6"
-                                        className={classes.sectionTitle}
+                                        className="uppercase"
                                     >
                                         Location
                                     </Typography>
@@ -405,7 +305,7 @@ const ProjectDetail = ({
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
-                                        className={classes.sectionTitle}
+                                        className="uppercase"
                                     >
                                         video
                                     </Typography>
@@ -468,7 +368,7 @@ const ProjectDetail = ({
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
-                                        className={classes.sectionTitle}
+                                        className="uppercase"
                                     >
                                         Demo
                                     </Typography>
@@ -491,7 +391,7 @@ const ProjectDetail = ({
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
-                                        className={classes.sectionTitle}
+                                        className="uppercase"
                                     >
                                         Source code
                                     </Typography>
@@ -522,7 +422,7 @@ const ProjectDetail = ({
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
                                         variant="h6"
-                                        className={classes.sectionTitle}
+                                        className="uppercase"
                                     >
                                         Track
                                     </Typography>
@@ -534,7 +434,7 @@ const ProjectDetail = ({
                                     <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                         <Typography
                                             variant="h6"
-                                            className={classes.sectionTitle}
+                                            className={'tw-uppercase'}
                                         >
                                             Challenges
                                         </Typography>
@@ -544,7 +444,7 @@ const ProjectDetail = ({
                             <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                 <Typography
                                     variant="h6"
-                                    className={classes.sectionTitle}
+                                    className={'tw-uppercase'}
                                 >
                                     Team
                                 </Typography>

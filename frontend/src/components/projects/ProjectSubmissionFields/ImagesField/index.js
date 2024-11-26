@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import { FastField } from 'formik'
 import ProjectImages from 'pages/_dashboard/renderDashboard/participant/project/ProjectImages'

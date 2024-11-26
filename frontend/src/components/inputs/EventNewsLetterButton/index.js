@@ -1,35 +1,9 @@
 import React, { useState, useCallback } from 'react'
-
-import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Button, Box } from '@material-ui/core'
+import { Typography, Button, Box } from '@mui/material'
 import { motion } from 'framer-motion'
-
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        overflow: 'hidden',
-    },
-    title: {
-        color: 'white',
-        fontSize: '1.25rem',
-        fontWeight: 'bold',
-    },
-    description: {
-        color: 'white',
-        maxWidth: '600px',
-        textAlign: 'center',
-    },
-    cancelButton: {
-        color: 'white',
-    },
-}))
-
 const EventNewsLetterButton = ({ signupUrl, initiallyHidden }) => {
-    const classes = useStyles()
     const { t } = useTranslation()
     const [hidden, setHidden] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -44,6 +18,7 @@ const EventNewsLetterButton = ({ signupUrl, initiallyHidden }) => {
             setHidden(true)
         }, 2000)
     }, [signupUrl])
+
     return (
         <motion.div
             variants={{
@@ -57,13 +32,17 @@ const EventNewsLetterButton = ({ signupUrl, initiallyHidden }) => {
                 },
             }}
             animate={isHidden ? 'hidden' : 'visible'}
-            className={classes.wrapper}
+            className="flex flex-col items-center overflow-hidden"
         >
-            <Typography className={classes.title} variant="button" paragraph>
+            <Typography
+                className="text-white text-xl font-bold"
+                variant="button"
+                paragraph
+            >
                 {t('Event_newsletter_')}
             </Typography>
             <Typography
-                className={classes.description}
+                className="text-white max-w-xl text-center"
                 variant="subtitle1"
                 paragraph
             >
@@ -80,7 +59,7 @@ const EventNewsLetterButton = ({ signupUrl, initiallyHidden }) => {
             </Button>
             <Box p={1} />
             <Button
-                className={classes.cancelButton}
+                className="text-white"
                 onClick={() => setHidden(true)}
                 disabled={loading}
             >

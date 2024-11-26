@@ -11,12 +11,12 @@ import {
     IconButton,
     Tooltip,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import getSlug from 'speakingurl'
-import HighlightOffIcon from '@material-ui/icons/HighlightOff'
-import EditIcon from '@material-ui/icons/Edit'
-import SaveIcon from '@material-ui/icons/Save'
-import CloseIcon from '@material-ui/icons/Close'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import EditIcon from '@mui/icons-material/Edit'
+import SaveIcon from '@mui/icons-material/Save'
+import CloseIcon from '@mui/icons-material/Close'
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 

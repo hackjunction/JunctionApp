@@ -1,12 +1,12 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as AuthActions from 'redux/auth/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as AuthActions from 'reducers/auth/actions'
 
 import LoadingOverlay from 'components/loaders/LoadingOverlay'
-import MiscUtils from 'utils/misc'
+// import MiscUtils from 'utils/misc'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
@@ -15,12 +15,13 @@ export default () => {
     const dispatch = useDispatch()
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
 
-    const handleLogin = useCallback(async () => {
-        console.log("useLocation", location)
+    const handleLogin = async () => {
+        console.log('useLocation', location)
         const nextRoute = location?.state?.nextRoute ?? '/'
-        console.log("nextRoute", nextRoute)
+        console.log('nextRoute', nextRoute)
+        debugger
         // TODO sleep???
-        await MiscUtils.sleep(1000)
+        // await MiscUtils.sleep(1000)
         if (isAuthenticated) {
             dispatch(AuthActions.login({}, nextRoute))
         } else {
@@ -31,11 +32,11 @@ export default () => {
                 ),
             )
         }
-    }, [dispatch, i18n.language, isAuthenticated, location])
+    }
 
     useEffect(() => {
         handleLogin()
-    }, [handleLogin])
+    }, [])
 
     return <LoadingOverlay text="Authenticating" />
 }

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { Formik, FastField, Field } from 'formik'
-import { Grid, Typography, Box } from '@material-ui/core'
+import { Grid, Typography, Box } from '@mui/material'
 import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import FormControl from 'components/inputs/FormControl'
@@ -13,10 +13,10 @@ import PdfUpload from 'components/inputs/PdfUpload'
 import StreetAddressForm from 'components/inputs/StreetAddressForm'
 import ErrorsBox from 'components/generic/ErrorsBox'
 
-import * as UserSelectors from 'redux/user/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { TravelGrantDetailsValidationSchema as schema } from '@hackjunction/shared'
 
 export default () => {

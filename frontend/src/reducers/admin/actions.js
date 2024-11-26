@@ -3,7 +3,7 @@ import { filter, concat } from 'lodash-es'
 import * as ActionTypes from './actionTypes'
 import { getUsersFiltersRoles } from './selectors'
 
-import { getIdToken } from 'redux/auth/selectors'
+import { getIdToken } from 'reducers/auth/selectors'
 import AdminService from 'services/admin'
 
 import HackerpackService from 'services/hackerpack'

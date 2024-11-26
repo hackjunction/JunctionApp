@@ -1,5 +1,7 @@
 const CronJob = require('cron').CronJob
-
+console.log(
+    '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<CRON JOB RUNNING>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',
+)
 const generateEventResults = require('./jobs/generate-event-results.js')
 
 const patterns = {
@@ -13,7 +15,7 @@ const jobs = {
             generateEventResults(),
             null,
             runImmediately,
-            'Europe/Helsinki'
+            'Europe/Helsinki',
         ),
 }
 

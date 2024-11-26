@@ -1,6 +1,6 @@
 import React from 'react'
-import { useRouteMatch } from 'react-router'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { useResolvedPath } from 'react-router'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import SearchPage from './default'
 import DetailPage from './id'
@@ -8,17 +8,18 @@ import DetailPage from './id'
 // import AdminPage from './admin'
 
 export default () => {
-    const match = useRouteMatch()
+    // const dispatch = useDispatch()
+    // const location = useLocation()
+    const url = useResolvedPath('').pathname
+
+    //console.log(match.url)
+
     return (
-        <Switch>
-            <Route exact={true} path={`${match.url}`} component={SearchPage} />
-            <Route
-                exact={false}
-                path={`${match.url}/:id`}
-                component={DetailPage}
-            />
-            {/* <Route exact={true} path=`${match.url}/recruitment/admin` component={AdminPage} /> */}
-            <Redirect to={`${match.url}`} />
-        </Switch>
+        <Routes>
+            <Route exact={true} path={`${url}`} component={SearchPage} />
+            <Route exact={false} path={`${url}/:id`} component={DetailPage} />
+            {/* <Route exact={true} path=`${url}/recruitment/admin` component={AdminPage} /> */}
+            <Navigate to={`${url}`} />
+        </Routes>
     )
 }

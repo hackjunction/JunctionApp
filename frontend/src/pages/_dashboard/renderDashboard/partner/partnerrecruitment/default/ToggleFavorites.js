@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Badge } from '@material-ui/core'
+import { Button as MuiButton, Badge } from '@mui/material'
 import Button from 'components/generic/Button'
 
 const ToggleFavorites = ({ count, active, onChange }) => {

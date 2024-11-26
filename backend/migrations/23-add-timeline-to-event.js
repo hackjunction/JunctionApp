@@ -18,7 +18,11 @@ module.exports = {
                 { eventTimeline: null },
                 { $set: { eventTimeline: { items: [] } } },
             )
-        console.info('Done with event timeline', nres.n, nres.nModified)
+        console.info(
+            'Done with event timeline',
+            nres.matchedCount,
+            nres.modifiedCount,
+        )
         return Promise.resolve()
     },
 }

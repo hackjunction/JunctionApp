@@ -7,18 +7,20 @@ module.exports = {
     description: 'Replace empty senderEmail with noreply@hackjunction.com',
     run: async () => {
         // Update emailConfig.senderEmail field for documents with an empty senderEmail
-        const resSenderEmail = await mongoose
-            .model('Event')
-            .updateMany(
-                { 'emailConfig.senderEmail': { $in: [null, ""] } },
-                {
-                    $set: {
-                        'emailConfig.senderEmail': "noreply@hackjunction.com"
-                    }
-                }
-            )
+        const resSenderEmail = await mongoose.model('Event').updateMany(
+            { 'emailConfig.senderEmail': { $in: [null, ''] } },
+            {
+                $set: {
+                    'emailConfig.senderEmail': 'noreply@hackjunction.com',
+                },
+            },
+        )
 
-        console.log('Done updating empty senderEmail fields', resSenderEmail.n, resSenderEmail.nModified)
+        console.log(
+            'Done updating empty senderEmail fields',
+            resSenderEmail.matchedCount,
+            resSenderEmail.modifiedCount,
+        )
 
         return Promise.resolve()
     },

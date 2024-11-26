@@ -1,16 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import {
-    Box,
-    // CircularProgress,
-    Grid,
-} from '@material-ui/core'
-// import SearchIcon from '@material-ui/icons/Search'
+import { Box, CircularProgress, Grid } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
 import { motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
 
 import { useDebounce } from 'hooks/customHooks'
 

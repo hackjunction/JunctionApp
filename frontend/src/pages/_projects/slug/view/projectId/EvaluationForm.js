@@ -1,6 +1,6 @@
 import React from 'react'
 import { Formik, Form, Field } from 'formik'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 import RadioScore from 'components/generic/RadioScore'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'

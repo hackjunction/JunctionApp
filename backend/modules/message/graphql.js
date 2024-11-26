@@ -9,7 +9,9 @@ const {
     GraphQLNonNull,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDate } = require('graphql-iso-date')
+// const { GraphQLDate } = require('graphql-iso-date')
+const { DateResolver } = require('graphql-scalars')
+
 const Redis = require('ioredis')
 
 const pubsub = new RedisPubSub({
@@ -20,10 +22,10 @@ const MessageInput = new GraphQLInputObjectType({
     name: 'MessageInput',
     fields: {
         recipients: {
-            type: GraphQLNonNull(GraphQLList(GraphQLString)),
+            type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
         },
         content: {
-            type: GraphQLNonNull(GraphQLString),
+            type: new GraphQLNonNull(GraphQLString),
         },
     },
 })
@@ -35,7 +37,7 @@ const MessageType = new GraphQLObjectType({
             type: GraphQLID,
         },
         recipients: {
-            type: GraphQLList(GraphQLString),
+            type: new GraphQLList(GraphQLString),
         },
         content: {
             type: GraphQLString,
@@ -44,10 +46,10 @@ const MessageType = new GraphQLObjectType({
             type: GraphQLString,
         },
         readAt: {
-            type: GraphQLDate,
+            type: DateResolver,
         },
         sentAt: {
-            type: GraphQLDate,
+            type: DateResolver,
         },
     },
 })
@@ -56,10 +58,10 @@ const QueryType = new GraphQLObjectType({
     name: 'Query',
     fields: {
         messages: {
-            type: GraphQLList(MessageType),
+            type: new GraphQLList(MessageType),
             args: {
                 recipients: {
-                    type: GraphQLList(GraphQLString),
+                    type: new GraphQLList(GraphQLString),
                 },
                 read: {
                     type: GraphQLBoolean,
@@ -75,21 +77,21 @@ const MutationType = new GraphQLObjectType({
         sendMessage: {
             type: MessageType,
             args: {
-                message: { type: GraphQLNonNull(MessageInput) },
+                message: { type: new GraphQLNonNull(MessageInput) },
             },
         },
         readMessage: {
             type: MessageType,
             args: {
                 id: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
             },
         },
         readMany: {
-            type: GraphQLList(MessageType),
+            type: new GraphQLList(MessageType),
             args: {
-                ids: { type: GraphQLNonNull(GraphQLList(GraphQLID)) },
+                ids: { type: new GraphQLNonNull(new GraphQLList(GraphQLID)) },
             },
         },
     },

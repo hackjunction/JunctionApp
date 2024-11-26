@@ -1,7 +1,15 @@
 import React from 'react'
 import moment from 'moment-timezone'
-import { Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import GradientBox from 'components/generic/GradientBox'
+
+// const useStyles = makeStyles(theme => ({
+//     root: {
+//         height: '90%',
+
+//         overflow: 'auto',
+//     },
+// }))
 
 export function Alerts({ alerts = [] }) {
     const sortedAlerts = alerts.sort(
