@@ -63,18 +63,19 @@ const NewEventCard = ({ event, buttons, handleClick = () => {} }) => {
                             />
                         )}
                     </div>
-                    <div className="p-4 flex flex-col gap-4">
+                    <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
                         <Typography variant="h4">{event.name}</Typography>
                     </div>
                     {event?.description && (
-                        <div className="p-4 flex flex-col gap-4">
+                        <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
                             <Markdown
                                 source={parseDescription(event?.description)}
                             />
                         </div>
                     )}
+
                     {event?.startTime && event?.endTime && (
-                        <div className="p-4">
+                        <div className="tw-p-4">
                             <ProgressBar
                                 start={event?.startTime}
                                 end={event?.endTime}
@@ -85,7 +86,8 @@ const NewEventCard = ({ event, buttons, handleClick = () => {} }) => {
                     )}
                 </CardContent>
             </CardActionArea>
-            <CardActions className="flex gap-4 justify-start max-w-full px-4 pb-4 pt-6">
+
+            <CardActions className="tw-flex tw-gap-4 tw-justify-start tw-max-w-full tw-px-4 tw-pb-4 tw-pt-6">
                 {buttons?.slice(0, 2).map((btn, index) => {
                     return <Box key={index}>{btn}</Box>
                 })}

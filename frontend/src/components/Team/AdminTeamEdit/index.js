@@ -32,8 +32,6 @@ export default ({
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
     const [teamMemberToRemove, setTeamMemberToRemove] = useState('')
-    const url = useResolvedPath('').pathname
-    console.log('match', slug)
 
     const [teamMembersArr, setTeamMembersArr] = useState([
         ...objToArr(teamData.meta),

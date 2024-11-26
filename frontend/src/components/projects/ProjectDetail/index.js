@@ -213,10 +213,10 @@ const ProjectDetail = ({
                         active={index}
                         onChange={setIndex}
                     />
-                    <Box className="mt-5">
-                        <div className="flex flex-col gap-8 p-8">
-                            <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-md">
-                                <div className="flex gap-6 items-center">
+                    <Box className={'tw-mt-5'}>
+                        <div className="tw-flex tw-flex-col tw-gap-8 md:tw-p-8 tw-p-2">
+                            <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                <div className="tw-flex tw-gap-6 tw-items-center">
                                     <Typography variant="h4" gutterBottom>
                                         {project.name}
                                     </Typography>
@@ -241,8 +241,8 @@ const ProjectDetail = ({
                                         if (section.answers?.length > 0) {
                                             return (
                                                 <div
-                                                    className="flex flex-col gap-6 p-4 bg-white rounded-md shadow-md"
-                                                    key={index}
+                                                    className="tw-flex tw-flex-col tw-gap-10 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md"
+                                                    key={`${section.section}-${index}`}
                                                 >
                                                     <Typography
                                                         variant="h6"
@@ -307,7 +307,7 @@ const ProjectDetail = ({
                                         variant="h6"
                                         className="uppercase"
                                     >
-                                        Video
+                                        video
                                     </Typography>
                                     {project.video ? (
                                         <>

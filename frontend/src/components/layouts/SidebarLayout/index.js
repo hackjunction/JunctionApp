@@ -162,8 +162,8 @@ export default React.memo(
                                 </ListItem>
                             )
                         })}
-                    <hr className="h-px my-8 w-4/5 bg-gray-500 border-0 dark:bg-gray-900"></hr>
-                    <div className="grid place-items-center">
+                    <hr className="tw-h-px tw-my-8 tw-w-4/5 tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
+                    <div className="tw-grid tw-place-items-center">
                         <ListItem
                             button
                             key={'/events'}

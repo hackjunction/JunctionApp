@@ -48,7 +48,7 @@ export default ({
 
     return (
         <SidebarLayout
-            baseRoute={match.url}
+            baseRoute={url}
             location={location}
             sidebarTopContent={
                 <div className={classes}>

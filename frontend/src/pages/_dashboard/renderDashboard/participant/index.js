@@ -48,20 +48,20 @@ import { Chat } from 'components/messaging/chat'
 import { Grid, Paper } from '@mui/material'
 import DefaultImage from 'assets/images/dashboardDefault.jpg'
 
-const useStyles = makeStyles(theme => ({
-    sidebarTop: {
-        padding: theme.spacing(3),
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    sidebarLogo: {
-        width: '100%',
-        objectFit: 'contain',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     sidebarTop: {
+//         padding: theme.spacing(3),
+//         height: '100%',
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//     },
+//     sidebarLogo: {
+//         width: '100%',
+//         objectFit: 'contain',
+//     },
+// }))
 
 export default ({
     event,
@@ -70,7 +70,8 @@ export default ({
     shownPages,
     lockedPages,
 }) => {
-    const classes = useStyles()
+    // const classes = useStyles()
+    const classes = {}
     const { t } = useTranslation()
     const url = useResolvedPath('').pathname
     const location = useLocation()
@@ -86,7 +87,7 @@ export default ({
 
     return (
         <SidebarLayout
-            baseRoute={match.url}
+            baseRoute={url}
             location={location}
             sidebarTopContent={
                 <div className={classes.sidebarTop}>

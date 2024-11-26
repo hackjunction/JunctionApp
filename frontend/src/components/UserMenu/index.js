@@ -56,7 +56,13 @@ export default () => {
                     >
                         {t('Dashboard_')}
                     </Button>
-                    <Button onClick={() => navigate('/logout')} strong={true}>
+                    <Button
+                        onClick={() => navigate('/logout')}
+                        strong={true}
+                        variant="outlined"
+                        className={'tw-bg-white tw-text-black'}
+                        // className={classes.menuBox}
+                    >
                         {t('Log_out_')}
                     </Button>
                     <UserAvatar />
