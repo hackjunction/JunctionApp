@@ -111,13 +111,14 @@ export default React.memo(
         const drawerContent = (
             <>
                 <Box>
+                    <p>SIDEBAR LAYOUT</p>
                     {/* <a href="/home"> */}
                     <Link to="/home">
                         <img
                             src={
                                 PlatformLogo /*config.LOGO_LIGHT_URL TODO: switch this to cloudinary*/
                             }
-                            className="block mx-auto p-1.5 h-18"
+                            className="tw-block tw-mx-auto tw-p-1.5 tw-h-18 tw-bg-black"
                             alt={config.PLATFORM_OWNER_NAME + ' logo'}
                         />
                     </Link>
@@ -287,6 +288,7 @@ export default React.memo(
                         </Drawer>
                     </nav>
                 </Hidden> */}
+                {drawerContent}
                 <main
                     className={`flex-grow relative transition-all ${
                         desktopOpen ? 'ml-[300px]' : 'ml-0'
@@ -316,7 +318,7 @@ export default React.memo(
                                                 <Route
                                                     key={key}
                                                     exact={exact}
-                                                    path={`${baseRoute}${path}`}
+                                                    path={`${path}`}
                                                     element={<Component />}
                                                 />
                                             )

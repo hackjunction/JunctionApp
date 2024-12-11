@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { useResolvedPath } from 'react-router'
+import { useParams, useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import PageWrapper from 'components/layouts/PageWrapper'
 
@@ -42,12 +42,16 @@ export default role => {
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
     const userAccessRight = useSelector(UserSelectors.userAccessRight)
-    const { slug } = match.params
+    const { eventSlug } = useParams()
+
+    console.log('URL AND SLUG FROM RENDERDASHBOARD>>>>>>')
+    console.log(url)
+    console.log(eventSlug)
 
     const [alerts, setAlerts] = useState([])
     const [alertCount, setAlertCount] = useState(0)
     const { data: newAlert } = useSubscription(NEW_ALERTS_SUBSCRIPTION, {
-        variables: { slug },
+        variables: { eventSlug },
     })
 
     const isPartner =
@@ -71,12 +75,15 @@ export default role => {
         }
     }, [])
 
-    /** Update when slug changes */
+    /** Update when eventSlug changes */
     useEffect(() => {
-        dispatch(DashboardActions.updateEvent(slug))
-        dispatch(DashboardActions.updateRegistration(slug))
-        dispatch(DashboardActions.updateTeam(slug))
-    }, [slug])
+        console.log(
+            'Updating EVENT, Registration and Team from renderDashboard>>>>>>>>>>>>>>>>>>>>>',
+        )
+        dispatch(DashboardActions.updateEvent(eventSlug))
+        dispatch(DashboardActions.updateRegistration(eventSlug))
+        dispatch(DashboardActions.updateTeam(eventSlug))
+    }, [eventSlug])
 
     // Must use lazy query because event is fetched asynchnronously
     const [getAlerts, { loading: alertsLoading, data: alertsData }] =
@@ -134,9 +141,9 @@ export default role => {
 
     /** Update project when team changes */
     useEffect(() => {
-        dispatch(DashboardActions.updateProjects(slug))
-        dispatch(DashboardActions.updateProjectScores(slug))
-    }, [slug, team, dispatch])
+        dispatch(DashboardActions.updateProjects(eventSlug))
+        dispatch(DashboardActions.updateProjectScores(eventSlug))
+    }, [eventSlug, team, dispatch])
 
     useEffect(() => {
         //does not take multiple roles into a count

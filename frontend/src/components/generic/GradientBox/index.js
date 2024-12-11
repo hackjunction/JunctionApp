@@ -3,8 +3,9 @@ import { Box } from '@mui/material'
 import clsx from 'clsx'
 
 const getGradientClasses = (color, theme) => {
+    console.log(theme)
     const colorObj = theme.palette[color]
-    const bg = `linear-gradient(145deg, ${colorObj.dark} 0%, ${colorObj.main} 100%)`
+    const bg = `tw-linear-gradient(145deg, ${colorObj.dark} 0%, ${colorObj.main} 100%)`
     return {
         background: bg,
         color: colorObj.contrastText,
@@ -34,10 +35,10 @@ const GradientBox = ({ color, radius = '13px', children, ...boxProps }) => {
         <Box
             {...boxProps}
             className={clsx(
-                'shadow-lg',
-                'p-4',
-                'transition-all',
-                'ease-in-out',
+                'tw-shadow-lg',
+                'tw-p-4',
+                'tw-transition-all',
+                'tw-ease-in-out',
                 gradientClasses,
             )}
             style={{ borderRadius: radius }}

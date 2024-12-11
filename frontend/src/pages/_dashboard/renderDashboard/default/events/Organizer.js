@@ -17,6 +17,7 @@ import * as UserActions from 'reducers/user/actions'
 import CreateEventCard from './CreateEventCard'
 import TextInput from '../../../../../components/inputs/TextInput'
 import { debugGroup } from 'utils/debuggingTools'
+import { useNavigate } from 'react-router-dom'
 
 //TODO: make this to use theme colors and make prettier
 // const useStyles = makeStyles({
@@ -60,6 +61,7 @@ export default () => {
     const organizerEvents = useSelector(UserSelectors.organizerEvents)
     // const classes = useStyles()
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { t } = useTranslation()
     var date = new Date()
@@ -152,15 +154,15 @@ export default () => {
                                 buttons={[
                                     <Button
                                         size="small"
-                                        onClick={
-                                            () =>
-                                                console.log(
-                                                    'event see more clicked',
-                                                )
+                                        onClick={() => {
+                                            console.log(
+                                                'event see more clicked',
+                                            )
+                                            navigate(`/events/${event.slug}`)
                                             // dispatch(
                                             //     push('/events/' + event.slug),
                                             // )
-                                        }
+                                        }}
                                     >
                                         {t('See_more_')}
                                     </Button>,
@@ -172,6 +174,7 @@ export default () => {
                                                     'organizer',
                                                 ),
                                             )
+                                            navigate(`/organise/${event.slug}`)
                                             // dispatch(
                                             //     push(`/organise/${event.slug}`),
                                             // )

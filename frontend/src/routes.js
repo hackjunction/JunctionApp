@@ -17,9 +17,9 @@ import RequiresPermission from './hocs/RequiresPermission'
 
 // /** Lazy-load the access-restricted pages */
 const DashboardRouter = lazy(() => import('./pages/_dashboard'))
-// const OrganiserRouter = lazy(
-//     () => import('./pages/_dashboard/renderDashboard/organiser/router'),
-// )
+const OrganiserRouter = lazy(
+    () => import('./pages/_dashboard/renderDashboard/organiser/router'),
+)
 // const AccountRouter = lazy(() => import('./pages/_account'))
 // //TODO: switch the recruitment view and router
 // const RecruitmentRouter = lazy(
@@ -64,13 +64,14 @@ const routes = [
         path: '/logout',
         element: <LogoutPage />,
     },
-    // {
-    //     path: '/organise',
-    //     component: RequiresPermission(OrganiserRouter),
-    //     /*component: RequiresPermission(OrganiserRouter, [
-    //         AuthConstants.Permissions.MANAGE_EVENT,
-    //         ]),*/
-    // },
+    {
+        path: '/organise/:eventSlug/*',
+        element: <RequiresPermission ComposedComponent={OrganiserRouter} />,
+        // component: RequiresPermission(OrganiserRouter),
+        /*component: RequiresPermission(OrganiserRouter, [
+            AuthConstants.Permissions.MANAGE_EVENT,
+            ]),*/
+    },
     {
         //default after login
         path: '/dashboard/*',

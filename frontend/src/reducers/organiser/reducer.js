@@ -103,6 +103,8 @@ const editEventRecruitres = buildUpdatePath('event.data.recruiters')
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.UPDATE_EVENT: {
+            console.log('UPDATE EVENT REDUCER>>>>>')
+            console.log(action)
             return eventHandler(state, action)
         }
         case ActionTypes.EDIT_EVENT: {
@@ -261,7 +263,7 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.ADD_EVENT_RECRUITER: {
             //const data = state.event.data.recruiters.concat(action.payload)
-            console.log("ADD_EVENT_RECRUITER", action.payload)
+            console.log('ADD_EVENT_RECRUITER', action.payload)
             return editEventRecruitres(state, action.payload)
         }
         /**TODO: Add attendee update actions */

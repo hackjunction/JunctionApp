@@ -20,20 +20,22 @@ import FormControl from 'components/inputs/FormControl'
 import GradientBox from 'components/generic/GradientBox'
 import { Alerts } from '../../../../../components/messaging/alerts'
 
-const makeBoxStyles = () => ({
-    backgroundColor: '#f7fafc',
-    border: `2px solid #e2e8f0`,
-    borderRadius: '6px',
-    height: '100%',
+// const makeBoxStyles = () => ({
+//     backgroundColor: '#f7fafc',
+//     border: `2px solid #e2e8f0`,
+//     borderRadius: '6px',
+//     height: '100%',
 
-    //TODO: blurr the bottom
+//     //TODO: blurr the bottom
 
-    // backgroundColor: '#f8f8f8',
-})
+//     // backgroundColor: '#f8f8f8',
+// })
 
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
+    console.log('EVENT DATA FROM ALERT>>>>>>>>>>')
+    console.log(event)
     const loading = useSelector(OrganiserSelectors.eventLoading)
     const [alerts, setAlerts] = useState([])
     const [alertCount, setAlertCount] = useState(0)
@@ -112,6 +114,8 @@ export default () => {
                 changed[field] = value
             }
         })
+        console.log('EVENT ID>>>>>>', event._id)
+        console.log(event)
         saveChanges({
             variables: { input: { ...changed, eventId: event._id } },
         })
@@ -173,8 +177,8 @@ export default () => {
                                 }}
                             >
                                 <GradientBox
-                                    style={makeBoxStyles()}
-                                    color="theme_white"
+                                    // style={makeBoxStyles()}
+                                    color="primary"
                                     p={3}
                                 >
                                     <Typography variant="button" gutterBottom>
