@@ -2,6 +2,7 @@ import * as ActionTypes from './actionTypes'
 import * as AuthActionTypes from '../auth/actionTypes'
 import { buildHandler, buildUpdatePath } from '../utils'
 import { concat, filter } from 'lodash-es'
+import _ from 'lodash'
 
 const initialState = {
     event: {
@@ -101,7 +102,28 @@ const editEventOrganisers = buildUpdatePath('event.data.organisers')
 const editEventRecruitres = buildUpdatePath('event.data.recruiters')
 
 export default function reducer(state = initialState, action) {
-    switch (action.type) {
+    console.log('REDUCER ACTION>>>>>>')
+    console.log(action)
+    console.log('REDUCER ACTION TYPE>>>>>>')
+    console.log(action.type)
+    if (_.endsWith(action.type, '/fulfilled')) {
+        action.baseType = _.replace(action.type, '/fulfilled', '')
+        action.status = 'success'
+    }
+    if (_.endsWith(action.type, '/pending')) {
+        action.baseType = _.replace(action.type, '/pending', '')
+        action.status = 'start'
+    }
+    if (_.endsWith(action.type, '/rejected')) {
+        action.baseType = _.replace(action.type, '/rejected', '')
+        action.status = 'failure'
+    }
+    // if (action.type === `${ActionTypes.UPDATE_EVENT}/fulfilled`) {
+    //     console.log('UPDATE EVENT REDUCER RUNNING>>>>>')
+    //     action.type = ActionTypes.UPDATE_EVENT
+    //     action.status = 'success'
+    // }
+    switch (action.baseType || action.type) {
         case ActionTypes.UPDATE_EVENT: {
             console.log('UPDATE EVENT REDUCER>>>>>')
             console.log(action)
@@ -114,6 +136,7 @@ export default function reducer(state = initialState, action) {
             return statsHandler(state, action)
         }
         case ActionTypes.UPDATE_ORGANISERS: {
+            console.log('UPDATE ORGANISERS REDUCER>>>>>')
             return organisersHandler(state, action)
         }
         case ActionTypes.UPDATE_EVENT_RECRUITERS: {

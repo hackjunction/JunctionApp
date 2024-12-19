@@ -4,7 +4,7 @@ import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 
 import { Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
-import { forOwn } from 'lodash-es'
+import { forOwn, isEqual } from 'lodash-es'
 import { useResolvedPath, useLocation } from 'react-router'
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import * as OrganiserActions from 'reducers/organiser/actions'
@@ -15,16 +15,16 @@ import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import BottomBar from 'components/inputs/BottomBar'
 
 import DefaultTab from './default'
-import ConfigurationTab from './configuration'
-import EmailsTab from './emails'
-import ChallengesTab from './challenges'
-import ScheduleTab from './schedule'
-import QuestionsTab from './questions'
-import SubmissionFormTab from './submission'
-// import TimelineTab from './timeline'
-import MeetingRoomsTab from './meetingRooms'
-import OtherTab from './other'
-import HackerpackTab from './hackerpack'
+// import ConfigurationTab from './configuration'
+// import EmailsTab from './emails'
+// import ChallengesTab from './challenges'
+// import ScheduleTab from './schedule'
+// import QuestionsTab from './questions'
+// import SubmissionFormTab from './submission'
+// // import TimelineTab from './timeline'
+// import MeetingRoomsTab from './meetingRooms'
+// import OtherTab from './other'
+// import HackerpackTab from './hackerpack'
 
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
@@ -110,77 +110,77 @@ export default () => {
                                     label: 'Basic Details',
                                     component: DefaultTab,
                                 },
-                                {
-                                    path: '/configuration',
-                                    key: 'configuration',
-                                    label: 'Configuration',
-                                    component: ConfigurationTab,
-                                },
-                                {
-                                    path: '/emails',
-                                    key: 'emails',
-                                    label: 'Emails',
-                                    component: EmailsTab,
-                                },
-                                {
-                                    path: '/scoreSettings',
-                                    key: 'scoreSettings',
-                                    label: 'Score criteria',
-                                    component: scoreCriteriaTab,
-                                },
-                                {
-                                    path: '/challenges',
-                                    key: 'challenges',
-                                    label: 'Challenges',
-                                    component: ChallengesTab,
-                                },
-                                {
-                                    path: '/schedule',
-                                    key: 'schedule',
-                                    label: 'Schedule',
-                                    component: ScheduleTab,
-                                },
+                                // {
+                                //     path: '/configuration',
+                                //     key: 'configuration',
+                                //     label: 'Configuration',
+                                //     component: ConfigurationTab,
+                                // },
+                                // {
+                                //     path: '/emails',
+                                //     key: 'emails',
+                                //     label: 'Emails',
+                                //     component: EmailsTab,
+                                // },
+                                // {
+                                //     path: '/scoreSettings',
+                                //     key: 'scoreSettings',
+                                //     label: 'Score criteria',
+                                //     component: scoreCriteriaTab,
+                                // },
+                                // {
+                                //     path: '/challenges',
+                                //     key: 'challenges',
+                                //     label: 'Challenges',
+                                //     component: ChallengesTab,
+                                // },
+                                // {
+                                //     path: '/schedule',
+                                //     key: 'schedule',
+                                //     label: 'Schedule',
+                                //     component: ScheduleTab,
+                                // },
                                 // {
                                 //     path: '/timeline',
                                 //     key: 'timeline',
                                 //     label: 'Timeline',
                                 //     component: TimelineTab,
                                 // },
-                                {
-                                    path: '/questions',
-                                    key: 'questions',
-                                    label: 'Questions',
-                                    component: QuestionsTab,
-                                },
-                                {
-                                    path: '/submission',
-                                    key: 'submission',
-                                    label: 'Submission form',
-                                    component: SubmissionFormTab,
-                                },
-                                {
-                                    path: '/hackerpack',
-                                    key: 'hackerpacks',
-                                    label: 'Hackerpack',
-                                    component: HackerpackTab,
-                                },
-                                {
-                                    path: '/other',
-                                    key: 'other',
-                                    label: 'Miscellaneous',
-                                    component: OtherTab,
-                                },
+                                // {
+                                //     path: '/questions',
+                                //     key: 'questions',
+                                //     label: 'Questions',
+                                //     component: QuestionsTab,
+                                // },
+                                // {
+                                //     path: '/submission',
+                                //     key: 'submission',
+                                //     label: 'Submission form',
+                                //     component: SubmissionFormTab,
+                                // },
+                                // {
+                                //     path: '/hackerpack',
+                                //     key: 'hackerpacks',
+                                //     label: 'Hackerpack',
+                                //     component: HackerpackTab,
+                                // },
+                                // {
+                                //     path: '/other',
+                                //     key: 'other',
+                                //     label: 'Miscellaneous',
+                                //     component: OtherTab,
+                                // },
                                 //experimental
-                                {
-                                    path: '/rooms',
-                                    key: 'meetingRooms',
-                                    label: 'Meeting Rooms',
-                                    component: MeetingRoomsTab,
-                                    hidden: !event?.experimental,
-                                },
+                                // {
+                                //     path: '/rooms',
+                                //     key: 'meetingRooms',
+                                //     label: 'Meeting Rooms',
+                                //     component: MeetingRoomsTab,
+                                //     hidden: !event?.experimental,
+                                // },
                             ]}
                             location={location}
-                            baseRoute={match.url}
+                            baseRoute={url}
                         />
                         <div style={{ height: '100px' }} />
                         <BottomBar

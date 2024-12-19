@@ -8,6 +8,7 @@ import LogRocket from 'logrocket'
 
 import createRootReducer from './rootReducer'
 import { configureStore } from '@reduxjs/toolkit'
+import { eventApi } from './organiser/actions'
 
 const persistConfig = {
     key: 'root',
@@ -27,7 +28,8 @@ export default preloadedState => {
                 serializableCheck: {
                     ignoredActions: ['persist/PERSIST'],
                 },
-            }).concat(LogRocket.reduxMiddleware()),
+                // }).concat(LogRocket.reduxMiddleware()),
+            }).concat(eventApi.middleware, LogRocket.reduxMiddleware()),
         devTools: process.env.NODE_ENV === 'production' ? false : true,
     })
     const persistor = persistStore(store)

@@ -42,10 +42,10 @@ export default () => {
 
     useEffect(() => {
         dispatch(
-            OrganiserActions.updateOrganisersForEvent(
-                event.owner,
-                event.organisers,
-            ),
+            OrganiserActions.updateOrganisersForEvent({
+                owner: event.owner,
+                organisers: event.organisers,
+            }),
         ).catch(() => {
             dispatch(
                 SnackbarActions.error(
@@ -53,7 +53,7 @@ export default () => {
                 ),
             )
         })
-    }, [event.organisers, event.owner, dispatch])
+    }, [event, dispatch])
 
     // useEffect(() => {
     //     console.log("updating recuiters....", event)
@@ -215,8 +215,8 @@ export default () => {
 
                     <List>
                         {organiserProfiles.map(profile => (
-                            <div className="tw-flex-column tw-items-center  tw-m-2 tw-rounded-md tw-shadow ">
-                                <ListItem key={profile.userId} divider>
+                            <ListItem key={profile.userId} divider>
+                                <div className="tw-flex-column tw-items-center  tw-m-2 tw-rounded-md tw-shadow ">
                                     <ListItemText
                                         primary={`${profile.firstName} ${profile.lastName}`}
                                         secondary={profile.email}
@@ -235,8 +235,8 @@ export default () => {
                                             Delete
                                         </Button>
                                     </ListItemSecondaryAction>
-                                </ListItem>
-                            </div>
+                                </div>
+                            </ListItem>
                         ))}
                     </List>
 
@@ -274,8 +274,8 @@ export default () => {
                     </Button>
                     <List>
                         {eventRecruiterProfiles?.map(rec => (
-                            <div className="tw-flex-column tw-items-center  tw-m-2 tw-rounded-md tw-shadow ">
-                                <ListItem key={rec.recruiterId} divider>
+                            <ListItem key={rec.recruiterId} divider>
+                                <div className="tw-flex-column tw-items-center tw-m-2 tw-rounded-md tw-shadow ">
                                     <ListItemText
                                         primary={`${
                                             recruiterProfilesMap[
@@ -308,8 +308,8 @@ export default () => {
                                             Delete
                                         </Button>
                                     </ListItemSecondaryAction>
-                                </ListItem>
-                            </div>
+                                </div>
+                            </ListItem>
                         ))}
                     </List>
 

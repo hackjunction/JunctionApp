@@ -8,23 +8,70 @@ import FilterGroupsService from 'services/filterGroups'
 import ProjectsService from 'services/projects'
 import GavelService from 'services/reviewing/gavel'
 import RankingsService from 'services/rankings'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 /** Update event with loading/error data */
-export const updateEvent = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-    const promise = await EventsService.getEventBySlugAsOrganiser(idToken, slug)
-    console.log('UPDATE EVENT>>>>>>>>>>')
-    console.log(promise)
-    dispatch({
-        type: ActionTypes.UPDATE_EVENT,
-        promise: promise,
-        meta: {
-            // onFailure: e => console.log('Error updating event', e),
-        },
-    })
 
-    return promise
-}
+export const eventApi = createApi({
+    reducerPath: 'eventApi',
+    baseQuery: async ({ queryFn }) => queryFn(),
+    endpoints: builder => ({
+        getEventBySlug: builder.query({
+            queryFn: async (slug, { getState }) => {
+                try {
+                    const idToken = AuthSelectors.getIdToken(getState())
+                    const response =
+                        await EventsService.getEventBySlugAsOrganiser(
+                            idToken,
+                            slug,
+                        )
+                    return { data: response.data }
+                } catch (error) {
+                    return {
+                        error: {
+                            status: error.response?.status,
+                            data: error.response?.data,
+                        },
+                    }
+                }
+            },
+        }),
+    }),
+})
+
+// Export the hook for the mutation
+export const { useGetEventBySlugQuery } = eventApi
+
+export const updateEvent = createAsyncThunk(
+    ActionTypes.UPDATE_EVENT,
+    async (slug, { getState }) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        const event = await EventsService.getEventBySlugAsOrganiser(
+            idToken,
+            slug,
+        )
+        console.log('UPDATE EVENT ACTION>>>>>>>>>>')
+        console.log(event)
+        return event
+    },
+)
+
+// export const updateEvent = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
+//     const promise = await EventsService.getEventBySlugAsOrganiser(idToken, slug)
+//     console.log('UPDATE EVENT>>>>>>>>>>')
+//     console.log(promise)
+//     dispatch({
+//         type: ActionTypes.UPDATE_EVENT,
+//         promise: promise,
+//         meta: {
+//             // onFailure: e => console.log('Error updating event', e),
+//         },
+//     })
+
+//     return promise
+// }
 
 /** Submit edits to an event */
 export const editEvent = (slug, data) => async (dispatch, getState) => {
@@ -56,19 +103,31 @@ export const updateEventStats = slug => async (dispatch, getState) => {
 }
 
 /** Update event organisers with loading/error data */
-export const updateOrganisersForEvent =
-    (owner, organisers) => async (dispatch, getState) => {
+export const updateOrganisersForEvent = createAsyncThunk(
+    ActionTypes.UPDATE_ORGANISERS,
+    async ownerAndOrganizers => {
+        const { owner, organisers } = ownerAndOrganizers
         const userIds = [owner].concat(organisers)
+        const profiles =
+            await UserProfilesService.getPublicUserProfiles(userIds)
+        console.log(profiles)
+        return profiles
+    },
+)
 
-        dispatch({
-            type: ActionTypes.UPDATE_ORGANISERS,
-            promise: UserProfilesService.getPublicUserProfiles(userIds),
-            meta: {
-                onFailure: e =>
-                    console.log('Error updating event organisers', e),
-            },
-        })
-    }
+// export const updateOrganisersForEvent =
+//     (owner, organisers) => async (dispatch, getState) => {
+//         const userIds = [owner].concat(organisers)
+
+//         dispatch({
+//             type: ActionTypes.UPDATE_ORGANISERS,
+//             promise: UserProfilesService.getPublicUserProfiles(userIds),
+//             meta: {
+//                 onFailure: e =>
+//                     console.log('Error updating event organisers', e),
+//             },
+//         })
+//     }
 
 export const removeOrganiserFromEvent =
     (slug, userId) => async (dispatch, getState) => {
@@ -106,22 +165,42 @@ export const addOrganiserToEvent =
 
 /** Update event recruiters with loading/error data */
 
-export const updateRecruitersForEvent =
-    recruiters => async (dispatch, getState) => {
-        const idToken = AuthSelectors.getIdToken(getState())
-        const userIds = recruiters?.map(rec => {
-            return rec.recruiterId
-        })
+export const updateRecruitersForEvent = createAsyncThunk(
+    ActionTypes.UPDATE_EVENT_RECRUITERS,
+    async recruiters => {
+        console.log('UPDATE RECRUITERS ACTION>>>>>>>>>>')
+        console.log(recruiters)
+        let userIds = []
+        if (Array.isArray(recruiters)) {
+            userIds = recruiters?.map(rec => {
+                return rec.recruiterId
+            })
+        }
+        if (userIds.length < 1) {
+            return
+        }
+        const profiles =
+            await UserProfilesService.getPublicUserProfiles(userIds)
+        return profiles
+    },
+)
 
-        dispatch({
-            type: ActionTypes.UPDATE_EVENT_RECRUITERS,
-            promise: UserProfilesService.getPublicUserProfiles(userIds),
-            meta: {
-                onFailure: e =>
-                    console.log('Error updating recruiters for this event', e),
-            },
-        })
-    }
+// export const updateRecruitersForEvent =
+//     recruiters => async (dispatch, getState) => {
+//         const idToken = AuthSelectors.getIdToken(getState())
+//         const userIds = recruiters?.map(rec => {
+//             return rec.recruiterId
+//         })
+
+//         dispatch({
+//             type: ActionTypes.UPDATE_EVENT_RECRUITERS,
+//             promise: UserProfilesService.getPublicUserProfiles(userIds),
+//             meta: {
+//                 onFailure: e =>
+//                     console.log('Error updating recruiters for this event', e),
+//             },
+//         })
+//     }
 
 export const addRecruiterToEvent =
     (slug, userId, organization) => async (dispatch, getState) => {
@@ -244,19 +323,31 @@ export const updateTeamsForEvent = slug => async (dispatch, getState) => {
 }
 
 /** Update filter groups with loading/error status */
-export const updateFilterGroups = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const updateFilterGroups = createAsyncThunk(
+    ActionTypes.UPDATE_FILTER_GROUPS,
+    async (slug, { getState }) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        const filterGroups = await FilterGroupsService.getFilterGroupsForEvent(
+            idToken,
+            slug,
+        )
+        return filterGroups
+    },
+)
 
-    dispatch({
-        type: ActionTypes.UPDATE_FILTER_GROUPS,
-        promise: FilterGroupsService.getFilterGroupsForEvent(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error updating filter groups', e),
-        },
-    })
+// export const updateFilterGroups = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
 
-    return
-}
+//     dispatch({
+//         type: ActionTypes.UPDATE_FILTER_GROUPS,
+//         promise: FilterGroupsService.getFilterGroupsForEvent(idToken, slug),
+//         meta: {
+//             onFailure: e => console.log('Error updating filter groups', e),
+//         },
+//     })
+
+//     return
+// }
 
 export const createFilterGroup =
     (slug, label, description, filters) => async (dispatch, getState) => {

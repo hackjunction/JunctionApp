@@ -11,6 +11,12 @@ import organiser from './organiser/reducer'
 import recruitment from './recruitment/reducer'
 import user from './user/reducer'
 import snackbar from './snackbar/reducer'
+import { eventApi } from './organiser/actions'
+
+// const organiserReducer = combineReducers({
+//     ...organiser,
+//     eventApi: eventApi.reducer,
+// })
 
 export default () =>
     combineReducers({
@@ -21,7 +27,9 @@ export default () =>
         //eventdetail, (replaced with GraphQL)
         //events, (replaced with GraphQL)
         organiser,
+        // organiserReducer,
         recruitment,
         snackbar,
         user,
+        [eventApi.reducerPath]: eventApi.reducer,
     })

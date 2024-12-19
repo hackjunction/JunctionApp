@@ -23,7 +23,7 @@ import BasicNavBar from 'components/navbars/BasicNavBar'
 import SidebarLayout from 'components/layouts/SidebarLayout'
 
 // import CheckinPage from './checkin'
-// import EditPage from './edit'
+import EditPage from './edit'
 import ManagePage from './manage'
 // import ParticipantsPage from './participants'
 // import ProjectsPage from './projects'
@@ -129,13 +129,13 @@ export default () => {
                 baseRoute={`${url}`}
                 location={location}
                 routes={[
-                    // {
-                    //     key: 'edit',
-                    //     path: '/edit',
-                    //     icon: <TuneIcon />,
-                    //     label: 'Edit',
-                    //     component: EditPage,
-                    // },
+                    {
+                        key: 'edit',
+                        path: '/edit/*',
+                        icon: <TuneIcon />,
+                        label: 'Edit',
+                        component: EditPage,
+                    },
                     // {
                     //     key: 'stats',
                     //     path: '/stats',

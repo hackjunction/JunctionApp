@@ -39,7 +39,10 @@ import { reduce, cloneDeep, set } from 'lodash-es'
 
 export const buildHandler =
     (field, mapByField, mapIsArray) => (state, action) => {
-        switch(action.status) {
+        console.log('ACTION FROM UTILS>>>>>>')
+        // action.status = action.status || 'sucess'
+        console.log(action)
+        switch (action.status) {
             case 'start':
                 return {
                     ...state,
@@ -62,10 +65,12 @@ export const buildHandler =
                     ...state,
                     [field]: {
                         ...state[field],
+                        loading: false,
                         error: true,
                     },
                 }
             case 'success':
+                console.log('success is running>>>>>>>')
                 if (mapByField) {
                     const map = reduce(
                         action.payload,
@@ -91,6 +96,7 @@ export const buildHandler =
                             ...state[field],
                             data: action.payload,
                             map,
+                            loading: false,
                             updated: Date.now(),
                         },
                     }
@@ -101,6 +107,7 @@ export const buildHandler =
                     [field]: {
                         ...state[field],
                         data: action.payload,
+                        loading: false,
                         updated: Date.now(),
                     },
                 }

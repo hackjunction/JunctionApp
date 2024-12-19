@@ -9,8 +9,8 @@ import apolloClient from './graphql/client'
 import config from 'constants/config'
 import * as AuthSelectors from 'reducers/auth/selectors'
 import * as AuthActions from 'reducers/auth/actions'
-import AnalyticsService from 'services/analytics'
-import { getCookieConsentValue } from 'react-cookie-consent'
+// import AnalyticsService from 'services/analytics'
+// import { getCookieConsentValue } from 'react-cookie-consent'
 import CookieConsentBar from 'components/layouts/CookieConsentBar'
 import * as SnackbarActions from 'reducers/snackbar/actions'
 // import HomePage from './pages/_home/index'
@@ -22,18 +22,18 @@ export default ({ location }) => {
     const isSessionExpired = useSelector(AuthSelectors.isSessionExpired)
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        if (getCookieConsentValue() === 'true') {
-            AnalyticsService.init()
-            AnalyticsService.pageView(window.location)
-            /**
-             const unlisten = history.listen(AnalyticsService.pageView)
-             return () => {
-                unlisten()
-                }
-                */
-        }
-    }, [location])
+    // useEffect(() => {
+    //     if (getCookieConsentValue() === 'true') {
+    //         AnalyticsService.init()
+    //         AnalyticsService.pageView(window.location)
+    //         /**
+    //          const unlisten = history.listen(AnalyticsService.pageView)
+    //          return () => {
+    //             unlisten()
+    //             }
+    //             */
+    //     }
+    // }, [location])
 
     useEffect(() => {
         setLoading(false)

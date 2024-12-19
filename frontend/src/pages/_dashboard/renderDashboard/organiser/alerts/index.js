@@ -19,6 +19,8 @@ import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'
 import GradientBox from 'components/generic/GradientBox'
 import { Alerts } from '../../../../../components/messaging/alerts'
+// import { useGetEventBySlugQuery } from 'reducers/organiser/actions'
+import { useParams } from 'react-router-dom'
 
 // const makeBoxStyles = () => ({
 //     backgroundColor: '#f7fafc',
@@ -32,6 +34,20 @@ import { Alerts } from '../../../../../components/messaging/alerts'
 // })
 
 export default () => {
+    const { eventSlug } = useParams()
+    // const [getEventBySlug, { data, isLoading, isSuccess, isError }] =
+    //     useGetEventBySlugQuery()
+
+    // const handleUpdateEvent = async () => {
+    //     try {
+    //         const slug = eventSlug
+    //         const response = await updateEvent(slug).unwrap()
+    //         console.log('Event updated successfully:', response)
+    //     } catch (error) {
+    //         console.error('Error updating event:', error)
+    //     }
+    // }
+
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     console.log('EVENT DATA FROM ALERT>>>>>>>>>>')
@@ -55,6 +71,7 @@ export default () => {
                     }),
                 )
             } else {
+                console.error(err)
                 dispatch(SnackbarActions.error('Unable to send'))
             }
         },
@@ -128,6 +145,14 @@ export default () => {
                 heading="Send Announcements"
                 subheading="Send instant announcements to all participants"
             />
+            {/* <div>
+                <button onClick={handleUpdateEvent} disabled={isLoading}>
+                    {isLoading ? 'Updating...' : 'Update Event'}
+                </button>
+                {isSuccess && <p>Event updated successfully!</p>}
+                {isError && <p>Error updating event.</p>}
+            </div> */}
+
             <Grid item xs={12}>
                 <Formik
                     initialValues={{ content: '' }}

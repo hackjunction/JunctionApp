@@ -159,7 +159,7 @@ export default () => {
                     )}
                 </FastField>
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <FastField name="description">
                     {({ field, form }) => (
                         <FormControl
@@ -406,7 +406,7 @@ export default () => {
                         </FastField>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid> */}
         </Grid>
     )
 }
