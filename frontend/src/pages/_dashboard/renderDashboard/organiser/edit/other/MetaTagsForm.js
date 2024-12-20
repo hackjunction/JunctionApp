@@ -16,20 +16,20 @@ import Button from 'components/generic/Button'
 
 import { useFormField } from 'hooks/formHooks'
 
-const useStyles = makeStyles(theme => ({
-    errorMessage: {
-        color: theme.palette.error.main,
-    },
-    metaDescription: {
-        border: 3,
-        borderRadius: 10,
-        fontSize: 16,
-        borderColor: 'red',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     errorMessage: {
+//         color: theme.palette.error.main,
+//     },
+//     metaDescription: {
+//         border: 3,
+//         borderRadius: 10,
+//         fontSize: 16,
+//         borderColor: 'red',
+//     },
+// }))
 
 export default ({ value = [], fieldName, setFieldValue }) => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const label = useFormField('', value => {
         if (!value || value.length === 0) {
             return 'Tag name is required'
@@ -116,7 +116,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
             <Grid item xs={12} md={6}>
                 <Typography
                     variant="caption"
-                    className={classes.errorMessage}
+                    className={'classes.errorMessage'}
                 ></Typography>
             </Grid>
             <Grid item xs={12} md={9}>
@@ -125,7 +125,10 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     value={description.value}
                     onChange={description.setValue}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
+                <Typography
+                    variant="caption"
+                    className={'classes.errorMessage'}
+                >
                     {description.error}
                 </Typography>
             </Grid>
@@ -139,7 +142,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     Add
                 </Button>
             </Grid>
-            <Grid item xs={12} className={classes.metaDescription}>
+            <Grid item xs={12} className={'classes.metaDescription'}>
                 <List>{renderRows()}</List>
             </Grid>
         </Grid>

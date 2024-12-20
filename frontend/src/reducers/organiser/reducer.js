@@ -102,10 +102,6 @@ const editEventOrganisers = buildUpdatePath('event.data.organisers')
 const editEventRecruitres = buildUpdatePath('event.data.recruiters')
 
 export default function reducer(state = initialState, action) {
-    console.log('REDUCER ACTION>>>>>>')
-    console.log(action)
-    console.log('REDUCER ACTION TYPE>>>>>>')
-    console.log(action.type)
     if (_.endsWith(action.type, '/fulfilled')) {
         action.baseType = _.replace(action.type, '/fulfilled', '')
         action.status = 'success'
@@ -119,14 +115,11 @@ export default function reducer(state = initialState, action) {
         action.status = 'failure'
     }
     // if (action.type === `${ActionTypes.UPDATE_EVENT}/fulfilled`) {
-    //     console.log('UPDATE EVENT REDUCER RUNNING>>>>>')
     //     action.type = ActionTypes.UPDATE_EVENT
     //     action.status = 'success'
     // }
     switch (action.baseType || action.type) {
         case ActionTypes.UPDATE_EVENT: {
-            console.log('UPDATE EVENT REDUCER>>>>>')
-            console.log(action)
             return eventHandler(state, action)
         }
         case ActionTypes.EDIT_EVENT: {
@@ -136,7 +129,6 @@ export default function reducer(state = initialState, action) {
             return statsHandler(state, action)
         }
         case ActionTypes.UPDATE_ORGANISERS: {
-            console.log('UPDATE ORGANISERS REDUCER>>>>>')
             return organisersHandler(state, action)
         }
         case ActionTypes.UPDATE_EVENT_RECRUITERS: {
@@ -147,7 +139,11 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_TEAMS: {
             const newState = teamsHandler(state, action)
-            if (action.payload) {
+            if (
+                action.payload &&
+                action.payload.data &&
+                Array.isArray(action.payload.data)
+            ) {
                 const byUser = action.payload.data.reduce((map, team) => {
                     map[team.owner] = team
                     team.members.forEach(member => {
@@ -286,7 +282,6 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.ADD_EVENT_RECRUITER: {
             //const data = state.event.data.recruiters.concat(action.payload)
-            console.log('ADD_EVENT_RECRUITER', action.payload)
             return editEventRecruitres(state, action.payload)
         }
         /**TODO: Add attendee update actions */

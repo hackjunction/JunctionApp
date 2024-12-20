@@ -22,7 +22,7 @@ import * as OrganiserActions from 'reducers/organiser/actions'
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
-    const url = useResolvedPath("").pathname;
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     useEffect(() => {
         if (event.slug) {
@@ -116,7 +116,7 @@ export default () => {
                 transparent
                 tabs={tabs}
                 location={location}
-                baseRoute={match.url}
+                baseRoute={url}
             />
         </PageWrapper>
     )

@@ -29,77 +29,77 @@ import Button from 'components/generic/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { popupCenter } from 'utils/misc'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        position: 'relative',
-    },
-    backButtonWrapper: {
-        alignSelf: 'stretch',
-        marginTop: theme.spacing(1),
-    },
-    favoriteIcon: ({ isFavorite }) => ({
-        transition: 'color 0.2s ease',
-        color: isFavorite
-            ? theme.palette.secondary.light
-            : theme.palette.text.secondary,
-    }),
-    avatarWrapper: {
-        padding: theme.spacing(2),
-        position: 'relative',
-    },
-    favoriteWrapper: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-    },
-    nameWrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-        padding: theme.spacing(2),
-    },
-    linksWrapper: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-    },
-    githubIcon: {
-        backgroundColor: 'rgba(33,31,31, 0.8)',
-        '&:hover': {
-            backgroundColor: 'rgba(33,31,31, 1)',
-        },
-    },
-    linkedinIcon: {
-        color: theme.palette.primary.main,
-        '&:hover': {
-            color: theme.palette.primary.contrastText,
-        },
-    },
-    portfolioIcon: {
-        backgroundColor: lighten(theme.palette.secondary.main, 0.2),
-        '&:hover': {
-            backgroundColor: theme.palette.secondary.main,
-        },
-    },
-    icon: {
-        color: theme.palette.primary.main,
-        width: 'auto',
-        margin: '1rem',
-        cursor: 'pointer',
-        '&:hover': {
-            color: theme.palette.primary.dark,
-        },
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     wrapper: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//         position: 'relative',
+//     },
+//     backButtonWrapper: {
+//         alignSelf: 'stretch',
+//         marginTop: theme.spacing(1),
+//     },
+//     favoriteIcon: ({ isFavorite }) => ({
+//         transition: 'color 0.2s ease',
+//         color: isFavorite
+//             ? theme.palette.secondary.light
+//             : theme.palette.text.secondary,
+//     }),
+//     avatarWrapper: {
+//         padding: theme.spacing(2),
+//         position: 'relative',
+//     },
+//     favoriteWrapper: {
+//         position: 'absolute',
+//         top: 0,
+//         right: 0,
+//     },
+//     nameWrapper: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//         textAlign: 'center',
+//         padding: theme.spacing(2),
+//     },
+//     linksWrapper: {
+//         display: 'flex',
+//         flexDirection: 'row',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         flexWrap: 'wrap',
+//     },
+//     githubIcon: {
+//         backgroundColor: 'rgba(33,31,31, 0.8)',
+//         '&:hover': {
+//             backgroundColor: 'rgba(33,31,31, 1)',
+//         },
+//     },
+//     linkedinIcon: {
+//         color: theme.palette.primary.main,
+//         '&:hover': {
+//             color: theme.palette.primary.contrastText,
+//         },
+//     },
+//     portfolioIcon: {
+//         backgroundColor: lighten(theme.palette.secondary.main, 0.2),
+//         '&:hover': {
+//             backgroundColor: theme.palette.secondary.main,
+//         },
+//     },
+//     icon: {
+//         color: theme.palette.primary.main,
+//         width: 'auto',
+//         margin: '1rem',
+//         cursor: 'pointer',
+//         '&:hover': {
+//             color: theme.palette.primary.dark,
+//         },
+//     },
+// }))
 
 export default ({ user = {} }) => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const { profile = {}, social = {} } = user
     return (
         <div className="tw-flex tw-flex-col tw-gap-2">
@@ -135,7 +135,7 @@ export default ({ user = {} }) => {
                                             aria-label="github"
                                         >
                                             <GitHubIcon
-                                                className={classes.icon}
+                                                className={'classes.icon'}
                                             />
                                         </IconButton>
                                     </Box>
@@ -154,7 +154,7 @@ export default ({ user = {} }) => {
                                             aria-label="linkedin"
                                         >
                                             <LinkedInIcon
-                                                className={classes.icon}
+                                                className={'classes.icon'}
                                             />
                                         </IconButton>
                                     </Box>
@@ -173,7 +173,7 @@ export default ({ user = {} }) => {
                                             aria-label="portfolio"
                                         >
                                             <BrushIcon
-                                                className={classes.icon}
+                                                className={'classes.icon'}
                                             />
                                         </IconButton>
                                     </Box>
@@ -189,7 +189,7 @@ export default ({ user = {} }) => {
                                         })
                                     }
                                 >
-                                    <Email className={classes.icon} />
+                                    <Email className={'classes.icon'} />
                                 </IconButton>
                             )}
                         </div>

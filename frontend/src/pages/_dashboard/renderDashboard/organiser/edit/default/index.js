@@ -17,6 +17,7 @@ import ColorSelect from 'components/inputs/Color'
 import Button from 'components/generic/Button'
 
 import { defaultEventStyles } from './const'
+import { useNavigate } from 'react-router-dom'
 
 const themeFields = [
     {
@@ -70,6 +71,7 @@ export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const [organizations] = useAllOrganizations()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     return (
         <Grid container spacing={3}>
@@ -159,7 +161,7 @@ export default () => {
                     )}
                 </FastField>
             </Grid>
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
                 <FastField name="description">
                     {({ field, form }) => (
                         <FormControl
@@ -384,9 +386,7 @@ export default () => {
                     <Grid item xs={12}>
                         <Button
                             variant="contained"
-                            onClick={() =>
-                                dispatch(push('/events/' + event.slug))
-                            }
+                            onClick={() => navigate(`/events/${event.slug}`)}
                         >
                             Preview
                         </Button>
@@ -406,7 +406,7 @@ export default () => {
                         </FastField>
                     </Grid>
                 </Grid>
-            </Grid> */}
+            </Grid>
         </Grid>
     )
 }

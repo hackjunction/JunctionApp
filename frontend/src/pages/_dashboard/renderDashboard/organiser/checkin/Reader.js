@@ -13,9 +13,9 @@ export default ({ onResult, onError }) => {
 
     const handleScan = useCallback(
         data => {
-            if (legacyMode && !data) {
-                dispatch(SnackbarActions.error('QR code not found'))
-            }
+            // if (legacyMode && !data) {
+            //     dispatch(SnackbarActions.error('QR code not found'))
+            // }
             if (data) {
                 onResult(data)
             }
@@ -41,7 +41,7 @@ export default ({ onResult, onError }) => {
                 facingMode="environment"
                 legacyMode={legacyMode}
             />
-            {legacyMode ? (
+            {/* {legacyMode ? (
                 <Box p={2}>
                     <Typography variant="subtitle1">
                         Using legacy mode
@@ -81,7 +81,7 @@ export default ({ onResult, onError }) => {
                         Use legacy mode (Take a picture)
                     </Button>
                 </Box>
-            )}
+            )} */}
         </>
     )
 }

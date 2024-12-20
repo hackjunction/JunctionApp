@@ -6,21 +6,21 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import PropTypes from 'prop-types'
 import { Skills } from '@hackjunction/shared'
 
-const useStyles = makeStyles(theme => ({
-    inline: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '0.2rem',
-    },
-    label: {
-        lineHeight: 1.1,
-    },
-    rating: {
-        color: theme.palette.primary.main,
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     inline: {
+//         display: 'flex',
+//         flexDirection: 'row',
+//         justifyContent: 'space-between',
+//         alignItems: 'center',
+//         marginBottom: '0.2rem',
+//     },
+//     label: {
+//         lineHeight: 1.1,
+//     },
+//     rating: {
+//         color: theme.palette.primary.main,
+//     },
+// }))
 
 const IconContainer = ({ value, ...other }) => {
     return (
@@ -36,7 +36,7 @@ IconContainer.propTypes = {
 }
 
 const SkillRating = ({ data, small = false, showTooltip, size }) => {
-    const classes = useStyles()
+    // const classes = useStyles()
 
     const StyledRating = withStyles(theme => ({
         iconFilled: {
@@ -49,7 +49,7 @@ const SkillRating = ({ data, small = false, showTooltip, size }) => {
 
     return (
         <Grid direction="column" alignItems="stretch" container>
-            <div className={classes.inline}>
+            <div className={'classes.inline'}>
                 <Grid key={data.skill} item xs={6} wrap="nowrap">
                     <Typography
                         variant={small ? 'caption' : 'inherit'}

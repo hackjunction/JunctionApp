@@ -22,11 +22,11 @@ import BasicNavBar from 'components/navbars/BasicNavBar'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 
-// import CheckinPage from './checkin'
+import CheckinPage from './checkin'
 import EditPage from './edit'
 import ManagePage from './manage'
-// import ParticipantsPage from './participants'
-// import ProjectsPage from './projects'
+import ParticipantsPage from './participants'
+import ProjectsPage from './projects'
 // import ResultsPage from './results'
 // // import StatsPage from './stats'
 // import TravelGrantsPage from './travel-grants'
@@ -144,31 +144,31 @@ export default () => {
                     //     label: 'Stats',
                     //     component: StatsPage,
                     // },
-                    // {
-                    //     key: 'participants',
-                    //     path: '/participants',
-                    //     icon: <PeopleIcon />,
-                    //     label: 'Participants',
-                    //     component: ParticipantsPage,
-                    // },
-                    // {
-                    //     key: 'projects',
-                    //     path: '/projects',
-                    //     icon: <CodeIcon />,
-                    //     label: 'Projects',
-                    //     component: ProjectsPage,
-                    // },
-                    // {
-                    //     key: 'checkin',
-                    //     path: '/check-in',
-                    //     exact: true,
-                    //     locked: event.eventType === EventTypes.online.id,
-                    //     lockedDescription:
-                    //         'Only for physical and hybrid events',
-                    //     icon: <CropFreeIcon />,
-                    //     label: 'Check-in',
-                    //     component: CheckinPage,
-                    // },
+                    {
+                        key: 'participants',
+                        path: '/participants/*',
+                        icon: <PeopleIcon />,
+                        label: 'Participants',
+                        component: ParticipantsPage,
+                    },
+                    {
+                        key: 'projects',
+                        path: '/projects/*',
+                        icon: <CodeIcon />,
+                        label: 'Projects',
+                        component: ProjectsPage,
+                    },
+                    {
+                        key: 'checkin',
+                        path: '/check-in',
+                        exact: true,
+                        locked: event.eventType === EventTypes.online.id,
+                        lockedDescription:
+                            'Only for physical and hybrid events',
+                        icon: <CropFreeIcon />,
+                        label: 'Check-in',
+                        component: CheckinPage,
+                    },
                     {
                         key: 'manage',
                         path: '/manage',

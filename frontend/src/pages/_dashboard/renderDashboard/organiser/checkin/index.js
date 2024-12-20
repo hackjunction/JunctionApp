@@ -15,16 +15,16 @@ import * as SnackbarActions from 'reducers/snackbar/actions'
 import * as AuthSelectors from 'reducers/auth/selectors'
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
-const useStyles = makeStyles(theme => ({
-    card: {
-        background: 'white',
-        padding: theme.spacing(2),
-        boxShadow: '0px 3px 15px rgba(0,0,0,0.1)',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     card: {
+//         background: 'white',
+//         padding: theme.spacing(2),
+//         boxShadow: '0px 3px 15px rgba(0,0,0,0.1)',
+//     },
+// }))
 
 export default () => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     const idToken = useSelector(AuthSelectors.getIdToken)
@@ -105,7 +105,7 @@ export default () => {
                 <Reader onResult={handleScan} onError={handleError} />
             )}
             {!loading && registration && (
-                <Box className={classes.card}>
+                <Box className={'classes.card'}>
                     <Typography variant="h6">
                         {registration.answers.firstName}{' '}
                         {registration.answers.lastName}

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { useResolvedPath, useLocation } from 'react-router'
+import { useResolvedPath, useLocation, useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -18,7 +18,8 @@ export default () => {
     console.log('THIS IS THE RESULTS PAGE')
     const event = useSelector(OrganiserSelectors.event)
     const location = useLocation()
-    const url = useResolvedPath("").pathname;
+    const navigate = useNavigate()
+    const url = useResolvedPath('').pathname
 
     const tabs = useMemo(() => {
         const data = [
@@ -67,7 +68,7 @@ export default () => {
                 transparent
                 tabs={tabs}
                 location={location}
-                baseRoute={match.url}
+                baseRoute={url}
             />
         </PageWrapper>
     )
