@@ -3,7 +3,6 @@ import { Box } from '@mui/material'
 import clsx from 'clsx'
 
 const getGradientClasses = (color, theme) => {
-    console.log(theme)
     const colorObj = theme.palette[color]
     const bg = `tw-linear-gradient(145deg, ${colorObj.dark} 0%, ${colorObj.main} 100%)`
     return {

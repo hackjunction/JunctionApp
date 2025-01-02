@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { useResolvedPath } from 'react-router'
+import { useNavigate, useResolvedPath } from 'react-router'
 import { EventStatuses } from '@hackjunction/shared'
 import { Typography, Grid } from '@mui/material'
 
@@ -11,6 +11,7 @@ import * as AuthSelectors from 'reducers/auth/selectors'
 import { useTranslation } from 'react-i18next'
 
 export default ({ event, registration }) => {
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const url = useResolvedPath('').pathname
@@ -37,9 +38,7 @@ export default ({ event, registration }) => {
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <Button
-                                    onClick={() =>
-                                        dispatch(push(`${match.url}/register`))
-                                    }
+                                    onClick={() => navigate(`${url}/register`)}
                                     variant="applicationsClosed"
                                     color="theme_blue"
                                 >
@@ -49,10 +48,8 @@ export default ({ event, registration }) => {
                             <Grid item xs={12}>
                                 <Button
                                     onClick={() =>
-                                        dispatch(
-                                            push(
-                                                `/dashboard/event/${event.slug}`,
-                                            ),
+                                        navigate(
+                                            `/dashboard/event/${event.slug}`,
                                         )
                                     }
                                     variant="applicationsClosed"
@@ -66,9 +63,7 @@ export default ({ event, registration }) => {
                 } else {
                     return (
                         <Button
-                            onClick={() =>
-                                dispatch(push(`${match.url}/register`))
-                            }
+                            onClick={() => navigate(`${url}/register`)}
                             variant="applicationsClosed"
                             color="theme_blue"
                         >
@@ -80,11 +75,11 @@ export default ({ event, registration }) => {
                 return (
                     <Button
                         onClick={() =>
-                            dispatch(
-                                push(`/login`, {
-                                    nextRoute: `${match.url}/register`,
-                                }),
-                            )
+                            navigate(`/login`, {
+                                state: {
+                                    nextRoute: `${url}/register`,
+                                },
+                            })
                         }
                         variant="applicationsClosed"
                         color="theme_blue"
@@ -100,7 +95,7 @@ export default ({ event, registration }) => {
                     return (
                         <Button
                             onClick={() =>
-                                dispatch(push(`/dashboard/event/${event.slug}`))
+                                navigate(`/dashboard/event/${event.slug}`)
                             }
                             variant="applicationsClosed"
                             color="theme_blue"
@@ -119,7 +114,7 @@ export default ({ event, registration }) => {
                 return (
                     <Button
                         onClick={() =>
-                            dispatch(push('/login', { nextRoute: match.url }))
+                            navigate('/login', { state: { nextRoute: url } })
                         }
                         variant="applicationsClosed"
                         color="theme_blue"

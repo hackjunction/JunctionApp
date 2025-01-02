@@ -9,13 +9,14 @@ import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import EventFooter from 'components/layouts/EventFooter'
 
 import EventDetail from './default'
-import EventRegister from './register'
-import FinalistVoting from './voteWithToken'
+// import EventRegister from './register'
+// import FinalistVoting from './voteWithToken'
 import EventDetailContext, { EventDetailProvider } from './context'
 
 const EventDetailRouter = () => {
-    const url = useResolvedPath("").pathname;
+    const url = useResolvedPath('').pathname
     const location = useLocation()
+    console.log('location>>>>>>>>>>>>>>', location)
     const { eventLoading, eventError, isRegistrationOpen } =
         useContext(EventDetailContext)
     // TODO FIX errortext and desc to be from eventErro
@@ -30,25 +31,27 @@ const EventDetailRouter = () => {
             render={() => {
                 return (
                     <AnimatePresence>
-                        <Routes location={location} key={location.pathname}>
-                            <Route
-                                exact
-                                path={`${match.url}`}
-                                component={EventDetail}
-                            />
+                        <Routes>
+                            {/* <Route index element={<p>EVENT SLUG INDEX</p>} /> */}
+                            <Route index element={<EventDetail />} />
                             {isRegistrationOpen && (
                                 <Route
-                                    exact
-                                    path={`${match.url}/register`}
-                                    component={EventRegister}
+                                    path={`:eventSlug/register`}
+                                    element={<p>Register test</p>}
                                 />
                             )}
-                            <Route
+                            {/* {isRegistrationOpen && (
+                                <Route
+                                    path={`:eventSlug/register`}
+                                    element={<EventRegister />}
+                                />
+                            )} */}
+                            {/* <Route
                                 exact
                                 path={`${match.url}/finalist-voting`}
-                                component={FinalistVoting}
+                                element={<FinalistVoting />}
                             />
-                            <Navigate to={`${match.url}`} />
+                            <Navigate to={`${match.url}`} /> */}
                         </Routes>
                     </AnimatePresence>
                 )

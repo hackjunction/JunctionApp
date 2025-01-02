@@ -162,7 +162,9 @@ export default () => {
                 .then(data => {
                     // dispatch(push(`/organise/${data.slug}`))
                     dispatch(SnackbarActions.success(`Created ${data.name}`))
-                    // navigate(`/organise/${data.slug}`)
+                    if (data?.slug) {
+                        navigate(`/organise/${data.slug}`)
+                    }
                 })
                 .catch(e => {
                     dispatch(SnackbarActions.error(t('Unable_to_create_')))

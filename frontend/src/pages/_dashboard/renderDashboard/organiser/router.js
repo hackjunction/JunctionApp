@@ -15,7 +15,7 @@ export default () => {
         <Routes>
             {/* <Route exact={true} path={`${match.url}`} component={DefaultPage} /> */}
             {/* <Route path={`${url}/:eventSlug/*`} element={<SlugPage />} /> */}
-            <Route path={`*`} element={<SlugPage />} />
+            <Route path={`:eventSlug/*`} element={<SlugPage />} />
             {/* <Route path="*" element={<Navigate to={url} />} /> */}
             {/* <Navigate to={url} /> */}
         </Routes>

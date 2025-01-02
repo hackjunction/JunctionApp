@@ -16,7 +16,6 @@ import * as UserActions from 'reducers/user/actions'
 
 import CreateEventCard from './CreateEventCard'
 import TextInput from '../../../../../components/inputs/TextInput'
-import { debugGroup } from 'utils/debuggingTools'
 import { useNavigate } from 'react-router-dom'
 
 //TODO: make this to use theme colors and make prettier

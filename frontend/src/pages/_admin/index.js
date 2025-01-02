@@ -7,6 +7,7 @@ import DefaultPage from './default'
 // import BannerForm from './banner'
 // import OrganizationForm from './organization'
 
+//TODO renable the commented out routes
 export default () => {
     const url = useResolvedPath('').pathname
     return (

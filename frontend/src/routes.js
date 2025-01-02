@@ -10,7 +10,7 @@ import LogoutPage from './pages/_logout'
 import LoginPage from './pages/_login'
 // import HackerpackPage from './pages/_hackerpack'
 // import PricingPage from './pages/_pricing'
-// import EventsRouter from './pages/_events'
+import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
 import RequiresPermission from './hocs/RequiresPermission'
 import RequiresRole from 'hocs/RequiresRole'
@@ -41,10 +41,10 @@ const routes = [
         path: '/home',
         element: <HomePage />,
     },
-    // {
-    //     path: '/events',
-    //     element: <EventsRouter />,
-    // },
+    {
+        path: '/events/*',
+        element: <EventsRouter />,
+    },
     {
         path: '/login/*',
         element: <LoginPage />,
@@ -66,8 +66,13 @@ const routes = [
         element: <LogoutPage />,
     },
     {
-        path: '/organise/:eventSlug/*',
-        element: <RequiresPermission ComposedComponent={OrganiserRouter} />,
+        path: '/organise/*',
+        element: (
+            <RequiresPermission
+                ComposedComponent={OrganiserRouter}
+                requiredPermissions={[AuthConstants.Permissions.MANAGE_EVENT]}
+            />
+        ),
         // component: RequiresPermission(OrganiserRouter),
         /*component: RequiresPermission(OrganiserRouter, [
             AuthConstants.Permissions.MANAGE_EVENT,
