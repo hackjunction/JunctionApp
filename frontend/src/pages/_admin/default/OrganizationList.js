@@ -18,21 +18,21 @@ import { useTranslation } from 'react-i18next'
 import OrganizationService from 'services/organization'
 import * as AuthSelectors from 'reducers/auth/selectors'
 
-const useStyles = makeStyles(theme => ({
-    outboundLink: {
-        '& a': {
-            textDecoration: 'none !important',
-        },
-    },
-    companyLogo: {
-        width: '200px',
-        height: '50px;',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     outboundLink: {
+//         '& a': {
+//             textDecoration: 'none !important',
+//         },
+//     },
+//     companyLogo: {
+//         width: '200px',
+//         height: '50px;',
+//     },
+// }))
 
 export default ({ data = [] }) => {
     const dispatch = useDispatch()
-    const classes = useStyles()
+    // const classes = useStyles()
     const { t } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [organization, setOrganization] = useState(data)
@@ -72,7 +72,7 @@ export default ({ data = [] }) => {
                                         <img
                                             alt={org.name}
                                             src={org.icon}
-                                            className={classes.companyLogo}
+                                            // className={classes.companyLogo}
                                         />
                                     </Grid>
                                     <Grid item xs={3}>
@@ -86,7 +86,7 @@ export default ({ data = [] }) => {
                                     <Grid
                                         item
                                         xs={3}
-                                        className={classes.outboundLink}
+                                        // className={classes.outboundLink}
                                     >
                                         <OutboundLink
                                             eventLabel="myLabel"

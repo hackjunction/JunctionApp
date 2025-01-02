@@ -1,6 +1,6 @@
 import { lazy } from 'react'
 
-// import { Auth as AuthConstants } from '@hackjunction/shared'
+import { Auth as AuthConstants } from '@hackjunction/shared'
 
 import DefaultPage from './pages/_index/index'
 import HomePage from './pages/_home/index'
@@ -13,6 +13,7 @@ import LoginPage from './pages/_login'
 // import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
 import RequiresPermission from './hocs/RequiresPermission'
+import RequiresRole from 'hocs/RequiresRole'
 // import RequiresRole from 'hocs/RequiresRole'
 
 // /** Lazy-load the access-restricted pages */
@@ -27,7 +28,7 @@ const OrganiserRouter = lazy(
 //         import('./pages/_dashboard/renderDashboard/partner/partnerrecruitment'),
 // ) //import('./pages/_recruitment'))//
 // const ProjectsRouter = lazy(() => import('./pages/_projects'))
-// const AdminRouter = lazy(() => import('./pages/_admin'))
+const AdminRouter = lazy(() => import('./pages/_admin'))
 // const SandboxRouter = lazy(() => import('./pages/_sandbox'))
 // const FilesRouter = lazy(() => import('./pages/_sandbox/files'))
 
@@ -101,6 +102,16 @@ const routes = [
     //     path: '/pricing',
     //     component: PricingPage,
     // },
+    {
+        path: '/admin/*',
+        element: (
+            <RequiresRole
+                ComposedComponent={AdminRouter}
+                requiredRoles={[AuthConstants.Roles.SUPER_ADMIN]}
+            />
+        ),
+        // component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
+    },
     // {
     //     path: '/admin',
     //     component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),

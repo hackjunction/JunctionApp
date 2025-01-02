@@ -12,8 +12,10 @@ import EditIcon from '@mui/icons-material/Edit'
 
 import HackerpackService from 'services/hackerpack'
 import * as AuthSelectors from 'reducers/auth/selectors'
+import { useNavigate } from 'react-router-dom'
 
 export default ({ data = [] }) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { t } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
@@ -58,11 +60,7 @@ export default ({ data = [] }) => {
                                 edge="end"
                                 aria-label="edit"
                                 onClick={() =>
-                                    dispatch(
-                                        push(
-                                            `admin/hackerpack/${company.slug}`,
-                                        ),
-                                    )
+                                    navigate(`admin/hackerpack/${company.slug}`)
                                 }
                             >
                                 <EditIcon />
