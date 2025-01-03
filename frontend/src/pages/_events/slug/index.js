@@ -9,7 +9,7 @@ import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import EventFooter from 'components/layouts/EventFooter'
 
 import EventDetail from './default'
-// import EventRegister from './register'
+import EventRegister from './register'
 // import FinalistVoting from './voteWithToken'
 import EventDetailContext, { EventDetailProvider } from './context'
 
@@ -36,8 +36,8 @@ const EventDetailRouter = () => {
                             <Route index element={<EventDetail />} />
                             {isRegistrationOpen && (
                                 <Route
-                                    path={`:eventSlug/register`}
-                                    element={<p>Register test</p>}
+                                    path={`/register`}
+                                    element={<EventRegister />}
                                 />
                             )}
                             {/* {isRegistrationOpen && (

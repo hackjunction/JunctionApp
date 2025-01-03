@@ -30,7 +30,7 @@ import Image from 'components/generic/Image'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import AnalyticsService from 'services/analytics'
 
-import RequiresPermission from 'hocs/RequiresPermission'
+// import RequiresPermission from 'hocs/RequiresPermission'
 
 import RegistrationSection from './RegistrationSection'
 import RegistrationSectionCustom from './RegistrationSectionCustom'
@@ -47,96 +47,98 @@ import EventDetailContext from '../context'
 import { useTranslation } from 'react-i18next'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
-import { styled } from '@mui/system'
+import { useNavigate } from 'react-router-dom'
+// import { styled } from '@mui/system'
 
-const useStyles = styled(theme => ({
-    wrapper: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        minHeight: '100%',
-        background: 'black',
-        zIndex: 100,
-    },
-    backgroundImage: {
-        position: 'fixed',
-        zIndex: 1,
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        opacity: 0.3,
-        filter: 'blur(5px)',
-    },
-    mainTitle: {
-        color: 'white',
-        textAlign: 'center',
-    },
-    sectionTitle: {
-        color: 'white',
-        fontSize: '1.4rem',
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    content: {
-        position: 'relative',
-        zIndex: 1000,
-    },
-    stepper: {
-        background: 'transparent',
-        padding: 0,
-    },
-    stepContent: {
-        border: 'none',
-        marginLeft: 0,
-        paddingLeft: '8px',
-    },
-    top: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        padding: theme.spacing(2),
-        background: 'black',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        zIndex: 2000,
-    },
-    topTitle: {
-        fontSize: '1rem',
-        color: 'white',
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
-        margin: '2px',
-    },
-    topTitleExtra: {
-        fontSize: '1rem',
-        color: 'white',
-        textTransform: 'uppercase',
-        fontWeight: 'normal',
-        margin: '2px',
-    },
-    doneTitle: {
-        color: 'white',
-        textAlign: 'center',
-    },
-    socialIcon: {
-        color: 'white',
-        width: 'auto',
-        margin: '1rem',
-        cursor: 'pointer',
-    },
-}))
+// const useStyles = styled(theme => ({
+//     wrapper: {
+//         position: 'absolute',
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         minHeight: '100%',
+//         background: 'black',
+//         zIndex: 100,
+//     },
+//     backgroundImage: {
+//         position: 'fixed',
+//         zIndex: 1,
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         height: '100%',
+//         objectFit: 'cover',
+//         opacity: 0.3,
+//         filter: 'blur(5px)',
+//     },
+//     mainTitle: {
+//         color: 'white',
+//         textAlign: 'center',
+//     },
+//     sectionTitle: {
+//         color: 'white',
+//         fontSize: '1.4rem',
+//         textTransform: 'uppercase',
+//         fontWeight: 'bold',
+//         textAlign: 'center',
+//     },
+//     content: {
+//         position: 'relative',
+//         zIndex: 1000,
+//     },
+//     stepper: {
+//         background: 'transparent',
+//         padding: 0,
+//     },
+//     stepContent: {
+//         border: 'none',
+//         marginLeft: 0,
+//         paddingLeft: '8px',
+//     },
+//     top: {
+//         position: 'fixed',
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         padding: theme.spacing(2),
+//         background: 'black',
+//         display: 'flex',
+//         flexDirection: 'row',
+//         justifyContent: 'center',
+//         zIndex: 2000,
+//     },
+//     topTitle: {
+//         fontSize: '1rem',
+//         color: 'white',
+//         textTransform: 'uppercase',
+//         fontWeight: 'bold',
+//         margin: '2px',
+//     },
+//     topTitleExtra: {
+//         fontSize: '1rem',
+//         color: 'white',
+//         textTransform: 'uppercase',
+//         fontWeight: 'normal',
+//         margin: '2px',
+//     },
+//     doneTitle: {
+//         color: 'white',
+//         textAlign: 'center',
+//     },
+//     socialIcon: {
+//         color: 'white',
+//         width: 'auto',
+//         margin: '1rem',
+//         cursor: 'pointer',
+//     },
+// }))
 
-const Connector = ({ index, active, completed, disabled }) => <div />
+const Connector = ({ index, active, completed, disabled }) => <div></div>
 
-export default RequiresPermission(() => {
+export default () => {
+    const navigate = useNavigate()
     const { t } = useTranslation()
-    const classes = useStyles()
+    // const classes = useStyles()
     const dispatch = useDispatch()
     const {
         slug,
@@ -146,6 +148,15 @@ export default RequiresPermission(() => {
         editRegistration,
         finishRegistration,
     } = useContext(EventDetailContext)
+
+    console.log('EventRegister context >>>>>>>>>>>>>>>>>')
+    console.log('slug', slug)
+    console.log('event', event)
+    console.log('hasRegistration', hasRegistration)
+    console.log('createRegistration', createRegistration)
+    console.log('editRegistration', editRegistration)
+    console.log('finishRegistration', finishRegistration)
+
     const userProfile = useSelector(UserSelectors.userProfile)
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
@@ -339,7 +350,7 @@ export default RequiresPermission(() => {
                     />
                     <StepContent
                         classes={{
-                            root: classes.stepContent,
+                            root: 'classes.stepContent',
                         }}
                     >
                         {isCustomSection ? (
@@ -386,13 +397,13 @@ export default RequiresPermission(() => {
         })
     }
 
-    const shareurl = 'https://app.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
+    const shareurl = 'https://eu.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
     const sharetext = `I just applied to ${event.name}!`
 
     return (
-        <FadeInWrapper className={classes.wrapper}>
+        <FadeInWrapper className={'classes.wrapper'}>
             <Image
-                className={classes.backgroundImage}
+                className={'classes.backgroundImage'}
                 publicId={event?.coverImage?.publicId}
                 default={require('assets/images/default_cover_image.png')}
                 transformation={{
@@ -400,20 +411,23 @@ export default RequiresPermission(() => {
                     height: 1080,
                 }}
             />
-            <Container center wrapperClass={classes.content}>
-                <Box className={classes.top}>
-                    <Typography variant="h1" className={classes.topTitle}>
+            <Container center wrapperClass={'classes.content'}>
+                <Box className={'classes.top'}>
+                    <Typography variant="h1" className={'classes.topTitle'}>
                         Register
                     </Typography>
                     <Box p={1} />
-                    <Typography variant="h2" className={classes.topTitleExtra}>
+                    <Typography
+                        variant="h2"
+                        className={'classes.topTitleExtra'}
+                    >
                         {event?.name}
                     </Typography>
                 </Box>
                 <div style={{ height: '100px' }} />
                 <Stepper
                     connector={<Connector />}
-                    className={classes.stepper}
+                    className={'classes.stepper'}
                     activeStep={activeStep}
                     orientation="vertical"
                 >
@@ -421,7 +435,7 @@ export default RequiresPermission(() => {
                     <Step key="finish">
                         <StepContent
                             classes={{
-                                root: classes.stepContent,
+                                root: 'classes.stepContent',
                             }}
                         >
                             <NewsLetterButton
@@ -450,7 +464,7 @@ export default RequiresPermission(() => {
                     <Step key="done">
                         <StepContent
                             classes={{
-                                root: classes.stepContent,
+                                root: 'classes.stepContent',
                             }}
                         >
                             <Box
@@ -459,17 +473,17 @@ export default RequiresPermission(() => {
                                 alignItems="center"
                             >
                                 <Typography
-                                    className={classes.doneTitle}
+                                    className={'classes.doneTitle'}
                                     variant="h3"
                                 >
                                     {t('Registration_saved_')}
                                 </Typography>
                                 <Box mt={5} alignItems="center">
                                     <Typography
-                                        className={classes.doneTitle}
+                                        className={'classes.doneTitle'}
                                         variant="h4"
                                     >
-                                        Share with friends!
+                                        Share online
                                     </Typography>
                                     <Grid
                                         container
@@ -479,35 +493,6 @@ export default RequiresPermission(() => {
                                     >
                                         <Grid item>
                                             <FontAwesomeIcon
-                                                icon={['fab', 'twitter-square']}
-                                                onClick={() =>
-                                                    popupCenter({
-                                                        url: `https://twitter.com/intent/tweet?text=${sharetext}&url=${shareurl}`,
-                                                        title: 'Twitter',
-                                                    })
-                                                }
-                                                className={classes.socialIcon}
-                                                size="3x"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <FontAwesomeIcon
-                                                icon={[
-                                                    'fab',
-                                                    'facebook-square',
-                                                ]}
-                                                onClick={() =>
-                                                    popupCenter({
-                                                        url: `https://www.facebook.com/sharer/sharer.php?u=${shareurl}&quote=${sharetext}`,
-                                                        title: 'Facebook',
-                                                    })
-                                                }
-                                                className={classes.socialIcon}
-                                                size="3x"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <FontAwesomeIcon
                                                 icon={['fab', 'linkedin']}
                                                 onClick={() =>
                                                     popupCenter({
@@ -515,20 +500,7 @@ export default RequiresPermission(() => {
                                                         title: 'Linkedin',
                                                     })
                                                 }
-                                                className={classes.socialIcon}
-                                                size="3x"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <FontAwesomeIcon
-                                                icon={['fab', 'vk']}
-                                                onClick={() =>
-                                                    popupCenter({
-                                                        url: `https://vkontakte.ru/share.php?url=${shareurl}&`,
-                                                        title: 'VKOntakte',
-                                                    })
-                                                }
-                                                className={classes.socialIcon}
+                                                className={'classes.socialIcon'}
                                                 size="3x"
                                             />
                                         </Grid>
@@ -537,9 +509,7 @@ export default RequiresPermission(() => {
                                 <div style={{ height: '50px' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(
-                                            push(`/dashboard/event/${slug}`),
-                                        )
+                                        navigate(`/dashboard/event/${slug}`)
                                     }
                                     style={{ width: '300px' }}
                                     color="primary"
@@ -549,9 +519,7 @@ export default RequiresPermission(() => {
                                 </Button>
                                 <div style={{ height: '1rem' }} />
                                 <Button
-                                    onClick={() =>
-                                        dispatch(push(`/events/${slug}`))
-                                    }
+                                    onClick={() => navigate(`/events/${slug}`)}
                                     style={{ width: '300px', color: 'white' }}
                                 >
                                     {t('Back_to_event_')}
@@ -572,4 +540,4 @@ export default RequiresPermission(() => {
             </Container>
         </FadeInWrapper>
     )
-})
+}
