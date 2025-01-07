@@ -22,7 +22,7 @@ export function Alerts({ alerts = [] }) {
         <div>
             {sortedAlerts.map(a => (
                 <Grid style={{ paddingTop: '10px' }}>
-                    <GradientBox color="theme_purple" p={2}>
+                    <GradientBox color="secondary" p={2}>
                         <Typography variant="subtitle1">{a.content}</Typography>
                         <Typography variant="subtitle2" align="right">
                             {moment(a.sentAt).format('ddd HH:mm')}

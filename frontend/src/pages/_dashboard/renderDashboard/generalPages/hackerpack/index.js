@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet'
 import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
-import { useResolvedPath, useLocation } from 'react-router'
+import { useResolvedPath, useLocation, useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
@@ -13,17 +13,19 @@ import HackerpackService from 'services/hackerpack'
 import config from 'constants/config'
 import EventsService from 'services/events'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        padding: '5px',
-        marginBottom: '15px',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     wrapper: {
+//         padding: '5px',
+//         marginBottom: '15px',
+//     },
+// }))
 
 export default () => {
     const url = useResolvedPath('').pathname
-    const classes = useStyles()
-    const { slug } = match.params
+    // const classes = useStyles()
+    const allParams = useParams()
+    console.log('All params from hackerpack<>>>>>>>', allParams)
+    const { slug } = allParams
     const event = useSelector(DashboardSelectors.event)
 
     const [hackerpack, setHackerpack] = useState([])
@@ -79,7 +81,7 @@ export default () => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
-            <div className={classes.wrapper}>
+            <div className={'classes.wrapper'}>
                 <PageHeader
                     heading="Hackerpack"
                     subheading="We want you to be able to fully focus on making your hackathon project as cool as possible! These software provided by our partners will help you unleash your creativity and maximize your learning during our events."

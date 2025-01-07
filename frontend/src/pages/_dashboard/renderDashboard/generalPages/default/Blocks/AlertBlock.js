@@ -37,11 +37,7 @@ export default ({ alerts = [] }) => {
                     xs={8}
                     style={{ marginLeft: '20px', marginRight: '20px' }}
                 >
-                    <GradientBox
-                        style={makeBoxStyles()}
-                        color="theme_white"
-                        p={3}
-                    >
+                    <GradientBox style={makeBoxStyles()} color="primary" p={3}>
                         <Typography variant="button" gutterBottom>
                             Announcements
                         </Typography>
@@ -51,11 +47,7 @@ export default ({ alerts = [] }) => {
                 </Grid>
             )}
             <Grid item xs={alerts && alerts.length > 0 ? 4 : 12}>
-                <GradientBox
-                    style={makeTimelineStyles()}
-                    color="theme_white"
-                    p={3}
-                >
+                <GradientBox style={makeTimelineStyles()} color="primary" p={3}>
                     <Typography variant="button" gutterBottom>
                         Event Timeline
                     </Typography>

@@ -9,39 +9,39 @@ import ProjectsService from 'services/projects'
 import GavelService from 'services/reviewing/gavel'
 import RankingsService from 'services/rankings'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+// import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 /** Update event with loading/error data */
 
-export const eventApi = createApi({
-    reducerPath: 'eventApi',
-    baseQuery: async ({ queryFn }) => queryFn(),
-    endpoints: builder => ({
-        getEventBySlug: builder.query({
-            queryFn: async (slug, { getState }) => {
-                try {
-                    const idToken = AuthSelectors.getIdToken(getState())
-                    const response =
-                        await EventsService.getEventBySlugAsOrganiser(
-                            idToken,
-                            slug,
-                        )
-                    return { data: response.data }
-                } catch (error) {
-                    return {
-                        error: {
-                            status: error.response?.status,
-                            data: error.response?.data,
-                        },
-                    }
-                }
-            },
-        }),
-    }),
-})
+// export const eventApi = createApi({
+//     reducerPath: 'eventApi',
+//     baseQuery: async ({ queryFn }) => queryFn(),
+//     endpoints: builder => ({
+//         getEventBySlug: builder.query({
+//             queryFn: async (slug, { getState }) => {
+//                 try {
+//                     const idToken = AuthSelectors.getIdToken(getState())
+//                     const response =
+//                         await EventsService.getEventBySlugAsOrganiser(
+//                             idToken,
+//                             slug,
+//                         )
+//                     return { data: response.data }
+//                 } catch (error) {
+//                     return {
+//                         error: {
+//                             status: error.response?.status,
+//                             data: error.response?.data,
+//                         },
+//                     }
+//                 }
+//             },
+//         }),
+//     }),
+// })
 
 // Export the hook for the mutation
-export const { useGetEventBySlugQuery } = eventApi
+// export const { useGetEventBySlugQuery } = eventApi
 
 export const updateEvent = createAsyncThunk(
     ActionTypes.UPDATE_EVENT,

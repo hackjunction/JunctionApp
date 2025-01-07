@@ -1,5 +1,3 @@
-
-
 import * as ActionTypes from './actionTypes'
 import * as AuthSelectors from '../auth/selectors'
 import * as DashboardSelectors from './selectors'
@@ -12,29 +10,65 @@ import UserProfilesService from 'services/userProfiles'
 import ProjectScoresService from 'services/projectScores'
 
 import GavelService from 'services/reviewing/gavel'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import _ from 'lodash'
 
-export const updateEvent = slug => dispatch => {
-    dispatch({
-        type: ActionTypes.UPDATE_EVENT,
-        promise: EventsService.getPublicEventBySlug(slug),
-        meta: {
-            onFailure: e => console.log('Error updating dashboard event', e),
-        },
-    })
-}
+// export const updateEvent = slug => dispatch => {
+//     dispatch({
+//         type: ActionTypes.UPDATE_EVENT,
+//         promise: EventsService.getPublicEventBySlug(slug),
+//         meta: {
+//             onFailure: e => console.log('Error updating dashboard event', e),
+//         },
+//     })
+// }
 
-export const updateRegistration = slug => (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const updateEvent = createAsyncThunk(
+    ActionTypes.UPDATE_EVENT,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            // const idToken = AuthSelectors.getIdToken(getState())
+            const event = await EventsService.getPublicEventBySlug(slug)
+            console.log('UPDATE EVENT ACTION AS PARTICIPANT>>>>>>>>>>')
+            console.log(event)
+            return event
+        } catch (error) {
+            console.error('Error updating event', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
-    dispatch({
-        type: ActionTypes.UPDATE_REGISTRATION,
-        promise: RegistrationsService.getRegistration(idToken, slug),
-        meta: {
-            onFailure: () => dispatch(push('/')),
-        },
-    })
-}
+// export const updateRegistration = slug => (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
+
+//     dispatch({
+//         type: ActionTypes.UPDATE_REGISTRATION,
+//         promise: RegistrationsService.getRegistration(idToken, slug),
+//         meta: {
+//             onFailure: () => dispatch(push('/')),
+//         },
+//     })
+// }
+
+export const updateRegistration = createAsyncThunk(
+    ActionTypes.UPDATE_REGISTRATION,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            const registration = await RegistrationsService.getRegistration(
+                idToken,
+                slug,
+            )
+            console.log('UPDATE REGISTRATION ACTION AS PARTICIPANT>>>>>>>>>>')
+            console.log(registration)
+            return registration
+        } catch (error) {
+            console.error('Error updating registration', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
 export const updateRegistrationChecklist =
     (slug, registrationId, data) => async (dispatch, getState) => {

@@ -42,9 +42,7 @@ import {
 export default () => {
     // const classes = useStyles()
     const url = useResolvedPath('').pathname
-    console.log('URL from default dashboard>>>>>>', url)
     const location = useLocation()
-    console.log('location from default dashboard>>>>>>', location)
     const dispatch = useDispatch()
 
     const recruiterEvents = useSelector(

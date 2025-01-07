@@ -4,7 +4,7 @@ import { useParams, useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import PageWrapper from 'components/layouts/PageWrapper'
 
-import PartnerDashboard from './partner'
+// import PartnerDashboard from './partner'
 import ParticipantDashboard from './participant'
 import OrganizerDashboard from './organiser'
 
@@ -39,14 +39,10 @@ export default role => {
         DashboardSelectors.registrationLoading,
     )
     const team = useSelector(DashboardSelectors.team)
-    const lockedPages = useSelector(DashboardSelectors.lockedPages)
-    const shownPages = useSelector(DashboardSelectors.shownPages)
+    // const lockedPages = useSelector(DashboardSelectors.lockedPages)
+    // const shownPages = useSelector(DashboardSelectors.shownPages)
     const userAccessRight = useSelector(UserSelectors.userAccessRight)
     const { eventSlug } = useParams()
-
-    console.log('URL AND SLUG FROM RENDERDASHBOARD>>>>>>')
-    console.log(url)
-    console.log(eventSlug)
 
     const [alerts, setAlerts] = useState([])
     const [alertCount, setAlertCount] = useState(0)
@@ -77,9 +73,6 @@ export default role => {
 
     /** Update when eventSlug changes */
     useEffect(() => {
-        console.log(
-            'Updating EVENT, Registration and Team from renderDashboard>>>>>>>>>>>>>>>>>>>>>',
-        )
         dispatch(DashboardActions.updateEvent(eventSlug))
         dispatch(DashboardActions.updateRegistration(eventSlug))
         dispatch(DashboardActions.updateTeam(eventSlug))
@@ -164,13 +157,14 @@ export default role => {
                     }
                     wrapContent={false}
                 >
-                    <PartnerDashboard
+                    {/* <PartnerDashboard
                         event={event}
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
                         shownPages={shownPages}
                         lockedPages={lockedPages}
-                    />
+                    /> */}
+                    <p>PARTNER DASHBOARD</p>
                 </PageWrapper>
             )
         }
@@ -195,12 +189,13 @@ export default role => {
                     wrapContent={false}
                 >
                     <ParticipantDashboard
-                        event={event}
+                        // event={event}
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
-                        shownPages={shownPages}
-                        lockedPages={lockedPages}
+                        // shownPages={shownPages}
+                        // lockedPages={lockedPages}
                     />
+                    {/* <p>PARTICIPANT DASHBOARD</p> */}
                 </PageWrapper>
             )
         }
