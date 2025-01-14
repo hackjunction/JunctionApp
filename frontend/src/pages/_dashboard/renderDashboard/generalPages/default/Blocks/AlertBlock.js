@@ -28,11 +28,9 @@ const makeTimelineStyles = () => ({
 
 export default ({ alerts = [] }) => {
     return (
-        <>
+        <Grid container direction="column" alignItems="stretch">
             {alerts && alerts.length > 0 && (
                 <Grid
-                    direction="column"
-                    alignItems="stretch"
                     item
                     xs={8}
                     style={{ marginLeft: '20px', marginRight: '20px' }}
@@ -55,6 +53,6 @@ export default ({ alerts = [] }) => {
                     <TimeLineBlock />
                 </GradientBox>
             </Grid>
-        </>
+        </Grid>
     )
 }

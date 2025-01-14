@@ -119,9 +119,9 @@ export default () => {
         [dispatch, slug],
     )
 
-    let teamData
+    const teamData = hasTeam ? team : {}
 
-    hasTeam ? (teamData = team) : (teamData = {})
+    // hasTeam ? (teamData = team) : (teamData = {})
 
     let formikSubmitAction
 

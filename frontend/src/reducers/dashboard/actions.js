@@ -92,21 +92,49 @@ export const updateRegistrationChecklist =
         }
     }
 
-export const updateRecruitersForEvent =
-    recruiters => async (dispatch, getState) => {
-        const userIds = recruiters?.map(rec => {
-            return rec.recruiterId
-        })
+// export const updateRecruitersForEvent =
+//     recruiters => async (dispatch, getState) => {
+//         const userIds = recruiters?.map(rec => {
+//             return rec.recruiterId
+//         })
 
-        dispatch({
-            type: ActionTypes.UPDATE_EVENT_RECRUITERS,
-            promise: UserProfilesService.getPublicUserProfiles(userIds),
-            meta: {
-                onFailure: e =>
-                    console.log('Error updating recruiters for this event', e),
-            },
-        })
-    }
+//         dispatch({
+//             type: ActionTypes.UPDATE_EVENT_RECRUITERS,
+//             promise: UserProfilesService.getPublicUserProfiles(userIds),
+//             meta: {
+//                 onFailure: e =>
+//                     console.log('Error updating recruiters for this event', e),
+//             },
+//         })
+//     }
+
+export const updateRecruitersForEvent = createAsyncThunk(
+    ActionTypes.UPDATE_EVENT_RECRUITERS,
+    async (recruiters, { getState, rejectWithValue }) => {
+        try {
+            if (
+                !recruiters ||
+                !Array.isArray(recruiters) ||
+                recruiters.length < 1
+            ) {
+                return []
+            }
+            const userIds = recruiters?.map(rec => {
+                return rec.recruiterId
+            })
+            const RecruiterPublicProfiles =
+                await UserProfilesService.getPublicUserProfiles(userIds)
+            console.log(
+                'UPDATE PUBLIC RECRUITER ACTION AS PARTICIPANT>>>>>>>>>>',
+            )
+            console.log(RecruiterPublicProfiles)
+            return RecruiterPublicProfiles
+        } catch (error) {
+            console.error('Error updating recruiters', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
 export const updateRegistrationGrantDetails =
     (slug, data) => async (dispatch, getState) => {
@@ -212,79 +240,140 @@ export const createPartnerRegistration =
         return registration
     }
 
-export const updateTeams =
-    (slug, page, size, filter) => async (dispatch, getState) => {
-        const idToken = AuthSelectors.getIdToken(getState())
-        if (!slug) return
-        if (filter === 'All challenges') {
-            dispatch({
-                type: ActionTypes.UPDATE_TEAMS,
-                promise: TeamsService.getAllTeamsForEventParticipant(
-                    idToken,
-                    slug,
-                    page,
-                    size,
-                ),
-                meta: {
-                    onFailure: e => console.log('Error updating teams', e),
-                },
-            })
-        } else {
-            dispatch({
-                type: ActionTypes.UPDATE_TEAMS,
-                promise: TeamsService.getAllTeamsForEventParticipant(
-                    idToken,
-                    slug,
-                    page,
-                    size,
-                    filter,
-                ),
-                meta: {
-                    onFailure: e => console.log('Error updating teams', e),
-                },
-            })
+// export const updateTeams =
+//     (slug, page, size, filter) => async (dispatch, getState) => {
+//         const idToken = AuthSelectors.getIdToken(getState())
+//         if (!slug) return
+//         if (filter === 'All challenges') {
+//             dispatch({
+//                 type: ActionTypes.UPDATE_TEAMS,
+//                 promise: TeamsService.getAllTeamsForEventParticipant(
+//                     idToken,
+//                     slug,
+//                     page,
+//                     size,
+//                 ),
+//                 meta: {
+//                     onFailure: e => console.log('Error updating teams', e),
+//                 },
+//             })
+//         } else {
+//             dispatch({
+//                 type: ActionTypes.UPDATE_TEAMS,
+//                 promise: TeamsService.getAllTeamsForEventParticipant(
+//                     idToken,
+//                     slug,
+//                     page,
+//                     size,
+//                     filter,
+//                 ),
+//                 meta: {
+//                     onFailure: e => console.log('Error updating teams', e),
+//                 },
+//             })
+//         }
+//     }
+
+export const updateTeams = createAsyncThunk(
+    ActionTypes.UPDATE_TEAMS,
+    async ({ slug, page, size, filter }, { getState, rejectWithValue }) => {
+        try {
+            if (!slug) return
+            const idToken = AuthSelectors.getIdToken(getState())
+            const teams = await TeamsService.getAllTeamsForEventParticipant(
+                idToken,
+                slug,
+                page,
+                size,
+                filter,
+            )
+
+            console.log('UPDATE EVENT TEAMS ACTION AS PARTICIPANT>>>>>>>>>>')
+            console.log(teams)
+            return teams
+        } catch (error) {
+            console.error('Error updating event teams', error)
+            return rejectWithValue(error.message || 'Unknown error')
         }
-    }
+    },
+)
 
-export const updateSelectedTeam =
-    (slug, code) => async (dispatch, getState) => {
-        const idToken = AuthSelectors.getIdToken(getState())
-        if (!slug || !code) return
-        return new Promise((resolve, reject) => {
-            dispatch({
-                type: ActionTypes.UPDATE_SELECTED_TEAM,
-                promise: TeamsService.getTeamWithMetaForEventParticipant(
-                    idToken,
-                    slug,
-                    code,
-                    true,
-                ),
-                meta: {
-                    onSuccess: team => resolve(team),
-                    onFailure: e => reject(e),
-                },
-            })
-        })
-    }
+// export const updateSelectedTeam =
+//     (slug, code) => async (dispatch, getState) => {
+//         const idToken = AuthSelectors.getIdToken(getState())
+//         if (!slug || !code) return
+//         return new Promise((resolve, reject) => {
+//             dispatch({
+//                 type: ActionTypes.UPDATE_SELECTED_TEAM,
+//                 promise: TeamsService.getTeamWithMetaForEventParticipant(
+//                     idToken,
+//                     slug,
+//                     code,
+//                     true,
+//                 ),
+//                 meta: {
+//                     onSuccess: team => resolve(team),
+//                     onFailure: e => reject(e),
+//                 },
+//             })
+//         })
+//     }
 
-export const updateTeam = slug => (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const updateSelectedTeam = createAsyncThunk(
+    ActionTypes.UPDATE_SELECTED_TEAM,
+    async ({ slug, code }, { getState, rejectWithValue }) => {
+        try {
+            if (!slug || !code) return null
+            const idToken = AuthSelectors.getIdToken(getState())
+            const team = await TeamsService.getTeamWithMetaForEventParticipant(
+                idToken,
+                slug,
+                code,
+                true,
+            )
+            console.log(team)
+            return team
+        } catch (error) {
+            console.error('Error updating selected team', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
-    dispatch({
-        type: ActionTypes.UPDATE_TEAM,
-        promise: TeamsService.getTeamForEvent(idToken, slug, true).catch(
-            err => {
-                if (err.response.status === 404) {
-                    return Promise.resolve(null)
-                }
-                return Promise.reject(err)
-            },
-        ),
-        meta: {
-            onFailure: e => console.log('Error updating dashboard team', e),
-        },
-    })
-}
+// export const updateTeam = slug => (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
+
+//     dispatch({
+//         type: ActionTypes.UPDATE_TEAM,
+//         promise: TeamsService.getTeamForEvent(idToken, slug, true).catch(
+//             err => {
+//                 if (err.response.status === 404) {
+//                     return Promise.resolve(null)
+//                 }
+//                 return Promise.reject(err)
+//             },
+//         ),
+//         meta: {
+//             onFailure: e => console.log('Error updating dashboard team', e),
+//         },
+//     })
+// }
+
+export const updateTeam = createAsyncThunk(
+    ActionTypes.UPDATE_TEAM,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            const team = await TeamsService.getTeamForEvent(idToken, slug, true)
+            console.log('UPDATE TEAM ACTION AS PARTICIPANT>>>>>>>>>>')
+            console.log(team)
+            return team
+        } catch (error) {
+            console.error('Error updating team', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
 export const editTeam = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
@@ -339,26 +428,46 @@ export const getCandidateProfileById = userId => async (dispatch, getState) => {
     return user
 }
 
-export const candidateApplyToTeam =
-    (slug, code, applicationData) => async (dispatch, getState) => {
-        const idToken = AuthSelectors.getIdToken(getState())
-        const team = await TeamsService.candidateApplyToTeam(
-            idToken,
-            slug,
-            code,
-            applicationData,
-        )
+// export const candidateApplyToTeam =
+//     (slug, code, applicationData) => async (dispatch, getState) => {
+//         const idToken = AuthSelectors.getIdToken(getState())
+//         const team = await TeamsService.candidateApplyToTeam(
+//             idToken,
+//             slug,
+//             code,
+//             applicationData,
+//         )
 
-        dispatch({
-            type: ActionTypes.EDIT_TEAM,
-            payload: team,
-            meta: {
-                onFailure: e => console.log('Error applying to team', e),
-            },
-        })
+//         dispatch({
+//             type: ActionTypes.CANDIDATE_APPLY,
+//             payload: team,
+//             meta: {
+//                 onFailure: e => console.log('Error applying to team', e),
+//             },
+//         })
 
-        return team
-    }
+//         return team
+//     }
+
+export const candidateApplyToTeam = createAsyncThunk(
+    ActionTypes.CANDIDATE_APPLY,
+    async ({ slug, code, applicationData }, { getState, rejectWithValue }) => {
+        try {
+            if (!slug) return
+            const idToken = AuthSelectors.getIdToken(getState())
+            const team = await TeamsService.candidateApplyToTeam(
+                idToken,
+                slug,
+                code,
+                applicationData,
+            )
+            return team
+        } catch (error) {
+            console.error('Error applying to team', error)
+            return rejectWithValue(error.message || 'Error applying to team')
+        }
+    },
+)
 
 export const acceptCandidateToTeam =
     (slug, code, userId) => async (dispatch, getState) => {
@@ -477,39 +586,81 @@ export const lockTeam = (slug, code) => async (dispatch, getState) => {
     return team
 }
 
-export const updateProjects = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+// export const updateProjects = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
 
-    return dispatch({
-        type: ActionTypes.UPDATE_PROJECTS,
-        promise: ProjectsService.getProjectsForEventAndTeam(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error updating dashboard project', e),
-        },
-    })
-}
+//     return dispatch({
+//         type: ActionTypes.UPDATE_PROJECTS,
+//         promise: ProjectsService.getProjectsForEventAndTeam(idToken, slug),
+//         meta: {
+//             onFailure: e => console.log('Error updating dashboard project', e),
+//         },
+//     })
+// }
 
-export const createProject = (slug, data) => async (dispatch, getState) => {
-    try {
-        const idToken = AuthSelectors.getIdToken(getState())
-        await ProjectsService.createProjectForEventAndTeam(idToken, slug, data)
-        const projects = await ProjectsService.getProjectsForEventAndTeam(
-            idToken,
-            slug,
-        )
+export const updateProjects = createAsyncThunk(
+    ActionTypes.UPDATE_PROJECTS,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            const projects = await ProjectsService.getProjectsForEventAndTeam(
+                idToken,
+                slug,
+            )
+            console.log('UPDATE PROJECTS ACTION AS PARTICIPANT>>>>>>>>>>')
+            console.log(projects)
+            return projects
+        } catch (error) {
+            console.error('Error updating projects', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
-        return dispatch({
-            type: ActionTypes.UPDATE_PROJECTS,
-            promise: Promise.resolve(projects),
-            meta: {
-                onFailure: e =>
-                    console.log('Error creating dashboard project', e),
-            },
-        })
-    } catch (error) {
-        throw new Error(error)
-    }
-}
+// export const createProject = (slug, data) => async (dispatch, getState) => {
+//     try {
+//         const idToken = AuthSelectors.getIdToken(getState())
+//         await ProjectsService.createProjectForEventAndTeam(idToken, slug, data)
+//         const projects = await ProjectsService.getProjectsForEventAndTeam(
+//             idToken,
+//             slug,
+//         )
+
+//         return dispatch({
+//             type: ActionTypes.UPDATE_PROJECTS,
+//             promise: Promise.resolve(projects),
+//             meta: {
+//                 onFailure: e =>
+//                     console.log('Error creating dashboard project', e),
+//             },
+//         })
+//     } catch (error) {
+//         throw new Error(error)
+//     }
+// }
+
+export const createProject = createAsyncThunk(
+    ActionTypes.UPDATE_PROJECTS,
+    async ({ slug, data }, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            await ProjectsService.createProjectForEventAndTeam(
+                idToken,
+                slug,
+                data,
+            )
+            const projects = await ProjectsService.getProjectsForEventAndTeam(
+                idToken,
+                slug,
+            )
+            return projects
+        } catch (error) {
+            console.error('Error creating dashboard project', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
+
 // TODO delete file upload and file attachement
 // const fileAttachmentFinder = async (Projectdata, idToken) => {
 //     console.log('Project data to check for files', Projectdata)
@@ -657,121 +808,163 @@ export const deleteFileForProject = fileId => async (dispatch, getState) => {
     })
 }
 
-export const editProject = (slug, data) => async (dispatch, getState) => {
-    try {
-        const idToken = AuthSelectors.getIdToken(getState())
-        // const fileData = await fileAttachmentFinder(data, idToken)
+// export const editProject = (slug, data) => async (dispatch, getState) => {
+//     try {
+//         const idToken = AuthSelectors.getIdToken(getState())
+//         // const fileData = await fileAttachmentFinder(data, idToken)
 
-        // if (fileData) {
-        // }
-        await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
-        const projects = await ProjectsService.getProjectsForEventAndTeam(
-            idToken,
-            slug,
-        )
+//         // if (fileData) {
+//         // }
+//         await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
+//         const projects = await ProjectsService.getProjectsForEventAndTeam(
+//             idToken,
+//             slug,
+//         )
 
-        return dispatch({
-            type: ActionTypes.UPDATE_PROJECTS,
-            promise: Promise.resolve(projects),
-            meta: {
-                onFailure: e =>
-                    console.log('Error editing dashboard project', e),
-            },
-        })
-    } catch (error) {
-        throw new Error(error)
-    }
-}
+//         return dispatch({
+//             type: ActionTypes.UPDATE_PROJECTS,
+//             promise: Promise.resolve(projects),
+//             meta: {
+//                 onFailure: e =>
+//                     console.log('Error editing dashboard project', e),
+//             },
+//         })
+//     } catch (error) {
+//         throw new Error(error)
+//     }
+// }
 
-export const updateAnnotator = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-    const { error } = await dispatch({
-        type: ActionTypes.UPDATE_ANNOTATOR,
-        promise: GavelService.getAnnotator(idToken, slug), //,
-        meta: {
-            onFailure: e => console.log('Error updating annotator', e),
-        },
-    })
+export const editProject = createAsyncThunk(
+    ActionTypes.UPDATE_PROJECTS,
+    async ({ slug, data }, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            await ProjectsService.updateProjectForEventAndTeam(
+                idToken,
+                slug,
+                data,
+            )
+            const projects = await ProjectsService.getProjectsForEventAndTeam(
+                idToken,
+                slug,
+            )
+            return projects
+        } catch (error) {
+            console.error('Error editing dashboard project', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
-    return error
-}
+// export const updateAnnotator = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
+//     const { error } = await dispatch({
+//         type: ActionTypes.UPDATE_ANNOTATOR,
+//         promise: GavelService.getAnnotator(idToken, slug), //,
+//         meta: {
+//             onFailure: e => console.log('Error updating annotator', e),
+//         },
+//     })
 
-export const updateProjectScores = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+//     return error
+// }
 
-    return dispatch({
-        type: ActionTypes.UPDATE_PROJECT_SCORES,
-        promise: ProjectScoresService.getScoresByEventAndTeam(idToken, slug),
-        meta: {
-            onFailure: e =>
-                console.log('Error updating dashboard project scores', e),
-        },
-    })
-}
+// export const updateProjectScores = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
 
-export const beginVoting = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+//     return dispatch({
+//         type: ActionTypes.UPDATE_PROJECT_SCORES,
+//         promise: ProjectScoresService.getScoresByEventAndTeam(idToken, slug),
+//         meta: {
+//             onFailure: e =>
+//                 console.log('Error updating dashboard project scores', e),
+//         },
+//     })
+// }
 
-    try {
-        const annotator = await GavelService.beginVoting(idToken, slug)
-        dispatch({
-            type: ActionTypes.EDIT_ANNOTATOR,
-            payload: annotator,
-        })
-        return
-    } catch (err) {
-        console.log(err)
-        return err
-    }
-}
+export const updateProjectScores = createAsyncThunk(
+    ActionTypes.UPDATE_PROJECT_SCORES,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            const projectScores =
+                await ProjectScoresService.getScoresByEventAndTeam(
+                    idToken,
+                    slug,
+                )
+            console.log('UPDATE PROJECT SCORES ACTION AS PARTICIPANT>>>>>>>>>>')
+            console.log(projectScores)
+            return projectScores
+        } catch (error) {
+            console.error('Error updating project scores', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
-export const skipProject = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+// export const beginVoting = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
 
-    try {
-        const annotator = await GavelService.skipProject(idToken, slug)
-        dispatch({
-            type: ActionTypes.EDIT_ANNOTATOR,
-            payload: annotator,
-        })
-        return
-    } catch (err) {
-        console.log(err)
-        return err
-    }
-}
+//     try {
+//         const annotator = await GavelService.beginVoting(idToken, slug)
+//         dispatch({
+//             type: ActionTypes.EDIT_ANNOTATOR,
+//             payload: annotator,
+//         })
+//         return
+//     } catch (err) {
+//         console.log(err)
+//         return err
+//     }
+// }
 
-export const setFirstProjectSeen = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+// export const skipProject = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
 
-    try {
-        const annotator = await GavelService.setFirstProjectSeen(idToken, slug)
-        dispatch({
-            type: ActionTypes.EDIT_ANNOTATOR,
-            payload: annotator,
-        })
-        return
-    } catch (err) {
-        console.log(err)
-        return err
-    }
-}
+//     try {
+//         const annotator = await GavelService.skipProject(idToken, slug)
+//         dispatch({
+//             type: ActionTypes.EDIT_ANNOTATOR,
+//             payload: annotator,
+//         })
+//         return
+//     } catch (err) {
+//         console.log(err)
+//         return err
+//     }
+// }
 
-export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+// export const setFirstProjectSeen = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
 
-    try {
-        const annotator = await GavelService.submitVote(idToken, slug, winnerId)
-        console.log(annotator)
-        dispatch({
-            type: ActionTypes.EDIT_ANNOTATOR,
-            payload: annotator,
-        })
-    } catch (err) {
-        console.log(err)
-        return err
-    }
-}
+//     try {
+//         const annotator = await GavelService.setFirstProjectSeen(idToken, slug)
+//         dispatch({
+//             type: ActionTypes.EDIT_ANNOTATOR,
+//             payload: annotator,
+//         })
+//         return
+//     } catch (err) {
+//         console.log(err)
+//         return err
+//     }
+// }
+
+// export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
+
+//     try {
+//         const annotator = await GavelService.submitVote(idToken, slug, winnerId)
+//         console.log(annotator)
+//         dispatch({
+//             type: ActionTypes.EDIT_ANNOTATOR,
+//             payload: annotator,
+//         })
+//     } catch (err) {
+//         console.log(err)
+//         return err
+//     }
+// }
 export const activeEvents = activeEvents => dispatch => {
     dispatch({
         type: ActionTypes.ACTIVE_EVENTS,

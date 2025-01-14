@@ -21,8 +21,8 @@ import BasicNavBar from 'components/navbars/BasicNavBar'
 
 import DefaultPage from '../generalPages/default'
 // import FinalistVotingPage from './finalist-voting'
-// import TeamPage from './team'
-// import ProjectPage from './project'
+import TeamPage from './team'
+import ProjectPage from './project'
 // import ReviewingPage from './reviewing'
 // import TravelGrantPage from './travel-grant'
 // import EventIDPage from './event-id'
@@ -78,6 +78,8 @@ export default ({
     const [alerts, setAlerts] = useState(originalAlerts)
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
+    console.log('SHOWN PAGES <<<<<<<<<<<<<<<<<<<<<<<<<<')
+    console.log(shownPages)
 
     useEffect(() => {
         setAlerts(originalAlerts)
@@ -130,27 +132,27 @@ export default ({
                 //     label: 'Finalist voting',
                 //     component: FinalistVotingPage,
                 // },
-                // {
-                //     key: 'team',
-                //     path: '/team',
-                //     exact: false,
-                //     icon: <GroupIcon />,
-                //     label: t('Team_'),
-                //     locked: lockedPages.team,
-                //     lockedDescription: 'Team editing not open',
-                //     component: TeamPage,
-                // },
-                // {
-                //     key: 'project',
-                //     path: '/project',
-                //     exact: true,
-                //     locked: lockedPages.submissions,
-                //     lockedDescription: 'Submissions not open',
-                //     hidden: !shownPages.submissions,
-                //     icon: <AssignmentOutlinedIcon />,
-                //     label: t('Project_submissions_'),
-                //     component: ProjectPage,
-                // },
+                {
+                    key: 'team',
+                    path: '/team/*',
+                    exact: false,
+                    icon: <GroupIcon />,
+                    label: t('Team_'),
+                    locked: lockedPages.team,
+                    lockedDescription: 'Team editing not open',
+                    component: TeamPage,
+                },
+                {
+                    key: 'project',
+                    path: '/project',
+                    exact: true,
+                    locked: lockedPages.submissions,
+                    lockedDescription: 'Submissions not open',
+                    hidden: !shownPages.submissions,
+                    icon: <AssignmentOutlinedIcon />,
+                    label: t('Project_submissions_'),
+                    component: ProjectPage,
+                },
                 // {
                 //     key: 'reviewing',
                 //     path: '/reviewing',

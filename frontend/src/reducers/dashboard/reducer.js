@@ -141,6 +141,7 @@ export default function reducer(state = initialState, action) {
                 return updateTeamsHandler(state, action)
             }
         }
+        case ActionTypes.CANDIDATE_APPLY:
         case ActionTypes.UPDATE_SELECTED_TEAM: {
             return updateSelectedTeamHandler(state, action)
         }

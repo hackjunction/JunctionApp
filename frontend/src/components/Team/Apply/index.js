@@ -17,27 +17,44 @@ import FormControl from 'components/inputs/FormControl'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 export default ({
-    teamRolesData = [],
+    // teamRolesData,
     afterSubmitAction = () => {},
     loading = false,
 }) => {
+    const userProfile = useSelector(UserSelectors.userProfile)
+    const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
+    const event = useSelector(DashboardSelectors.event)
+
+    // console.log('TEAM ROLES DATA>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    // console.log(teamRolesData)
+    let teamRoles = []
     const dispatch = useDispatch()
+
+    if (
+        selectedTeam.teamRoles &&
+        Array.isArray(selectedTeam.teamRoles) &&
+        selectedTeam.teamRoles.length > 0
+    ) {
+        teamRoles = [...selectedTeam.teamRoles]
+    }
+
     if (
         !_.includes(
-            teamRolesData.map(teamRole => teamRole.role),
+            teamRoles.map(teamRole => teamRole.role),
             'Open application',
         )
     ) {
-        teamRolesData.unshift({ role: 'Open application' })
+        teamRoles.unshift({ role: 'Open application' })
     }
+
     const roles = useMemo(() => {
         return [
-            ...teamRolesData.map(role => ({
+            ...teamRoles.map(role => ({
                 label: role.role,
                 value: role.role,
             })),
         ]
-    }, [teamRolesData])
+    }, [teamRoles])
 
     const applicationSchema = {
         roles: yup.array().of(yup.string()).required('Add at least one role'),
@@ -54,11 +71,6 @@ export default ({
             )
             .required('Add a motivation'),
     }
-
-    // TODO remove any redux calls from this component and pass the data as props
-    const userProfile = useSelector(UserSelectors.userProfile)
-    const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
-    const event = useSelector(DashboardSelectors.event)
 
     const challengeLabel = useMemo(() => {
         if (
@@ -81,19 +93,19 @@ export default ({
             formikBag.setSubmitting(true)
             const submittionData = {}
             console.log('values from application', values)
-            console.log('teamRolesData from application', teamRolesData)
-            submittionData.roles = _.filter(teamRolesData, role =>
+            console.log('teamRolesData from application', teamRoles)
+            submittionData.roles = _.filter(teamRoles, role =>
                 _.includes(values.roles, role.role),
             )
             submittionData.motivation = values.motivation
             submittionData.userId = userProfile.userId
             console.log('submittionData from application', submittionData)
             dispatch(
-                DashboardActions.candidateApplyToTeam(
-                    event.slug,
-                    selectedTeam.code,
-                    submittionData,
-                ),
+                DashboardActions.candidateApplyToTeam({
+                    slug: event.slug,
+                    code: selectedTeam.code,
+                    applicationData: submittionData,
+                }),
             )
                 .then(() => {
                     dispatch(SnackbarActions.success('Created new application'))

@@ -10,7 +10,7 @@ import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import { useSelector } from 'react-redux'
 
 export default () => {
-    const url = useResolvedPath("").pathname;
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const enabledTabs = [
@@ -44,7 +44,7 @@ export default () => {
             <MaterialTabsLayout
                 transparent
                 tabs={enabledTabs}
-                baseRoute={match.url}
+                baseRoute={url}
                 location={location}
             />
         </Container>

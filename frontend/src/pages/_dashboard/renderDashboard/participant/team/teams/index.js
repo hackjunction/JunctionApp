@@ -4,7 +4,7 @@ import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import * as DashboardActions from 'reducers/dashboard/actions'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Box, Typography, IconButton } from '@mui/material'
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 
@@ -16,6 +16,7 @@ import TeamProfile from 'components/Team/TeamProfile'
 import Apply from 'components/Team/Apply'
 import Filter from 'components/Team/Filter'
 import JoinTeamByCode from 'components/Team/JoinTeamByCode'
+import SpinnerLoader from 'components/loaders/SpinnerLoader'
 
 export default () => {
     const dispatch = useDispatch()
@@ -23,55 +24,60 @@ export default () => {
     const { slug } = event
     //TODO create pagination component
     const teams = useSelector(DashboardSelectors.teams)
+
+    console.log('ALL TEAMS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    console.log(teams)
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const [selected, setSelected] = useState(false)
     const [applying, setApplying] = useState(false)
     const [joinByCode, setJoinByCode] = useState(false)
     const [challengeFilter, setChallengeFilter] = useState('All challenges')
 
-    const [selectedTeam, setSelectedTeam] = useState(null)
+    // const [selectedTeam, setSelectedTeam] = useState(null)
     const [loading, setLoading] = useState(false)
 
     const [currentPage, SetCurrentPage] = useState(0)
     const totalResults = useSelector(DashboardSelectors.teamsCount)
     const totalPages = Math.ceil(totalResults / 25)
-
-    const hadleTeamCardClick = useCallback(
-        async teamCode => {
-            if (teamCode) {
-                setLoading(true)
-                dispatch(DashboardActions.updateSelectedTeam(slug, teamCode))
-                    .then(team => {
-                        setSelectedTeam(team)
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                    .finally(() => {
-                        setLoading(false)
-                    })
-            }
-        },
-        [selectedTeam],
+    const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
+    const selectedTeamLoading = useSelector(
+        DashboardSelectors.selectedTeamLoading,
     )
+    console.log('TEST SELECTED TEAM>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    console.log(selectedTeam)
+    console.log(selectedTeamLoading)
+
+    const hadleTeamCardClick = async teamCode => {
+        if (teamCode) {
+            setLoading(true)
+            dispatch(
+                DashboardActions.updateSelectedTeam({
+                    slug,
+                    code: teamCode,
+                }),
+            )
+                .then(team => {
+                    // setSelectedTeam(team?.payload)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
+        }
+    }
 
     useEffect(() => {
         dispatch(
-            DashboardActions.updateTeams(
+            DashboardActions.updateTeams({
                 slug,
-                currentPage,
-                25,
-                challengeFilter,
-            ),
+                page: currentPage,
+                size: 25,
+                filter: challengeFilter,
+            }),
         )
-    }, [
-        currentPage,
-        applying,
-        selected,
-        selectedTeam,
-        joinByCode,
-        challengeFilter,
-    ])
+    }, [currentPage, applying, selected, joinByCode, challengeFilter])
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
@@ -120,61 +126,92 @@ export default () => {
     //TODO add a method to edit or withdraw an application
     return (
         <>
-            {applying &&
-                selectedTeam &&
-                Object.keys(selectedTeam).length > 0 && (
-                    <div>
-                        <div className="tw-mb-4">
-                            <Button
-                                color="outlined_button"
-                                variant="jOutlined"
-                                onClick={() => {
-                                    setApplying(false)
-                                    setSelectedTeam(null)
-                                }}
-                            >
-                                Back
-                            </Button>
-                        </div>
-                        <Apply
-                            teamRolesData={selectedTeam.teamRoles}
-                            afterSubmitAction={() => {
-                                setApplying(false)
-                                setSelectedTeam(null)
-                            }}
-                            loading={loading}
-                        />
-                    </div>
-                )}
-            {selected &&
-                selectedTeam &&
-                Object.keys(selectedTeam).length > 0 && (
-                    <div>
-                        <div className="tw-mb-4">
-                            <Button
-                                color="outlined_button"
-                                variant="jOutlined"
-                                onClick={() => {
-                                    setSelected(false)
-                                    setSelectedTeam(null)
-                                }}
-                            >
-                                Back
-                            </Button>
-                        </div>
-                        <TeamProfile
-                            teamData={selectedTeam}
-                            loading={loading}
-                            enableActions={false}
-                            onRoleClick={() => {
-                                if (!hasTeam) {
-                                    setApplying(true)
-                                    setSelected(false)
-                                }
-                            }}
-                        />
-                    </div>
-                )}
+            {applying && (
+                <>
+                    {selectedTeamLoading ? (
+                        <SpinnerLoader />
+                    ) : (
+                        selectedTeam &&
+                        Object.keys(selectedTeam).length > 0 && (
+                            <div>
+                                <div className="tw-mb-4">
+                                    <Button
+                                        color="outlined_button"
+                                        variant="jOutlined"
+                                        onClick={() => {
+                                            setApplying(false)
+                                            // setSelectedTeam(null)
+                                            dispatch(
+                                                DashboardActions.updateSelectedTeam(
+                                                    {},
+                                                ),
+                                            )
+                                        }}
+                                    >
+                                        Back
+                                    </Button>
+                                </div>
+                                <Apply
+                                    // teamRolesData={selectedTeam.teamRoles}
+                                    afterSubmitAction={() => {
+                                        setApplying(false)
+                                        // setSelectedTeam(null)
+                                        dispatch(
+                                            DashboardActions.updateSelectedTeam(
+                                                {},
+                                            ),
+                                        )
+                                    }}
+                                    loading={loading}
+                                />
+                            </div>
+                        )
+                    )}
+                </>
+            )}
+            {selected && (
+                <>
+                    {selectedTeamLoading ? (
+                        <SpinnerLoader />
+                    ) : (
+                        <>
+                            {selectedTeam &&
+                                Object.keys(selectedTeam).length > 0 && (
+                                    <div>
+                                        <div className="tw-mb-4">
+                                            <Button
+                                                color="outlined_button"
+                                                variant="jOutlined"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        DashboardActions.updateSelectedTeam(
+                                                            {},
+                                                        ),
+                                                    )
+                                                    setSelected(false)
+                                                    // setSelectedTeam(null)
+                                                }}
+                                            >
+                                                Back
+                                            </Button>
+                                        </div>
+                                        <TeamProfile
+                                            teamData={selectedTeam}
+                                            loading={loading}
+                                            enableActions={false}
+                                            onRoleClick={() => {
+                                                if (!hasTeam) {
+                                                    setApplying(true)
+                                                    setSelected(false)
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                        </>
+                    )}
+                </>
+            )}
             {!selected && !applying && (
                 <>
                     <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
@@ -238,7 +275,9 @@ export default () => {
                                             teamData={team}
                                             disableActions={hasTeam}
                                             onClickApply={() => {
+                                                console.log('TEST 1')
                                                 hadleTeamCardClick(team.code)
+                                                console.log('TEST 2')
                                                 if (!hasTeam) {
                                                     setApplying(true)
                                                 }

@@ -11,38 +11,36 @@ function ProjectSubmissionsBlock({ projects, event }) {
     return (
         <>
             {projects && event && projects[0]?.event === event?._id ? (
-                <>
-                    <Grid item xs={12}>
-                        <GradientBox color="theme_white" p={3}>
-                            <Box pb={2}>
-                                <Typography variant="h4">
-                                    Your project submissions
-                                </Typography>
-                            </Box>
-                            <ProjectsGrid
-                                projects={projects}
+                <Grid item xs={12}>
+                    <GradientBox color="theme_white" p={3}>
+                        <Box pb={2}>
+                            <Typography variant="h4">
+                                Your project submissions
+                            </Typography>
+                        </Box>
+                        <ProjectsGrid
+                            projects={projects}
+                            event={event}
+                            onSelect={setSelected}
+                            showTags={true}
+                            showScore={showScore}
+                            showReviewers={showFeedback}
+                        />
+                        <Dialog
+                            transitionDuration={0}
+                            fullScreen
+                            open={Boolean(selected)}
+                            onClose={() => setSelected(false)}
+                        >
+                            <ProjectDetail
+                                project={selected}
                                 event={event}
-                                onSelect={setSelected}
-                                showTags={true}
-                                showScore={showScore}
-                                showReviewers={showFeedback}
+                                onBack={() => setSelected(false)}
+                                showTableLocation={false}
                             />
-                            <Dialog
-                                transitionDuration={0}
-                                fullScreen
-                                open={Boolean(selected)}
-                                onClose={() => setSelected(false)}
-                            >
-                                <ProjectDetail
-                                    project={selected}
-                                    event={event}
-                                    onBack={() => setSelected(false)}
-                                    showTableLocation={false}
-                                />
-                            </Dialog>
-                        </GradientBox>
-                    </Grid>
-                </>
+                        </Dialog>
+                    </GradientBox>
+                </Grid>
             ) : null}
         </>
     )

@@ -41,6 +41,11 @@ export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
         alignment: 'tw-items-center',
         userProfile: {},
     }
+    console.log(
+        'USER PROFILE FROM PARTICIPANT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',
+    )
+    console.log(userProfile)
+    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>')
     if (userProfile.profile.avatar) {
         styling.userProfile = {
             backgroundImage: `url(${userProfile.profile.avatar})`,

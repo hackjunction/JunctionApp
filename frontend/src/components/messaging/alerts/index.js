@@ -16,12 +16,13 @@ export function Alerts({ alerts = [] }) {
         (a, b) => +new Date(b.sentAt) - +new Date(a.sentAt),
     )
     // const classes = useStyles()
-
+    console.log('ALERTS>>>>>>')
+    console.log(sortedAlerts)
     return (
         // <div className={classes.root}>
-        <div>
+        <Grid>
             {sortedAlerts.map(a => (
-                <Grid style={{ paddingTop: '10px' }}>
+                <Grid item key={a.sentAt} style={{ paddingTop: '10px' }}>
                     <GradientBox color="secondary" p={2}>
                         <Typography variant="subtitle1">{a.content}</Typography>
                         <Typography variant="subtitle2" align="right">
@@ -30,7 +31,7 @@ export function Alerts({ alerts = [] }) {
                     </GradientBox>
                 </Grid>
             ))}
-        </div>
+        </Grid>
     )
 }
 

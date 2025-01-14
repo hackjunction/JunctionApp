@@ -40,6 +40,7 @@ import { reduce, cloneDeep, set } from 'lodash-es'
 export const buildHandler =
     (field, mapByField, mapIsArray) => (state, action) => {
         console.log('ACTION FROM UTILS>>>>>>')
+        console.log(action.type)
         // action.status = action.status || 'sucess'
         console.log(action)
         switch (action.status) {

@@ -114,27 +114,43 @@ TeamsService.removeMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
     )
 }
 
-TeamsService.organiserRemoveMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
+TeamsService.organiserRemoveMemberFromTeam = (
+    idToken,
+    eventSlug,
+    teamCode,
+    userId,
+) => {
     return _axios.delete(
         `/teams/organiser/${eventSlug}/${teamCode}/members/${userId}`,
         config(idToken),
     )
 }
 
-
 TeamsService.getTeamForEvent = (idToken, eventSlug, populate = false) => {
+    // Takes idToken, eventSlug and a populate boolean prop, by default false
     return _axios.get(
         `/teams/${eventSlug}?populate=${populate}`,
         config(idToken),
     )
 }
 
-TeamsService.getAllTeamsForEventParticipant = (idToken, eventSlug, page, page_size, filter) => {
-    if (filter) {
-        return _axios.get(`/teams/${eventSlug}/teams?page=${page}&size=${page_size}&filter=${filter}`, config(idToken))
+TeamsService.getAllTeamsForEventParticipant = (
+    idToken,
+    eventSlug,
+    page,
+    page_size,
+    filter,
+) => {
+    if (filter && filter !== 'All challenges') {
+        return _axios.get(
+            `/teams/${eventSlug}/teams?page=${page}&size=${page_size}&filter=${filter}`,
+            config(idToken),
+        )
     } else {
-        return _axios.get(`/teams/${eventSlug}/teams?page=${page}&size=${page_size}`, config(idToken))
-
+        return _axios.get(
+            `/teams/${eventSlug}/teams?page=${page}&size=${page_size}`,
+            config(idToken),
+        )
     }
 }
 

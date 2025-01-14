@@ -13,24 +13,24 @@ import * as SnackbarActions from 'reducers/snackbar/actions'
 
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles(theme => ({
-    box: {
-        background: 'white',
-        padding: theme.spacing(3),
-        borderRadius: '12px',
-        boxShadow: '4px 6px 20px #F3F3F3',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     box: {
+//         background: 'white',
+//         padding: theme.spacing(3),
+//         borderRadius: '12px',
+//         boxShadow: '4px 6px 20px #F3F3F3',
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//     },
+// }))
 
 export default ({ onAction = () => {} }) => {
     const { t } = useTranslation()
 
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
-    const classes = useStyles()
+    // const classes = useStyles()
     const [code, setCode] = useState('')
     const [loading, setLoading] = useState(false)
 

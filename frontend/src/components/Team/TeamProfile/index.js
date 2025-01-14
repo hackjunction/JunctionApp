@@ -6,7 +6,7 @@ import TeamDescription from '../TeamDescription'
 import TeamRoles from '../TeamRoles'
 import TeamMembers from '../TeamMembers'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import junctionStyle from 'utils/styles'
+// import junctionStyle from 'utils/styles'
 import { popupCenter } from 'utils/misc'
 import { Email } from '@mui/icons-material'
 import { objToArr } from 'utils/dataModifiers'
@@ -23,10 +23,15 @@ export default ({
     onRoleClick = () => {},
     loading = false,
 }) => {
+    console.log(
+        'TEAMDATA FROM TEAM PROFILE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',
+    )
+    console.log(teamData)
+    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
     const teamMembersArr = [...objToArr(teamData.meta)]
-    const membersCount = teamData.members.length
+    const membersCount = teamData?.members ? teamData.members.length : 0
 
-    const classes = junctionStyle()
+    // const classes = junctionStyle()
     return (
         <PageWrapper loading={loading}>
             <div className="tw-flex tw-flex-col tw-gap-12">
@@ -65,7 +70,7 @@ export default ({
                                     title: 'Discord',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}
@@ -78,7 +83,7 @@ export default ({
                                     title: 'Telegram',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}
@@ -94,7 +99,7 @@ export default ({
                                 })
                             }
                         >
-                            <Email className={classes.socialIcon} />
+                            <Email className={'classes.socialIcon'} />
                         </IconButton>
                     )}
                     {teamData?.slack && (
@@ -106,7 +111,7 @@ export default ({
                                     title: 'Slack',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}

@@ -3,20 +3,20 @@ import { Box, Grid } from '@mui/material'
 import PageHeader from 'components/generic/PageHeader'
 import { Helmet } from 'react-helmet'
 import config from 'constants/config'
-// import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock'
-// import ProjectBlock from './Blocks/ProjectBlock'
-// import TeamStatusBlock from './Blocks/TeamStatusBlock'
 // import VisaInvitationBlock from './Blocks/VisaInvitationBlock'
 // import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock'
 // import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
-// import ProjectSubmissionsBlock from './Blocks/ProjectSubmissionsBlock'
-// import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
-// import CertificateBlock from './Blocks/CertificateBlock'
 // import SocialMediaBlock from './Blocks/SocialMediaBlock'
 // import EventTimeline from 'pages/_events/slug/default/EventTimeline'
 // import TimeLineBlock from './Blocks/TimeLineBlock'
 import AlertBlock from './Blocks/AlertBlock'
 import EventOverBlock from './Blocks/EventOverBlock'
+import ProjectSubmissionsBlock from './Blocks/ProjectSubmissionsBlock'
+import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
+import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock'
+import CertificateBlock from './Blocks/CertificateBlock'
+import ProjectBlock from './Blocks/ProjectBlock'
+import TeamStatusBlock from './Blocks/TeamStatusBlock'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
@@ -82,17 +82,17 @@ export default ({ alerts }) => {
                 </div>
 
                 <EventOverBlock />
-                {/* <ProjectSubmissionsBlock projects={projects} event={event} />
+                <ProjectSubmissionsBlock projects={projects} event={event} />
                 <ReviewingPeriodBlock />
-                <RegistrationStatusBlock /> */}
+                <RegistrationStatusBlock />
                 {/*<TravelGrantStatusBlock />*/}
                 {/* <VisaInvitationBlock /> */}
-                {/* <CertificateBlock />
+                <CertificateBlock />
                 <ProjectBlock />
                 <TeamStatusBlock />
 
-                <GavelReviewingBlock />
-                <SocialMediaBlock /> */}
+                {/* <GavelReviewingBlock /> */}
+                {/* <SocialMediaBlock /> */}
             </Grid>
             {event && (
                 <EventPageScriptIFrame

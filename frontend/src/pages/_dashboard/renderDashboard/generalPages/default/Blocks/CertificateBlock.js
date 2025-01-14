@@ -26,7 +26,6 @@ export default () => {
     if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id)
         return null
     if ('certificate' in event && event.certificate.url !== '') {
-        //TODO: fix certificate upload
         return (
             <Grid item xs={12}>
                 <GradientBox p={3} color="secondary">

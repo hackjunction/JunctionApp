@@ -163,8 +163,8 @@ const MultiValue = props => (
         avatar={props.data.icon ? <Avatar src={props.data.icon} /> : null}
         tabIndex={-1}
         label={props.children}
-        className={clsx(props.selectProps.classes.chip, {
-            [props.selectProps.classes.chipFocused]: props.isFocused,
+        className={clsx(props.selectProps.classes?.chip, {
+            [props.selectProps.classes?.chipFocused]: props.isFocused,
         })}
         onDelete={props.removeProps.onClick}
         deleteIcon={<CancelIcon {...props.removeProps} />}
