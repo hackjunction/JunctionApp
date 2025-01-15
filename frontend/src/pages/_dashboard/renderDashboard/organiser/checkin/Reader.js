@@ -6,40 +6,37 @@ import { Box, Typography } from '@mui/material'
 import Button from 'components/generic/Button'
 
 import * as SnackbarActions from 'reducers/snackbar/actions'
-export default ({ onResult, onError }) => {
-    const reader = useRef(null)
-    const dispatch = useDispatch()
-    const [legacyMode, setLegacyMode] = useState(false)
+export default ({ onResult }) => {
+    // const reader = useRef(null)
+    // const dispatch = useDispatch()
+    // const [legacyMode, setLegacyMode] = useState(false)
 
-    const handleScan = useCallback(
-        data => {
-            // if (legacyMode && !data) {
-            //     dispatch(SnackbarActions.error('QR code not found'))
-            // }
-            if (data) {
-                onResult(data)
-            }
-        },
-        [onResult, legacyMode, dispatch],
-    )
+    const handleScan = data => {
+        // if (legacyMode && !data) {
+        //     dispatch(SnackbarActions.error('QR code not found'))
+        // }
+        if (data) {
+            onResult(data)
+        }
+    }
 
-    const handleError = useCallback(
-        err => {
-            onError()
-        },
-        [onError],
-    )
+    // const handleError = useCallback(
+    //     err => {
+    //         onError()
+    //     },
+    //     [onError],
+    // )
 
     return (
         <>
             <QrReader
-                ref={reader}
-                delay={500}
-                onError={handleError}
-                onScan={handleScan}
-                style={{ width: '100%', maxWidth: 600 }}
-                facingMode="environment"
-                legacyMode={legacyMode}
+                // ref={reader}
+                scanDelay={500}
+                // onError={handleError}
+                onResult={handleScan}
+                // style={{ width: '100%', maxWidth: 600 }}
+                constraints={{ facingMode: 'environment' }}
+                // legacyMode={legacyMode}
             />
             {/* {legacyMode ? (
                 <Box p={2}>

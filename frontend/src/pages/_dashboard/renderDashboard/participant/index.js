@@ -25,7 +25,7 @@ import TeamPage from './team'
 import ProjectPage from './project'
 // import ReviewingPage from './reviewing'
 // import TravelGrantPage from './travel-grant'
-// import EventIDPage from './event-id'
+import EventIDPage from './event-id'
 // import HackerpackPage from '../generalPages/hackerpack'
 // import ChallengesIndex from '../generalPages/challenges'
 // import CalendarPage from './calendar'
@@ -164,15 +164,15 @@ export default ({
                 //     label: t('Reviewing_'),
                 //     component: ReviewingPage,
                 // },
-                // {
-                //     key: 'eventid',
-                //     path: '/event-id',
-                //     exact: true,
-                //     hidden: !shownPages.eventID,
-                //     icon: <FingerprintIcon />,
-                //     label: 'Event ID',
-                //     component: EventIDPage,
-                // },
+                {
+                    key: 'eventid',
+                    path: '/event-id',
+                    exact: true,
+                    hidden: !shownPages.eventID,
+                    icon: <FingerprintIcon />,
+                    label: 'Event ID',
+                    component: EventIDPage,
+                },
                 // {
                 //     key: 'hackerpack',
                 //     path: '/hackerpack',
