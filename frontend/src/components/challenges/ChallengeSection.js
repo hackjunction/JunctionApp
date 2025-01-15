@@ -18,7 +18,7 @@ export default ({ partner, title, subtitle, logo, link }) => {
                 <Typography>
                     <Markdown source={subtitle} />
                 </Typography>
-                <Box className={classes.outboundLink}>
+                <Box className={'classes.outboundLink'}>
                     <OutboundLink
                         eventLabel="myLabel"
                         to={link}

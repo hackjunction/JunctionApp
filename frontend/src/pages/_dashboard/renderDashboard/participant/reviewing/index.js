@@ -23,9 +23,9 @@ export default () => {
     const team = useSelector(DashboardSelectors.team)
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
-    const annotator = useSelector(DashboardSelectors.annotator)
-    const annotatorError = useSelector(DashboardSelectors.annotatorError)
-    const annotatorLoading = useSelector(DashboardSelectors.annotatorLoading)
+    // const annotator = useSelector(DashboardSelectors.annotator)
+    // const annotatorError = useSelector(DashboardSelectors.annotatorError)
+    // const annotatorLoading = useSelector(DashboardSelectors.annotatorLoading)
 
     // useEffect(() => {
     //     dispatch(DashboardActions.updateAnnotator(event.slug))
@@ -208,7 +208,9 @@ export default () => {
     }
     // console.log("annotator", annotator, annotatorError)
     return (
-        <PageWrapper loading={annotatorLoading} error={annotatorError}>
+        <PageWrapper
+        // loading={annotatorLoading} error={annotatorError}
+        >
             {renderContent()}
         </PageWrapper>
     )

@@ -20,14 +20,14 @@ import Image from 'components/generic/Image'
 import BasicNavBar from 'components/navbars/BasicNavBar'
 
 import DefaultPage from '../generalPages/default'
-// import FinalistVotingPage from './finalist-voting'
+import FinalistVotingPage from './finalist-voting'
 import TeamPage from './team'
 import ProjectPage from './project'
-// import ReviewingPage from './reviewing'
+import ReviewingPage from './reviewing'
 // import TravelGrantPage from './travel-grant'
 import EventIDPage from './event-id'
-// import HackerpackPage from '../generalPages/hackerpack'
-// import ChallengesIndex from '../generalPages/challenges'
+import HackerpackPage from '../generalPages/hackerpack'
+import ChallengesIndex from '../generalPages/challenges'
 // import CalendarPage from './calendar'
 // import MapPage from '../generalPages/map'
 // import ChecklistPage from './checklist'
@@ -117,21 +117,20 @@ export default ({
                     label: t('Dashboard_'),
                     component: () => {
                         return DefaultPage({ alerts })
-                        // return <p>TEST DASHBOARD</p>
                     },
                 },
-                // {
-                //     key: 'finals',
-                //     path: '/finalist-voting',
-                //     exact: true,
-                //     hidden: !shownPages.finalistVoting,
-                //     locked: lockedPages.finalistVoting,
-                //     lockedDescription:
-                //         'Finalist voting closed until peer review is done',
-                //     icon: <HowToVoteIcon />,
-                //     label: 'Finalist voting',
-                //     component: FinalistVotingPage,
-                // },
+                {
+                    key: 'finals',
+                    path: '/finalist-voting',
+                    exact: true,
+                    hidden: !shownPages.finalistVoting,
+                    locked: lockedPages.finalistVoting,
+                    lockedDescription:
+                        'Finalist voting closed until peer review is done',
+                    icon: <HowToVoteIcon />,
+                    label: 'Finalist voting',
+                    component: FinalistVotingPage,
+                },
                 {
                     key: 'team',
                     path: '/team/*',
@@ -153,17 +152,17 @@ export default ({
                     label: t('Project_submissions_'),
                     component: ProjectPage,
                 },
-                // {
-                //     key: 'reviewing',
-                //     path: '/reviewing',
-                //     exact: true,
-                //     hidden: !shownPages.reviewing,
-                //     locked: lockedPages.reviewing,
-                //     lockedDescription: 'Reviewing closed',
-                //     icon: <StarRateIcon />,
-                //     label: t('Reviewing_'),
-                //     component: ReviewingPage,
-                // },
+                {
+                    key: 'reviewing',
+                    path: '/reviewing',
+                    exact: true,
+                    hidden: !shownPages.reviewing,
+                    locked: lockedPages.reviewing,
+                    lockedDescription: 'Reviewing closed',
+                    icon: <StarRateIcon />,
+                    label: t('Reviewing_'),
+                    component: ReviewingPage,
+                },
                 {
                     key: 'eventid',
                     path: '/event-id',
@@ -173,24 +172,24 @@ export default ({
                     label: 'Event ID',
                     component: EventIDPage,
                 },
-                // {
-                //     key: 'hackerpack',
-                //     path: '/hackerpack',
-                //     exact: true,
-                //     icon: <WebStoriesOutlined />,
-                //     hidden: !shownPages.hackerPack,
-                //     label: t('Hackerpack_'),
-                //     component: HackerpackPage,
-                // },
-                // {
-                //     key: 'challenges',
-                //     path: '/challenges',
-                //     exact: true,
-                //     hidden: !shownPages.challengesEnabled,
-                //     icon: <FormatListBulletedIcon />,
-                //     label: 'Challenges',
-                //     component: ChallengesIndex,
-                // },
+                {
+                    key: 'hackerpack',
+                    path: '/hackerpack',
+                    exact: true,
+                    icon: <WebStoriesOutlined />,
+                    hidden: !shownPages.hackerPack,
+                    label: t('Hackerpack_'),
+                    component: HackerpackPage,
+                },
+                {
+                    key: 'challenges',
+                    path: '/challenges',
+                    exact: true,
+                    hidden: !shownPages.challengesEnabled,
+                    icon: <FormatListBulletedIcon />,
+                    label: 'Challenges',
+                    component: ChallengesIndex,
+                },
                 // {
                 //     key: 'calendar',
                 //     path: '/calendar',
