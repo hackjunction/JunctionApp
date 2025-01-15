@@ -14,6 +14,7 @@ import ProjectsTable from 'components/tables/ProjectsTable'
 import ChallengeLink from './ChallengeLink'
 
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import { addTeamCodeToProjectAndFilterNoTeam } from 'utils/dataModifiers'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
@@ -21,19 +22,10 @@ export default () => {
     const teams = useSelector(OrganiserSelectors.teams)
 
     const getProjectsForChallenge = slug => {
-        const projectsWithTeam = projects
-            .map(project => {
-                const teamFound = teams.find(team => {
-                    return team._id === project.team
-                })
-                if (teamFound) {
-                    project.teamCode = teamFound.code
-                } else {
-                    project.teamCode = 'No team'
-                }
-                return project
-            })
-            .filter(project => project.teamCode !== 'No team')
+        const projectsWithTeam = addTeamCodeToProjectAndFilterNoTeam(
+            projects,
+            teams,
+        )
         return projectsWithTeam.filter(project => {
             return project.challenges && project.challenges.indexOf(slug) !== -1
         })

@@ -7,7 +7,10 @@ import { Table, Filters, Sorters } from 'components/generic/_Table'
 import EditProjectModal from 'components/modals/EditProjectModal'
 import _ from 'lodash'
 import { CSVLink } from 'react-csv'
-import { projectURLgenerator } from 'utils/dataModifiers'
+import {
+    projectURLgenerator,
+    addTeamCodeToProjectAndFilterNoTeam,
+} from 'utils/dataModifiers'
 
 const ProjectsTable = ({ projects }) => {
     const teams = useSelector(OrganiserSelectors.teams)
@@ -83,19 +86,10 @@ const ProjectsTable = ({ projects }) => {
         ]
     }, [])
 
-    const data = projects
-        .map(project => {
-            const teamFound = teams.find(team => {
-                return team._id === project.team
-            })
-            if (teamFound) {
-                project.teamCode = teamFound.code
-            } else {
-                project.teamCode = 'No team'
-            }
-            return project
-        })
-        .filter(project => project.teamCode !== 'No team')
+    const projectsWithTeam = addTeamCodeToProjectAndFilterNoTeam(
+        projects,
+        teams,
+    )
 
     const exportProjects = selectedRows => {
         setSelected(selectedRows)
@@ -108,7 +102,7 @@ const ProjectsTable = ({ projects }) => {
                 onClose={() => setSelectedProject(null)}
             />
             <Table
-                data={data}
+                data={projectsWithTeam}
                 columns={columns}
                 onRowClick={openSingleEdit}
                 enableExport={false}

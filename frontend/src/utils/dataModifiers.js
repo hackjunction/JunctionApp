@@ -28,3 +28,23 @@ export const projectURLgenerator = (eventSlug, projectId) => {
     }
     return projectURL
 }
+
+export const addTeamCodeToProjectAndFilterNoTeam = (projects, teams) => {
+    // Add teams code to projects and filters the projects which no longer have a team
+    // TODO Delete projects which don't have a team anymore
+    const projectsWithTeam = projects
+        .map(project => {
+            const projectModified = { ...project }
+            const teamFound = teams.find(team => {
+                return team._id === projectModified.team
+            })
+            if (teamFound) {
+                projectModified.teamCode = teamFound.code
+            } else {
+                projectModified.teamCode = 'No team'
+            }
+            return projectModified
+        })
+        .filter(project => project.teamCode !== 'No team')
+    return projectsWithTeam
+}
