@@ -95,7 +95,7 @@ export default () => {
                                 const eventStarted = isodate > event.startTime
                                 return (
                                     <NewEventCard
-                                        key={event.slug}
+                                        key={`active-${event._id}`}
                                         event={event}
                                         buttons={[
                                             <Button
@@ -162,6 +162,7 @@ export default () => {
                             const eventStarted = isodate > event.startTime
                             return (
                                 <NewEventCard
+                                    key={`past-${event._id}`}
                                     event={event}
                                     key={event.slug}
                                     buttons={[

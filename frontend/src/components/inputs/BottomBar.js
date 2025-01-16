@@ -71,6 +71,7 @@ const BottomBar = ({
                 )}
                 {dirty && !hasErrors && (
                     <Button
+                        id={'save-button'}
                         color="theme_white"
                         variant="contained"
                         onClick={onSubmit}

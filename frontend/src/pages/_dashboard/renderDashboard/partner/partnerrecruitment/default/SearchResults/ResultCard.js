@@ -22,74 +22,75 @@ import emblem_black from 'assets/logos/emblem_black.png'
 import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
 import * as RecruitmentActions from 'reducers/recruitment/actions'
 import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as UserSelectors from 'reducers/user/selectors'
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flex: 1,
-        padding: '2rem',
-        position: 'relative',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-        transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
-        backgroundColor: '#FBFBFB',
-        display: 'flex',
-        flexDirection: 'column',
+// const useStyles = makeStyles(theme => ({
+//     root: {
+//         flex: 1,
+//         padding: '2rem',
+//         position: 'relative',
+//         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+//         transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
+//         backgroundColor: '#FBFBFB',
+//         display: 'flex',
+//         flexDirection: 'column',
 
-        '&:hover': {
-            boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-            cursor: 'pointer',
-        },
-    },
-    avatar: {
-        margin: '15px auto',
-        width: 100,
-        height: 100,
-    },
-    name: {
-        textAlign: 'center',
-        fontSize: '1.15rem',
-        lineHeight: 1.2,
-    },
-    country: {
-        textAlign: 'center',
-    },
-    skills: {
-        textAlign: 'left',
-    },
-    topWrapper: {
-        minHeight: '75px',
-    },
-    bottomWrapper: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        flexGrow: 1,
-        height: '3rem',
-    },
-    button: {
-        marginTop: 'auto',
-    },
-    iconRight: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        padding: theme.spacing(2),
-    },
-    iconLeft: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        padding: theme.spacing(1),
-    },
-    favoriteIcon: ({ isFavorite }) => ({
-        transition: 'color 0.2s ease',
-        color: isFavorite
-            ? theme.palette.secondary.light
-            : theme.palette.text.secondary,
-    }),
-}))
+//         '&:hover': {
+//             boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+//             cursor: 'pointer',
+//         },
+//     },
+//     avatar: {
+//         margin: '15px auto',
+//         width: 100,
+//         height: 100,
+//     },
+//     name: {
+//         textAlign: 'center',
+//         fontSize: '1.15rem',
+//         lineHeight: 1.2,
+//     },
+//     country: {
+//         textAlign: 'center',
+//     },
+//     skills: {
+//         textAlign: 'left',
+//     },
+//     topWrapper: {
+//         minHeight: '75px',
+//     },
+//     bottomWrapper: {
+//         width: '100%',
+//         display: 'flex',
+//         justifyContent: 'center',
+//         flexGrow: 1,
+//         height: '3rem',
+//     },
+//     button: {
+//         marginTop: 'auto',
+//     },
+//     iconRight: {
+//         position: 'absolute',
+//         top: 0,
+//         right: 0,
+//         padding: theme.spacing(2),
+//     },
+//     iconLeft: {
+//         position: 'absolute',
+//         top: 0,
+//         left: 0,
+//         padding: theme.spacing(1),
+//     },
+//     favoriteIcon: ({ isFavorite }) => ({
+//         transition: 'color 0.2s ease',
+//         color: isFavorite
+//             ? theme.palette.secondary.light
+//             : theme.palette.text.secondary,
+//     }),
+// }))
 
 export default React.memo(
-    ({ data, organisation }) => {
+    ({ data, onClick = () => {}, eventId }) => {
         const dispatch = useDispatch()
         const actionHistoryByUser = useSelector(
             RecruitmentSelectors.actionHistoryByUser,
@@ -100,9 +101,9 @@ export default React.memo(
 
         // Toggle the favorited state locally for immediate feedback on favorite action
         const [_isFavorite, setIsFavorite] = useState(isFavorite)
-        const classes = useStyles({ isFavorite: _isFavorite })
-        const url = useResolvedPath('').pathname
-        const baseRoute = match.url
+        // const classes = useStyles({ isFavorite: _isFavorite })
+        const classes = { isFavorite: _isFavorite }
+        const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
 
         useEffect(() => {
             setIsFavorite(isFavorite)
@@ -112,17 +113,23 @@ export default React.memo(
             async e => {
                 e.stopPropagation()
                 setIsFavorite(!_isFavorite)
+                const organisation = recEvents?.find(e => {
+                    return e.eventId === eventId
+                }).organisation
 
                 dispatch(
                     RecruitmentActions.toggleFavorite(
                         data.userId,
                         _isFavorite,
                         organisation,
+                        eventId,
                     ),
                 ).then(({ error }) => {
                     if (error) {
                         dispatch(
-                            SnackbarActions.error('Something went wrong...'),
+                            SnackbarActions.error(
+                                'Something went wrong, please refresh the page and try again',
+                            ),
                         )
                         setIsFavorite(_isFavorite)
                     }
@@ -132,12 +139,7 @@ export default React.memo(
         )
 
         return (
-            <Paper
-                className={classes.root}
-                onClick={() => {
-                    dispatch(push(`${baseRoute}/${data.userId}`))
-                }}
-            >
+            <Paper className={classes.root} onClick={onClick}>
                 <Box className={classes.iconRight}>
                     <Tooltip
                         title={
@@ -155,7 +157,7 @@ export default React.memo(
                     <Avatar
                         className={classes.avatar}
                         alt="Profile Picture"
-                        src={data.profile.profilePicture}
+                        src={data.profile.avatar}
                         imgProps={{
                             onError: e => {
                                 e.target.src = emblem_black

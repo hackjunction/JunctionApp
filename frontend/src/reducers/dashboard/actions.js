@@ -321,16 +321,17 @@ export const updateTeams = createAsyncThunk(
 
 export const updateSelectedTeam = createAsyncThunk(
     ActionTypes.UPDATE_SELECTED_TEAM,
-    async ({ slug, code }, { getState, rejectWithValue }) => {
+    async ({ slug, teamId }, { getState, rejectWithValue }) => {
         try {
-            if (!slug || !code) return null
+            if (!slug || !teamId) return null
             const idToken = AuthSelectors.getIdToken(getState())
-            const team = await TeamsService.getTeamWithMetaForEventParticipant(
-                idToken,
-                slug,
-                code,
-                true,
-            )
+            const team =
+                await TeamsService.getTeamWithMetaForEventParticipantByTeamId(
+                    idToken,
+                    slug,
+                    teamId,
+                    true,
+                )
             console.log(team)
             return team
         } catch (error) {
@@ -364,7 +365,11 @@ export const updateTeam = createAsyncThunk(
     async (slug, { getState, rejectWithValue }) => {
         try {
             const idToken = AuthSelectors.getIdToken(getState())
-            const team = await TeamsService.getTeamForEvent(idToken, slug, true)
+            const team = await TeamsService.getUserTeamForEvent(
+                idToken,
+                slug,
+                true,
+            )
             console.log('UPDATE TEAM ACTION AS PARTICIPANT>>>>>>>>>>')
             console.log(team)
             return team
@@ -451,14 +456,17 @@ export const getCandidateProfileById = userId => async (dispatch, getState) => {
 
 export const candidateApplyToTeam = createAsyncThunk(
     ActionTypes.CANDIDATE_APPLY,
-    async ({ slug, code, applicationData }, { getState, rejectWithValue }) => {
+    async (
+        { slug, teamId, applicationData },
+        { getState, rejectWithValue },
+    ) => {
         try {
             if (!slug) return
             const idToken = AuthSelectors.getIdToken(getState())
             const team = await TeamsService.candidateApplyToTeam(
                 idToken,
                 slug,
-                code,
+                teamId,
                 applicationData,
             )
             return team

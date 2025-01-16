@@ -32,6 +32,7 @@ import ProjectsPage from './projects'
 // import TravelGrantsPage from './travel-grants'
 import AlertsPage from './alerts'
 import { QuestionAnswerSharp } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
     const url = useResolvedPath('').pathname
@@ -40,6 +41,7 @@ export default () => {
     // const { slug } = match.params
 
     const { eventSlug } = useParams()
+    const { t } = useTranslation()
 
     const event = useSelector(OrganiserSelectors.event)
     const loading = useSelector(OrganiserSelectors.eventLoading)
@@ -116,31 +118,28 @@ export default () => {
                                     zIndex: 100,
                                 }}
                             >
-                                <>
-                                    The event will be published once approved by
-                                    admins. Questions about the approval process
-                                    can be directed to hello@hackjunction.com
-                                </>
+                                {t('Event_waiting_approval_')}
                             </Alert>
                         ) : null}
-                        <BasicNavBar text={event.name} />
+                        <BasicNavBar />
                     </>
                 }
                 baseRoute={`${url}`}
                 location={location}
                 routes={[
+                    // TODO make one of the routes default or create a default route to render, instead of the events page
                     {
                         key: 'edit',
                         path: '/edit/*',
                         icon: <TuneIcon />,
-                        label: 'Edit',
+                        label: t('Edit_event_'),
                         component: EditPage,
                     },
                     // {
                     //     key: 'stats',
-                    //     path: '/stats',
+                    //     path: '/',
                     //     exact: true,
-                    //     icon: <EqualizerIcon />,
+                    //     // icon: <EqualizerIcon />,
                     //     label: 'Stats',
                     //     component: StatsPage,
                     // },
@@ -148,25 +147,26 @@ export default () => {
                         key: 'participants',
                         path: '/participants/*',
                         icon: <PeopleIcon />,
-                        label: 'Participants',
+                        label: t('Participants_'),
                         component: ParticipantsPage,
                     },
                     {
                         key: 'projects',
                         path: '/projects/*',
                         icon: <CodeIcon />,
-                        label: 'Projects',
+                        label: t('Projects_'),
                         component: ProjectsPage,
                     },
                     {
                         key: 'checkin',
                         path: '/check-in',
                         exact: true,
+                        hidden: event.eventType === EventTypes.online.id,
                         locked: event.eventType === EventTypes.online.id,
                         lockedDescription:
                             'Only for physical and hybrid events',
                         icon: <CropFreeIcon />,
-                        label: 'Check-in',
+                        label: t('Check_in_'),
                         component: CheckinPage,
                     },
                     {
@@ -174,7 +174,7 @@ export default () => {
                         path: '/manage',
                         exact: true,
                         icon: <SettingsIcon />,
-                        label: 'Manage',
+                        label: t('Manage_staff_and_partners_'),
                         component: ManagePage,
                     },
                     {
@@ -182,7 +182,7 @@ export default () => {
                         path: '/alerts',
                         exact: true,
                         icon: <QuestionAnswerSharp />,
-                        label: 'Send announcements',
+                        label: t('Send_announcements_'),
                         component: AlertsPage,
                     },
                     //Experimental

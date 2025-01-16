@@ -11,6 +11,7 @@ import { popupCenter } from 'utils/misc'
 import { Email } from '@mui/icons-material'
 import { objToArr } from 'utils/dataModifiers'
 import PageWrapper from 'components/layouts/PageWrapper'
+import { useTranslation } from 'react-i18next'
 
 // TODO add socialLinks component from Damilare (@mrprotocoll)
 
@@ -30,7 +31,7 @@ export default ({
     console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
     const teamMembersArr = [...objToArr(teamData.meta)]
     const membersCount = teamData?.members ? teamData.members.length : 0
-
+    const { t } = useTranslation()
     // const classes = junctionStyle()
     return (
         <PageWrapper loading={loading}>
@@ -120,7 +121,7 @@ export default ({
                 {enableActions && (
                     <div className="tw-flex tw-gap-4 tw-justify-start">
                         <Button onClick={onClickEdit} variant="jContained">
-                            Edit
+                            {t('Team_edit_')}
                         </Button>
                         {membersCount > 0 ? (
                             <Button
@@ -128,7 +129,8 @@ export default ({
                                 color="outlined_button"
                                 variant="jOutlined"
                             >
-                                Leave the team
+                                {t('Team_leave_')}
+                                {/* Leave the team */}
                             </Button>
                         ) : (
                             <Button
@@ -136,7 +138,8 @@ export default ({
                                 color="outlined_button"
                                 variant="jOutlined"
                             >
-                                Delete the team
+                                {t('Team_delete_')}
+                                {/* Delete the team */}
                             </Button>
                         )}
                     </div>
@@ -145,4 +148,3 @@ export default ({
         </PageWrapper>
     )
 }
-//TODO fix issue that doesn't let team owners leave their own team

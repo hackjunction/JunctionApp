@@ -266,13 +266,14 @@ export const removeRecruiterFromEvent =
 /** Update event registrations with loading/error data */
 export const updateRegistrationsForEvent = createAsyncThunk(
     ActionTypes.UPDATE_REGISTRATIONS,
-    async (slug, { getState, rejectWithValue }) => {
+    async ({ slug, getFullStrings = false }, { getState, rejectWithValue }) => {
         try {
             const idToken = AuthSelectors.getIdToken(getState())
             const registrations =
                 await RegistrationsService.getRegistrationsForEvent(
                     idToken,
                     slug,
+                    getFullStrings,
                 )
             return registrations
         } catch (error) {

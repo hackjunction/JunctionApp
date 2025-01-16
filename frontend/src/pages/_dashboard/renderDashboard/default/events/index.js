@@ -10,13 +10,13 @@ import * as AuthSelectors from 'reducers/auth/selectors'
 import Organizer from './Organizer'
 import Participant from './Participant'
 import Partner from './Partner'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
     console.log('FROM EVENTS PAGE')
     const url = useResolvedPath('').pathname
     const location = useLocation()
-    console.log('location from events page>>>>>>', location)
-    console.log('url from events page>>>>>>', url)
+    const { t } = useTranslation()
 
     const isPartner = useSelector(AuthSelectors.idTokenData)?.roles?.some(r =>
         ['Recruiter', 'SuperAdmin'].includes(r),
@@ -24,13 +24,13 @@ export default () => {
 
     const tabs = [
         {
-            label: 'Your Events',
+            label: t('Your_events_'),
             key: 'events',
             path: '',
             component: Participant,
         },
         {
-            label: 'Organize',
+            label: t('Organize_'),
             key: 'organize',
             path: '/organize',
             component: Organizer,
@@ -39,7 +39,7 @@ export default () => {
 
     if (isPartner) {
         tabs.push({
-            label: 'Partner',
+            label: t('Partner_'),
             key: 'partner',
             path: '/partner',
             component: Partner,

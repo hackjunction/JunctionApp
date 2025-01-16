@@ -284,9 +284,9 @@ const EventInput = new GraphQLInputObjectType({
         frontPagePriority: {
             type: GraphQLInt,
         },
-        approved: {
-            type: GraphQLBoolean,
-        },
+        // approved: {
+        //     type: GraphQLBoolean,
+        // },
         theme: {
             type: EventThemeInput,
         },

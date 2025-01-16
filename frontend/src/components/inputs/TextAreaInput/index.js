@@ -20,6 +20,7 @@ const TextAreaInput = React.memo(
         minRows = 10,
         maxRows = 100,
         maxLength,
+        id = undefined,
     }) => {
         const [errorLength, setErrorLength] = useState(errorLengthBase)
 

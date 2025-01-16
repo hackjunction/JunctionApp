@@ -107,7 +107,7 @@ export default ({ user = {} }) => {
                 <div className="tw-w-full tw-h-32 tw-rounded-lg tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500"></div>
                 <div className="tw-px-8 tw-pt-0 tw-pb-8 tw-flex tw-flex-col tw-gap-2 tw-rounded-lg">
                     <ParticipantPreview viewMode="profile" userData={user} />
-                    {user.profile.countryOfResidence && (
+                    {/* {user.profile.countryOfResidence && (
                         <div className="tw-flex tw-items-center tw-gap-2 tw-text-gray-600">
                             <LocationOn />
                             <Typography
@@ -118,7 +118,7 @@ export default ({ user = {} }) => {
                                 {user.profile.countryOfResidence}
                             </Typography>
                         </div>
-                    )}
+                    )} */}
 
                     {(profile.email || !_.isEmpty(social)) && (
                         <div className="tw-flex tw-content-center tw-justify-start">

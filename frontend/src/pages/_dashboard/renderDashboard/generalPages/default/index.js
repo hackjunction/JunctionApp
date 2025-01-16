@@ -27,7 +27,7 @@ export default ({ alerts }) => {
     const event = useSelector(DashboardSelectors.event)
     const projects = useSelector(DashboardSelectors.projects)
     return (
-        <Box>
+        <Box className="tw-flex tw-flex-col tw-gap-2">
             <PageHeader heading="Dashboard" />
 
             <Helmet>
@@ -68,7 +68,6 @@ export default ({ alerts }) => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
-            <Box mt={2} />
             <Grid container spacing={5}>
                 <div
                     style={{

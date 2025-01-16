@@ -4,23 +4,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     Drawer,
     Box,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
     Grid,
     Collapse,
-    FormControl,
-    InputLabel,
-    Input,
     IconButton,
     Typography,
     List,
     ListItemText,
     ListItem,
     ListItemSecondaryAction,
-    ListItemIcon,
     ListItemAvatar,
     Avatar,
 } from '@mui/material'
@@ -43,8 +34,6 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
     const [openedItemId, setOpenedItemId] = useState('')
     const [organization, setOrganisation] = useState('')
 
-    //const handleDialogOpen = () => setOrganizationDialogOpen(!dialogOpen)
-
     useEffect(() => {
         setOrganisation('')
         setOrganizationDialogOpen(false)
@@ -61,10 +50,7 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
             setOpenedItemId(clickedItemId)
             setOrganizationDialogOpen(true)
         }
-        //setOpen(!open);
     }
-
-    const handleOrganizationDialogClose = () => setOrganizationDialogOpen(false)
 
     const handleSearch = useCallback(() => {
         UserProfilesService.queryUsers(idToken, searchValue)

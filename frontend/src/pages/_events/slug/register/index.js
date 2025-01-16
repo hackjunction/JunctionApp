@@ -147,6 +147,7 @@ export default () => {
         createRegistration,
         editRegistration,
         finishRegistration,
+        registration,
     } = useContext(EventDetailContext)
 
     console.log('EventRegister context >>>>>>>>>>>>>>>>>')
@@ -164,7 +165,9 @@ export default () => {
     const [eventNewsLetterHidden, setEventNewsLetterHidden] = useState(true)
 
     const globalNavbarElement = document.getElementById('global-navbar')
-    globalNavbarElement.style.display = 'none'
+    if (globalNavbarElement) {
+        globalNavbarElement.style.display = 'none'
+    }
 
     useEffect(() => {
         setTimeout(function () {
@@ -278,6 +281,7 @@ export default () => {
         [editRegistration, formData],
     )
 
+    // TODO add formdata save for setPrevStep too
     const setPrevStep = useCallback(() => {
         setActiveStep(activeStep - 1)
     }, [activeStep])
@@ -292,7 +296,7 @@ export default () => {
                 section.questions.forEach(question => {
                     const que = question.name
                     const label = question?.label || 'custom question'
-                    const value = formData[sec][que]
+                    const value = formData[sec]?.[que]
                     const custom = {
                         label: label,
                         section: sec,

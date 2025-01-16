@@ -96,7 +96,7 @@ export default () => {
             ) : null}
             {Array.isArray(spokenLanguages) && spokenLanguages.length ? (
                 <FilteredByItem
-                    label={t('Spoken_languages')}
+                    label={t('Spoken_languages_')}
                     text={spokenLanguages.join(', ')}
                 />
             ) : null}

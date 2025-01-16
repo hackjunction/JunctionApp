@@ -55,11 +55,11 @@ TeamsService.editTeamForEvent = (idToken, eventSlug, edits, populate) => {
 TeamsService.candidateApplyToTeam = (
     idToken,
     eventSlug,
-    teamCode,
+    teamId,
     applicationData,
 ) => {
     return _axios.patch(
-        `/teams/${eventSlug}/teams/${teamCode}`,
+        `/teams/${eventSlug}/team/${teamId}`,
         applicationData,
         config(idToken),
     )
@@ -126,8 +126,7 @@ TeamsService.organiserRemoveMemberFromTeam = (
     )
 }
 
-TeamsService.getTeamForEvent = (idToken, eventSlug, populate = false) => {
-    // Takes idToken, eventSlug and a populate boolean prop, by default false
+TeamsService.getUserTeamForEvent = (idToken, eventSlug, populate = false) => {
     return _axios.get(
         `/teams/${eventSlug}?populate=${populate}`,
         config(idToken),
@@ -162,6 +161,18 @@ TeamsService.getTeamWithMetaForEventParticipant = (
 ) => {
     return _axios.get(
         `/teams/${eventSlug}/teams/${teamCode}?populate=${populate}`,
+        config(idToken),
+    )
+}
+
+TeamsService.getTeamWithMetaForEventParticipantByTeamId = (
+    idToken,
+    eventSlug,
+    teamId,
+    populate = true,
+) => {
+    return _axios.get(
+        `/teams/${eventSlug}/team/${teamId}?populate=${populate}`,
         config(idToken),
     )
 }

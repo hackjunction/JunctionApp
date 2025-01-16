@@ -8,29 +8,41 @@ import * as AuthSelectors from 'reducers/auth/selectors'
 import Profile from 'components/Participant/Profile'
 import RecruitmentFavorites from 'components/Participant/RecruitmentFavorites'
 
+import RecruitmentService from 'services/recruitment'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+
 const RecruitmentProfileDialog = () => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const url = useResolvedPath('').pathname
 
+    // const idToken = useSelector(AuthSelectors.getIdToken)
+    // const match = useRouteMatch()
+    const event = useSelector(DashboardSelectors.event)
+    const eventId = event._id
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [user, setUser] = useState(null)
 
-    const { id } = match.params
+    // const { id } = match.params
+    const id = '123'
     useEffect(() => {
         if (id) {
             setLoading(true)
 
-            UserProfilesService.getUserProfileRecruitment(id, idToken)
+            RecruitmentService.getUserProfile(idToken, id, eventId)
                 .then(data => {
                     setUser(data)
                 })
-                .catch(() => {
+                .catch(err => {
+                    console.error('FROM PROFILE RENDER', err)
                     setError(true)
                 })
                 .finally(() => {
                     setLoading(false)
                 })
+        } else {
+            setError(true)
+            setLoading(false)
         }
     }, [idToken, id])
 

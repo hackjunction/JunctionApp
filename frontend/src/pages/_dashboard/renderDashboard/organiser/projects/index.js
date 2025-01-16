@@ -28,7 +28,11 @@ export default () => {
         if (event.slug) {
             dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
             dispatch(OrganiserActions.updateProjects(event.slug))
-            dispatch(OrganiserActions.updateRegistrationsForEvent(event.slug))
+            dispatch(
+                OrganiserActions.updateRegistrationsForEvent({
+                    slug: event.slug,
+                }),
+            )
             dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
         }
     }, [event, location])
@@ -104,10 +108,8 @@ export default () => {
         return data
     }, [event])
 
-    if (!event || projectsLoading) return <PageWrapper loading />
-
     return (
-        <PageWrapper>
+        <PageWrapper loading={!event || projectsLoading}>
             <PageHeader
                 heading="Projects"
                 subheading="All of the cool stuff people have made"

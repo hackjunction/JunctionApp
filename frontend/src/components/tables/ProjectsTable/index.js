@@ -8,42 +8,21 @@ import EditProjectModal from 'components/modals/EditProjectModal'
 import _ from 'lodash'
 import { CSVLink } from 'react-csv'
 import {
+    flattenObject,
     projectURLgenerator,
     addTeamCodeToProjectAndFilterNoTeam,
 } from 'utils/dataModifiers'
 
+const skipArray = ['_id', '__v', 'id', 'key', 'section']
+const stringEscapeArray = ['description', 'name', 'punchline']
+
 const ProjectsTable = ({ projects }) => {
-    const teams = useSelector(OrganiserSelectors.teams)
     const event = useSelector(OrganiserSelectors.event)
-
-    const skipArray = ['_id', '__v', 'id', 'key', 'section']
-    const flattenObject = ob => {
-        let toReturn = {}
-        for (let i in ob) {
-            if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
-                continue
-
-            if (i === 'description' || i === 'punchline') {
-                toReturn[i] = ob[i].replace(/"/g, '""')
-                continue
-            } else if (typeof ob[i] === 'object' && ob[i] !== null) {
-                let flatObject = flattenObject(ob[i])
-                for (let x in flatObject) {
-                    if (!flatObject.hasOwnProperty(x)) continue
-                    toReturn[i + '.' + x] = flatObject[x]
-                }
-            } else {
-                toReturn[i] = ob[i]
-            }
-        }
-        return toReturn
-    }
-
+    const teams = useSelector(OrganiserSelectors.teams)
     const [selected, setSelected] = useState([])
 
     const [selectedProject, setSelectedProject] = useState(null)
 
-    // TODO config columsn (table only in physical events)
     const openSingleEdit = useCallback(row => {
         setSelectedProject(row.original)
     }, [])
@@ -59,29 +38,28 @@ const ProjectsTable = ({ projects }) => {
                 sortType: Sorters.Numeric,
             },
             {
-                Header: 'Team',
+                Header: 'Team code',
                 accessor: 'teamCode',
                 ...Filters.ContainsSearch,
+                ...Sorters.Alphabetic,
+            },
+            {
+                Header: 'Team name',
+                accessor: 'teamName',
+                ...Filters.ContainsSearch,
+                ...Sorters.Alphabetic,
             },
             {
                 Header: 'Name',
                 accessor: 'name',
                 ...Filters.ContainsSearch,
+                ...Sorters.Alphabetic,
             },
             {
-                Header: 'Punchline',
-                accessor: 'punchline',
+                Header: 'Status',
+                accessor: 'status',
                 ...Filters.ContainsSearch,
-            },
-            {
-                Header: 'Demo',
-                accessor: 'demo',
-                ...Filters.ContainsSearch,
-            },
-            {
-                Header: 'Source',
-                accessor: 'source',
-                ...Filters.ContainsSearch,
+                ...Sorters.Alphabetic,
             },
         ]
     }, [])
@@ -122,13 +100,61 @@ const ProjectsTable = ({ projects }) => {
                                             event.slug,
                                             item.original._id,
                                         ),
-                                        ...flattenObject(item.original),
+                                        ...flattenObject(
+                                            item.original,
+                                            skipArray,
+                                            stringEscapeArray,
+                                        ),
                                     }
                                     return returnObject
                                 })}
-                                filename="export.csv"
+                                filename="project-exports.csv"
                             >
                                 Export selected
+                            </CSVLink>
+                        ),
+                        action: exportProjects,
+                    },
+                    {
+                        key: 'export-gavel',
+                        label: (
+                            <CSVLink
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                }}
+                                data={_.compact(
+                                    selected.map(item => {
+                                        if (item.original.status === 'final') {
+                                            const projectName = item.original
+                                                .name
+                                                ? item.original.name.replace(
+                                                      /"/g,
+                                                      '""',
+                                                  )
+                                                : ''
+                                            const projectPunchline = item
+                                                .original.punchline
+                                                ? item.original.punchline.replace(
+                                                      /"/g,
+                                                      '""',
+                                                  )
+                                                : ''
+                                            const returnObject = {
+                                                projectName,
+                                                projectURL: projectURLgenerator(
+                                                    event.slug,
+                                                    item.original._id,
+                                                ),
+                                                projectPunchline,
+                                            }
+                                            return returnObject
+                                        }
+                                    }),
+                                )}
+                                filename="project-exports-gavel.csv"
+                            >
+                                Export for gavel
                             </CSVLink>
                         ),
                         action: exportProjects,

@@ -18,7 +18,7 @@ import SkillsFilter from './SkillsFilter'
 import RolesFilter from './RolesFilter'
 import FilteredBy from './FilteredBy'
 import LoadingCard from '../SearchResults/LoadingCard'
-import TextInput from 'components/inputs/TextInput'
+// import TextInput from 'components/inputs/TextInput'
 
 export default () => {
     const dispatch = useDispatch()
@@ -68,7 +68,7 @@ export default () => {
 
     return (
         <Box display="flex" flexDirection="column">
-            <Box
+            {/* <Box
                 display="flex"
                 flexDirection="row"
                 alignItems="center"
@@ -82,7 +82,8 @@ export default () => {
                         placeholder="Search by name/email"
                     />
                 </Box>
-            </Box>
+
+            </Box> */}
             <motion.div
                 animate={{
                     overflow: 'hidden',

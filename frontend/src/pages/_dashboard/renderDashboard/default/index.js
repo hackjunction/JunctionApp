@@ -131,7 +131,7 @@ export default () => {
                 sidebarTopContent={
                     <img src={defaultImage} width={250} height={250}></img>
                 }
-                topContent={<BasicNavBar text={''} />}
+                topContent={<BasicNavBar />}
                 routes={[]}
             />
         </PageWrapper>

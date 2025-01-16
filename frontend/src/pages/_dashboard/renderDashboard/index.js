@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useParams, useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,12 +22,10 @@ import {
     useActiveEvents,
     usePastEvents,
 } from 'graphql/queries/events'
-// import { Chat } from 'components/messaging/chat'
 
 export default role => {
     const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
-
     const event = useSelector(DashboardSelectors.event)
 
     const [organizerEvents, loading] = useMyEvents()

@@ -13,7 +13,6 @@ const BannerCarousel = (event = null) => {
             if (banners) setPictures(banners)
         })
     }, [])
-
     return (
         <>
             <Box className="relative mt-0">

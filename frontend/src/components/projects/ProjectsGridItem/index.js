@@ -252,6 +252,11 @@ const ProjectsGridItem = ({
                     <div className="tw-flex tw-gap-2 tw-flex-col md:tw-flex-row ">
                         {onClickMore && (
                             <Button
+                                id={
+                                    project
+                                        ? `open-project-${project._id}`
+                                        : undefined
+                                }
                                 onClick={onClickMore}
                                 color="outlined_button"
                                 variant="jOutlined"
@@ -279,10 +284,13 @@ const ProjectsGridItem = ({
                                                 key={index}
                                                 title={`Reviewed by ${
                                                     project?.scoreData
-                                                        ?.reviewers?.length - 1
+                                                        ?.reviewers?.length -
+                                                    (reviewIndexLimit + 1) +
+                                                    1
                                                 } more ${
                                                     project?.scoreData
                                                         ?.reviewers?.length -
+                                                        (reviewIndexLimit + 1) +
                                                         1 >
                                                     1
                                                         ? 'people'
@@ -292,7 +300,9 @@ const ProjectsGridItem = ({
                                                 <Avatar>
                                                     +
                                                     {project?.scoreData
-                                                        ?.reviewers?.length - 1}
+                                                        ?.reviewers?.length -
+                                                        (reviewIndexLimit + 1) +
+                                                        1}
                                                 </Avatar>
                                             </Tooltip>
                                         )

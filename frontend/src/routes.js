@@ -15,6 +15,8 @@ import ContactPage from './pages/_contact'
 import RequiresPermission from './hocs/RequiresPermission'
 import RequiresRole from 'hocs/RequiresRole'
 // import RequiresRole from 'hocs/RequiresRole'
+import config from 'constants/config'
+import DevTools from 'pages/_devtools'
 
 // /** Lazy-load the access-restricted pages */
 const DashboardRouter = lazy(() => import('./pages/_dashboard'))
@@ -22,11 +24,9 @@ const OrganiserRouter = lazy(
     () => import('./pages/_dashboard/renderDashboard/organiser/router'),
 )
 // const AccountRouter = lazy(() => import('./pages/_account'))
-// //TODO: switch the recruitment view and router
-// const RecruitmentRouter = lazy(
-//     () =>
-//         import('./pages/_dashboard/renderDashboard/partner/partnerrecruitment'),
-// ) //import('./pages/_recruitment'))//
+// const RecruitmentRouter = lazy(() =>
+//     import('./pages/_dashboard/renderDashboard/partner/partnerrecruitment'),
+// )
 // const ProjectsRouter = lazy(() => import('./pages/_projects'))
 const AdminRouter = lazy(() => import('./pages/_admin'))
 // const SandboxRouter = lazy(() => import('./pages/_sandbox'))
@@ -120,20 +120,30 @@ const routes = [
     // {
     //     path: '/admin',
     //     component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
+    //     exact: false,
     // },
     // {
     //     path: '/sandbox',
     //     component: RequiresRole(SandboxRouter, [
     //         AuthConstants.Roles.SUPER_ADMIN,
     //     ]),
+    //     exact: false,
     // },
     // {
     //     path: '/files',
     //     component: RequiresRole(SandboxRouter, [
     //         AuthConstants.Roles.SUPER_ADMIN,
     //     ]),
+    //     exact: false,
     // },
 ]
+
+if (config.IS_DEBUG) {
+    routes.push({
+        path: '/devtools',
+        component: DevTools,
+    })
+}
 
 export default {
     routes,
