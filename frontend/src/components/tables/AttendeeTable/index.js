@@ -17,10 +17,22 @@ import BulkEmailModal from 'components/modals/BulkEmailModal'
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import { CSVLink } from 'react-csv'
 import _ from 'lodash'
+import { flattenObject } from 'utils/dataModifiers'
+
+//Necessary for the CSV export
+const skipArray = ['_id', '__v', 'section', 'key', 'id', 'checklist']
+const stringEscapeArray = [
+    'firstName',
+    'lastName',
+    'motivation',
+    'headline',
+    'cityOfResidence',
+    'biography',
+    'cityOfTravel',
+]
 
 export default ({
     emptyRenderer,
-    loading,
     attendees = [],
     footer = null,
     title = 'Participants',
@@ -74,35 +86,6 @@ export default ({
         },
         [dispatch],
     )
-    // TODO move somewhere else
-    const skipArray = ['_id', '__v', 'section', 'key', 'id', 'checklist']
-    function flattenObject(ob) {
-        let toReturn = {}
-        for (let i in ob) {
-            if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
-                continue
-
-            if (typeof ob[i] === 'object' && ob[i] !== null) {
-                if (i === 'CustomAnswers') {
-                    for (let j in ob[i]) {
-                        if (!ob[i].hasOwnProperty(j)) continue
-                        const customAnswerLabel = ob[i][j].label
-                        const customAnswerValue = ob[i][j].value
-                        toReturn[customAnswerLabel] = customAnswerValue
-                    }
-                } else {
-                    let flatObject = flattenObject(ob[i])
-                    for (let x in flatObject) {
-                        if (!flatObject.hasOwnProperty(x)) continue
-                        toReturn[i + '.' + x] = flatObject[x]
-                    }
-                }
-            } else {
-                toReturn[i] = ob[i]
-            }
-        }
-        return toReturn
-    }
 
     const exportregistrations = selectedRows => {
         setSelected(selectedRows)
@@ -145,7 +128,6 @@ export default ({
             }
         })
     }, [attendees, teams])
-    console.log('attendeesWithTeam', attendeesWithTeam)
     const columns = useMemo(() => {
         return [
             {
@@ -252,6 +234,7 @@ export default ({
             },
         ]
     }, [event.tags, organiserProfilesMap])
+
     return (
         <>
             <EditRegistrationModal
@@ -295,14 +278,53 @@ export default ({
                                 }}
                                 data={selected.map(item => {
                                     const returnObject = {
-                                        ...flattenObject(item.original),
+                                        ...flattenObject(
+                                            item.original,
+                                            skipArray,
+                                            stringEscapeArray,
+                                        ),
                                         registrationId: item.original._id,
                                     }
                                     return returnObject
                                 })}
-                                filename="export.csv"
+                                filename="registrations-export.csv"
                             >
                                 Export registrations
+                            </CSVLink>
+                        ),
+                        action: exportregistrations,
+                    },
+                    {
+                        key: 'export-gavel',
+                        label: (
+                            <CSVLink
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                }}
+                                data={_.compact(
+                                    selected.map(item => {
+                                        if (
+                                            item.original.status === 'checkedIn'
+                                        ) {
+                                            const firstName =
+                                                item.original.answers.firstName
+                                            const email =
+                                                item.original.answers.email
+                                            const registrationId =
+                                                item.original._id
+                                            const returnObject = {
+                                                firstName,
+                                                email,
+                                                registrationId,
+                                            }
+                                            return returnObject
+                                        }
+                                    }),
+                                )}
+                                filename="registrations-gavel.csv"
+                            >
+                                Export for gavel
                             </CSVLink>
                         ),
                         action: exportregistrations,

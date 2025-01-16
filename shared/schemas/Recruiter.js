@@ -6,6 +6,7 @@ const {
     GraphQLNonNull,
 } = require('graphql')
 
+// TODO implement recruiter roles and modify naming of recruiters to partners
 const mongooseSchema = new mongoose.Schema({
     recruiterId: {
         type: String,

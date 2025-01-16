@@ -74,7 +74,7 @@ export default ({
         let items = [
             {
                 label: t('All_participants_'),
-                description: t('No filters'),
+                description: t('No_filters_'),
                 filters: [],
                 isDefault: true,
             },

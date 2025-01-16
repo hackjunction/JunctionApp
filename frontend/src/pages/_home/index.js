@@ -120,7 +120,7 @@ export default () => {
                             })}
                         </Typography>
                     </Grid>
-                    <Grid container justify="center" alignItems="center">
+                    <Grid container justifyContent="center" alignItems="center">
                         <Button
                             color="theme_lightgray"
                             variant="outlinedNew"

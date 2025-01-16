@@ -20,6 +20,7 @@ const TechnologiesField = ({ props }) => {
                     >
                         <div className="tw-bg-gray-100 tw-p-2 tw-rounded-md tw-border-gray-300 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-300">
                             <Select
+                                name={'technologies'}
                                 label="Technologies & Tools"
                                 options="technology"
                                 value={field.value}

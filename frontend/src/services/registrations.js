@@ -64,8 +64,17 @@ RegistrationsService.cancelRegistration = (idToken, slug) => {
 /** Get all registrations for event
  * GET /:slug/all
  */
-RegistrationsService.getRegistrationsForEvent = (idToken, slug) => {
-    return _axios.get(`${BASE_ROUTE}/${slug}/all`, config(idToken))
+RegistrationsService.getRegistrationsForEvent = (
+    idToken,
+    slug,
+    getFullStrings,
+) => {
+    return _axios.get(
+        `${BASE_ROUTE}/${slug}/all${
+            getFullStrings ? '?getFullStrings=true' : ''
+        }`,
+        config(idToken),
+    )
 }
 
 /** Edit registrations in bulk

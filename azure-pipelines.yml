@@ -94,7 +94,6 @@ stages:
                               inputs:
                                   targetType: 'inline'
                                   script: |
-                                      Modify deployment script based on the app type
                                       echo "Starting deployment script run"
 
                             - task: ExtractFiles@1

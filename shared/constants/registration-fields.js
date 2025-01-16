@@ -1180,16 +1180,18 @@ const Fields = {
             const base = yup
                 .object()
                 .shape({
+                    country: yup.string().label('Country').nullable(),
                     level: required
                         ? yup.string().label('Level of Education').required()
                         : yup.string().label('Level of Education'),
-                    university: yup.string().label('University'),
-                    degree: yup.string().label('Degree'),
+                    university: yup.string().label('University').nullable(),
+                    degree: yup.string().label('Degree').nullable(),
                     graduationYear: yup
                         .number()
                         .min(1900)
                         .max(2100)
-                        .label('Graduation year'),
+                        .label('Graduation year')
+                        .nullable(),
                 })
                 .noUnknown()
                 .label(FieldProps.education.label)
@@ -1378,7 +1380,7 @@ const Fields = {
                         if (!value) return false
                         return true
                     }),
-                    relocation: yup.string(),
+                    relocation: yup.string().nullable(),
                 })
                 .noUnknown()
                 .label(FieldProps.recruitmentOptions.label)

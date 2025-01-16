@@ -8,7 +8,7 @@ const PageWrapper = ({
     loadingText = 'Loading',
     error = false,
     errorText = 'Oops, something went wrong...',
-    errorDesc = 'Please reload the page to try again',
+    errorDesc = 'Please reload the page to try again or go back to the previous page. If the problem persists, please contact support.',
     wrapContent = true,
     wrapperProps = {},
     showErrorMessage = false,
@@ -25,10 +25,13 @@ const PageWrapper = ({
                 <Box
                     p={2}
                     display="flex"
+                    flexDirection="column"
                     alignItems="center"
                     justifyContent="center"
+                    gridGap={10}
                 >
                     <CircularProgress size={24} />
+                    <Typography variant="body1">{loadingText}</Typography>
                 </Box>
             )
         }

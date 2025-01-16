@@ -74,19 +74,6 @@ const ShareProject = (event, project) => {
                                 size="3x"
                             />
                         </Grid>
-                        <Grid item>
-                            <FontAwesomeIcon
-                                icon={['fab', 'vk']}
-                                onClick={() =>
-                                    popupCenter({
-                                        url: `https://vkontakte.ru/share.php?url=${shareurl}&`,
-                                        title: 'VKOntakte',
-                                    })
-                                }
-                                className={classes.socialIcon}
-                                size="3x"
-                            />
-                        </Grid>
                     </Grid>
                 </Box>
             </Grid>

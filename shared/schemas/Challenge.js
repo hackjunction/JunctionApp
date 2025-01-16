@@ -4,6 +4,7 @@ const {
     GraphQLString,
     GraphQLInputObjectType,
     GraphQLNonNull,
+    GraphQLList,
 } = require('graphql')
 const CloudinaryImageSchema = require('./CloudinaryImage')
 
@@ -47,6 +48,21 @@ const ChallengeSchema = new mongoose.Schema({
         type: String,
     },
     logo: CloudinaryImageSchema.mongoose,
+    scoreCriteriaChallengeSettings: {
+        type: [
+            {
+                criteria: {
+                    type: String,
+                    required: true,
+                },
+                label: {
+                    type: String,
+                    required: true,
+                },
+            },
+        ],
+        default: [],
+    },
 })
 
 const ChallengeType = new GraphQLObjectType({
@@ -90,6 +106,21 @@ const ChallengeType = new GraphQLObjectType({
         },
         logo: {
             type: CloudinaryImageSchema.graphql,
+        },
+        scoreCriteriaChallengeSettings: {
+            type: new GraphQLList(
+                new GraphQLObjectType({
+                    name: 'scoreCriteriaChallengeSettings',
+                    fields: {
+                        criteria: {
+                            type: GraphQLString,
+                        },
+                        label: {
+                            type: GraphQLString,
+                        },
+                    },
+                }),
+            ),
         },
     },
 })
@@ -138,6 +169,24 @@ const ChallengeInput = new GraphQLInputObjectType({
         },
         logo: {
             type: CloudinaryImageSchema.graphqlInput,
+        },
+        scoreCriteriaChallengeSettings: {
+            type: new GraphQLList(
+                new GraphQLInputObjectType({
+                    name: 'scoreCriteriaChallengeSettingsInput',
+                    fields: {
+                        _id: {
+                            type: GraphQLString,
+                        },
+                        criteria: {
+                            type: GraphQLString,
+                        },
+                        label: {
+                            type: GraphQLString,
+                        },
+                    },
+                }),
+            ),
         },
     },
 })

@@ -51,7 +51,7 @@ export default () => {
             })
             .finally(() => {
                 setAssignLoading(false)
-                dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
+                dispatch(OrganiserActions.updateRegistrationsForEvent({ slug }))
             })
     }, [dispatch, idToken, slug])
 

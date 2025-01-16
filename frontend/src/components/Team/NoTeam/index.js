@@ -2,17 +2,18 @@ import { Typography } from '@mui/material'
 import Button from 'components/generic/Button'
 
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 // import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 export default ({ eventData = {}, onCreate }) => {
     const navigate = useNavigate()
     // const dispatch = useDispatch()
+    const { t } = useTranslation()
     return (
         <div className="tw-flex tw-flex-col tw-gap-32 tw-py-12">
             <Typography className="tw-text-lg" variant="body1" component="p">
-                Your Team will appear here once you create it or get accepted to
-                an existing team.
+                {t('Team_none_')}
             </Typography>
             <div className="tw-flex tw-gap-4 tw-justify-start">
                 <Button
@@ -22,10 +23,15 @@ export default ({ eventData = {}, onCreate }) => {
                     color="outlined_button"
                     variant="jOutlined"
                 >
-                    Join a team
+                    {t('Team_join_')}
+                    {/* Join a team */}
                 </Button>
-                <Button onClick={onCreate} variant="jContained">
-                    Create a team
+                <Button
+                    id="create-team"
+                    onClick={onCreate}
+                    variant="jContained"
+                >
+                    {t('Team_create_')}
                 </Button>
             </div>
         </div>

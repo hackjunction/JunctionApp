@@ -156,7 +156,10 @@ export default () => {
                                     <Typography variant="h2">
                                         {event.name}
                                     </Typography>
-                                    <Grid container justify="space-between">
+                                    <Grid
+                                        container
+                                        justifyContent="space-between"
+                                    >
                                         <EventInformation
                                             registration={registration}
                                             event={event}

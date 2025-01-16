@@ -58,7 +58,9 @@ export default ({ registration, onSubmit, onCancel }) => {
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Box pt={3}>
-                    <Typography variant="h5">{t('Edit_reg_')}</Typography>
+                    <Typography variant="h5">
+                        {t('Edit_registration_')}
+                    </Typography>
                 </Box>
             </Grid>
             <Grid item xs={12}>

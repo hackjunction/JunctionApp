@@ -9,6 +9,7 @@ const errorLengthBase = {
 
 const TextInput = React.memo(
     ({
+        id,
         disabled,
         label,
         name,
@@ -44,6 +45,7 @@ const TextInput = React.memo(
         if (maxLength) {
             textFieldFormat = (
                 <TextField
+                    id={id}
                     autoFocus={autoFocus}
                     disabled={disabled}
                     fullWidth
@@ -62,6 +64,7 @@ const TextInput = React.memo(
         } else {
             textFieldFormat = (
                 <TextField
+                    id={id}
                     autoFocus={autoFocus}
                     disabled={disabled}
                     fullWidth

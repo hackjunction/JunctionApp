@@ -106,7 +106,9 @@ const registrationQuery = gql`
         myRegistration(eventSlug: $eventSlug) {
             status
             answers {
+                numHackathons
                 spokenLanguages
+                tShirtSize
                 roles {
                     role
                     years
@@ -140,6 +142,7 @@ const registrationQuery = gql`
                 needsTravelGrant
                 needsVisa
                 countryOfTravel
+                cityOfTravel
                 linkedin
                 github
                 curriculumVitae
@@ -149,6 +152,7 @@ const registrationQuery = gql`
                     university
                     degree
                     graduationYear
+                    country
                 }
                 motivation
                 biography

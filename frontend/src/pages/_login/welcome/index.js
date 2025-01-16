@@ -313,6 +313,7 @@ export default () => {
                         >
                             <Box width="240px">
                                 <Button
+                                    id="welcome-button"
                                     onClick={formik.submitForm}
                                     disabled={!formik.isValid}
                                     loading={formik.isSubmitting}
