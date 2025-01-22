@@ -69,10 +69,6 @@ export default () => {
                                 <Grid key={`partner-${event._id}`} item xs={12}>
                                     <NewEventCard
                                         handleClick={() => {
-                                            console.log(
-                                                '/dashboard/event/' +
-                                                    event.slug,
-                                            )
                                             dispatch(
                                                 UserActions.setAccessRight(
                                                     'partner',
@@ -104,10 +100,6 @@ export default () => {
                                                 id={`partner-dashboard-event-${event.slug}`}
                                                 size="small"
                                                 onClick={() => {
-                                                    console.log(
-                                                        '/dashboard/event/' +
-                                                            event.slug,
-                                                    )
                                                     dispatch(
                                                         UserActions.setAccessRight(
                                                             'partner',

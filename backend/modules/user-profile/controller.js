@@ -1,5 +1,5 @@
 const { UserProfile } = require('./model')
-const { NotFoundError } = require('../../common/errors/errors')
+const { NotFoundError, ValidationError } = require('../../common/errors/errors')
 const UserProfileHelpers = require('./helpers')
 const userProfileUtils = require('../../common/utils/userProfileUtils')
 
@@ -70,12 +70,18 @@ controller.createUserProfile = (data, userId) => {
 
 controller.updateUserProfile = async (data, userId) => {
     console.log('Updating user profile', data, userId)
-    const validatedData = await UserProfileHelpers.validate(data)
-    console.log('this is running >>>>>>>>>>>>>>>>>>>>>>>>>.')
-    console.log('Validated Data:', validatedData)
-    return controller.getUserProfile(userId).then(userProfile => {
-        return UserProfile.updateAllowed(userProfile, validatedData)
-    })
+    try {
+        const validatedData = await UserProfileHelpers.validate(data)
+        const userUpdated = await controller
+            .getUserProfile(userId)
+            .then(userProfile => {
+                return UserProfile.updateAllowed(userProfile, validatedData)
+            })
+        return userUpdated
+    } catch (error) {
+        console.error('Error updating user', error)
+        throw new ValidationError('Error updating user profile', error)
+    }
 }
 
 controller.syncRegistration = async registration => {

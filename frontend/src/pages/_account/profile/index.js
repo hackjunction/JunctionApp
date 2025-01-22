@@ -63,8 +63,7 @@ export default () => {
 
     // const classes = useStyles()
 
-    const validationSchema = useCallback(data => {
-        console.log('data on validation', data)
+    const validationSchema = data => {
         const validations = {}
         Object.keys(data).forEach(field => {
             const fieldConfig = RegistrationFields.getField(field)
@@ -76,10 +75,9 @@ export default () => {
         })
 
         validations['avatar'] = yup.string().url().nullable()
-        console.log('Validation schema', validations)
 
         return validations
-    }, [])
+    }
 
     const handleSubmit = useCallback(
         (values, formikBag) => {

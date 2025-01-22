@@ -1,17 +1,8 @@
-// const {
-//     GraphQLDate,
-//     GraphQLTime,
-//     GraphQLDateTime,
-// } = require('graphql-iso-date')
-
 const { DateResolver } = require('graphql-scalars')
 
 const yup = require('yup')
 const _ = require('lodash')
 const {
-    graphql,
-    GraphQlSchema,
-    GraphQlObjectType,
     GraphQLString,
     GraphQLList,
     GraphQLNonNull,
@@ -460,7 +451,27 @@ const FieldProps = {
         hintMarkdown: false,
         fieldType: FieldTypes.SKILLS,
         copyToUserProfile: true,
-        mongooseSchema: { type: new mongoose.Schema([SkillSchema.mongoose]) },
+        mongooseSchema: {
+            type: [
+                {
+                    skill: {
+                        type: String,
+                        validate: {
+                            validator(v) {
+                                return Skills.items.indexOf(v) !== -1
+                            },
+                            message: props =>
+                                `${props.value} is not a valid skill`,
+                        },
+                    },
+                    level: {
+                        type: Number,
+                        min: 1,
+                        max: 5,
+                    },
+                },
+            ],
+        },
         graphqlSchema: GraphQLList(SkillSchema.graphql),
         schemaConfig: {
             defaultEnable: false,
@@ -1106,8 +1117,8 @@ const Fields = {
                             .label('Experience level'),
                     }),
                 )
-                .max(10)
                 .ensure()
+                .max(10)
                 .label(FieldProps.skills.label)
 
             return required ? base.required() : base

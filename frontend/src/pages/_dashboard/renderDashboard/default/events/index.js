@@ -13,7 +13,6 @@ import Partner from './Partner'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
-    console.log('FROM EVENTS PAGE')
     const url = useResolvedPath('').pathname
     const location = useLocation()
     const { t } = useTranslation()

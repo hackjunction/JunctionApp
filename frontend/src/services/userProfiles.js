@@ -61,7 +61,11 @@ UserProfilesService.updateRecruiter = (
     organisation,
 ) => {
     const data = { recruiterId, event, organisation }
-    return _axios.patch('/user-profiles/recruiters/update', data, config(idToken))
+    return _axios.patch(
+        '/user-profiles/recruiters/update',
+        data,
+        config(idToken),
+    )
 }
 
 UserProfilesService.deleteRecruiter = (idToken, recruiterId, event) => {
