@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useResolvedPath } from 'react-router'
+import { useParams, useResolvedPath } from 'react-router'
 import { Dialog } from '@mui/material'
 import PageWrapper from 'components/layouts/PageWrapper'
 import UserProfilesService from 'services/userProfiles'
@@ -14,6 +14,7 @@ import * as DashboardSelectors from 'reducers/dashboard/selectors'
 const RecruitmentProfileDialog = () => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const url = useResolvedPath('').pathname
+    const params = useParams()
 
     // const idToken = useSelector(AuthSelectors.getIdToken)
     // const match = useRouteMatch()
@@ -23,8 +24,8 @@ const RecruitmentProfileDialog = () => {
     const [error, setError] = useState(false)
     const [user, setUser] = useState(null)
 
-    // const { id } = match.params
-    const id = '123'
+    const { id } = params
+    // const id = '123'
     useEffect(() => {
         if (id) {
             setLoading(true)

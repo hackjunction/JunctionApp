@@ -150,6 +150,7 @@ export default ({
                 {
                     key: 'team',
                     path: '/team/*',
+                    onClickPath: '/team',
                     exact: false,
                     icon: <GroupIcon />,
                     label: t('Team_'),

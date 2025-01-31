@@ -2,12 +2,12 @@ import { FormControl, FormLabel, Radio, RadioGroup } from '@mui/material'
 import _ from 'lodash'
 import { toInteger } from 'lodash-es'
 import React, { useState } from 'react'
-import junctionStyle from 'utils/styles'
+// import junctionStyle from 'utils/styles'
 
 const scoreArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 export default ({ criteria, label, onSelectionChange, value = null }) => {
-    const classes = junctionStyle()
+    // const classes = junctionStyle()
     const [selectedValue, setSelectedValue] = useState(value)
     const [selectedIndex, setSelectedIndex] = useState(null)
 
@@ -48,7 +48,7 @@ export default ({ criteria, label, onSelectionChange, value = null }) => {
                         checkedIcon={
                             <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-rounded-full tw-w-5 tw-h-5 sm:tw-w-8 sm:tw-h-8 ">
                                 <span
-                                    className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-font-bold tw-text-white ${classes.bgPrimary}`}
+                                    className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-font-bold tw-text-white ${'classes.bgPrimary'}`}
                                 >
                                     {score}
                                 </span>
@@ -58,7 +58,7 @@ export default ({ criteria, label, onSelectionChange, value = null }) => {
                             index < selectedIndex ? (
                                 <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-rounded-full tw-w-5 tw-h-5 sm:tw-w-8 sm:tw-h-8">
                                     <span
-                                        className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-text-gray-400 ${classes.bgPrimary}`}
+                                        className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-text-gray-400 ${'classes.bgPrimary'}`}
                                     >
                                         {score}
                                     </span>

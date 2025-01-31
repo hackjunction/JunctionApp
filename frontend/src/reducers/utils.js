@@ -1,4 +1,4 @@
-import { reduce, cloneDeep, set } from 'lodash-es'
+import { reduce, cloneDeep, set, endsWith, replace } from 'lodash-es'
 
 /**
  * Custom handler for reducers. If you want to produce this kind of state:
@@ -139,4 +139,21 @@ export const buildUpdatePath = path => (state, data) => {
     const newState = cloneDeep(state)
     set(newState, path, data)
     return newState
+}
+
+export const asyncThunkModifier = action => {
+    // Adds the promise status to the action being ran to match the buildHandler logic
+    if (endsWith(action.type, '/fulfilled')) {
+        action.baseType = replace(action.type, '/fulfilled', '')
+        action.status = 'success'
+    }
+    if (endsWith(action.type, '/pending')) {
+        action.baseType = replace(action.type, '/pending', '')
+        action.status = 'start'
+    }
+    if (endsWith(action.type, '/rejected')) {
+        action.baseType = replace(action.type, '/rejected', '')
+        action.status = 'failure'
+    }
+    return action
 }

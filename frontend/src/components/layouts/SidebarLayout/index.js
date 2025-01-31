@@ -135,14 +135,18 @@ export default React.memo(
                                 <ListItem
                                     disabled={route.locked}
                                     button
-                                    key={route.path}
+                                    key={route?.onClickPath || route.path}
                                     selected={index === safeIndex}
                                     className={`${
                                         index === safeIndex
                                             ? 'text-white'
                                             : 'text-gray-400'
                                     }`}
-                                    onClick={() => pushRoute(route.path)}
+                                    onClick={() =>
+                                        pushRoute(
+                                            route?.onClickPath || route.path,
+                                        )
+                                    }
                                 >
                                     <ListItemIcon className="text-inherit">
                                         {route.locked ? (
@@ -308,7 +312,6 @@ export default React.memo(
                                             path,
                                             hidden,
                                             component: Component,
-                                            exact = false,
                                             locked,
                                         },
                                         index,
@@ -319,7 +322,6 @@ export default React.memo(
                                             return (
                                                 <Route
                                                     key={key}
-                                                    exact={exact}
                                                     path={`${path}`}
                                                     element={<Component />}
                                                 />
@@ -330,18 +332,15 @@ export default React.memo(
 
                                 <Route
                                     key={'profile'}
-                                    exact={true}
                                     path={`profile`}
                                     element={<ProfilePage />}
                                 />
                                 {/* <Route
                                     key={'logout'}
-                                    exact={true}
                                     path={`${baseRoute}/logout`}
                                 /> */}
                                 <Route
                                     key={'events'}
-                                    exact={false}
                                     path={`events/*`}
                                     element={<EventsPage />}
                                 />

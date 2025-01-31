@@ -3,7 +3,8 @@ import { Roles, Misc } from '@hackjunction/shared'
 import { Box, Chip, Typography, Grid } from '@mui/material'
 
 import GradientBox from 'components/generic/GradientBox'
-import SkillRating from '../../../pages/_dashboard/renderDashboard/partner/partnerrecruitment/default/SearchResults/SkillRating'
+import SkillRating from 'pages/_dashboard/renderDashboard/partner/partnerrecruitment/default/SearchResults/SkillRating'
+import { useTranslation } from 'react-i18next'
 
 // const useStyles = makeStyles(theme => ({
 //     inline: {
@@ -55,6 +56,7 @@ import SkillRating from '../../../pages/_dashboard/renderDashboard/partner/partn
 
 export default ({ user = {} }) => {
     // const classes = useStyles()
+    const { t } = useTranslation()
 
     const renderRecruitmentStatus = () => {
         switch (user.recruitmentOptions?.status) {
@@ -313,20 +315,14 @@ export default ({ user = {} }) => {
                                             </Typography>
 
                                             {user.skills.map(skillObj => (
-                                                <SkillRating
-                                                    data={skillObj}
-                                                    key={skillObj.skill}
-                                                    small={false}
-                                                    size={'body1'}
-                                                />
-
-                                                // <Typography
-                                                //     className="tw-text-lg tw-p-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-300"
-                                                //     variant="body1"
-                                                //     component="p"
-                                                // >
-                                                //     {skillObj.skill}
-                                                // </Typography>
+                                                <>
+                                                    <SkillRating
+                                                        data={skillObj}
+                                                        key={skillObj.skill}
+                                                        small={false}
+                                                        size={'body1'}
+                                                    />
+                                                </>
                                             ))}
                                         </GradientBox>
                                     </div>

@@ -20,8 +20,10 @@ import { useActiveEvents } from 'graphql/queries/events'
 import * as DashboardActions from 'reducers/dashboard/actions'
 
 import _ from 'lodash'
+import { useNavigate } from 'react-router-dom'
 
 export default () => {
+    const navigate = useNavigate()
     const userId = useSelector(AuthSelectors.getUserId)
     const [activeEvents, loadingActive] = useActiveEvents({})
     const pastEvents = useSelector(DashboardSelectors.pastEvents)
@@ -74,10 +76,8 @@ export default () => {
                                                     'partner',
                                                 ),
                                             )
-                                            dispatch(
-                                                push(
-                                                    `/dashboard/event/${event?.slug}`,
-                                                ),
+                                            navigate(
+                                                `/dashboard/event/${event?.slug}`,
                                             )
                                         }}
                                         event={event}
@@ -85,11 +85,8 @@ export default () => {
                                             <Button
                                                 size="small"
                                                 onClick={() =>
-                                                    dispatch(
-                                                        push(
-                                                            '/events/' +
-                                                                event.slug,
-                                                        ),
+                                                    navigate(
+                                                        '/events/' + event.slug,
                                                     )
                                                 }
                                             >
@@ -105,10 +102,8 @@ export default () => {
                                                             'partner',
                                                         ),
                                                     )
-                                                    dispatch(
-                                                        push(
-                                                            `/dashboard/event/${event?.slug}`,
-                                                        ),
+                                                    navigate(
+                                                        `/dashboard/event/${event?.slug}`,
                                                     )
                                                 }}
                                             >

@@ -131,6 +131,7 @@ export default () => {
                     {
                         key: 'edit',
                         path: '/edit/*',
+                        onClickPath: '/edit',
                         icon: <TuneIcon />,
                         label: t('Edit_event_'),
                         component: EditPage,
@@ -146,6 +147,7 @@ export default () => {
                     {
                         key: 'participants',
                         path: '/participants/*',
+                        onClickPath: '/participants',
                         icon: <PeopleIcon />,
                         label: t('Participants_'),
                         component: ParticipantsPage,
@@ -153,6 +155,7 @@ export default () => {
                     {
                         key: 'projects',
                         path: '/projects/*',
+                        onClickPath: '/projects',
                         icon: <CodeIcon />,
                         label: t('Projects_'),
                         component: ProjectsPage,

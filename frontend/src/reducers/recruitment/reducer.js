@@ -1,5 +1,5 @@
 import * as ActionTypes from './actionTypes'
-import { buildHandler } from 'reducers/utils'
+import { asyncThunkModifier, buildHandler } from 'reducers/utils'
 
 const initialState = {
     events: {
@@ -49,7 +49,8 @@ const adminRecruitersHandler = buildHandler('adminRecruiters')
 const adminSearchHandler = buildHandler('adminSearchResults')
 
 export default function reducer(state = initialState, action) {
-    switch (action.type) {
+    action = asyncThunkModifier(action)
+    switch (action.baseType || action.type) {
         case ActionTypes.UPDATE_EVENTS: {
             return eventsHandler(state, action)
         }
@@ -75,15 +76,16 @@ export default function reducer(state = initialState, action) {
             eventRecruitersHandler(state, action)
         }
         case ActionTypes.ADD_RECRUITERS_EVENT: {
-            const data = state.events.data.concat(action.payload.recruiterEvents)
+            const data = state.events.data.concat(
+                action.payload.recruiterEvents,
+            )
             return {
                 ...state,
                 events: {
                     ...state.events,
-                    data: data
-                }
+                    data: data,
+                },
             }
-
         }
         case ActionTypes.REMOVE_RECRUITERS_EVENT: {
             const data = state.events.data.filter(event => {
@@ -94,8 +96,8 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 events: {
                     ...state.events,
-                    data: data
-                }
+                    data: data,
+                },
             }
         }
         case ActionTypes.UPDATE_ACTION_HISTORY: {

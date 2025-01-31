@@ -4,7 +4,7 @@ import { useParams, useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import PageWrapper from 'components/layouts/PageWrapper'
 
-// import PartnerDashboard from './partner'
+import PartnerDashboard from './partner'
 import ParticipantDashboard from './participant'
 import OrganizerDashboard from './organiser'
 
@@ -155,14 +155,13 @@ export default role => {
                     }
                     wrapContent={false}
                 >
-                    {/* <PartnerDashboard
+                    <PartnerDashboard
                         event={event}
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
-                        shownPages={shownPages}
-                        lockedPages={lockedPages}
-                    /> */}
-                    <p>PARTNER DASHBOARD</p>
+                        // shownPages={shownPages}
+                        // lockedPages={lockedPages}
+                    />
                 </PageWrapper>
             )
         }

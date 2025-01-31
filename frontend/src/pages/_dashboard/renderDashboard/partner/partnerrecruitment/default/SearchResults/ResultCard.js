@@ -1,5 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import { useResolvedPath } from 'react-router'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { findIndex } from 'lodash-es'
 
@@ -10,9 +9,10 @@ import {
     Box,
     Tooltip,
     IconButton,
+    styled,
 } from '@mui/material'
 
-import { KeyboardArrowDown } from '@mui/icons-material/'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import StarIcon from '@mui/icons-material/Star'
 
 import { sortBy } from 'lodash-es'
@@ -89,125 +89,122 @@ import * as UserSelectors from 'reducers/user/selectors'
 //     }),
 // }))
 
-export default React.memo(
-    ({ data, onClick = () => {}, eventId }) => {
-        const dispatch = useDispatch()
-        const actionHistoryByUser = useSelector(
-            RecruitmentSelectors.actionHistoryByUser,
-        )
-        const userHistory = actionHistoryByUser[data.userId] ?? []
-        const isFavorite =
-            findIndex(userHistory, action => action.type === 'favorite') !== -1
+const ResultCard = ({ data, onClick = () => {}, eventId }) => {
+    const dispatch = useDispatch()
+    const actionHistoryByUser = useSelector(
+        RecruitmentSelectors.actionHistoryByUser,
+    )
+    const userHistory = actionHistoryByUser[data.userId] ?? []
+    const isFavorite =
+        findIndex(userHistory, action => action.type === 'favorite') !== -1
+    const [_isFavorite, setIsFavorite] = useState(isFavorite)
+    const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
 
-        // Toggle the favorited state locally for immediate feedback on favorite action
-        const [_isFavorite, setIsFavorite] = useState(isFavorite)
-        // const classes = useStyles({ isFavorite: _isFavorite })
-        const classes = { isFavorite: _isFavorite }
-        const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
+    useEffect(() => {
+        setIsFavorite(isFavorite)
+    }, [isFavorite])
 
-        useEffect(() => {
-            setIsFavorite(isFavorite)
-        }, [isFavorite])
-
-        const handleFavorite = useCallback(
-            async e => {
-                e.stopPropagation()
-                setIsFavorite(!_isFavorite)
-                const organisation = recEvents?.find(e => {
-                    return e.eventId === eventId
-                }).organisation
-
+    const handleFavorite = async e => {
+        e.stopPropagation()
+        setIsFavorite(!_isFavorite)
+        const organisation = recEvents?.find(e => {
+            return e.eventId === eventId
+        }).organisation
+        dispatch(
+            RecruitmentActions.toggleFavorite({
+                userId: data.userId,
+                isFavorite: _isFavorite,
+                organisation,
+                eventId,
+            }),
+        ).then(({ error }) => {
+            if (error) {
                 dispatch(
-                    RecruitmentActions.toggleFavorite(
-                        data.userId,
-                        _isFavorite,
-                        organisation,
-                        eventId,
+                    SnackbarActions.error(
+                        'Something went wrong, please refresh the page and try again',
                     ),
-                ).then(({ error }) => {
-                    if (error) {
-                        dispatch(
-                            SnackbarActions.error(
-                                'Something went wrong, please refresh the page and try again',
-                            ),
-                        )
-                        setIsFavorite(_isFavorite)
+                )
+                setIsFavorite(_isFavorite)
+            }
+        })
+    }
+    const StyledStarIcon = styled(StarIcon)({
+        color: isFavorite ? 'blue' : 'gray',
+    })
+
+    return (
+        <Paper className={'classes.root'} onClick={onClick}>
+            <Box className={'classes.iconRight'}>
+                <Tooltip
+                    title={
+                        _isFavorite
+                            ? 'Remove from favorites'
+                            : 'Add to favorites'
                     }
-                })
-            },
-            [_isFavorite, data.userId, dispatch],
-        )
-
-        return (
-            <Paper className={classes.root} onClick={onClick}>
-                <Box className={classes.iconRight}>
-                    <Tooltip
-                        title={
-                            _isFavorite
-                                ? 'Remove from favorites'
-                                : 'Add to favorites'
-                        }
+                >
+                    <IconButton onClick={handleFavorite}>
+                        <StyledStarIcon />
+                    </IconButton>
+                </Tooltip>
+            </Box>
+            <div style={{ flex: 1 }}>
+                <Avatar
+                    className={'classes.avatar'}
+                    alt="Profile Picture"
+                    src={data.profile.avatar}
+                    imgProps={{
+                        onError: e => {
+                            e.target.src = emblem_black
+                        },
+                    }}
+                />
+                <Box className={'classes.topWrapper'} mb={1}>
+                    <Typography className={'classes.name'} variant="h6">
+                        {data.profile.firstName} {data.profile.lastName}
+                    </Typography>
+                    <Typography
+                        className={'classes.country'}
+                        variant="subtitle1"
+                        display="block"
                     >
-                        <IconButton onClick={handleFavorite}>
-                            <StarIcon className={classes.favoriteIcon} />
-                        </IconButton>
-                    </Tooltip>
+                        {data.profile.countryOfResidence}
+                    </Typography>
                 </Box>
-                <div style={{ flex: 1 }}>
-                    <Avatar
-                        className={classes.avatar}
-                        alt="Profile Picture"
-                        src={data.profile.avatar}
-                        imgProps={{
-                            onError: e => {
-                                e.target.src = emblem_black
-                            },
-                        }}
-                    />
-                    <Box className={classes.topWrapper} mb={1}>
-                        <Typography className={classes.name} variant="h6">
-                            {data.profile.firstName} {data.profile.lastName}
-                        </Typography>
-                        <Typography
-                            className={classes.country}
-                            variant="subtitle1"
-                            display="block"
-                        >
-                            {data.profile.countryOfResidence}
-                        </Typography>
-                    </Box>
 
-                    <Box className={classes.skills}>
-                        {sortBy(data.skills, skill => -1 * skill.level)
-                            .map(item => (
-                                <SkillRating
-                                    data={item}
-                                    key={item.skill}
-                                    small={true}
-                                    size={'inherit'}
-                                />
-                            ))
-                            .slice(0, 3)}
-                    </Box>
-                </div>
-                <Box className={classes.bottomWrapper}>
-                    <KeyboardArrowDown
-                        className={classes.button}
-                        fontSize="large"
-                        color="secondary"
-                    />
+                <Box className={'classes.skills'}>
+                    {sortBy(data.skills, skill => -1 * skill.level)
+                        .map(item => (
+                            <SkillRating
+                                data={item}
+                                key={item.skill}
+                                small={true}
+                                size={'inherit'}
+                            />
+                        ))
+                        .slice(0, 3)}
                 </Box>
-            </Paper>
-        )
-    },
-    (prevProps, nextProps) => {
-        if (prevProps.isFavorite !== nextProps.isFavorite) {
-            return false
-        }
-        if (prevProps.data.userId !== nextProps.data.userId) {
-            return false
-        }
-        // If the above didn't change, no need to render again
-        return true
-    },
-)
+            </div>
+            <Box className={'classes.bottomWrapper'}>
+                <KeyboardArrowDown
+                    className={'classes.button'}
+                    fontSize="large"
+                    color="secondary"
+                />
+            </Box>
+        </Paper>
+    )
+}
+// ,
+//     (prevProps, nextProps) => {
+//         if (prevProps.isFavorite !== nextProps.isFavorite) {
+//             return false
+//         }
+//         if (prevProps.data.userId !== nextProps.data.userId) {
+//             return false
+//         }
+//         // If the above didn't change, no need to render again
+//         return true
+//     },
+// )
+
+export default ResultCard
