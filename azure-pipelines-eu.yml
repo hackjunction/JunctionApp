@@ -13,16 +13,16 @@ stages:
                 - task: DownloadSecureFile@1
                   displayName: 'download EU backendend'
                   inputs:
-                      secureFile: 'BACKEND_ENV_FILE_EU_UPDATED' # string. Required. Secure File.
+                      secureFile: 'BACKEND_ENV_FILE_EU_REV3' # string. Required. Secure File.
 
                 - task: CopyFiles@2
                   displayName: 'copy europe backendend'
                   inputs:
                       SourceFolder: '$(Agent.TempDirectory)'
-                      Contents: BACKEND_ENV_FILE_EU_UPDATED
+                      Contents: BACKEND_ENV_FILE_EU_REV3
                       TargetFolder: './backend'
 
-                - script: mv ./backend/BACKEND_ENV_FILE_EU_UPDATED ./backend/.env
+                - script: mv ./backend/BACKEND_ENV_FILE_EU_REV3 ./backend/.env
                   displayName: 'rename europe .env'
 
                 - task: DownloadSecureFile@1
