@@ -1,10 +1,10 @@
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import { FastField } from 'formik'
 import React from 'react'
 
-const DescriptionField = ({ props }) => {
+const DescriptionField = ({ id = 'description-field', props }) => {
     return (
         <Grid item xs={12}>
             <FastField
@@ -19,6 +19,7 @@ const DescriptionField = ({ props }) => {
                         error={form.errors[field.name]}
                     >
                         <MarkdownInput
+                            id={id}
                             value={field.value}
                             onChange={value =>
                                 form.setFieldValue(field.name, value)

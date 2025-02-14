@@ -1,46 +1,44 @@
-import { IconButton, Typography } from '@material-ui/core'
+import { IconButton, Typography } from '@mui/material'
 
 import Button from 'components/generic/Button'
 import React, { useMemo, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 
 import TeamHeader from '../TeamHeader'
 import TeamDescription from '../TeamDescription'
 import TeamRoles from '../TeamRoles'
-import TeamMembers from '../TeamMembers'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import junctionStyle from 'utils/styles'
 import { popupCenter } from 'utils/misc'
-import { Email } from '@material-ui/icons'
+import { Email } from '@mui/icons-material'
 import { objToArr } from 'utils/dataModifiers'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { gradientRandomizer } from 'utils/stylingHelpers'
 import TeamsService from 'services/teams'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as DashboardActions from 'redux/dashboard/actions'
-
-
-
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 
 // TODO add socialLinks component from Damilare (@mrprotocoll)
 
 export default ({
     enableActions = true,
     teamData = {},
-    onRoleClick = () => { },
-    onCancel = () => { },
+    onRoleClick = () => {},
+    onCancel = () => {},
     slug = '',
 }) => {
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
     const [teamMemberToRemove, setTeamMemberToRemove] = useState('')
-    const match = useRouteMatch()
-    console.log("match", slug)
 
-    const [teamMembersArr, setTeamMembersArr] = useState([...objToArr(teamData.meta)])
-    const membersCount = teamData.members.length
+    const [teamMembersArr, setTeamMembersArr] = useState([
+        ...objToArr(teamData.meta),
+    ])
+    const membersCount = Array.isArray(teamData.members)
+        ? teamData.members.length
+        : 0
 
     const styling = {
         borderStyle: 'tw-border tw-border-solid tw-border-gray-300 tw-p-4',
@@ -49,45 +47,65 @@ export default ({
         userProfile: {},
     }
 
+    //TODO Implement team deletion and team member removal
+    // TODO add way to remove team members
+    // const onClickRemove = (userId) => {
+    //     console.log("delete", slug, teamData.code, userId)
+    // }
 
-    const onClickRemove = (userId) => {
-        console.log("delete", slug, teamData.code, userId)
-    }
+    // const onClickDelete = () => {
+    //     console.log("delete")
+    // }
 
-    const onClickDelete = () => {
-        console.log("delete")
-    }
+    // const handleRemove = useEffect(() => {
+    //     console.log('delete', slug, teamData?.code, teamMemberToRemove)
+    //     setLoading(true)
+    //     dispatch(
+    //         DashboardActions.organiserRemoveMemberFromTeam(
+    //             slug,
+    //             teamData.code,
+    //             teamMemberToRemove,
+    //         ),
+    //     )
+    //         .then(team => {
+    //             console.log('removed succesfully.', team)
+    //             dispatch(OrganiserActions.updateTeamsForEvent(slug))
+    //         })
+    //         .then(() => {
+    //             console.log(
+    //                 'teams updated',
+    //                 teamMembersArr.filter(
+    //                     t => t.profile.userId !== teamMemberToRemove,
+    //                 ),
+    //             )
+    //             setTeamMembersArr(
+    //                 teamMembersArr.filter(
+    //                     t => t.profile.userId !== teamMemberToRemove,
+    //                 ),
+    //             )
+    //             dispatch(
+    //                 SnackbarActions.success(
+    //                     'removed ' +
+    //                         teamMemberToRemove +
+    //                         ' from team ' +
+    //                         teamData?.code,
+    //                 ),
+    //             )
+    //         })
+    //         .catch(() => {
+    //             dispatch(
+    //                 SnackbarActions.error(
+    //                     'Something went wrong... please try again.',
+    //                 ),
+    //             )
+    //         })
+    //         .finally(() => {
+    //             setTeamMemberToRemove('')
+    //             setLoading(false)
+    //         })
+    // }, [teamMemberToRemove, slug, teamData?.code, dispatch])
 
-
-    const handleRemove = useEffect(() => {
-        console.log("delete", slug, teamData?.code, teamMemberToRemove)
-        setLoading(true)
-        dispatch(DashboardActions.organiserRemoveMemberFromTeam(slug, teamData.code, teamMemberToRemove))
-            .then((team) => {
-                console.log("removed succesfully.", team)
-                dispatch(OrganiserActions.updateTeamsForEvent(slug))
-            })
-            .then(() => {
-                console.log("teams updated", teamMembersArr.filter(t => t.profile.userId !== teamMemberToRemove))
-                setTeamMembersArr(teamMembersArr.filter(t => t.profile.userId !== teamMemberToRemove))
-                dispatch(SnackbarActions.success('removed ' + teamMemberToRemove + ' from team ' + teamData?.code))
-            })
-            .catch(() => {
-                dispatch(
-                    SnackbarActions.error(
-                        'Something went wrong... please try again.',
-                    ),
-                )
-            })
-            .finally(() => {
-                setTeamMemberToRemove('')
-                setLoading(false)
-            })
-    }, [teamMemberToRemove, slug, teamData?.code, dispatch])
-
-
-
-    const classes = junctionStyle()
+    // const classes = junctionStyle()
     return (
         <PageWrapper loading={loading}>
             <div className="tw-flex tw-flex-col tw-gap-12">
@@ -112,16 +130,22 @@ export default ({
                     onRoleClick={onRoleClick}
                 />
                 {teamMembersArr?.map(userProfile => {
-                    console.log("userProfile.profile?.avatar", userProfile.profile?.avatar)
+                    console.log(
+                        'userProfile.profile?.avatar',
+                        userProfile.profile?.avatar,
+                    )
                     return (
                         <div
                             className={`tw-flex tw-justify-between tw-rounded-lg ${styling.borderStyle} ${styling.alignment}`}
                         >
                             <div className="tw-flex tw-gap-4 tw-items-end">
                                 <div
-                                    className={`tw-bg-gradient-to-r ${gradientRandomizer()} tw-rounded-full ${styling.imageSize
-                                        } tw-bg-cover`}
-                                    style={{ backgroundImage: `url(${userProfile.profile?.avatar})` }}
+                                    className={`tw-bg-gradient-to-r ${gradientRandomizer()} tw-rounded-full ${
+                                        styling.imageSize
+                                    } tw-bg-cover`}
+                                    style={{
+                                        backgroundImage: `url(${userProfile.profile?.avatar})`,
+                                    }}
                                 ></div>
                                 <div className="tw-flex tw-flex-col tw-items-start tw-gap-1">
                                     <Typography
@@ -132,22 +156,27 @@ export default ({
                                         {userProfile.profile.firstName}{' '}
                                         {userProfile.profile.lastName}
                                     </Typography>
-
-
                                 </div>
-
                             </div>
                             {membersCount > 0 ? (
                                 <Button
-                                    onClick={() => setTeamMemberToRemove(userProfile.profile.userId)}
+                                    onClick={() =>
+                                        setTeamMemberToRemove(
+                                            userProfile.profile.userId,
+                                        )
+                                    }
                                     color="error"
                                     variant="contained"
                                 >
-                                    remove from team
+                                    Remove from team
                                 </Button>
                             ) : (
                                 <Button
-                                    onClick={() => setTeamMemberToRemove(userProfile.profile.userId)}
+                                    onClick={() =>
+                                        setTeamMemberToRemove(
+                                            userProfile.profile.userId,
+                                        )
+                                    }
                                     color="error"
                                     variant="contained"
                                 >
@@ -156,8 +185,7 @@ export default ({
                             )}
                         </div>
                     )
-                }
-                )}
+                })}
                 <div className="tw-flex tw-content-center tw-justify-start">
                     {teamData?.discord && (
                         <FontAwesomeIcon
@@ -168,7 +196,7 @@ export default ({
                                     title: 'Discord',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}
@@ -181,7 +209,7 @@ export default ({
                                     title: 'Telegram',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}
@@ -197,12 +225,12 @@ export default ({
                                 })
                             }
                         >
-                            <Email className={classes.socialIcon} />
+                            <Email className={'classes.socialIcon'} />
                         </IconButton>
                     )}
                 </div>
                 {/* TODO add socialLinks component from Damilare (@mrprotocoll) */}
-                <div className='tw-p-4'>
+                <div className="tw-p-4">
                     <Button
                         onClick={onCancel}
                         color="primary"
@@ -215,4 +243,3 @@ export default ({
         </PageWrapper>
     )
 }
-//TODO fix issue that doesn't let team owners leave their own team

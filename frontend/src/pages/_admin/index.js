@@ -1,33 +1,30 @@
 import React from 'react'
-import { useRouteMatch } from 'react-router'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { useResolvedPath } from 'react-router'
+import { Route, Routes, Navigate } from 'react-router-dom'
 
 import DefaultPage from './default'
-import HackerpackForm from './hackerpack'
-import BannerForm from './banner'
-import OrganizationForm from './organization'
+// import HackerpackForm from './hackerpack'
+// import BannerForm from './banner'
+// import OrganizationForm from './organization'
 
+//TODO renable the commented out routes
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     return (
-        <Switch>
-            <Route exact={true} path={`${match.url}`} component={DefaultPage} />
-            <Route
-                exact={false}
-                path={`${match.url}/hackerpack/:slug`}
-                component={HackerpackForm}
+        <Routes>
+            {/* <Route path={`/`} element={<p>TEST</p>} /> */}
+            <Route path={`/`} element={<DefaultPage />} />
+            {/* <Route
+                path={`${url}/hackerpack/:slug`}
+                element={<HackerpackForm />}
             />
+            <Route path={`${url}/banner/:slug`} element={<BannerForm />} />
             <Route
-                exact={false}
-                path={`${match.url}/banner/:slug`}
-                component={BannerForm}
-            />
-            <Route
-                exact={false}
-                path={`${match.url}/organization/:slug`}
-                component={OrganizationForm}
-            />
-            <Redirect to={match.url} />
-        </Switch>
+                path={`${url}/organization/:slug`}
+                element={<OrganizationForm />}
+            /> */}
+            {/* <Navigate to={url} /> */}
+            <Route path="*" element={<Navigate to="/home" />} />
+        </Routes>
     )
 }

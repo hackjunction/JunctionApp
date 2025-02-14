@@ -15,8 +15,8 @@ module.exports = {
             )
         console.log(
             'Done updating newsletter field',
-            resNewsletter.n,
-            resNewsletter.nModified,
+            resNewsletter.matchedCount,
+            resNewsletter.modifiedCount,
         )
 
         return Promise.resolve()

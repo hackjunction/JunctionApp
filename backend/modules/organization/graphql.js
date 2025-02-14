@@ -38,10 +38,10 @@ const graphqlInput = new GraphQLInputObjectType({
     name: 'OrganizationInput',
     fields: {
         name: {
-            type: GraphQLNonNull(GraphQLString),
+            type: new GraphQLNonNull(GraphQLString),
         },
         slug: {
-            type: GraphQLNonNull(GraphQLString),
+            type: new GraphQLNonNull(GraphQLString),
         },
         about: {
             type: GraphQLString,
@@ -62,7 +62,7 @@ const QueryType = new GraphQLObjectType({
             type: OrganizationType,
             args: {
                 _id: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
             },
         },
@@ -70,12 +70,12 @@ const QueryType = new GraphQLObjectType({
             type: OrganizationType,
             args: {
                 slug: {
-                    type: GraphQLNonNull(GraphQLString),
+                    type: new GraphQLNonNull(GraphQLString),
                 },
             },
         },
         organizations: {
-            type: GraphQLList(OrganizationType),
+            type: new GraphQLList(OrganizationType),
         },
     },
 })

@@ -8,7 +8,9 @@ const {
     GraphQLNonNull,
     GraphQLInputObjectType,
 } = require('graphql')
-const { GraphQLDate } = require('graphql-iso-date')
+// const { GraphQLDate } = require('graphql-iso-date')
+const { DateResolver } = require('graphql-scalars')
+
 const mongoose = require('mongoose')
 
 const MeetingRoomSchema = new mongoose.Schema({
@@ -54,10 +56,10 @@ const MeetingRoomType = new GraphQLObjectType({
                             type: GraphQLNonNull(GraphQLID),
                         },
                         start: {
-                            type: GraphQLNonNull(GraphQLDate),
+                            type: GraphQLNonNull(DateResolver),
                         },
                         end: {
-                            type: GraphQLNonNull(GraphQLDate),
+                            type: GraphQLNonNull(DateResolver),
                         },
                         reserved: {
                             type: GraphQLNonNull(GraphQLBoolean),
@@ -90,10 +92,10 @@ const MeetingRoomInput = new GraphQLInputObjectType({
                             type: GraphQLString,
                         },
                         start: {
-                            type: GraphQLNonNull(GraphQLDate),
+                            type: GraphQLNonNull(DateResolver),
                         },
                         end: {
-                            type: GraphQLNonNull(GraphQLDate),
+                            type: GraphQLNonNull(DateResolver),
                         },
                         reserved: {
                             type: GraphQLNonNull(GraphQLBoolean),

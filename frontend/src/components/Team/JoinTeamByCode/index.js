@@ -1,36 +1,36 @@
 import React, { useState, useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Box, Typography } from '@material-ui/core'
+
+import { Grid, Box, Typography } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles(theme => ({
-    box: {
-        background: 'white',
-        padding: theme.spacing(3),
-        borderRadius: '12px',
-        boxShadow: '4px 6px 20px #F3F3F3',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     box: {
+//         background: 'white',
+//         padding: theme.spacing(3),
+//         borderRadius: '12px',
+//         boxShadow: '4px 6px 20px #F3F3F3',
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//     },
+// }))
 
 export default ({ onAction = () => {} }) => {
     const { t } = useTranslation()
 
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
-    const classes = useStyles()
+    // const classes = useStyles()
     const [code, setCode] = useState('')
     const [loading, setLoading] = useState(false)
 

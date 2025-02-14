@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
 import {
     Avatar,
     Card,
@@ -10,7 +9,7 @@ import {
     Grid,
     Tooltip,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'
@@ -19,8 +18,9 @@ import { EventHelpers } from '@hackjunction/shared'
 import moment from 'moment-timezone'
 
 import ProjectReviewModal from 'components/modals/ProjectReviewModal'
+import { styled } from '@mui/system'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = styled(theme => ({
     wrapper: {
         flex: 1,
         background: 'white',
@@ -175,10 +175,10 @@ const ProjectsGridItem = ({
                                     previewImage
                                         ? previewImage
                                         : event?.coverImage?.publicId
-                                        ? event?.coverImage.publicId
-                                        : event?.logo?.publicId
-                                        ? event?.logo.publicId
-                                        : false
+                                          ? event?.coverImage.publicId
+                                          : event?.logo?.publicId
+                                            ? event?.logo.publicId
+                                            : false
                                 }
                                 defaultImage={require('assets/images/default_cover_image.png')}
                             />
@@ -252,6 +252,11 @@ const ProjectsGridItem = ({
                     <div className="tw-flex tw-gap-2 tw-flex-col md:tw-flex-row ">
                         {onClickMore && (
                             <Button
+                                id={
+                                    project
+                                        ? `open-project-${project._id}`
+                                        : undefined
+                                }
                                 onClick={onClickMore}
                                 color="outlined_button"
                                 variant="jOutlined"
@@ -279,10 +284,13 @@ const ProjectsGridItem = ({
                                                 key={index}
                                                 title={`Reviewed by ${
                                                     project?.scoreData
-                                                        ?.reviewers?.length - 1
+                                                        ?.reviewers?.length -
+                                                    (reviewIndexLimit + 1) +
+                                                    1
                                                 } more ${
                                                     project?.scoreData
                                                         ?.reviewers?.length -
+                                                        (reviewIndexLimit + 1) +
                                                         1 >
                                                     1
                                                         ? 'people'
@@ -292,7 +300,9 @@ const ProjectsGridItem = ({
                                                 <Avatar>
                                                     +
                                                     {project?.scoreData
-                                                        ?.reviewers?.length - 1}
+                                                        ?.reviewers?.length -
+                                                        (reviewIndexLimit + 1) +
+                                                        1}
                                                 </Avatar>
                                             </Tooltip>
                                         )

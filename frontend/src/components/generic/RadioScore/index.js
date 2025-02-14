@@ -1,13 +1,13 @@
-import { FormControl, FormLabel, Radio, RadioGroup } from '@material-ui/core'
+import { FormControl, FormLabel, Radio, RadioGroup } from '@mui/material'
 import _ from 'lodash'
 import { toInteger } from 'lodash-es'
 import React, { useState } from 'react'
-import junctionStyle from 'utils/styles'
+// import junctionStyle from 'utils/styles'
 
 const scoreArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-export default ({ category, label, onSelectionChange, value = null }) => {
-    const classes = junctionStyle()
+export default ({ criteria, label, onSelectionChange, value = null }) => {
+    // const classes = junctionStyle()
     const [selectedValue, setSelectedValue] = useState(value)
     const [selectedIndex, setSelectedIndex] = useState(null)
 
@@ -28,8 +28,8 @@ export default ({ category, label, onSelectionChange, value = null }) => {
                 {label}
             </FormLabel>
             <RadioGroup
-                aria-label={category}
-                name={category}
+                aria-label={criteria}
+                name={criteria}
                 value={selectedValue}
                 onChange={e => {
                     setSelectedValue(toInteger(e.target.value))
@@ -39,15 +39,16 @@ export default ({ category, label, onSelectionChange, value = null }) => {
             >
                 {scoreArray.map((score, index) => (
                     <Radio
+                        id={`${criteria}-${score}`}
                         key={index}
                         checked={score === selectedValue}
                         onChange={() => handleChange(index)}
                         value={score}
                         className="tw-p-0"
                         checkedIcon={
-                            <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
+                            <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-rounded-full tw-w-5 tw-h-5 sm:tw-w-8 sm:tw-h-8 ">
                                 <span
-                                    className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-font-bold tw-text-white ${classes.bgPrimary}`}
+                                    className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-font-bold tw-text-white ${'classes.bgPrimary'}`}
                                 >
                                     {score}
                                 </span>
@@ -55,16 +56,16 @@ export default ({ category, label, onSelectionChange, value = null }) => {
                         }
                         icon={
                             index < selectedIndex ? (
-                                <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
+                                <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-rounded-full tw-w-5 tw-h-5 sm:tw-w-8 sm:tw-h-8">
                                     <span
-                                        className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-text-gray-400 ${classes.bgPrimary}`}
+                                        className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-text-gray-400 ${'classes.bgPrimary'}`}
                                     >
                                         {score}
                                     </span>
                                 </div>
                             ) : (
                                 <span
-                                    className={`tw-flex tw-justify-center tw-items-center tw-text-sm ${classes.icon}`}
+                                    className={`tw-flex tw-justify-center tw-items-center tw-bg-gray-200 tw-text-sm tw-rounded-full tw-w-5 tw-h-5 sm:tw-w-8 sm:tw-h-8`}
                                 >
                                     {score}
                                 </span>

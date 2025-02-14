@@ -1,26 +1,18 @@
 import React, { useState, useMemo, useCallback } from 'react'
-import { push } from 'connected-react-router'
-import { useDispatch } from 'react-redux'
 
 import { sortBy } from 'lodash-es'
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import Container from 'components/generic/Container'
 import EventHeroImage from 'components/events/EventHeroImage'
 import ProjectsPreview from './ProjectsPreview'
 import Filters from './Filters'
 
 import ProjectsGrid from 'components/projects/ProjectsGrid'
+import { useNavigate } from 'react-router-dom'
 
 export default ({ event, projects }) => {
-    console.log('event :>> ', event)
-    console.log('projects :>> ', projects)
-    console.log('Project finalists :>> ', event?.finalists)
-    console.log(
-        'Project finalist details :>> ',
-        projects.filter(project => project.id === project.finalistDetails),
-    )
+    const navigate = useNavigate()
     const [activeFilter, setActiveFilter] = useState('')
-    const dispatch = useDispatch()
 
     const { byChallenge, byTrack } = useMemo(() => {
         return projects.reduce(
@@ -130,9 +122,9 @@ export default ({ event, projects }) => {
 
     const onProjectSelected = useCallback(
         project => {
-            dispatch(push(`/projects/${event.slug}/view/${project._id}`))
+            navigate(`/projects/${event.slug}/view/${project._id}`)
         },
-        [dispatch, event.slug],
+        [event.slug],
     )
     return (
         <>

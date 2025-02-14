@@ -1,14 +1,13 @@
 import React from 'react'
 
 import { Helmet } from 'react-helmet'
-import { push } from 'connected-react-router'
-import { useDispatch } from 'react-redux'
+
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
 import config from 'constants/config'
 import { useTranslation } from 'react-i18next'
 
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography } from '@mui/material'
 
 import BannerCarousel from 'components/generic/BannerCarousel'
 import Button from 'components/generic/Button'
@@ -21,18 +20,16 @@ import Image from 'components/generic/Image'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import EventsGrid from './EventsGrid'
+import { useNavigate } from 'react-router-dom'
 
 export default () => {
+    const navigate = useNavigate()
     //TODO these shouldn't be queried. Events and organizations should be in the state
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
-    const dispatch = useDispatch()
     const { t } = useTranslation()
-    console.log("activeEvents", activeEvents)
-
 
     return (
-
         <PageWrapper header={() => <GlobalNavBar />} footer={() => <Footer />}>
             <Helmet>
                 <title>{config.PLATFORM_OWNER_NAME}</title>
@@ -78,7 +75,7 @@ export default () => {
                     <Button
                         variant="outlinedNew"
                         color="theme_lightgray"
-                        onClick={() => dispatch(push('/events'))} // TODO: Add past events page
+                        onClick={() => navigate('/events')} // TODO: Add past events page
                     >
                         {t('Past_events_all_')}
                     </Button>
@@ -99,12 +96,12 @@ export default () => {
                         })}
                     </Typography>
                 </Grid>
-                <Grid container justify="center" alignItems="center">
+                <Grid container justifyContent="center" alignItems="center">
                     <Button
                         color="theme_lightgray"
                         variant="outlinedNew"
                         strong
-                        onClick={() => dispatch(push('/contact'))}
+                        onClick={() => navigate('/contact')}
                     >
                         {t('Contact_us_')}
                     </Button>
@@ -112,7 +109,7 @@ export default () => {
                         color="theme_lightgray"
                         variant="outlinedNew"
                         strong
-                        onClick={() => dispatch(push('/pricing'))}
+                        onClick={() => navigate('/pricing')}
                     >
                         {t('Pricing_')}
                     </Button>
@@ -161,7 +158,7 @@ export default () => {
                     color="theme_lightgray"
                     variant="outlinedNew"
                     strong
-                    onClick={() => dispatch(push('/hackerpack'))}
+                    onClick={() => navigate('/hackerpack')}
                 >
                     {t('To_hackerpack_')}
                 </Button>

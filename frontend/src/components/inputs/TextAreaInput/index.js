@@ -1,17 +1,5 @@
 import React, { useCallback, useState } from 'react'
-
-import { TextField } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-
-const useTextField = makeStyles(theme => ({
-    root: {
-        '& .MuiFilledInput-root': {
-            backgroundColor: '#f7fafc',
-            border: `2px solid #e2e8f0`,
-            borderRadius: '6px',
-        },
-    },
-}))
+import { TextField } from '@mui/material'
 
 const errorLengthBase = {
     error: false,
@@ -32,10 +20,9 @@ const TextAreaInput = React.memo(
         minRows = 10,
         maxRows = 100,
         maxLength,
+        id = undefined,
     }) => {
         const [errorLength, setErrorLength] = useState(errorLengthBase)
-
-        const classes = useTextField()
 
         const handleChange = useCallback(
             e => {
@@ -54,55 +41,28 @@ const TextAreaInput = React.memo(
             [onChange],
         )
 
-        let textFieldFormat
-
-        if (maxLength) {
-            textFieldFormat = (
-                <TextField
-                    classes={classes}
-                    type="text"
-                    variant="filled"
-                    autoFocus={autoFocus}
-                    disabled={disabled}
-                    fullWidth
-                    label={label}
-                    name={name}
-                    onBlur={onBlur}
-                    onChange={handleChange}
-                    placeholder={placeholder}
-                    required={required}
-                    value={value}
-                    multiline
-                    minRows={minRows}
-                    maxRows={maxRows}
-                    error={errorLength.error}
-                    helperText={errorLength.helperText}
-                />
-            )
-        } else {
-            textFieldFormat = (
-                <TextField
-                    classes={classes}
-                    type="text"
-                    variant="filled"
-                    autoFocus={autoFocus}
-                    disabled={disabled}
-                    fullWidth
-                    label={label}
-                    name={name}
-                    onBlur={onBlur}
-                    onChange={handleChange}
-                    placeholder={placeholder}
-                    required={required}
-                    value={value}
-                    multiline
-                    minRows={minRows}
-                    maxRows={maxRows}
-                />
-            )
-        }
-
-        return textFieldFormat
+        return (
+            <TextField
+                className="w-full bg-gray-100 border-2 border-gray-300 rounded-md"
+                type="text"
+                variant="filled"
+                autoFocus={autoFocus}
+                disabled={disabled}
+                fullWidth
+                label={label}
+                name={name}
+                onBlur={onBlur}
+                onChange={handleChange}
+                placeholder={placeholder}
+                required={required}
+                value={value}
+                multiline
+                minRows={minRows}
+                maxRows={maxRows}
+                error={errorLength.error}
+                helperText={errorLength.helperText}
+            />
+        )
     },
 )
 

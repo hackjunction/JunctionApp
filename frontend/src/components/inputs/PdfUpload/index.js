@@ -1,47 +1,28 @@
 import React, { useCallback, useState } from 'react'
-
 import {
     Box,
     Typography,
     CircularProgress,
     IconButton,
     Tooltip,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+} from '@mui/material'
 import { Upload } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import ClearIcon from '@material-ui/icons/Clear'
+import ClearIcon from '@mui/icons-material/Clear'
 import { useTranslation } from 'react-i18next'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
-const useStyles = makeStyles(theme => ({
-    uploader: {
-        background: 'gray',
-        width: '100%',
-        cursor: 'pointer',
-    },
-    uploaderInner: {
-        width: '100%',
-        height: '100px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: theme.spacing(3),
-    },
-    uploadText: {
-        color: 'white',
-        textAlign: 'center',
-    },
-}))
-
-export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
+const PDFUploader = ({
+    value,
+    onChange,
+    uploadUrl,
+    resizeMode = 'contain',
+}) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [loading, setLoading] = useState(false)
-    const classes = useStyles()
 
     const beforeUpload = useCallback(
         file => {
@@ -84,18 +65,18 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
     )
 
     return (
-        <Box display="flex" flexDirection="column" alignItems="stretch">
+        <Box className="flex flex-col items-stretch">
             {value && value.url ? (
-                <Box
-                    flex="1"
-                    display="flex"
-                    flexDirection="row"
-                    alignItems="flex-start"
-                >
-                    <Box flex="1">
-                        <a href={value.url}>{value.url}</a>
+                <Box className="flex flex-row items-start">
+                    <Box className="flex-1">
+                        <a
+                            href={value.url}
+                            className="text-blue-500 hover:underline"
+                        >
+                            {value.url}
+                        </a>
                     </Box>
-                    <Box ml={2}>
+                    <Box className="ml-2">
                         <Tooltip title="Remove">
                             <IconButton onClick={handleRemove}>
                                 <ClearIcon />
@@ -107,7 +88,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                 <Upload.Dragger
                     name="pdf"
                     listType="picture"
-                    className={classes.uploader}
+                    className="bg-gray-500 w-full cursor-pointer"
                     showUploadList={false}
                     action={uploadUrl}
                     headers={{
@@ -116,11 +97,11 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                     beforeUpload={beforeUpload}
                     onChange={handleChange}
                 >
-                    <Box className={classes.uploaderInner}>
+                    <Box className="w-full h-24 flex flex-col justify-center items-center p-6">
                         {loading ? (
                             <CircularProgress />
                         ) : (
-                            <Typography className={classes.uploadText}>
+                            <Typography className="text-white text-center">
                                 {t('Click_or_drag_')}
                             </Typography>
                         )}
@@ -130,3 +111,5 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
         </Box>
     )
 }
+
+export default PDFUploader

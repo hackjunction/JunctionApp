@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
 
-import { IconButton, Box } from '@material-ui/core'
+import { IconButton, Box } from '@mui/material'
 
-import FirstPageIcon from '@material-ui/icons/FirstPage'
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-import LastPageIcon from '@material-ui/icons/LastPage'
+import FirstPageIcon from '@mui/icons-material/FirstPage'
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import LastPageIcon from '@mui/icons-material/LastPage'
 
 const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage }) => {
     const handleFirstPageButtonClick = useCallback(

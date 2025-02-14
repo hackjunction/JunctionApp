@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { Misc } from '@hackjunction/shared'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 
 import Select from 'components/inputs/Select'
 import BooleanInput from 'components/inputs/BooleanInput'
@@ -36,7 +36,7 @@ const RecruitmentOptionInput = ({
                     ...value,
                     status: fieldValue,
                     consent: false,
-                    relocation: undefined,
+                    relocation: 'not-currently',
                 })
             } else {
                 onChange({

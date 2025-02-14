@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import junctionStyle from 'utils/styles'
+// import junctionStyle from 'utils/styles'
 import {
     Card,
     CardContent,
@@ -10,19 +10,19 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Button from 'components/generic/Button'
 import 'react-multi-carousel/lib/styles.css'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'
 
 function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
-    const classes = junctionStyle()
+    // const classes = junctionStyle()
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
 
@@ -135,14 +135,14 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
                                                     checkedIcon={
                                                         <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
                                                             <span
-                                                                className={`tw-w-5 tw-h-5 tw-rounded-full ${classes.bgPrimary}`}
+                                                                className={`tw-w-5 tw-h-5 tw-rounded-full ${'classes.bgPrimary'}`}
                                                             ></span>
                                                         </div>
                                                     }
                                                     icon={
                                                         <span
                                                             className={
-                                                                classes.icon
+                                                                'classes.icon'
                                                             }
                                                         />
                                                     }

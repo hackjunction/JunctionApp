@@ -1,8 +1,7 @@
 import React, { useContext } from 'react'
 
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import { useRouteMatch, useLocation } from 'react-router'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
@@ -14,8 +13,6 @@ import FinalistVoting from './voteWithToken'
 import EventDetailContext, { EventDetailProvider } from './context'
 
 const EventDetailRouter = () => {
-    const match = useRouteMatch()
-    const location = useLocation()
     const { eventLoading, eventError, isRegistrationOpen } =
         useContext(EventDetailContext)
     // TODO FIX errortext and desc to be from eventErro
@@ -30,26 +27,19 @@ const EventDetailRouter = () => {
             render={() => {
                 return (
                     <AnimatePresence>
-                        <Switch location={location} key={location.pathname}>
+                        <Routes>
+                            <Route index element={<EventDetail />} />
                             <Route
-                                exact
-                                path={`${match.url}`}
-                                component={EventDetail}
+                                path={`/finalist-voting`}
+                                element={<FinalistVoting />}
                             />
                             {isRegistrationOpen && (
                                 <Route
-                                    exact
-                                    path={`${match.url}/register`}
-                                    component={EventRegister}
+                                    path={`/register`}
+                                    element={<EventRegister />}
                                 />
                             )}
-                            <Route
-                                exact
-                                path={`${match.url}/finalist-voting`}
-                                component={FinalistVoting}
-                            />
-                            <Redirect to={`${match.url}`} />
-                        </Switch>
+                        </Routes>
                     </AnimatePresence>
                 )
             }}

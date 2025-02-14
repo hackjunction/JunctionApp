@@ -1,20 +1,20 @@
 import React, { useCallback } from 'react'
 
 import { RegistrationStatuses } from '@hackjunction/shared'
-import { makeStyles } from '@material-ui/core/styles'
+
 import {
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-    ExpansionPanelActions,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    AccordionActions,
     Typography,
     FormGroup,
     FormControlLabel,
     Checkbox,
     Button,
     Box,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useTranslation } from 'react-i18next'
 
 const STATUSES = [
@@ -23,18 +23,18 @@ const STATUSES = [
     RegistrationStatuses.asObject.checkedIn,
 ]
 
-const useStyles = makeStyles(theme => ({
-    radios: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     radios: {
+//         display: 'flex',
+//         flexDirection: 'row',
+//         flexWrap: 'wrap',
+//     },
+// }))
 
 const EventsFilterItem = React.memo(
     ({ event, eventName, statuses, onEdit, onRemove }) => {
         const { t } = useTranslation()
-        const classes = useStyles()
+        // const classes = useStyles()
         const toggleStatus = useCallback(
             status => {
                 if (statuses.indexOf(status) !== -1) {
@@ -65,17 +65,17 @@ const EventsFilterItem = React.memo(
             }
         }
         return (
-            <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Box display="flex" flexDirection="column">
                         <Typography variant="subtitle1">{eventName}</Typography>
                         <Typography variant="caption">
                             {renderSelected()}
                         </Typography>
                     </Box>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <FormGroup className={classes.radios}>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <FormGroup className={'classes.radios'}>
                         {STATUSES.map(({ id, description }) => (
                             <FormControlLabel
                                 key={id}
@@ -90,13 +90,13 @@ const EventsFilterItem = React.memo(
                             />
                         ))}
                     </FormGroup>
-                </ExpansionPanelDetails>
-                <ExpansionPanelActions>
+                </AccordionDetails>
+                <AccordionActions>
                     <Button size="small" onClick={onRemove}>
                         {t('Remove_')}
                     </Button>
-                </ExpansionPanelActions>
-            </ExpansionPanel>
+                </AccordionActions>
+            </Accordion>
         )
     },
 )

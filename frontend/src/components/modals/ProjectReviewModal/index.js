@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Dialog, DialogTitle, DialogContent } from '@material-ui/core'
+import { Dialog, DialogTitle, DialogContent } from '@mui/material'
 import ReviewElement from './ReviewElement'
 
 const ProjectScoreModal = ({

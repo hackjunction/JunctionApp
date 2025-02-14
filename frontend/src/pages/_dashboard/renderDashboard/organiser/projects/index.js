@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 import { OverallReviewingMethods } from '@hackjunction/shared'
 
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -16,19 +16,23 @@ import TracksTab from './by-track'
 import WinnersTab from './winners'
 import FinalistSelectionTab from './finalist-selection'
 import VotingTokensTab from './votingTokens'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
 
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     useEffect(() => {
         if (event.slug) {
             dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
             dispatch(OrganiserActions.updateProjects(event.slug))
-            dispatch(OrganiserActions.updateRegistrationsForEvent(event.slug))
+            dispatch(
+                OrganiserActions.updateRegistrationsForEvent({
+                    slug: event.slug,
+                }),
+            )
             dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
         }
     }, [event, location])
@@ -104,10 +108,8 @@ export default () => {
         return data
     }, [event])
 
-    if (!event || projectsLoading) return <PageWrapper loading />
-
     return (
-        <PageWrapper>
+        <PageWrapper loading={!event || projectsLoading}>
             <PageHeader
                 heading="Projects"
                 subheading="All of the cool stuff people have made"
@@ -116,7 +118,7 @@ export default () => {
                 transparent
                 tabs={tabs}
                 location={location}
-                baseRoute={match.url}
+                baseRoute={url}
             />
         </PageWrapper>
     )

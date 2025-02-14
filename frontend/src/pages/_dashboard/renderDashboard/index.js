@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-import { useRouteMatch } from 'react-router'
+import { useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import PageWrapper from 'components/layouts/PageWrapper'
 
@@ -8,11 +8,11 @@ import PartnerDashboard from './partner'
 import ParticipantDashboard from './participant'
 import OrganizerDashboard from './organiser'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import * as UserActions from 'redux/user/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as UserActions from 'reducers/user/actions'
 
 import { useLazyQuery, useSubscription } from '@apollo/client'
 import { ALERTS_QUERY } from 'graphql/queries/alert'
@@ -22,12 +22,9 @@ import {
     useActiveEvents,
     usePastEvents,
 } from 'graphql/queries/events'
-// import { Chat } from 'components/messaging/chat'
 
 export default role => {
-    const match = useRouteMatch()
     const dispatch = useDispatch()
-
     const event = useSelector(DashboardSelectors.event)
 
     const [organizerEvents, loading] = useMyEvents()
@@ -38,11 +35,8 @@ export default role => {
     const registrationLoading = useSelector(
         DashboardSelectors.registrationLoading,
     )
-    const team = useSelector(DashboardSelectors.team)
-    const lockedPages = useSelector(DashboardSelectors.lockedPages)
-    const shownPages = useSelector(DashboardSelectors.shownPages)
     const userAccessRight = useSelector(UserSelectors.userAccessRight)
-    const { slug } = match.params
+    const { slug } = useParams()
 
     const [alerts, setAlerts] = useState([])
     const [alertCount, setAlertCount] = useState(0)
@@ -71,11 +65,10 @@ export default role => {
         }
     }, [])
 
-    /** Update when slug changes */
+    /** Update when slugchanges */
     useEffect(() => {
         dispatch(DashboardActions.updateEvent(slug))
         dispatch(DashboardActions.updateRegistration(slug))
-        dispatch(DashboardActions.updateTeam(slug))
     }, [slug])
 
     // Must use lazy query because event is fetched asynchnronously
@@ -136,7 +129,7 @@ export default role => {
     useEffect(() => {
         dispatch(DashboardActions.updateProjects(slug))
         dispatch(DashboardActions.updateProjectScores(slug))
-    }, [slug, team, dispatch])
+    }, [slug, dispatch])
 
     useEffect(() => {
         //does not take multiple roles into a count
@@ -161,8 +154,6 @@ export default role => {
                         event={event}
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
-                        shownPages={shownPages}
-                        lockedPages={lockedPages}
                     />
                 </PageWrapper>
             )
@@ -188,11 +179,8 @@ export default role => {
                     wrapContent={false}
                 >
                     <ParticipantDashboard
-                        event={event}
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
-                        shownPages={shownPages}
-                        lockedPages={lockedPages}
                     />
                 </PageWrapper>
             )

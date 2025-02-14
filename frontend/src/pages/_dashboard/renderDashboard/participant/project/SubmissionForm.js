@@ -4,14 +4,14 @@ import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik } from 'formik'
 import { ProjectSchema, EventTypes } from '@hackjunction/shared'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 import GradientBox from 'components/generic/GradientBox'
 import PageWrapper from 'components/layouts/PageWrapper'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as AuthSelectors from 'redux/auth/selectors'
-import { makeStyles } from '@material-ui/core/styles'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+
 import SubmissionFormCustomInput from 'components/inputs/SubmissionFormCustomInput'
 import BottomBar from 'components/inputs/BottomBar'
 import NameField from 'components/projects/ProjectSubmissionFields/NameField'
@@ -20,16 +20,16 @@ import StatusField from 'components/projects/ProjectSubmissionFields/StatusField
 import ProjectFieldsComponents from 'constants/projectFields'
 import { projectURLgenerator } from 'utils/dataModifiers'
 
-const useStyles = makeStyles(theme => ({
-    uppercase: { 'text-transform': 'uppercase' },
-}))
+// const useStyles = makeStyles(theme => ({
+//     uppercase: { 'text-transform': 'uppercase' },
+// }))
 
 // TODO make the form labels and hints customizable
 const SubmissionForm = props => {
     const id = props.id
     const projectURL = projectURLgenerator(props?.eventSlug, id)
     const handleProjectSelected = props.handleProjectSelected
-    const classes = useStyles()
+    // const classes = useStyles()
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
@@ -161,7 +161,7 @@ const SubmissionForm = props => {
                     <Typography
                         variant="h4"
                         color={projectStatus === 'final' ? 'primary' : 'error'}
-                        className={classes.uppercase}
+                        className={'classes.uppercase'}
                         gutterBottom
                     >
                         {projectStatus}
@@ -263,17 +263,17 @@ const SubmissionForm = props => {
                     let res
                     if (project) {
                         res = await dispatch(
-                            DashboardActions.editProject(
-                                event.slug,
-                                valuesFormatter(values),
-                            ),
+                            DashboardActions.editProject({
+                                slug: event.slug,
+                                data: valuesFormatter(values),
+                            }),
                         )
                     } else {
                         res = await dispatch(
-                            DashboardActions.createProject(
-                                event.slug,
-                                valuesFormatter(values),
-                            ),
+                            DashboardActions.createProject({
+                                slug: event.slug,
+                                data: valuesFormatter(values),
+                            }),
                         )
                     }
                     if (res.error) {

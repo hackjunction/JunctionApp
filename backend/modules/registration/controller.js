@@ -12,13 +12,19 @@ const {
 } = require('@hackjunction/shared')
 const yup = require('yup')
 const Registration = require('./model')
-const { NotFoundError, ForbiddenError } = require('../../common/errors/errors')
+const {
+    NotFoundError,
+    ForbiddenError,
+    AlreadyExistsError,
+} = require('../../common/errors/errors')
 const RegistrationHelpers = require('./helpers')
 const EmailTaskController = require('../email-task/controller')
 // const { checklistItemsOnline, checklistItemsPhysical } = require('./checklists')
 
 const STATUSES = RegistrationStatuses.asObject
 const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject
+const UserProfileController = require('../user-profile/controller')
+
 const controller = {}
 
 controller.getUserRegistrations = user => {
@@ -29,45 +35,58 @@ controller.getUserRegistrations = user => {
 
 controller.createRegistration = async (user, event, data) => {
     const answers = await RegistrationHelpers.registrationFromUser(data)
-    const registration = new Registration({
-        event: event._id.toString(),
-        user: user.sub,
-        answers,
-    })
-    // if (event.eventType === 'online') {
-    //     registration.checklist = {
-    //         items: checklistItemsOnline(),
-    //     }
-    // } else {
-    //     registration.checklist = {
-    //         items: checklistItemsPhysical(),
-    //     }
-    // }
-    registration.status = RegistrationStatuses.asObject.incomplete.id
-    console.log('createRegistration', registration)
-    return registration.save()
+    try {
+        const registration = new Registration({
+            event: event._id.toString(),
+            user: user.sub,
+            answers,
+        })
+        // if (event.eventType === 'online') {
+        //     registration.checklist = {
+        //         items: checklistItemsOnline(),
+        //     }
+        // } else {
+        //     registration.checklist = {
+        //         items: checklistItemsPhysical(),
+        //     }
+        // }
+        registration.status = RegistrationStatuses.asObject.incomplete.id
+        return registration.save()
+    } catch (error) {
+        throw new AlreadyExistsError(
+            'User already registered for this event',
+            error,
+        )
+    }
+
+    // return registration.save()
 }
 
 controller.createPartnerRegistration = async (user, event, data) => {
-    console.log('user', user)
-    const answers = await RegistrationHelpers.registrationFromUser(data)
-    const registration = new Registration({
-        event: event._id.toString(),
-        user: user,
-        answers,
-    })
-    // if (event.eventType === 'online') {
-    //     registration.checklist = {
-    //         items: checklistItemsOnline(),
-    //     }
-    // } else {
-    //     registration.checklist = {
-    //         items: checklistItemsPhysical(),
-    //     }
-    // }
-    registration.status = RegistrationStatuses.asObject.incomplete.id
-    console.log('create registration for partner', registration)
-    return registration.save()
+    let registration = {}
+    try {
+        const userProfile = await UserProfileController.getUserProfile(user)
+        if (!userProfile) {
+            throw new NotFoundError('User profile not found')
+        }
+        registration = new Registration({
+            event: event._id.toString(),
+            user: user,
+            answers: {
+                firstName: userProfile.firstName,
+                lastName: userProfile.lastName,
+                email: userProfile.email,
+            },
+        })
+        //TODO change to partner status later - Check if partner status works
+        registration.status = RegistrationStatuses.asObject.incomplete.id
+        return registration.save()
+    } catch (error) {
+        throw new ForbiddenError(
+            'User Registration failed, try again or contact support',
+            error,
+        )
+    }
 }
 
 controller.getRegistration = async (userId, eventId) => {
@@ -88,13 +107,20 @@ controller.updateRegistration = (user, event, data) => {
     return controller
         .getRegistration(user.sub, event._id.toString())
         .then(async registration => {
+            // return Registration.updateAllowed(registration, { data })
+            const modifiedRegistration = _.merge(registration.answers, data)
             const [success, answers] =
-                await RegistrationHelpers.validateAnswers(data, event)
+                await RegistrationHelpers.validateAnswers(
+                    modifiedRegistration,
+                    event,
+                )
             // answers are valid
             if (answers) {
-                return Registration.updateAllowed(registration, { answers })
+                return Registration.updateAllowed(registration, {
+                    modifiedRegistration,
+                })
             }
-            return false
+            // return false
         })
 }
 
@@ -295,45 +321,90 @@ controller.updateTravelGrantStatus = (user, event, status) => {
         })
 }
 
-controller.getRegistrationsForEvent = eventId => {
+controller.getRegistrationsForQuery = async (query, pagination) => {
+    const found = await Registration.find(query)
+        .sort({ updatedAt: 1, _id: 1 })
+        .skip(pagination.skip)
+        .limit(pagination.limit)
+
+    const count = (await Registration.find(query).lean().countDocuments()) || 0
+    return { found, count }
+}
+
+controller.getAllRegistrationsForEventWithRecruitmentConsent = async (
+    eventId,
+    consentQuery,
+) => {
+    const consentFilter = consentQuery || {
+        'answers.recruitmentOptions.consent': true,
+    }
+
+    const found = await Registration.find({
+        event: eventId,
+        ...consentFilter,
+    })
+        .lean()
+        .sort('updatedAt')
+    console.log(found.length)
+    return found
+}
+
+controller.getRegistrationsForEvent = (eventId, getFullStrings = false) => {
     return Registration.find({
         event: eventId,
     }).then(registrations => {
-        /** Do some minor optimisation here to cut down on size */
+        /** TODO Do some minor optimisation here to cut down on size */
         return registrations.map(document => {
             const reg = document.toObject()
-            reg.answers = _.mapValues(reg.answers, (answer, field) => {
-                const fieldType = RegistrationFields.getFieldType(field)
-                if (answer === null) {
-                    console.log('Null answer in ', field)
-                }
-                switch (fieldType) {
-                    case FieldTypes.LONG_TEXT.id:
-                        if (answer && answer.length > 10) {
-                            return `${answer.slice(0, 10)}...`
-                        }
-                        return answer
-                    default: {
-                        if (
-                            answer &&
-                            typeof answer === 'object' &&
-                            !Array.isArray(answer) &&
-                            Object.keys(answer).length > 0
-                        ) {
-                            return _.mapValues(answer, subAnswer => {
-                                if (
-                                    typeof subAnswer === 'string' &&
-                                    subAnswer.length > 50
-                                ) {
-                                    return subAnswer.slice(0, 10)
-                                }
-                                return subAnswer
-                            })
-                        }
-                        return answer
+            if (!getFullStrings) {
+                reg.answers = _.mapValues(reg.answers, (answer, field) => {
+                    const fieldType = RegistrationFields.getFieldType(field)
+                    if (answer === null) {
                     }
-                }
-            })
+                    switch (fieldType) {
+                        case FieldTypes.LONG_TEXT.id:
+                            if (answer && answer.length > 10) {
+                                return `${answer.slice(0, 10)}...`
+                            }
+                            return answer
+                        default: {
+                            if (field === 'CustomAnswers') {
+                                answer = answer.map(customAnswer => {
+                                    if (
+                                        typeof customAnswer.value ===
+                                            'string' &&
+                                        customAnswer.value.length > 20
+                                    ) {
+                                        customAnswer.value = `${customAnswer.value.slice(
+                                            0,
+                                            10,
+                                        )}...`
+                                    }
+                                    return customAnswer
+                                })
+                            }
+                            // TODO This code seems to be returning a value tht is not assigned to anything, it can be removed
+                            // else if (
+                            //     answer &&
+                            //     typeof answer === 'object' &&
+                            //     !Array.isArray(answer) &&
+                            //     Object.keys(answer).length > 0
+                            // ) {
+                            //     return _.mapValues(answer, subAnswer => {
+                            //         if (
+                            //             typeof subAnswer === 'string' &&
+                            //             subAnswer.length > 50
+                            //         ) {
+                            //             return subAnswer.slice(0, 10)
+                            //         }
+                            //         return subAnswer
+                            //     })
+                            // }
+                            return answer
+                        }
+                    }
+                })
+            }
             return reg
         })
     })
@@ -542,19 +613,10 @@ controller.addGavelLoginToRegistrations = async (eventId, gavelData) => {
         if (registration) {
             registration.gavelLogin = gavel.link
             updateCount++
-            console.log('Registration full data', registration)
             registration.save()
         }
     })
-    console.log('Registrations found', registrations.length)
-    console.log('Registrations data', registrations)
     const registrationCount = registrations.length
-    
-    console.log(
-        'Modified counts, updated/total',
-        updateCount,
-        registrationCount,
-    )
 }
 
 module.exports = controller

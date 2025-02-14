@@ -8,9 +8,9 @@ import {
     ListItemAvatar,
     Avatar,
     ListItemText,
-} from '@material-ui/core'
+} from '@mui/material'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 import DragDropList from 'components/generic/DragDropList'
 

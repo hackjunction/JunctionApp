@@ -1,18 +1,19 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { push } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
 import HackerpackService from 'services/hackerpack'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 export default () => {
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const [name, setName] = useState('')
     const [error, setError] = useState()
@@ -50,7 +51,7 @@ export default () => {
         setLoading(true)
         HackerpackService.createHackerpack(idToken, { name })
             .then(data => {
-                dispatch(push(`/admin/hackerpack/${data.slug}`))
+                navigate(`/admin/hackerpack/${data.slug}`)
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {

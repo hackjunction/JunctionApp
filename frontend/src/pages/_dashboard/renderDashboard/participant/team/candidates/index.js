@@ -5,9 +5,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import Profile from 'components/Participant/Profile'
 import Button from 'components/generic/Button'
 import Filter from 'components/Team/Filter'
@@ -17,12 +17,12 @@ import {
     Radio,
     RadioGroup,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
-import junctionStyle from 'utils/styles'
+// import junctionStyle from 'utils/styles'
 
 export default () => {
-    const classes = junctionStyle()
+    // const classes = junctionStyle()
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const { slug } = event
@@ -259,14 +259,14 @@ export default () => {
                                                                         checkedIcon={
                                                                             <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
                                                                                 <span
-                                                                                    className={`tw-w-5 tw-h-5 tw-rounded-full ${classes.bgPrimary}`}
+                                                                                    className={`tw-w-5 tw-h-5 tw-rounded-full ${'classes.bgPrimary'}`}
                                                                                 ></span>
                                                                             </div>
                                                                         }
                                                                         icon={
                                                                             <span
                                                                                 className={
-                                                                                    classes.icon
+                                                                                    'classes.icon'
                                                                                 }
                                                                             />
                                                                         }

@@ -1,47 +1,46 @@
 import React, { useRef, useCallback, useState } from 'react'
-import QrReader from 'react-qr-reader'
-import { useDispatch } from 'react-redux'
+import { QrReader } from '@cmdnio/react-qr-reader'
+// Legacy might not be needed at all, delete commented code if that's the case
 
-import { Box, Typography } from '@material-ui/core'
-import Button from 'components/generic/Button'
+// import { useDispatch } from 'react-redux'
 
-import * as SnackbarActions from 'redux/snackbar/actions'
-export default ({ onResult, onError }) => {
-    const reader = useRef(null)
-    const dispatch = useDispatch()
-    const [legacyMode, setLegacyMode] = useState(false)
+// import { Box, Typography } from '@mui/material'
+// import Button from 'components/generic/Button'
 
-    const handleScan = useCallback(
-        data => {
-            if (legacyMode && !data) {
-                dispatch(SnackbarActions.error('QR code not found'))
-            }
-            if (data) {
-                onResult(data)
-            }
-        },
-        [onResult, legacyMode, dispatch],
-    )
+// import * as SnackbarActions from 'reducers/snackbar/actions'
+export default ({ onResult }) => {
+    // const reader = useRef(null)
+    // const dispatch = useDispatch()
+    // const [legacyMode, setLegacyMode] = useState(false)
 
-    const handleError = useCallback(
-        err => {
-            onError()
-        },
-        [onError],
-    )
+    const handleScan = data => {
+        // if (legacyMode && !data) {
+        //     dispatch(SnackbarActions.error('QR code not found'))
+        // }
+        if (data) {
+            onResult(data)
+        }
+    }
+
+    // const handleError = useCallback(
+    //     err => {
+    //         onError()
+    //     },
+    //     [onError],
+    // )
 
     return (
         <>
             <QrReader
-                ref={reader}
-                delay={500}
-                onError={handleError}
-                onScan={handleScan}
-                style={{ width: '100%', maxWidth: 600 }}
-                facingMode="environment"
-                legacyMode={legacyMode}
+                // ref={reader}
+                scanDelay={500}
+                // onError={handleError}
+                onResult={handleScan}
+                // style={{ width: '100%', maxWidth: 600 }}
+                constraints={{ facingMode: 'environment' }}
+                // legacyMode={legacyMode}
             />
-            {legacyMode ? (
+            {/* {legacyMode ? (
                 <Box p={2}>
                     <Typography variant="subtitle1">
                         Using legacy mode
@@ -81,7 +80,7 @@ export default ({ onResult, onError }) => {
                         Use legacy mode (Take a picture)
                     </Button>
                 </Box>
-            )}
+            )} */}
         </>
     )
 }

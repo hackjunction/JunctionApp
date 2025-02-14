@@ -1,34 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import {
     List,
     Divider,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     Typography,
     Badge,
-} from '@material-ui/core'
+} from '@mui/material'
 import FilterListItem from 'components/filters/FilterListItem'
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles(theme => ({
-    headingItem: {
-        marginRight: theme.spacing(1),
-    },
-    badge: {
-        right: -1 * theme.spacing(2),
-        top: theme.spacing(1),
-    },
-    list: {
-        width: '100%',
-    },
-}))
 const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
-    const classes = useStyles()
     const [expanded, setExpanded] = useState(false)
     const toggleExpanded = useCallback(() => setExpanded(!expanded), [expanded])
     const hasFilters = filters.length !== 0
@@ -49,12 +35,12 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
     )
 
     return (
-        <ExpansionPanel
+        <Accordion
             disabled={!hasFilters}
             expanded={expanded}
             onChange={toggleExpanded}
         >
-            <ExpansionPanelSummary
+            <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1c-content"
                 id="panel1c-header"
@@ -63,16 +49,15 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
                     color="primary"
                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                     badgeContent={filters.length}
-                    classes={{ badge: classes.badge }}
                     showZero={false}
                 >
                     <Typography color="textPrimary">
                         {t('Active_filters_')}
                     </Typography>
                 </Badge>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-                <List className={classes.list}>
+            </AccordionSummary>
+            <AccordionDetails>
+                <List className="w-full">
                     {filters.map((filter, index) => (
                         <React.Fragment
                             key={filter.path + filter.type + filter.value}
@@ -85,8 +70,8 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
                         </React.Fragment>
                     ))}
                 </List>
-            </ExpansionPanelDetails>
-        </ExpansionPanel>
+            </AccordionDetails>
+        </Accordion>
     )
 }
 

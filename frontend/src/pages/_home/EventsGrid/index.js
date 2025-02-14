@@ -1,19 +1,16 @@
 import React from 'react'
 
-import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 
 import Container from 'components/generic/Container'
 import EventCard from 'components/events/EventCard'
 import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useTranslation } from 'react-i18next'
-
-
+import { useNavigate } from 'react-router-dom'
 
 export default ({ events, loading = false, title }) => {
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { t } = useTranslation()
     var date = new Date()
     const isodate = date.toISOString()
@@ -35,7 +32,7 @@ export default ({ events, loading = false, title }) => {
                                     variant="outlinedNew"
                                     strong
                                     onClick={() =>
-                                        dispatch(push('/events/' + event.slug))
+                                        navigate('/events/' + event.slug)
                                     }
                                 >
                                     {t('See_more_')}
@@ -47,12 +44,10 @@ export default ({ events, loading = false, title }) => {
                                     variant="outlinedNew"
                                     strong
                                     onClick={() =>
-                                        dispatch(
-                                            push(
-                                                '/events/' +
+                                        navigate(
+                                            '/events/' +
                                                 event.slug +
                                                 '/register/',
-                                            ),
                                         )
                                     }
                                 >
@@ -65,9 +60,7 @@ export default ({ events, loading = false, title }) => {
                                     variant="outlinedNew"
                                     strong
                                     onClick={() =>
-                                        dispatch(
-                                            push('/projects/' + event.slug),
-                                        )
+                                        navigate('/projects/' + event.slug)
                                     }
                                 >
                                     {t('View_projects_')}
@@ -94,7 +87,7 @@ export default ({ events, loading = false, title }) => {
                         spacing={6}
                         direction="row"
                         alignItems="stretch"
-                        justify="center"
+                        justifyContent="center"
                     >
                         <Grid item xs={12}>
                             <Typography variant="h3" align="center">

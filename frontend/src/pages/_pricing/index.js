@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -11,47 +11,28 @@ import Button from 'components/generic/Button'
 import Container from 'components/generic/Container'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import PricingCard from 'components/generic/PricingCard'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import { makeStyles } from '@material-ui/core/styles'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+import { useNavigate } from 'react-router-dom'
 
-const useStyles = makeStyles(theme => ({
-    backButtonWrapper: {
-        position: 'absolute',
-        zIndex: 10,
-        width: '100%',
-        paddingTop: theme.spacing(1),
-    },
+// const useStyles = styled(theme => ({
+//     backButtonWrapper: {
+//         position: 'absolute',
+//         zIndex: 10,
+//         width: '100%',
+//         paddingTop: theme.spacing(1),
+//     },
 
-    pricingWrapper: {
-        width: '100%',
-        paddingTop: '2em',
-    },
-}))
+//     pricingWrapper: {
+//         width: '100%',
+//         paddingTop: '2em',
+//     },
+// }))
 
 export default () => {
-    const dispatch = useDispatch()
-    const classes = useStyles()
+    const navigate = useNavigate()
     const { t } = useTranslation()
-    const body1 = [
-        'Event registration and organization through platform.',
-        'For non - profit organizations.',
-    ]
-    const body2 = [
-        'Event registration and organization through platform',
-        'Tech Support during event',
-        'Full Access to the Junction App',
-        'Consulting from the Junction Team',
-        'Statistics',
-        'Price is negotiable',
-    ]
-    // const body3 = [
-    //     'Event registration and organization through platform',
-    //     'Tech Support during event',
-    // ]
 
     return (
         <PageWrapper
@@ -59,8 +40,11 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <>
-                    <Container center wrapperClass={classes.backButtonWrapper}>
-                        <Button onClick={() => dispatch(push('/'))}>
+                    <Container
+                        center
+                        wrapperClass={'classes.backButtonWrapper'}
+                    >
+                        <Button onClick={() => navigate('/')}>
                             <ArrowBackIosIcon style={{ color: 'black' }} />
                             <Typography
                                 variant="button"
@@ -71,25 +55,19 @@ export default () => {
                         </Button>
                     </Container>
                     <Divider size={3} />
-                    <Container center wrapperClass={classes.pricingWrapper}>
+                    <Container center wrapperClass={'classes.pricingWrapper'}>
                         <Grid
                             container
                             direction="row"
-                            justify="center"
+                            justifyContent="center"
                             spacing={3}
                         >
                             <PricingCard
-                                topic="Community"
-                                body={body1}
-                                price="Free"
-                            />
-                            <PricingCard
-                                topic="Enterprise"
-                                body={body2}
+                                topic="What we offer"
                                 price="Ask: hello@hackjunction.com"
                             />
                             <Divider size={4} />
-                            <Typography variant="body1" justify="center">
+                            <Typography variant="body1" justifyContent="center">
                                 Our expertise of organising hackathons combined
                                 with the power of a highly-customizable platform
                                 for events makes hosting diverse events
@@ -101,7 +79,7 @@ export default () => {
                                 color="theme_lightgray"
                                 strong
                                 m={6}
-                                onClick={() => dispatch(push('/contact'))}
+                                onClick={() => navigate('/contact')}
                             >
                                 {t('Contact_us_')}
                             </Button>

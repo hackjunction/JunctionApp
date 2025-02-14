@@ -8,7 +8,7 @@ import {
     Dialog,
     DialogContent,
     DialogActions,
-} from '@material-ui/core'
+} from '@mui/material'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
@@ -17,10 +17,10 @@ import TextAreaInput from 'components/inputs/TextAreaInput'
 import ConfirmDialog from 'components/generic/ConfirmDialog'
 import Button from 'components/generic/Button'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useFormField } from 'hooks/formHooks'
 import EmailService from 'services/email'
 import { useTranslation } from 'react-i18next'
@@ -115,10 +115,20 @@ export default ({ visible, userIds = [], onClose }) => {
         if (!validate()) return
         setLoading(true)
         const fromObject = {
-            email: event.emailConfig.senderEmail ? event.emailConfig.senderEmail : 'noreply@hackjunction.com',
-            name: event.emailConfig.senderName ? event.emailConfig.senderName : 'Junction',
+            email: event.emailConfig.senderEmail
+                ? event.emailConfig.senderEmail
+                : 'noreply@hackjunction.com',
+            name: event.emailConfig.senderName
+                ? event.emailConfig.senderName
+                : 'Junction',
         }
-        EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: user.email, params: params, from: fromObject})
+        EmailService.sendPreviewEmail({
+            idToken: idToken,
+            slug: event.slug,
+            to: user.email,
+            params: params,
+            from: fromObject,
+        })
             .then(() => {
                 dispatch(
                     SnackbarActions.success(

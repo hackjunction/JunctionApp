@@ -1,6 +1,6 @@
 const express = require('express')
 const { celebrate, Joi } = require('celebrate')
-const status = require('http-status')
+// const status = require('http-status')
 
 const router = express.Router()
 const asyncHandler = require('express-async-handler')
@@ -49,7 +49,7 @@ router.route('/:slug/preview').post(
     asyncHandler(async (req, res) => {
         const { to, params, from, eventSlug } = req.body
         await EmailTaskController.sendPreviewEmail(to, params, from, eventSlug)
-        return res.status(status.OK).json({ message: 'success' })
+        return res.status(200).json({ message: 'success' })
     }),
 )
 
@@ -68,7 +68,7 @@ router.route('/:slug/send').post(
         const { event } = req
         const { recipients, params, uniqueId } = req.body
         EmailTaskController.sendBulkEmail(recipients, params, event, uniqueId)
-        return res.status(status.OK).json({ message: 'success' })
+        return res.status(200).json({ message: 'success' })
     }),
 )
 
@@ -81,7 +81,7 @@ router.route('/contact').post(
     asyncHandler(async (req, res) => {
         const { params } = req.body
         await EmailTaskController.sendContactEmail(params)
-        return res.status(status.OK).json({ message: 'success' })
+        return res.status(200).json({ message: 'success' })
     }),
 )
 

@@ -1,33 +1,33 @@
 import React from 'react'
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid } from '@mui/material'
 import PageHeader from 'components/generic/PageHeader'
 import { Helmet } from 'react-helmet'
 import config from 'constants/config'
-import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock'
-import ProjectBlock from './Blocks/ProjectBlock'
-import TeamStatusBlock from './Blocks/TeamStatusBlock'
 // import VisaInvitationBlock from './Blocks/VisaInvitationBlock'
 // import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock'
-import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
-import ProjectSubmissionsBlock from './Blocks/ProjectSubmissionsBlock'
-import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
-import CertificateBlock from './Blocks/CertificateBlock'
-import EventOverBlock from './Blocks/EventOverBlock'
-import SocialMediaBlock from './Blocks/SocialMediaBlock'
+// import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
+// import SocialMediaBlock from './Blocks/SocialMediaBlock'
 // import EventTimeline from 'pages/_events/slug/default/EventTimeline'
 // import TimeLineBlock from './Blocks/TimeLineBlock'
 import AlertBlock from './Blocks/AlertBlock'
+import EventOverBlock from './Blocks/EventOverBlock'
+import ProjectSubmissionsBlock from './Blocks/ProjectSubmissionsBlock'
+import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
+import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock'
+import CertificateBlock from './Blocks/CertificateBlock'
+import ProjectBlock from './Blocks/ProjectBlock'
+import TeamStatusBlock from './Blocks/TeamStatusBlock'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-// import * as AuthSelectors from 'redux/auth/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+// import * as AuthSelectors from 'reducers/auth/selectors'
 // import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 export default ({ alerts }) => {
     const event = useSelector(DashboardSelectors.event)
     const projects = useSelector(DashboardSelectors.projects)
     return (
-        <Box>
+        <Box className="tw-flex tw-flex-col tw-gap-2">
             <PageHeader heading="Dashboard" />
 
             <Helmet>
@@ -68,7 +68,6 @@ export default ({ alerts }) => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
-            <Box mt={2} />
             <Grid container spacing={5}>
                 <div
                     style={{
@@ -91,8 +90,8 @@ export default ({ alerts }) => {
                 <ProjectBlock />
                 <TeamStatusBlock />
 
-                <GavelReviewingBlock />
-                <SocialMediaBlock />
+                {/* <GavelReviewingBlock /> */}
+                {/* <SocialMediaBlock /> */}
             </Grid>
             {event && (
                 <EventPageScriptIFrame

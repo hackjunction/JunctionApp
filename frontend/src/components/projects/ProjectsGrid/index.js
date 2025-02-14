@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import moment from 'moment-timezone'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import { EventHelpers } from '@hackjunction/shared'
 import ProjectsGridItem from '../ProjectsGridItem'
 
 import ProjectScoresService from 'services/projectScores'
 import { useSelector } from 'react-redux'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import _ from 'lodash'
 import Filter from 'components/Team/Filter'
 
@@ -48,6 +48,7 @@ const ProjectsGrid = ({
     }
     const fetchData = useCallback(async () => {
         // TODO add loading indicator
+        //TODO find a way to get if a project has been reviewed by partner in a more efficient manner so it doesnt run for all project fetched
         const projectScoreData = await Promise.allSettled(
             projects.map(async project => {
                 return projectScoreLogic(project)
@@ -63,6 +64,7 @@ const ProjectsGrid = ({
             const scoreData = projectScoreData.find(
                 score => score?.value?.project === project._id,
             )
+            let projectMod = _.cloneDeep(project)
             if (scoreData) {
                 if (reviewerGrid) {
                     const userScore = scoreData?.value?.reviewers?.find(
@@ -71,13 +73,13 @@ const ProjectsGrid = ({
                         },
                     )
                     if (userScore) {
-                        project.scoreData = userScore
+                        projectMod.scoreData = userScore
                     }
                 } else {
-                    project.scoreData = scoreData?.value
+                    projectMod.scoreData = scoreData?.value
                 }
             }
-            return project
+            return projectMod
         })
         let sortedProjects
         if (reviewerGrid) {

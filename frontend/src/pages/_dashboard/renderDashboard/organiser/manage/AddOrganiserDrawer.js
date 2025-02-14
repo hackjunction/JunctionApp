@@ -12,15 +12,12 @@ import {
     IconButton,
     ListItemAvatar,
     Avatar,
-} from '@material-ui/core'
+} from '@mui/material'
 
-import {
-    Add,
-    PersonAdd
-} from '@material-ui/icons'
+import { Add, PersonAdd } from '@mui/icons-material'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import Button from 'components/generic/Button'
 import TextInput from 'components/inputs/TextInput'
 import UserProfilesService from 'services/userProfiles'

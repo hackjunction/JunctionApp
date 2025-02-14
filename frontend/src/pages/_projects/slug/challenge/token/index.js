@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch } from 'react-router'
-import { push } from 'connected-react-router'
-import { Box } from '@material-ui/core'
+import { useNavigate, useParams, useResolvedPath } from 'react-router'
+
+import { Box } from '@mui/material'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
@@ -14,11 +13,11 @@ import _ from 'lodash'
 
 //TODO make this and track one into a component
 export default ({ event }) => {
+    const navigate = useNavigate()
     const baseFilter = { value: 'final', label: 'Final projects' }
-    const match = useRouteMatch()
-    const dispatch = useDispatch()
+    const url = useResolvedPath('').pathname
     const { slug } = event
-    const { token } = match.params
+    const { token } = useParams()
     const [data, setData] = useState({})
     const [projects, setProjects] = useState([])
     const [draftsProjects, setDraftsProjects] = useState([])
@@ -89,7 +88,7 @@ export default ({ event }) => {
                             noFilterOption={baseFilter}
                             onChange={onFilterChange}
                             filterArray={[
-                                // { label: 'Final projects', value: 'final' },
+                                // Filter Array has final projects by from baseFilter
                                 { label: 'Draft projects', value: 'draft' },
                             ]}
                         />
@@ -100,7 +99,7 @@ export default ({ event }) => {
                         projects={projectsToRender(filter)}
                         event={data.event}
                         onSelect={project =>
-                            dispatch(push(`${match.url}/view/${project._id}`))
+                            navigate(`${url}/view/${project._id}`)
                         }
                         showScore={true}
                         showReviewers={true}

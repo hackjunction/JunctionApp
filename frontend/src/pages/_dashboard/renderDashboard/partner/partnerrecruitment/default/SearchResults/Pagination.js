@@ -1,19 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    Box,
-    Typography,
-    IconButton,
-    CircularProgress,
-} from '@material-ui/core'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 
 import { useDebounce } from 'hooks/customHooks'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 
 export default () => {
     const dispatch = useDispatch()
@@ -25,12 +20,9 @@ export default () => {
     const [_currentPage, _setCurrentPage] = useState(currentPage)
     const debouncedPage = useDebounce(_currentPage, 200)
 
-    const handlePageChange = useCallback(
-        page => {
-            dispatch(RecruitmentActions.setPage(page))
-        },
-        [dispatch],
-    )
+    const handlePageChange = page => {
+        dispatch(RecruitmentActions.setPage(page))
+    }
 
     useEffect(() => {
         _setCurrentPage(currentPage)
@@ -50,26 +42,33 @@ export default () => {
 
     return (
         <Box display="flex" flexDirection="row" alignItems="center">
-            <IconButton disabled={_currentPage === 0} onClick={handlePrevPage}>
-                <ChevronLeftIcon />
-            </IconButton>
-            <Box padding={1}>
-                {totalResults === 0 && loading ? (
-                    <Typography variant="overline">
-                        Page 1
-                    </Typography>
-                ) : (
-                    <Typography variant="overline">
-                        Page {_currentPage + 1} of {totalPages}
-                    </Typography>
-                )}
-            </Box>
-            <IconButton
-                disabled={_currentPage + 1 === totalPages}
-                onClick={handleNextPage}
-            >
-                <ChevronRightIcon />
-            </IconButton>
+            {loading ? (
+                <Typography variant="overline">Page 1</Typography>
+            ) : (
+                <>
+                    <IconButton
+                        disabled={_currentPage === 0}
+                        onClick={handlePrevPage}
+                    >
+                        <ChevronLeftIcon />
+                    </IconButton>
+                    <Box padding={1}>
+                        {totalResults > 0 ? (
+                            <Typography variant="overline">
+                                Page {_currentPage + 1} of {totalPages}
+                            </Typography>
+                        ) : (
+                            <Typography variant="overline">Page 1</Typography>
+                        )}
+                    </Box>
+                    <IconButton
+                        disabled={_currentPage + 1 >= totalPages}
+                        onClick={handleNextPage}
+                    >
+                        <ChevronRightIcon />
+                    </IconButton>
+                </>
+            )}
         </Box>
     )
 }

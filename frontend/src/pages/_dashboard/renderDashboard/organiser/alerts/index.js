@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import * as yup from 'yup'
 import { useMutation } from '@apollo/client'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
 import BottomBar from 'components/inputs/BottomBar'
@@ -13,29 +13,39 @@ import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
 import { forOwn } from 'lodash-es'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLazyQuery, useSubscription } from '@apollo/client'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'
 import GradientBox from 'components/generic/GradientBox'
 import { Alerts } from '../../../../../components/messaging/alerts'
+// import { useGetEventBySlugQuery } from 'reducers/organiser/actions'
 
+// const makeBoxStyles = () => ({
+//     backgroundColor: '#f7fafc',
+//     border: `2px solid #e2e8f0`,
+//     borderRadius: '6px',
+//     height: '100%',
 
-const makeBoxStyles = () => ({
+//     //TODO: blurr the bottom
 
-
-    backgroundColor: '#f7fafc',
-    border: `2px solid #e2e8f0`,
-    borderRadius: '6px',
-    height: '100%'
-
-    //TODO: blurr the bottom
-
-    // backgroundColor: '#f8f8f8',
-
-})
+//     // backgroundColor: '#f8f8f8',
+// })
 
 export default () => {
+    // const [getEventBySlug, { data, isLoading, isSuccess, isError }] =
+    //     useGetEventBySlugQuery()
+
+    // const handleUpdateEvent = async () => {
+    //     try {
+    //         const slug = eventSlug
+    //         const response = await updateEvent(slug).unwrap()
+    //         console.log('Event updated successfully:', response)
+    //     } catch (error) {
+    //         console.error('Error updating event:', error)
+    //     }
+    // }
+
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     const loading = useSelector(OrganiserSelectors.eventLoading)
@@ -53,15 +63,16 @@ export default () => {
                     SnackbarActions.error('Sending failed', {
                         errorMessages: Object.keys(errors).map(
                             key => `${key}: ${errors[key].message}`,
-                        )
+                        ),
                     }),
                 )
             } else {
+                console.error(err)
                 dispatch(SnackbarActions.error('Unable to send'))
             }
         },
         onCompleted: () => {
-            console.log("saveResult", saveResult.data.sendAlert)
+            console.log('saveResult', saveResult.data.sendAlert)
             dispatch(SnackbarActions.success('Announcement sent 🚀'))
             setAlerts(alerts.concat(saveResult.data.sendAlert))
         },
@@ -78,7 +89,6 @@ export default () => {
 
     // Set alerts when data is fetched or recieved through websocket
     useEffect(() => {
-        console.log("got newAlert", newAlert)
         if (alertsData) {
             setAlerts(old => {
                 const newArray = [...old, ...alertsData.alerts]
@@ -109,8 +119,6 @@ export default () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [alertsData, setAlerts, newAlert, setAlertCount])
 
-
-
     const onSubmit = (values, actions) => {
         const changed = {}
         forOwn(values, (value, field) => {
@@ -130,6 +138,14 @@ export default () => {
                 heading="Send Announcements"
                 subheading="Send instant announcements to all participants"
             />
+            {/* <div>
+                <button onClick={handleUpdateEvent} disabled={isLoading}>
+                    {isLoading ? 'Updating...' : 'Update Event'}
+                </button>
+                {isSuccess && <p>Event updated successfully!</p>}
+                {isError && <p>Error updating event.</p>}
+            </div> */}
+
             <Grid item xs={12}>
                 <Formik
                     initialValues={{ content: '' }}
@@ -172,11 +188,15 @@ export default () => {
                                 alignItems="stretch"
                                 item
                                 xs={12}
-                                style={{ marginLeft: '10px', marginRight: '10px', marginTop: '40px' }}
+                                style={{
+                                    marginLeft: '10px',
+                                    marginRight: '10px',
+                                    marginTop: '40px',
+                                }}
                             >
                                 <GradientBox
-                                    style={makeBoxStyles()}
-                                    color="theme_white"
+                                    // style={makeBoxStyles()}
+                                    color="primary"
                                     p={3}
                                 >
                                     <Typography variant="button" gutterBottom>
@@ -185,7 +205,6 @@ export default () => {
                                     <hr className="tw-h-px  tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
                                     <Alerts alerts={alerts} />
                                 </GradientBox>
-
                             </Grid>
                             <BottomBar
                                 onSubmit={handleSubmit}

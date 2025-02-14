@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { RegistrationStatuses } from '@hackjunction/shared'
 import moment from 'moment-timezone'
 import {
@@ -13,22 +13,23 @@ import {
     Typography,
     Box,
     Grid,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import config from 'constants/config'
 
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 // TODO can't read null
 export default () => {
     const { t } = useTranslation()
-
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
@@ -82,7 +83,7 @@ export default () => {
                 return 'error'
             }
             case RegistrationStatuses.asObject.accepted.id: {
-                return 'success'
+                return 'theme_purple'
             }
             case RegistrationStatuses.asObject.acceptedToHub.id: {
                 return 'success'
@@ -191,7 +192,7 @@ export default () => {
                     return (
                         <Button
                             onClick={() =>
-                                dispatch(push(`/events/${event.slug}/register`))
+                                navigate(`/events/${event.slug}/register`)
                             }
                             color="theme_white"
                             variant="contained"
@@ -207,7 +208,7 @@ export default () => {
                 return (
                     <Button
                         onClick={() =>
-                            window.open(config.CALENDAR_URL, '_blank')
+                            window.open(`${config.BASE_URL}/home`, '_blank')
                         }
                         color="theme_white"
                         variant="contained"
@@ -216,34 +217,8 @@ export default () => {
                     </Button>
                 )
             }
-            case RegistrationStatuses.asObject.accepted.id: {
-                return (
-                    <Box
-                        display="flex"
-                        flexDirection="row"
-                        justifyContent="flex-end"
-                        flexWrap="wrap"
-                    >
-                        <Box ml={1} mt={1}>
-                            <Button
-                                onClick={() => setCancelDialogOpen(true)}
-                                color="theme_white"
-                            >
-                                Can't make it after all?
-                            </Button>
-                        </Box>
-                        <Box ml={1} mt={1}>
-                            <Button
-                                onClick={handleConfirm}
-                                color="theme_white"
-                                variant="contained"
-                            >
-                                Confirm participation
-                            </Button>
-                        </Box>
-                    </Box>
-                )
-            }
+
+            case RegistrationStatuses.asObject.accepted.id:
             case RegistrationStatuses.asObject.acceptedToHub.id: {
                 return (
                     <Box
@@ -257,7 +232,7 @@ export default () => {
                                 onClick={() => setCancelDialogOpen(true)}
                                 color="theme_white"
                             >
-                                Can't make it after all?
+                                {t('Must_cancel_participation_')}
                             </Button>
                         </Box>
                         <Box ml={1} mt={1}>
@@ -266,46 +241,13 @@ export default () => {
                                 color="theme_white"
                                 variant="contained"
                             >
-                                Confirm participation
+                                {t('Confirm_participation_')}
                             </Button>
                         </Box>
                     </Box>
                 )
             }
-            case RegistrationStatuses.asObject.confirmed.id: {
-                return (
-                    <Box
-                        display="flex"
-                        flexDirection="row"
-                        justifyContent="flex-end"
-                        flexWrap="wrap"
-                    >
-                        <Box ml={1} mt={1}>
-                            <Button
-                                onClick={() => setCancelDialogOpen(true)}
-                                color="theme_white"
-                            >
-                                Cancel participation
-                            </Button>
-                        </Box>
-                        <Box ml={1} mt={1}>
-                            <Button
-                                onClick={() =>
-                                    dispatch(
-                                        push(
-                                            `/dashboard/event/${event.slug}/event-id`,
-                                        ),
-                                    )
-                                }
-                                color="theme_white"
-                                variant="contained"
-                            >
-                                Your event ID
-                            </Button>
-                        </Box>
-                    </Box>
-                )
-            }
+            case RegistrationStatuses.asObject.confirmed.id:
             case RegistrationStatuses.asObject.confirmedToHub.id: {
                 return (
                     <Box
@@ -319,22 +261,20 @@ export default () => {
                                 onClick={() => setCancelDialogOpen(true)}
                                 color="theme_white"
                             >
-                                Cancel participation
+                                {t('Must_cancel_confirmed_participation_')}
                             </Button>
                         </Box>
                         <Box ml={1} mt={1}>
                             <Button
                                 onClick={() =>
-                                    dispatch(
-                                        push(
-                                            `/dashboard/event/${event.slug}/event-id`,
-                                        ),
+                                    navigate(
+                                        `/dashboard/event/${event.slug}/event-id`,
                                     )
                                 }
                                 color="theme_white"
                                 variant="contained"
                             >
-                                Your event ID
+                                {t('View_event_id_')}
                             </Button>
                         </Box>
                     </Box>
@@ -358,16 +298,11 @@ export default () => {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title">
-                        Cancel your participation?
+                        {t('Cancel_participation_question_')}
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Are you sure you wish to cancel your participation?
-                            This means your spot will be given to someone on the
-                            waiting list, and you won't be able to attend the
-                            event yourself. If you really can't make it, please
-                            cancel your participation so we can take someone
-                            else instead.
+                            {t('Cancel_participation_message_')}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -377,19 +312,19 @@ export default () => {
                             onClick={() => setCancelDialogOpen(false)}
                             color="primary"
                         >
-                            No, I don't want to cancel
+                            {t('Cancel_participation_no_')}
                         </Button>
                         <Button
                             loading={loading}
                             onClick={handleCancel}
                             color="secondary"
                         >
-                            Yes, I'm sure
+                            {t('Cancel_participation_yes_')}
                         </Button>
                     </DialogActions>
                 </Dialog>
                 <Typography key="overline" variant="button" color="inherit">
-                    Registration status
+                    {t('Registration_status_')}
                 </Typography>
                 <Typography key="title" variant="h4" color="inherit" paragraph>
                     {title}

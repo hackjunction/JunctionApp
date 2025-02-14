@@ -1,32 +1,32 @@
 import React, { useState } from 'react'
 
 import { useSelector } from 'react-redux'
-import { Grid, Box, MobileStepper, Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import SwipeableViews from 'react-swipeable-views'
+import { Grid, Box, MobileStepper, Button } from '@mui/material'
+
+import { SwipeableViews } from 'components/animated/SwipeableViews'
 
 import ImageUpload from 'components/inputs/ImageUpload'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        background: 'black',
-        padding: '1px',
-    },
-    block: {
-        backgroundColor: '#f7fafc',
-        border: `2px solid #e2e8f0`,
-        position: 'relative',
-        paddingTop: '50%',
-        borderRadius: '6px',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     wrapper: {
+//         background: 'black',
+//         padding: '1px',
+//     },
+//     block: {
+//         backgroundColor: '#f7fafc',
+//         border: `2px solid #e2e8f0`,
+//         position: 'relative',
+//         paddingTop: '50%',
+//         borderRadius: '6px',
+//     },
+// }))
 
 export default ({ value = [], onChange, maxImages = 5 }) => {
     const event = useSelector(DashboardSelectors.event)
 
-    const classes = useStyles()
+    // const classes = useStyles()
     const uploadUrl = `/api/upload/events/${event.slug}/projects`
 
     const getValue = index => {
@@ -74,7 +74,7 @@ export default ({ value = [], onChange, maxImages = 5 }) => {
                     enableMouseEvents
                 >
                     {Array.apply(null, Array(maxImages)).map((val, index) => (
-                        <Box className={classes.block}>
+                        <Box className={'classes.block'}>
                             <ImageUpload
                                 value={getValue(index)}
                                 resizeMode="cover"
@@ -91,7 +91,7 @@ export default ({ value = [], onChange, maxImages = 5 }) => {
                     steps={maxImages}
                     position="static"
                     activeStep={activeStep}
-                    className={classes.root}
+                    className={'classes.root'}
                     nextButton={
                         <Button
                             size="small"

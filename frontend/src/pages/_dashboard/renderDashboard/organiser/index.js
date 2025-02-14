@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch, useLocation } from 'react-router'
-import { Typography, Box } from '@material-ui/core'
+import { useResolvedPath, useLocation, useParams } from 'react-router'
+import { Typography, Box } from '@mui/material'
 import { EventTypes } from '@hackjunction/shared'
-import TuneIcon from '@material-ui/icons/Tune'
-import SettingsIcon from '@material-ui/icons/Settings'
-import EqualizerIcon from '@material-ui/icons/Equalizer'
-import PeopleIcon from '@material-ui/icons/People'
-import CropFreeIcon from '@material-ui/icons/CropFree'
-import CodeIcon from '@material-ui/icons/Code'
-import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff'
-import AssessmentIcon from '@material-ui/icons/Assessment'
-import Alert from '@material-ui/lab/Alert'
+import TuneIcon from '@mui/icons-material/Tune'
+import SettingsIcon from '@mui/icons-material/Settings'
+// import EqualizerIcon from '@mui/icons-material/Equalizer'
+import PeopleIcon from '@mui/icons-material/People'
+import CropFreeIcon from '@mui/icons-material/CropFree'
+import CodeIcon from '@mui/icons-material/Code'
+// import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff'
+// import AssessmentIcon from '@mui/icons-material/Assessment'
+import Alert from '@mui/material/Alert'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Image from 'components/generic/Image'
 import BasicNavBar from 'components/navbars/BasicNavBar'
@@ -27,17 +27,20 @@ import EditPage from './edit'
 import ManagePage from './manage'
 import ParticipantsPage from './participants'
 import ProjectsPage from './projects'
-import ResultsPage from './results'
-// import StatsPage from './stats'
-import TravelGrantsPage from './travel-grants'
+// import ResultsPage from './results'
+// // import StatsPage from './stats'
+// import TravelGrantsPage from './travel-grants'
 import AlertsPage from './alerts'
-import { QuestionAnswerSharp } from '@material-ui/icons'
+import { QuestionAnswerSharp } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const dispatch = useDispatch()
-    const { slug } = match.params
+
+    const { slug } = useParams()
+    const { t } = useTranslation()
 
     const event = useSelector(OrganiserSelectors.event)
     const loading = useSelector(OrganiserSelectors.eventLoading)
@@ -48,23 +51,11 @@ export default () => {
     }, [dispatch, slug])
 
     useEffect(() => {
-        if (event) {
-            // dispatch(
-            //     OrganiserActions.updateOrganisersForEvent(
-            //         event.owner,
-            //         event.organisers,
-            //     ),
-            // )
+        if (event?._id) {
             dispatch(
                 OrganiserActions.updateRecruitersForEvent(event.recruiters),
             )
-            // dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
-            // dispatch(OrganiserActions.updateTeamsForEvent(slug))
             dispatch(OrganiserActions.updateFilterGroups(slug))
-            // dispatch(OrganiserActions.updateProjects(slug))
-            // dispatch(OrganiserActions.updateGavelProjects(slug))
-            // dispatch(OrganiserActions.updateRankings(slug))
-            // dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
         }
     }, [dispatch, slug, event])
     return (
@@ -108,57 +99,58 @@ export default () => {
                                     zIndex: 100,
                                 }}
                             >
-                                <>
-                                    The event will be published once approved by
-                                    admins. Questions about the approval process
-                                    can be directed to hello@hackjunction.com
-                                </>
+                                {t('Event_waiting_approval_')}
                             </Alert>
                         ) : null}
-                        <BasicNavBar text={event.name} />
+                        <BasicNavBar />
                     </>
                 }
-                baseRoute={match.url}
+                baseRoute={`${url}`}
                 location={location}
                 routes={[
+                    // TODO make one of the routes default or create a default route to render, instead of the events page
                     {
                         key: 'edit',
-                        path: '/edit',
+                        path: '/edit/*',
+                        onClickPath: '/edit',
                         icon: <TuneIcon />,
-                        label: 'Edit',
+                        label: t('Edit_event_'),
                         component: EditPage,
                     },
                     // {
                     //     key: 'stats',
-                    //     path: '/stats',
+                    //     path: '/',
                     //     exact: true,
-                    //     icon: <EqualizerIcon />,
+                    //     // icon: <EqualizerIcon />,
                     //     label: 'Stats',
                     //     component: StatsPage,
                     // },
                     {
                         key: 'participants',
-                        path: '/participants',
+                        path: '/participants/*',
+                        onClickPath: '/participants',
                         icon: <PeopleIcon />,
-                        label: 'Participants',
+                        label: t('Participants_'),
                         component: ParticipantsPage,
                     },
                     {
                         key: 'projects',
-                        path: '/projects',
+                        path: '/projects/*',
+                        onClickPath: '/projects',
                         icon: <CodeIcon />,
-                        label: 'Projects',
+                        label: t('Projects_'),
                         component: ProjectsPage,
                     },
                     {
                         key: 'checkin',
                         path: '/check-in',
                         exact: true,
+                        hidden: event.eventType === EventTypes.online.id,
                         locked: event.eventType === EventTypes.online.id,
                         lockedDescription:
                             'Only for physical and hybrid events',
                         icon: <CropFreeIcon />,
-                        label: 'Check-in',
+                        label: t('Check_in_'),
                         component: CheckinPage,
                     },
                     {
@@ -166,7 +158,7 @@ export default () => {
                         path: '/manage',
                         exact: true,
                         icon: <SettingsIcon />,
-                        label: 'Manage',
+                        label: t('Manage_staff_and_partners_'),
                         component: ManagePage,
                     },
                     {
@@ -174,30 +166,30 @@ export default () => {
                         path: '/alerts',
                         exact: true,
                         icon: <QuestionAnswerSharp />,
-                        label: 'Send announcements',
+                        label: t('Send_announcements_'),
                         component: AlertsPage,
                     },
                     //Experimental
 
-                    {
-                        key: 'results',
-                        path: '/results',
-                        hidden: !event?.experimental,
-                        icon: <AssessmentIcon />,
-                        label: 'Results',
-                        component: ResultsPage,
-                    },
-                    {
-                        key: 'travel-grants',
-                        path: '/travel-grants',
-                        exact: true,
-                        hidden: !event?.experimental,
-                        // locked: event?.travelGrantConfig?.enabled ?? true,
-                        lockedDescription: 'Travel grants disabled',
-                        icon: <FlightTakeoffIcon />,
-                        label: 'Travel grants',
-                        component: TravelGrantsPage,
-                    },
+                    // {
+                    //     key: 'results',
+                    //     path: '/results',
+                    //     hidden: !event?.experimental,
+                    //     icon: <AssessmentIcon />,
+                    //     label: 'Results',
+                    //     component: ResultsPage,
+                    // },
+                    // {
+                    //     key: 'travel-grants',
+                    //     path: '/travel-grants',
+                    //     exact: true,
+                    //     hidden: !event?.experimental,
+                    //     // locked: event?.travelGrantConfig?.enabled ?? true,
+                    //     lockedDescription: 'Travel grants disabled',
+                    //     icon: <FlightTakeoffIcon />,
+                    //     label: 'Travel grants',
+                    //     component: TravelGrantsPage,
+                    // },
                 ]}
             />
         </PageWrapper>

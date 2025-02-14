@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import Select from 'components/inputs/Select'
 import FormControl from 'components/inputs/FormControl'
 import { FastField } from 'formik'
@@ -20,6 +20,7 @@ const TechnologiesField = ({ props }) => {
                     >
                         <div className="tw-bg-gray-100 tw-p-2 tw-rounded-md tw-border-gray-300 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-300">
                             <Select
+                                name={'technologies'}
                                 label="Technologies & Tools"
                                 options="technology"
                                 value={field.value}

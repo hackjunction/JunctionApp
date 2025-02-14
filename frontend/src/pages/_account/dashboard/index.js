@@ -1,25 +1,23 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { Grid, Box, Typography } from '@material-ui/core'
-import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+import { Grid, Box, Typography } from '@mui/material'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 import EventCardSmall from 'components/events/EventCardSmall'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import { useRegistrationsByUser } from 'graphql/queries/registrations'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 export default () => {
+    const navigate = useNavigate()
     const userId = useSelector(AuthSelectors.getUserId)
     const [registrations = [], loading, error] = useRegistrationsByUser(userId)
     const { t } = useTranslation()
-    const dispatch = useDispatch()
 
-    //TODO Erin had designs for the redesign. Follow it
     return (
         <PageWrapper loading={loading} error={Boolean(error)}>
             <Box p={2}>
@@ -39,7 +37,7 @@ export default () => {
                             <EventCardSmall
                                 event={registration.event}
                                 handleClick={event =>
-                                    dispatch(push(`/dashboard/event/${event?.slug}`))
+                                    navigate(`/dashboard/event/${event?.slug}`)
                                 }
                             />
                         </Grid>

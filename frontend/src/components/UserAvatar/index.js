@@ -1,22 +1,21 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
-import { useRouteMatch } from 'react-router'
-import { Avatar, Box, IconButton } from '@material-ui/core'
+
+import { useNavigate, useResolvedPath } from 'react-router'
+import { Avatar, Box, IconButton } from '@mui/material'
 import JunctionTheme from 'junctionTheme.js'
 import { useMyProfilePreview } from 'graphql/queries/userProfile'
 
 export default () => {
-    const match = useRouteMatch()
+    const navigate = useNavigate()
+    const url = useResolvedPath('').pathname
     const [profile] = useMyProfilePreview()
-    const dispatch = useDispatch()
     const color = JunctionTheme.palette
 
     const handleClick = () => {
-        if (match.url === '/home') {
-            dispatch(push(`dashboard/default/profile`))
+        if (url === '/home') {
+            navigate(`../dashboard/default/profile`)
         } else {
-            dispatch(push(`${match.url}/profile`))
+            navigate(`${url}/profile`)
         }
     }
 
@@ -25,7 +24,7 @@ export default () => {
             <div className="tw-rounded-full tw-border-8 tw-border-white">
                 <IconButton onClick={handleClick}>
                     <Avatar
-                        className="tw-rounded-full tw-border-8 tw-border-white tw-w-12 tw-h-12"
+                        className="tw-w-12 tw-h-12"
                         src={profile?.avatar}
                         alt="Avatar"
                         style={{

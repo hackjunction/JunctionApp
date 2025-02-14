@@ -1,11 +1,12 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import Button from 'components/generic/Button'
+import { useNavigate } from 'react-router-dom'
 
 export default () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     return (
@@ -14,7 +15,7 @@ export default () => {
                 color="primary"
                 variant="contained"
                 strong
-                onClick={() => dispatch(push('/pricing'))}
+                onClick={() => navigate('/pricing')}
             >
                 Pricing
             </Button>

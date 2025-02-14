@@ -1,20 +1,19 @@
 import React from 'react'
 
-import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied'
-import { Grid, Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
+import { Grid, Box, Typography } from '@mui/material'
 
-const useStyles = makeStyles(theme => ({
-    icon: {
-        color: theme.palette.secondary.main,
-        fontSize: '80px',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     icon: {
+//         color: theme.palette.secondary.main,
+//         fontSize: '80px',
+//     },
+// }))
 
 export default () => {
-    const classes = useStyles()
+    // const classes = useStyles()
     return (
-        <Grid container spacing={3} direction="row" justify="center">
+        <Grid container spacing={3} direction="row" justifyContent="center">
             <Grid item xs={12} md={8}>
                 <Box
                     p={3}
@@ -30,7 +29,7 @@ export default () => {
                         alignItems="center"
                     >
                         <SentimentVeryDissatisfiedIcon
-                            className={classes.icon}
+                            className={'classes.icon'}
                         />
                         <Typography variant="h4" color="secondary" gutterBottom>
                             Disabled

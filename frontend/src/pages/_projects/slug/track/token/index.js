@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 
 import { useDispatch } from 'react-redux'
-import { useRouteMatch } from 'react-router'
-import { push } from 'connected-react-router'
-import { Box } from '@material-ui/core'
+import { useNavigate, useParams, useResolvedPath } from 'react-router'
+
+import { Box } from '@mui/material'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
@@ -13,10 +13,11 @@ import ProjectsService from 'services/projects'
 
 //TODO make this and challenge one into a component
 export default ({ event }) => {
-    const match = useRouteMatch()
+    const navigate = useNavigate()
+    const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     const { slug } = event
-    const { token } = match.params
+    const { token } = useParams()
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
@@ -57,7 +58,7 @@ export default ({ event }) => {
                         projects={data.projects}
                         event={data.event}
                         onSelect={project =>
-                            dispatch(push(`${match.url}/view/${project._id}`))
+                            navigate(`${url}/view/${project._id}`)
                         }
                         showScore={true}
                         token={token}

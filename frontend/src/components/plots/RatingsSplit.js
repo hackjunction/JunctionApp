@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { sortBy } from 'lodash-es'
 import { useSelector } from 'react-redux'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 import {
     ResponsiveContainer,

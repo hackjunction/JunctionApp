@@ -1,4 +1,4 @@
-import { Box, Dialog, Grid, makeStyles, Paper } from '@material-ui/core'
+import { Box, Dialog, Grid, Paper } from '@mui/material'
 import Button from 'components/generic/Button'
 import Select from 'components/inputs/Select'
 import ProjectDetail from 'components/projects/ProjectDetail'
@@ -10,20 +10,21 @@ import { useDispatch } from 'react-redux'
 import EventsService from 'services/events'
 import VotingTokenService from 'services/votingToken'
 import EventDetailContext from '../context'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import { EventHelpers } from '@hackjunction/shared'
-import moment from 'moment'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+// import { EventHelpers } from '@hackjunction/shared'
+// import moment from 'moment'
+// import { styled } from '@mui/system'
 
-const useStyles = makeStyles(theme => ({
-    header: {
-        background: theme.palette.theme_black.main,
-        color: 'white',
-        padding: 40,
-    },
-    projects: {
-        background: theme.palette.theme_lightgrayDark.main,
-    },
-}))
+// const useStyles = styled(theme => ({
+//     header: {
+//         background: theme.palette.theme_black.main,
+//         color: 'white',
+//         padding: 40,
+//     },
+//     projects: {
+//         background: theme.palette.theme_lightgrayDark.main,
+//     },
+// }))
 export default () => {
     const dispatch = useDispatch()
     const { slug, event } = useContext(EventDetailContext)
@@ -33,7 +34,7 @@ export default () => {
     const [votingToken, setVotingToken] = useState(undefined)
     const [vote, setVote] = useState()
 
-    const classes = useStyles()
+    // const classes = useStyles()
 
     const queryParams = useQueryParams()
     const votingTokenFromParams = queryParams.get('votingToken')
@@ -85,7 +86,7 @@ export default () => {
 
     if (isTokenInValid) {
         return (
-            <Box className={classes.header}>
+            <Box className={'classes.header'}>
                 <h2>You'll need a valid voting token to access this page.</h2>
             </Box>
         )
@@ -93,7 +94,7 @@ export default () => {
 
     if (isVotingOpen === false) {
         return (
-            <Box className={classes.header}>
+            <Box className={'classes.header'}>
                 <h2>
                     Finalist voting has not yet started or it has been closed
                     already. Please ask the organisers if this is unexpected.
@@ -104,7 +105,7 @@ export default () => {
 
     return (
         <>
-            <Box className={classes.header}>
+            <Box className={'classes.header'}>
                 <Grid container spacing={5}>
                     <Grid item xs={12}>
                         <h3>
@@ -157,7 +158,7 @@ export default () => {
                 </Grid>
             </Box>
 
-            <Box className={classes.projects} p={3}>
+            <Box className={'classes.projects'} p={3}>
                 <ProjectsGrid
                     sortField={null}
                     projects={finalistProjects}

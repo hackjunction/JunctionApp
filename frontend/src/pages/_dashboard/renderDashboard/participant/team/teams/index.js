@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Box, Typography, IconButton } from '@material-ui/core'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+// TODO Remove responsive masonry
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 import Button from 'components/generic/Button'
@@ -16,69 +16,67 @@ import TeamProfile from 'components/Team/TeamProfile'
 import Apply from 'components/Team/Apply'
 import Filter from 'components/Team/Filter'
 import JoinTeamByCode from 'components/Team/JoinTeamByCode'
+import SpinnerLoader from 'components/loaders/SpinnerLoader'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
+    const numberOfTeamsShown = 30
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
+    const { t } = useTranslation()
     const { slug } = event
     //TODO create pagination component
     const teams = useSelector(DashboardSelectors.teams)
+
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const [selected, setSelected] = useState(false)
     const [applying, setApplying] = useState(false)
     const [joinByCode, setJoinByCode] = useState(false)
     const [challengeFilter, setChallengeFilter] = useState('All challenges')
 
-    const [selectedTeam, setSelectedTeam] = useState(null)
+    // const [selectedTeam, setSelectedTeam] = useState(null)
     const [loading, setLoading] = useState(false)
 
     const [currentPage, SetCurrentPage] = useState(0)
     const totalResults = useSelector(DashboardSelectors.teamsCount)
-    const totalPages = Math.ceil(totalResults / 25)
-
-    const hadleTeamCardClick = useCallback(
-        async teamCode => {
-            if (teamCode) {
-                setLoading(true)
-                dispatch(DashboardActions.updateSelectedTeam(slug, teamCode))
-                    .then(team => {
-                        setSelectedTeam(team)
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                    .finally(() => {
-                        setLoading(false)
-                    })
-            }
-        },
-        [selectedTeam],
+    const totalPages = Math.ceil(totalResults / numberOfTeamsShown)
+    const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
+    const selectedTeamLoading = useSelector(
+        DashboardSelectors.selectedTeamLoading,
     )
+
+    const hadleTeamCardClick = async teamId => {
+        if (teamId) {
+            setLoading(true)
+            dispatch(DashboardActions.updateSelectedTeam({ slug, teamId }))
+                .then(team => {
+                    // setSelectedTeam(team)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
+        }
+    }
 
     useEffect(() => {
         dispatch(
-            DashboardActions.updateTeams(
+            DashboardActions.updateTeams({
                 slug,
-                currentPage,
-                25,
-                challengeFilter,
-            ),
+                page: currentPage,
+                size: numberOfTeamsShown,
+                filter: challengeFilter,
+            }),
         )
-    }, [
-        currentPage,
-        applying,
-        selected,
-        selectedTeam,
-        joinByCode,
-        challengeFilter,
-    ])
+    }, [currentPage, joinByCode, challengeFilter])
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
         teamCards = teams?.filter(team => team.challenge === challengeFilter)
     } else {
         teamCards = teams ? teams : []
-        console.log('teamCards', teamCards)
     }
 
     const handlePrevPage = useCallback(() => {
@@ -100,10 +98,12 @@ export default () => {
                 </IconButton>
                 <Box padding={1}>
                     {totalResults === 0 ? (
-                        <Typography variant="overline">Page 1</Typography>
+                        <Typography variant="overline">
+                            {t('Page_')} 1
+                        </Typography>
                     ) : (
                         <Typography variant="overline">
-                            Page {currentPage + 1} of {totalPages}
+                            {t('Page_')} {currentPage + 1} of {totalPages}
                         </Typography>
                     )}
                 </Box>
@@ -120,82 +120,116 @@ export default () => {
     //TODO add a method to edit or withdraw an application
     return (
         <>
-            {applying &&
-                selectedTeam &&
-                Object.keys(selectedTeam).length > 0 && (
-                    <div>
-                        <div className="tw-mb-4">
-                            <Button
-                                color="outlined_button"
-                                variant="jOutlined"
-                                onClick={() => {
-                                    setApplying(false)
-                                    setSelectedTeam(null)
-                                }}
-                            >
-                                Back
-                            </Button>
-                        </div>
-                        <Apply
-                            teamRolesData={selectedTeam.teamRoles}
-                            afterSubmitAction={() => {
-                                setApplying(false)
-                                setSelectedTeam(null)
-                            }}
-                            loading={loading}
-                        />
-                    </div>
-                )}
-            {selected &&
-                selectedTeam &&
-                Object.keys(selectedTeam).length > 0 && (
-                    <div>
-                        <div className="tw-mb-4">
-                            <Button
-                                color="outlined_button"
-                                variant="jOutlined"
-                                onClick={() => {
-                                    setSelected(false)
-                                    setSelectedTeam(null)
-                                }}
-                            >
-                                Back
-                            </Button>
-                        </div>
-                        <TeamProfile
-                            teamData={selectedTeam}
-                            loading={loading}
-                            enableActions={false}
-                            onRoleClick={() => {
-                                if (!hasTeam) {
-                                    setApplying(true)
-                                    setSelected(false)
-                                }
-                            }}
-                        />
-                    </div>
-                )}
+            {applying && (
+                <>
+                    {selectedTeamLoading ? (
+                        <SpinnerLoader />
+                    ) : (
+                        selectedTeam &&
+                        Object.keys(selectedTeam).length > 0 && (
+                            <div>
+                                <div className="tw-mb-4">
+                                    <Button
+                                        color="outlined_button"
+                                        variant="jOutlined"
+                                        onClick={() => {
+                                            setApplying(false)
+                                            // setSelectedTeam(null)
+                                            dispatch(
+                                                DashboardActions.updateSelectedTeam(
+                                                    {},
+                                                ),
+                                            )
+                                        }}
+                                    >
+                                        {t('Back_')}
+                                    </Button>
+                                </div>
+                                <Apply
+                                    // teamRolesData={selectedTeam.teamRoles}
+                                    afterSubmitAction={() => {
+                                        setApplying(false)
+                                        // setSelectedTeam(null)
+                                        dispatch(
+                                            DashboardActions.updateSelectedTeam(
+                                                {},
+                                            ),
+                                        )
+                                    }}
+                                    loading={loading}
+                                />
+                            </div>
+                        )
+                    )}
+                </>
+            )}
+            {selected && (
+                <>
+                    {selectedTeamLoading ? (
+                        <SpinnerLoader />
+                    ) : (
+                        <>
+                            {selectedTeam &&
+                                Object.keys(selectedTeam).length > 0 && (
+                                    <div>
+                                        <div className="tw-mb-4">
+                                            <Button
+                                                color="outlined_button"
+                                                variant="jOutlined"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        DashboardActions.updateSelectedTeam(
+                                                            {},
+                                                        ),
+                                                    )
+                                                    setSelected(false)
+                                                    // setSelectedTeam(null)
+                                                }}
+                                            >
+                                                {t('Back_')}
+                                            </Button>
+                                        </div>
+                                        <TeamProfile
+                                            teamData={selectedTeam}
+                                            loading={loading}
+                                            enableActions={false}
+                                            onRoleClick={() => {
+                                                if (!hasTeam) {
+                                                    setApplying(true)
+                                                    setSelected(false)
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                        </>
+                    )}
+                </>
+            )}
             {!selected && !applying && (
                 <>
-                    <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
+                    <div className="tw-flex tw-flex-col md:tw-flex-row tw-justify-between tw-items-center tw-mb-4 tw-gap-2">
                         {!hasTeam ? (
                             <Button
                                 color="outlined_button"
                                 variant="jOutlined"
                                 onClick={() => setJoinByCode(!joinByCode)}
                             >
-                                Join team using a code
+                                {t('Join_team_using_code_')}
                             </Button>
                         ) : (
                             <span></span>
                         )}
                         <Filter
-                            noFilterOption="All challenges"
+                            noFilterOption={t('All_challenges_')}
                             filterArray={event.challenges.map(challenge => ({
                                 label: challenge.name,
                                 value: challenge._id,
                             }))}
-                            onChange={setChallengeFilter}
+                            onChange={value => {
+                                SetCurrentPage(0)
+                                setChallengeFilter(value)
+                            }}
                         />
                     </div>
                     {joinByCode && (
@@ -209,7 +243,7 @@ export default () => {
                                     variant="jOutlined"
                                     onClick={() => setJoinByCode(false)}
                                 >
-                                    Close
+                                    {t('Close_')}
                                 </Button>
                             </div>
                         </div>
@@ -238,13 +272,13 @@ export default () => {
                                             teamData={team}
                                             disableActions={hasTeam}
                                             onClickApply={() => {
-                                                hadleTeamCardClick(team.code)
+                                                hadleTeamCardClick(team._id)
                                                 if (!hasTeam) {
                                                     setApplying(true)
                                                 }
                                             }}
                                             onClick={() => {
-                                                hadleTeamCardClick(team.code)
+                                                hadleTeamCardClick(team._id)
                                                 setSelected(true)
                                             }}
                                         />
@@ -261,7 +295,7 @@ export default () => {
                             </Box>
                         </>
                     ) : (
-                        <div>No teams found</div>
+                        <div>{t('No_teams_found_')}</div>
                     )}
                 </>
             )}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import { RegistrationFields } from '@hackjunction/shared'
 import TextInput from 'components/inputs/TextInput'
 import TextAreaInput from 'components/inputs/TextAreaInput'
@@ -514,9 +514,12 @@ const RegistrationQuestion = ({
                                     }),
                                 )}
                                 value={field.value}
-                                onChange={items =>
+                                onChange={items => {
+                                    if (!items) {
+                                        items = []
+                                    }
                                     form.setFieldValue(field.name, items)
-                                }
+                                }}
                                 onBlur={() => form.setFieldTouched(field.name)}
                                 isMulti={true}
                             />

@@ -1,41 +1,38 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
-import { Grid, Box, Typography } from '@material-ui/core'
-
-import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Box, Typography } from '@mui/material'
 
 import Button from 'components/generic/Button'
 
 import { OutboundLink } from 'react-ga'
 
 import GradientBox from 'components/generic/GradientBox'
-import { IconButton } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
+import { IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import Divider from 'components/generic/Divider'
 
 import { useTranslation } from 'react-i18next'
 
 import OrganizationService from 'services/organization'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
-const useStyles = makeStyles(theme => ({
-    outboundLink: {
-        '& a': {
-            textDecoration: 'none !important',
-        },
-    },
-    companyLogo: {
-        width: '200px',
-        height: '50px;',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     outboundLink: {
+//         '& a': {
+//             textDecoration: 'none !important',
+//         },
+//     },
+//     companyLogo: {
+//         width: '200px',
+//         height: '50px;',
+//     },
+// }))
 
 export default ({ data = [] }) => {
     const dispatch = useDispatch()
-    const classes = useStyles()
+    // const classes = useStyles()
     const { t } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [organization, setOrganization] = useState(data)
@@ -70,12 +67,12 @@ export default ({ data = [] }) => {
                     <>
                         <Grid item xs={12} md={12} xl={12}>
                             <GradientBox color="theme_white" p={3}>
-                                <Grid container justify="center">
+                                <Grid container justifyContent="center">
                                     <Grid item xs={3}>
                                         <img
                                             alt={org.name}
                                             src={org.icon}
-                                            className={classes.companyLogo}
+                                            // className={classes.companyLogo}
                                         />
                                     </Grid>
                                     <Grid item xs={3}>
@@ -89,7 +86,7 @@ export default ({ data = [] }) => {
                                     <Grid
                                         item
                                         xs={3}
-                                        className={classes.outboundLink}
+                                        // className={classes.outboundLink}
                                     >
                                         <OutboundLink
                                             eventLabel="myLabel"

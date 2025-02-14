@@ -12,128 +12,121 @@ import HackerpackPage from './pages/_hackerpack'
 import PricingPage from './pages/_pricing'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
-
 import RequiresPermission from './hocs/RequiresPermission'
 import RequiresRole from 'hocs/RequiresRole'
+// import RequiresRole from 'hocs/RequiresRole'
+import config from 'constants/config'
+import DevTools from 'pages/_devtools'
 
-/** Lazy-load the access-restricted pages */
+// /** Lazy-load the access-restricted pages */
 const DashboardRouter = lazy(() => import('./pages/_dashboard'))
-const OrganiserRouter = lazy(() =>
-    import('./pages/_dashboard/renderDashboard/organiser/router'),
+const OrganiserRouter = lazy(
+    () => import('./pages/_dashboard/renderDashboard/organiser/router'),
 )
 const AccountRouter = lazy(() => import('./pages/_account'))
-//TODO: switch the recruitment view and router
-const RecruitmentRouter = lazy(() =>
-    import('./pages/_dashboard/renderDashboard/partner/partnerrecruitment'),
-) //import('./pages/_recruitment'))//
+const RecruitmentEvents = lazy(
+    () => import('./pages/_dashboard/renderDashboard/default/events/Partner'),
+)
 const ProjectsRouter = lazy(() => import('./pages/_projects'))
 const AdminRouter = lazy(() => import('./pages/_admin'))
-const SandboxRouter = lazy(() => import('./pages/_sandbox'))
-// const FilesRouter = lazy(() => import('./pages/_sandbox/files'))
 
 const routes = [
     {
         path: '/',
-        component: DefaultPage,
-        exact: true,
+        element: <DefaultPage />,
     },
     {
         path: '/home',
-        component: HomePage,
-        exact: false,
+        element: <HomePage />,
     },
     {
-        path: '/events',
-        component: EventsRouter,
-        exact: false,
+        path: '/events/*',
+        element: <EventsRouter />,
     },
     {
-        path: '/login',
-        component: LoginPage,
-        exact: false,
+        path: '/login/*',
+        element: <LoginPage />,
     },
     {
         path: '/contact',
-        component: ContactPage,
-        exact: false,
+        element: <ContactPage />,
     },
     {
         path: '/error',
-        component: ErrorPage,
-        exact: false,
+        element: <ErrorPage />,
     },
     {
         path: '/callback',
-        component: CallbackPage,
-        exact: false,
+        element: <CallbackPage />,
     },
     {
         path: '/logout',
-        component: LogoutPage,
-        exact: false,
+        element: <LogoutPage />,
     },
     {
-        path: '/organise',
-        component: RequiresPermission(OrganiserRouter),
-        /*component: RequiresPermission(OrganiserRouter, [
-            AuthConstants.Permissions.MANAGE_EVENT,
-        ]),*/
-        exact: false,
+        path: '/organise/*',
+        element: (
+            <RequiresPermission
+                ComposedComponent={OrganiserRouter}
+                requiredPermissions={[AuthConstants.Permissions.MANAGE_EVENT]}
+            />
+        ),
     },
     {
         //default after login
-        path: '/dashboard',
-        component: RequiresPermission(DashboardRouter),
-        exact: false,
+        path: '/dashboard/*',
+        element: <RequiresPermission ComposedComponent={DashboardRouter} />,
     },
     {
-        path: '/account',
-        component: RequiresPermission(AccountRouter),
-        exact: false,
+        path: '/account/*',
+        element: <RequiresPermission ComposedComponent={AccountRouter} />,
     },
     {
         path: '/recruitment',
-        component: RequiresPermission(RecruitmentRouter, [
-            AuthConstants.Permissions.ACCESS_RECRUITMENT,
-        ]),
-        exact: false,
+        element: (
+            <RequiresPermission
+                ComposedComponent={RecruitmentEvents}
+                requiredPermissions={[
+                    AuthConstants.Permissions.ACCESS_RECRUITMENT,
+                ]}
+            />
+        ),
     },
     {
-        path: '/projects',
-        component: ProjectsRouter,
-        exact: false,
+        path: '/projects/*',
+        element: <ProjectsRouter />,
     },
     {
         path: '/hackerpack',
-        component: HackerpackPage,
-        exact: false,
+        element: <HackerpackPage />,
     },
 
     {
         path: '/pricing',
-        component: PricingPage,
-        exact: false,
+        element: <PricingPage />,
     },
     {
-        path: '/admin',
-        component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
-        exact: false,
-    },
-    {
-        path: '/sandbox',
-        component: RequiresRole(SandboxRouter, [
-            AuthConstants.Roles.SUPER_ADMIN,
-        ]),
-        exact: false,
-    },
-    {
-        path: '/files',
-        component: RequiresRole(SandboxRouter, [
-            AuthConstants.Roles.SUPER_ADMIN,
-        ]),
-        exact: false,
+        path: '/admin/*',
+        element: (
+            <RequiresRole
+                ComposedComponent={AdminRouter}
+                requiredRoles={[AuthConstants.Roles.SUPER_ADMIN]}
+            />
+        ),
     },
 ]
+
+if (config.IS_DEBUG) {
+    routes.push({
+        path: '/devtools',
+        element: (
+            <RequiresRole
+                ComposedComponent={DevTools}
+                requiredRoles={[AuthConstants.Roles.SUPER_ADMIN]}
+            />
+        ),
+    })
+}
 
 export default {
     routes,

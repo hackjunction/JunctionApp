@@ -2,8 +2,8 @@ import React, { useMemo, useState, useContext } from 'react'
 import ReactDOM from 'react-dom'
 
 import { Formik, FastField } from 'formik'
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Grid, Typography } from '@material-ui/core'
+
+import { Box, Grid, Typography } from '@mui/material'
 import * as yup from 'yup'
 import { RegistrationFieldsCustom } from '@hackjunction/shared'
 
@@ -14,8 +14,9 @@ import RegistrationQuestion from '../RegistrationQuestion'
 import RegistrationBottomBar from '../RegistrationBottomBar'
 
 import EventDetailContext from '../../context'
+import { styled } from '@mui/system'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = styled(theme => ({
     wrapper: {
         backgroundColor: 'transparent',
         padding: 0,

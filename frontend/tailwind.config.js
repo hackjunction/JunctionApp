@@ -16,9 +16,9 @@ module.exports = {
     },
     theme: {
         extend: {
-            backgroundImage: {
-                'wave-pattern': "url('../assets/images/nawbar_waves.svg')",
-            },
+            // backgroundImage: theme => ({
+            //     'wave-pattern': "url('./assets/images/nawbar_waves.svg')",
+            // }),
             spacing: {
                 '270px': '270px',
                 '400px': '400px',

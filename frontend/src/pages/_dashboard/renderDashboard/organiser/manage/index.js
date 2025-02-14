@@ -9,28 +9,31 @@ import {
     ListItem,
     ListItemText,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import AddOrganiserDrawer from './AddOrganiserDrawer'
 import AddRecruiterDrawer from './AddRecruiterDrawer'
+import TextAreaInput from 'components/inputs/TextAreaInput'
 
 export default () => {
     const dispatch = useDispatch()
-
     const event = useSelector(OrganiserSelectors.event)
     const eventLoading = useSelector(OrganiserSelectors.eventLoading)
     const organiserProfiles = useSelector(OrganiserSelectors.organisers)
 
-    const recruiterProfilesMap = useSelector(OrganiserSelectors.eventRecruitersMap)
+    const recruiterProfilesMap = useSelector(
+        OrganiserSelectors.eventRecruitersMap,
+    )
     const eventRecruiterProfiles = event.recruiters
 
     const [organizerDrawerOpen, setOrganizerDrawerOpen] = useState(false)
@@ -38,12 +41,19 @@ export default () => {
     const [loading, setLoading] = useState(false)
     const { slug } = event
 
+    const isSuperAdmin = useSelector(AuthSelectors.hasSuperAdmin)
+    const [partnerInputs, setpartnerInputs] = useState('')
+    // let partnerInputs = ''
+    const partnerData = str => {
+        setpartnerInputs(str)
+    }
+
     useEffect(() => {
         dispatch(
-            OrganiserActions.updateOrganisersForEvent(
-                event.owner,
-                event.organisers,
-            ),
+            OrganiserActions.updateOrganisersForEvent({
+                owner: event.owner,
+                organisers: event.organisers,
+            }),
         ).catch(() => {
             dispatch(
                 SnackbarActions.error(
@@ -51,7 +61,7 @@ export default () => {
                 ),
             )
         })
-    }, [event.organisers, event.owner, dispatch])
+    }, [event, dispatch])
 
     // useEffect(() => {
     //     console.log("updating recuiters....", event)
@@ -90,34 +100,32 @@ export default () => {
     )
 
     const handleRecruiterRemoved = useCallback(
-
         async userId => {
             setLoading(true)
             await dispatch(
-                RecruitmentActions.deleteRecruiterEvent(
-                    userId,
-                    event._id,
-                ),
-
-            ).then(async () => {
-                await dispatch(
-                    OrganiserActions.removeRecruiterFromEvent(
-                        slug,
-                        userId,
-                    ),
-                )
-            }).then(() => {
-                dispatch(SnackbarActions.success('Success!'))
-            })
+                RecruitmentActions.deleteRecruiterEvent(userId, event._id),
+            )
+                .then(async () => {
+                    await dispatch(
+                        OrganiserActions.removeRecruiterFromEvent(slug, userId),
+                    )
+                })
+                .then(() => {
+                    dispatch(SnackbarActions.success('Success!'))
+                })
                 .catch(err => {
-                    dispatch(SnackbarActions.error('Something went wrong... Unable to remove recruiter'))
-                }).finally(() => {
+                    dispatch(
+                        SnackbarActions.error(
+                            'Something went wrong... Unable to remove recruiter',
+                        ),
+                    )
+                })
+                .finally(() => {
                     setLoading(false)
                 })
         },
         [dispatch, slug],
     )
-
 
     const handleOrganiserAdded = useCallback(
         userId => {
@@ -140,48 +148,55 @@ export default () => {
         [dispatch, slug],
     )
 
-    const handleRecruiterAdded = useCallback(
-        async (userId, organization) => {
-            setLoading(true)
-            await dispatch(
-                RecruitmentActions.addRecruiterEvent(
-                    userId,
-                    event._id,
-                    organization.trim(),
+    const handleRecruiterAdded = async (userId, organization) => {
+        const recruiterExistAlready = eventRecruiterProfiles?.find(
+            x => x.recruiterId === userId,
+        )
+        if (recruiterExistAlready) {
+            dispatch(
+                SnackbarActions.error(
+                    `Partner ${
+                        recruiterProfilesMap[recruiterExistAlready.recruiterId]
+                            ?.firstName
+                    } already exist`,
                 ),
             )
-                .then(async () => {
-                    await dispatch(
-                        OrganiserActions.addRecruiterToEvent(
-                            slug,
-                            userId,
-                            organization.trim(),
-                        ),
-                    )
-                })
-                .then(() => {
-
-                    dispatch(
-                        DashboardActions.createPartnerRegistration(
-                            userId,
-                            slug,
-
-                        )
-                    )
-
-                })
-                .then(() => {
-                    dispatch(SnackbarActions.success('Success!'))
-                    //onClose()
-                })
-                .catch(err => {
-                    dispatch(SnackbarActions.error('Something went wrong...'))
-                }).finally(() => {
-                    setLoading(false)
-                })
-        }, [dispatch, slug])
-
-
+            return
+        }
+        setLoading(true)
+        //TODO make this operation into a single function call
+        await dispatch(
+            RecruitmentActions.addRecruiterEvent(
+                userId,
+                event._id,
+                organization.trim(),
+            ),
+        )
+            .then(async () => {
+                await dispatch(
+                    OrganiserActions.addRecruiterToEvent(
+                        slug,
+                        userId,
+                        organization.trim(),
+                    ),
+                )
+            })
+            .then(async () => {
+                await dispatch(
+                    DashboardActions.createPartnerRegistration(userId, slug),
+                )
+            })
+            .then(() => {
+                dispatch(SnackbarActions.success('Success!'))
+            })
+            .catch(err => {
+                console.error(err)
+                dispatch(SnackbarActions.error('Something went wrong...'))
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }
 
     return (
         <PageWrapper
@@ -217,8 +232,8 @@ export default () => {
 
                     <List>
                         {organiserProfiles.map(profile => (
-                            <div className="tw-flex-column tw-items-center  tw-m-2 tw-rounded-md tw-shadow ">
-                                <ListItem key={profile.userId} divider>
+                            <ListItem key={profile.userId} divider>
+                                <div className="tw-flex-column tw-items-center  tw-m-2 tw-rounded-md tw-shadow ">
                                     <ListItemText
                                         primary={`${profile.firstName} ${profile.lastName}`}
                                         secondary={profile.email}
@@ -236,10 +251,9 @@ export default () => {
                                         >
                                             Delete
                                         </Button>
-
                                     </ListItemSecondaryAction>
-                                </ListItem>
-                            </div>
+                                </div>
+                            </ListItem>
                         ))}
                     </List>
 
@@ -276,14 +290,26 @@ export default () => {
                         Add partners
                     </Button>
                     <List>
-
                         {eventRecruiterProfiles?.map(rec => (
-                            <div className="tw-flex-column tw-items-center  tw-m-2 tw-rounded-md tw-shadow ">
-                                <ListItem key={rec.recruiterId} divider >
-
+                            <ListItem key={rec.recruiterId} divider>
+                                <div className="tw-flex-column tw-items-center tw-m-2 tw-rounded-md tw-shadow ">
                                     <ListItemText
-                                        primary={`${recruiterProfilesMap[rec.recruiterId]?.firstName} ${recruiterProfilesMap[rec.recruiterId]?.lastName}             |               ${rec.organization}`}
-                                        secondary={recruiterProfilesMap[rec.recruiterId]?.email}
+                                        primary={`${
+                                            recruiterProfilesMap[
+                                                rec.recruiterId
+                                            ]?.firstName
+                                        } ${
+                                            recruiterProfilesMap[
+                                                rec.recruiterId
+                                            ]?.lastName
+                                        }             |               ${
+                                            rec.organization
+                                        }`}
+                                        secondary={
+                                            recruiterProfilesMap[
+                                                rec.recruiterId
+                                            ]?.email
+                                        }
                                     />
                                     <ListItemSecondaryAction>
                                         <Button
@@ -299,8 +325,8 @@ export default () => {
                                             Delete
                                         </Button>
                                     </ListItemSecondaryAction>
-                                </ListItem>
-                            </div>
+                                </div>
+                            </ListItem>
                         ))}
                     </List>
 
@@ -308,16 +334,65 @@ export default () => {
                         isOpen={recruiterDrawerOpen}
                         onClose={() => {
                             setRecruiterDrawerOpen(false)
-
                         }}
                         onGrant={handleRecruiterAdded}
                         slug={event.slug}
                         recruiters={concat(event.recruiters)}
                     />
-                </>
+                    {isSuperAdmin && (
+                        <>
+                            <Box p={5} />
+                            <Typography variant="h5" paragraph>
+                                Add partners at scale
+                            </Typography>
+                            <TextAreaInput
+                                value={partnerInputs}
+                                label="Partner inputs"
+                                onChange={partnerData}
+                                placeholder={`Only stringified JSON accepted, eg [{"organization":"Krone","userId":"Rolds"}]`}
+                            />
+                            <Button
+                                variant="jContained"
+                                onClick={async () => {
+                                    // Refactor in a single function
+                                    try {
+                                        const valueTest =
+                                            JSON.parse(partnerInputs)
+                                        if (!Array.isArray(valueTest)) {
+                                            throw new Error('Not an array')
+                                        }
+                                        if (valueTest.length > 0) {
+                                            for (const partner of valueTest) {
+                                                const { userId, organization } =
+                                                    partner
 
-            )
-            }
+                                                await handleRecruiterAdded(
+                                                    userId,
+                                                    organization,
+                                                )
+                                            }
+                                        }
+                                        dispatch(
+                                            SnackbarActions.success(
+                                                'All partners processed',
+                                            ),
+                                        )
+                                    } catch (e) {
+                                        console.log('error', e)
+                                        dispatch(
+                                            SnackbarActions.error(
+                                                `Invalid JSON data. Please check your input.`,
+                                            ),
+                                        )
+                                    }
+                                }}
+                            >
+                                Add list of partners
+                            </Button>
+                        </>
+                    )}
+                </>
+            )}
         />
     )
 }

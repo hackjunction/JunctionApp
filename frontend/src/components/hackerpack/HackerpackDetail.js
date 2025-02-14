@@ -1,13 +1,10 @@
 import React from 'react'
-import { Box, Divider } from '@material-ui/core'
+import { Box, Divider } from '@mui/material'
 
 import CompanySection from './CompanySection'
 import GradientBox from 'components/generic/GradientBox'
 
-
-
 const HackerpackDetail = ({ hackerpack, redeemable = false }) => {
-
     return (
         <>
             <Box p={2}>
@@ -18,7 +15,6 @@ const HackerpackDetail = ({ hackerpack, redeemable = false }) => {
                         logo={hackerpack.logo}
                         partner={hackerpack.partner}
                         link={hackerpack.link}
-                        //TODO: remove this after junction2021
                         redeemable
                     />
                 </GradientBox>

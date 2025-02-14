@@ -1,206 +1,167 @@
 import React from 'react'
-
 import ReactMarkdown from 'react-markdown'
 import breaks from 'remark-breaks'
 import { Link } from 'react-router-dom'
 import LineDivider from 'components/generic/LineDivider'
 import Divider from 'components/generic/Divider'
 import ExternalLink from 'components/generic/ExternalLink'
-import { Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Typography } from '@mui/material'
+import clsx from 'clsx'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: ({ light, alignCenter }) => ({
-        color: light ? 'white' : theme.palette.text.primary,
-        textAlign: alignCenter ? 'center' : 'left',
-        '& img ': {
-            width: '100%',
-        },
-    }),
-    heading1: {
-        fontFamily: theme.typography.h1.fontFamily,
-        fontSize: theme.typography.h5.fontSize,
-        fontWeight: 'normal',
-        color: 'inherit',
-        textAlign: 'justify',
-        marginBottom: theme.spacing(3),
-    },
-    heading2: {
-        fontFamily: theme.typography.h1.fontFamily,
-        fontSize: theme.typography.h5.fontSize,
-        fontWeight: 'bold',
-        color: 'inherit',
-        marginBottom: theme.spacing(2),
-    },
-    heading3: {
-        fontFamily: theme.typography.h1.fontFamily,
-        fontSize: theme.typography.h6.fontSize,
-        fontWeight: 'bold',
-        color: 'inherit',
-        marginBottom: theme.spacing(1),
-    },
-    paragraph: {
-        marginBottom: theme.spacing(3),
-        color: 'inherit',
-    },
-    bold: {
-        fontWeight: 'bold',
-        color: 'inherit',
-    },
-    hyperlink: {
-        textDecoration: 'underline',
-        color: theme.palette.primary.main,
-    },
-}))
+const getWrapperClasses = ({ light, alignCenter }) => {
+    return clsx({
+        'tw-text-white': light,
+        'tw-text-center': alignCenter,
+        'tw-text-gray-900': !light,
+        'tw-text-left': !alignCenter,
+    })
+}
 
+//TODO add support for remark-gfm and rehype-raw+rehype-sanitize to support for Github markdown and raw html
+//TODO remove custom styling and use theme instead
 const Markdown = React.memo(
     ({ className, source, light = false, alignCenter, large = false }) => {
-        const classes = useStyles({ light, alignCenter })
+        const wrapperClasses = getWrapperClasses({ light, alignCenter })
+
         return (
             <ReactMarkdown
-                source={source}
-                plugins={[breaks]}
-                className={classes.wrapper}
-                renderers={{
-                    heading: ({ level, children }) => {
-                        switch (level) {
-                            case 1:
-                                return (
-                                    <Typography
-                                        className={classes.heading1}
-                                        variant="h1"
-                                    >
-                                        {children}
-                                    </Typography>
-                                )
-                            case 2:
-                                return (
-                                    <Typography
-                                        className={classes.heading2}
-                                        variant="h2"
-                                    >
-                                        {children}
-                                    </Typography>
-                                )
-                            case 3:
-                            case 4:
-                            case 5:
-                            case 6:
-                                return (
-                                    <Typography
-                                        className={classes.heading3}
-                                        variant="h3"
-                                    >
-                                        {children}
-                                    </Typography>
-                                )
-                            default:
-                                return null
-                        }
-                    },
-                    paragraph: ({ children }) => {
-                        return (
-                            <Typography
-                                variant="body1"
-                                className={classes.paragraph}
-                            >
-                                {children}
-                            </Typography>
-                        )
-                    },
-                    emphasis: ({ children }) => {
-                        return (
-                            <Typography
-                                variant="body1"
-                                display="inline"
-                                className={classes.bold}
-                            >
-                                {children}
-                            </Typography>
-                        )
-                    },
-                    strong: ({ children }) => {
-                        return (
-                            <Typography
-                                variant="body1"
-                                display="inline"
-                                className={classes.bold}
-                            >
-                                {children}
-                            </Typography>
-                        )
-                    },
-                    link: props => {
-                        if (props.href.indexOf('http') === -1) {
+                remarkPlugins={[breaks]}
+                className={`${className} ${wrapperClasses}`}
+                components={{
+                    h1: ({ children }) => (
+                        <Typography
+                            className="tw-font-sans tw-text-3xl tw-text-inherit tw-text-justify tw-mb-6"
+                            variant="h1"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    h2: ({ children }) => (
+                        <Typography
+                            className="tw-font-sans tw-text-2xl tw-font-bold tw-text-inherit tw-mb-5"
+                            variant="h2"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    h3: ({ children }) => (
+                        <Typography
+                            className="tw-font-sans tw-text-xl tw-font-semibold tw-text-inherit tw-mb-4"
+                            variant="h3"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    h4: ({ children }) => (
+                        <Typography
+                            className="tw-font-sans tw-text-lg tw-font-medium tw-text-inherit tw-mb-3"
+                            variant="h4"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    h5: ({ children }) => (
+                        <Typography
+                            className="tw-font-sans tw-text-base tw-font-medium tw-text-inherit tw-mb-2"
+                            variant="h5"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    h6: ({ children }) => (
+                        <Typography
+                            className="tw-font-sans tw-text-sm tw-font-medium tw-text-inherit tw-mb-2"
+                            variant="h6"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    p: ({ children }) => (
+                        <Typography
+                            variant="body1"
+                            className="tw-mb-6 tw-text-inherit"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    em: ({ children }) => (
+                        <Typography
+                            variant="body1"
+                            display="inline"
+                            className="tw-italic tw-text-inherit"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    strong: ({ children }) => (
+                        <Typography
+                            variant="body1"
+                            display="inline"
+                            className="tw-font-bold tw-text-inherit"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    a: ({ href, children }) => {
+                        if (href.indexOf('http') === -1) {
                             return (
-                                <Link to={props.href}>
+                                <Link to={href}>
                                     <Typography
-                                        className={classes.hyperlink}
+                                        className="tw-underline tw-text-primary"
                                         display="inline"
                                         variant="body1"
                                         color="primary"
                                     >
-                                        {props.children}
+                                        {children}
                                     </Typography>
                                 </Link>
                             )
                         } else {
                             return (
-                                <ExternalLink href={props.href}>
+                                <ExternalLink href={href}>
                                     <Typography
-                                        className={classes.hyperlink}
+                                        className="tw-underline tw-text-primary"
                                         display="inline"
                                         variant="body1"
                                         color="primary"
                                     >
-                                        {props.children}
+                                        {children}
                                     </Typography>
                                 </ExternalLink>
                             )
                         }
                     },
-                    linkReference: props => {
-                        if (props.href.indexOf('http') === -1) {
-                            return (
-                                <Link to={props.href}>
-                                    <Typography
-                                        className={classes.hyperlink}
-                                        display="inline"
-                                        component={'span'}
-                                        variant="body1"
-                                        color="primary"
-                                    >
-                                        {props.children}
-                                    </Typography>
-                                </Link>
-                            )
-                        } else {
-                            return (
-                                <ExternalLink href={props.href}>
-                                    <Typography
-                                        className={classes.hyperlink}
-                                        display="inline"
-                                        component={'span'}
-                                        variant="body1"
-                                        color="primary"
-                                    >
-                                        {props.children}
-                                    </Typography>
-                                </ExternalLink>
-                            )
-                        }
-                    },
-                    thematicBreak: props => {
-                        return (
-                            <>
-                                <Divider size={2} />
-                                <LineDivider />
-                                <Divider size={2} />
-                            </>
-                        )
-                    },
+                    code: ({ children }) => (
+                        <Typography
+                            variant="body2"
+                            component="code"
+                            className="tw-font-mono tw-px-1 tw-py-0.5 tw-bg-gray-200 tw-rounded"
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                    pre: ({ children }) => (
+                        <div className="tw-mb-6 tw-overflow-auto tw-bg-gray-100 tw-rounded tw-p-4">
+                            <Typography
+                                variant="body2"
+                                component="pre"
+                                className="tw-font-mono tw-whitespace-pre-wrap tw-text-sm tw-text-inherit"
+                            >
+                                {children}
+                            </Typography>
+                        </div>
+                    ),
+                    thematicBreak: () => (
+                        <>
+                            <Divider size={2} />
+                            <LineDivider />
+                            <Divider size={2} />
+                        </>
+                    ),
                 }}
-            />
+            >
+                {source}
+            </ReactMarkdown>
         )
     },
 )

@@ -1,76 +1,70 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Box, Grid, makeStyles } from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search'
+import { Box, Grid } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
 
 import PageHeader from 'components/generic/PageHeader'
 import NewEventCard from 'components/events/NewEventCard'
 import Button from 'components/generic/Button'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import * as UserActions from 'redux/user/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as UserActions from 'reducers/user/actions'
 
 import CreateEventCard from './CreateEventCard'
 import TextInput from '../../../../../components/inputs/TextInput'
-import { debugGroup } from 'utils/debuggingTools'
+import { useNavigate } from 'react-router-dom'
+import { useDebounce } from 'hooks/customHooks'
 
 //TODO: make this to use theme colors and make prettier
-const useStyles = makeStyles({
-    statusText: {
-        fontSize: '28px',
-        transform: 'rotate(-10deg)',
-        top: '10%',
-        left: '5%',
-        position: 'relative',
-        zIndex: '10',
-    },
-    green: {
-        color: '#4CB9A3',
-        fontWeight: 'bold',
-        background: '#bef67a',
-        borderRadius: '5px',
-        padding: '0 0 0 5px',
-        opacity: '70%',
-    },
-    yellow: {
-        color: '#EAB059',
-        fontWeight: 'bold',
-        background: 'lightyellow',
-        borderRadius: '5px',
-        padding: '0 0 0 5px',
-        opacity: '70%',
-    },
-    orange: {
-        color: '#EF6D6D',
-        fontWeight: 'bold',
-        background: 'lightgoldenrodyellow',
-        borderRadius: '5px',
-        padding: '0 0 0 5px',
-        opacity: '70%',
-    },
-})
+// const useStyles = makeStyles({
+//     statusText: {
+//         fontSize: '28px',
+//         transform: 'rotate(-10deg)',
+//         top: '10%',
+//         left: '5%',
+//         position: 'relative',
+//         zIndex: '10',
+//     },
+//     green: {
+//         color: '#4CB9A3',
+//         fontWeight: 'bold',
+//         background: '#bef67a',
+//         borderRadius: '5px',
+//         padding: '0 0 0 5px',
+//         opacity: '70%',
+//     },
+//     yellow: {
+//         color: '#EAB059',
+//         fontWeight: 'bold',
+//         background: 'lightyellow',
+//         borderRadius: '5px',
+//         padding: '0 0 0 5px',
+//         opacity: '70%',
+//     },
+//     orange: {
+//         color: '#EF6D6D',
+//         fontWeight: 'bold',
+//         background: 'lightgoldenrodyellow',
+//         borderRadius: '5px',
+//         padding: '0 0 0 5px',
+//         opacity: '70%',
+//     },
+// })
 
 export default () => {
-    const userId = useSelector(AuthSelectors.getUserId)
-    const idToken = useSelector(AuthSelectors.getIdToken)
     const organizerEvents = useSelector(UserSelectors.organizerEvents)
-    const classes = useStyles()
+    // const classes = useStyles()
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { t } = useTranslation()
-    var date = new Date()
-    const isodate = date.toISOString()
 
     const [searchTerm, setSearchTerm] = useState('')
-    const [searchResults, setSearchResults] = useState(organizerEvents)
-    const [name, setName] = useState('')
-    const [error, setError] = useState()
-    const [loading, setLoading] = useState(false)
-    const hasError = Boolean(error)
+    const [searchResults, setSearchResults] = useState([])
 
     const isOrganizer = useSelector(AuthSelectors.idTokenData)?.roles?.some(r =>
         ['Organiser', 'AssistantOrganiser', 'SuperAdmin'].includes(r),
@@ -78,17 +72,32 @@ export default () => {
 
     //TODO implement pagination to improve performance of organize tab
 
+    let searchTermDebounced = useDebounce(searchTerm, 1000)
+
     useEffect(() => {
-        const results = organizerEvents.filter(
-            event =>
-                event.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !==
-                -1,
-        )
-        setSearchResults(results)
-    }, [organizerEvents, searchTerm])
+        if (
+            organizerEvents &&
+            Array.isArray(organizerEvents) &&
+            organizerEvents.length > 0
+        ) {
+            if (searchTermDebounced) {
+                const results = organizerEvents.filter(
+                    event =>
+                        event.name
+                            .toLowerCase()
+                            .indexOf(searchTermDebounced.toLowerCase()) !== -1,
+                )
+                setSearchResults(results)
+            } else {
+                setSearchResults(organizerEvents)
+            }
+        }
+    }, [organizerEvents, searchTermDebounced])
 
     //TODO: super slow on superadmin. fix the rendering
-    return organizerEvents.length === 0 || !isOrganizer ? (
+    return searchResults &&
+        Array.isArray(searchResults) &&
+        (searchResults.length === 0 || !isOrganizer) ? (
         <>
             <PageHeader
                 heading="Your Admin Events"
@@ -129,19 +138,19 @@ export default () => {
                     <CreateEventCard />
                     {searchResults.map((event, index) => (
                         <Grid key={index} item xs={12} md={6} lg={4}>
-                            <div className={classes.statusText}>
+                            <div className={'classes.statusText'}>
                                 {event.published && event.approved ? (
-                                    <span className={classes.green}>
+                                    <span className={'classes.green'}>
                                         Published!
                                     </span>
                                 ) : null}
                                 {event.published && !event.approved ? (
-                                    <span className={classes.yellow}>
+                                    <span className={'classes.yellow'}>
                                         Waiting approval
                                     </span>
                                 ) : null}
                                 {!event.published ? (
-                                    <span className={classes.orange}>
+                                    <span className={'classes.orange'}>
                                         Not published
                                     </span>
                                 ) : null}
@@ -149,14 +158,21 @@ export default () => {
 
                             <NewEventCard
                                 event={event}
+                                handleClick={() => {
+                                    dispatch(
+                                        UserActions.setAccessRight('organizer'),
+                                    )
+                                    navigate(`/organise/${event.slug}`)
+                                }}
                                 buttons={[
                                     <Button
                                         size="small"
-                                        onClick={() =>
-                                            dispatch(
-                                                push('/events/' + event.slug),
+                                        onClick={() => {
+                                            console.log(
+                                                'event see more clicked',
                                             )
-                                        }
+                                            navigate(`/events/${event.slug}`)
+                                        }}
                                     >
                                         {t('See_more_')}
                                     </Button>,
@@ -168,9 +184,7 @@ export default () => {
                                                     'organizer',
                                                 ),
                                             )
-                                            dispatch(
-                                                push(`/organise/${event.slug}`),
-                                            )
+                                            navigate(`/organise/${event.slug}`)
                                         }}
                                     >
                                         {t('Manage_')}

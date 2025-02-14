@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 import { FastField } from 'formik'
 
 import MarkdownInput from 'components/inputs/MarkdownInput'
@@ -11,12 +11,13 @@ import ImageUpload from 'components/inputs/ImageUpload'
 import Select from 'components/inputs/Select'
 import Timeline from '../timeline'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import { useAllOrganizations } from 'graphql/queries/organization'
 import ColorSelect from 'components/inputs/Color'
 import Button from 'components/generic/Button'
-import { push } from 'connected-react-router'
+
 import { defaultEventStyles } from './const'
+import { useNavigate } from 'react-router-dom'
 
 const themeFields = [
     {
@@ -70,6 +71,7 @@ export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const [organizations] = useAllOrganizations()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     return (
         <Grid container spacing={3}>
@@ -384,9 +386,7 @@ export default () => {
                     <Grid item xs={12}>
                         <Button
                             variant="contained"
-                            onClick={() =>
-                                dispatch(push('/events/' + event.slug))
-                            }
+                            onClick={() => navigate(`/events/${event.slug}`)}
                         >
                             Preview
                         </Button>

@@ -1,18 +1,17 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 import EventCardSmall from 'components/events/EventCardSmall'
 import Divider from 'components/generic/Divider'
 
 import { useTranslation } from 'react-i18next'
-import { IconButton } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
-import ThumbUpIcon from '@material-ui/icons/ThumbUp'
+import { IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 
 import EventService from 'services/events'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 export default ({ data = [] }) => {
     const dispatch = useDispatch()

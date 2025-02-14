@@ -1,8 +1,8 @@
 import React from 'react'
-import { Box, Typography, Grid } from '@material-ui/core'
+import { Box, Typography, Grid } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { popupCenter } from '../../../utils/misc'
-import { makeStyles } from '@material-ui/core/styles'
+
 import Container from 'components/generic/Container'
 import { projectURLgenerator } from 'utils/dataModifiers'
 
@@ -68,19 +68,6 @@ const ShareProject = (event, project) => {
                                     popupCenter({
                                         url: `https://www.linkedin.com/sharing/share-offsite/?url=${shareurl}`,
                                         title: 'Linkedin',
-                                    })
-                                }
-                                className={classes.socialIcon}
-                                size="3x"
-                            />
-                        </Grid>
-                        <Grid item>
-                            <FontAwesomeIcon
-                                icon={['fab', 'vk']}
-                                onClick={() =>
-                                    popupCenter({
-                                        url: `https://vkontakte.ru/share.php?url=${shareurl}&`,
-                                        title: 'VKOntakte',
                                     })
                                 }
                                 className={classes.socialIcon}

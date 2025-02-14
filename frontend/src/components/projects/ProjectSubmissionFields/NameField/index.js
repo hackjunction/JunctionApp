@@ -1,9 +1,9 @@
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import { FastField } from 'formik'
 import React from 'react'
 
-const NameField = ({ props }) => {
+const NameField = ({ id = 'name-field', props }) => {
     return (
         <Grid item xs={12}>
             <FastField
@@ -18,6 +18,7 @@ const NameField = ({ props }) => {
                         error={form.errors[field.name]}
                     >
                         <input
+                            id={id}
                             onBlur={() => form.setFieldTouched(field.name)}
                             onChange={e =>
                                 form.setFieldValue(field.name, e.target.value)

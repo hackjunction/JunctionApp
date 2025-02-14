@@ -1,23 +1,22 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Paper, Box } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
+import { Paper, Box } from '@mui/material'
+import { Skeleton } from '@mui/lab'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        padding: theme.spacing(2),
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     wrapper: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         width: '100%',
+//         padding: theme.spacing(2),
+//     },
+// }))
 
 const LoadingCard = () => {
-    const classes = useStyles()
+    // const classes = useStyles()
     return (
         <Paper elevation={0} style={{ marginTop: '3px', flex: 1 }}>
-            <Box className={classes.wrapper}>
+            <Box className={'classes.wrapper'}>
                 <Box
                     display="flex"
                     flexDirection="column"

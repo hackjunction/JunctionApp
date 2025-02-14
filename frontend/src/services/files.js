@@ -1,4 +1,5 @@
 import _axios from 'services/axios'
+// Depreciated delete at some point
 
 const FileService = {}
 
@@ -32,7 +33,7 @@ FileService.deleteFileById = (id, idToken) => {
     )
 }
 
-// ProjectsService.getProjectsByEvent = eventSlug => {
+// ProjectsService.getProjectsByEvent = slug=> {
 //     return _axios.get(`/projects/${eventSlug}`)
 // }
 

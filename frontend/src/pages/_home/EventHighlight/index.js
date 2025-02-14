@@ -1,56 +1,54 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-
 import Image from 'components/generic/Image'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useHighlightedEvents } from 'graphql/queries/events'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        width: '100%',
-        // padding: theme.spacing(2),
-        [theme.breakpoints.up('md')]: {
-            flexDirection: 'row',
-            alignItems: 'stretch',
-            height: '100%',
-            maxHeight: '465px',
-            padding: 0,
-        },
-    },
-    left: {
-        height: '100%',
-        maxHeight: '465px',
-        position: 'relative',
-        width: '100%',
-        // padding: theme.spacing(2),
-        [theme.breakpoints.up('md')]: {
-            flex: 1,
-            height: '100%',
-        },
-        [theme.breakpoints.down('md')]: {
-            maxHeight: '200px',
-        },
-    },
-    leftImage: {
-        background: theme.palette.theme_lightgray.main,
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        [theme.breakpoints.down('md')]: {
-            maxHeight: '200px',
-        },
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     wrapper: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'stretch',
+//         width: '100%',
+//         // padding: theme.spacing(2),
+//         [theme.breakpoints.up('md')]: {
+//             flexDirection: 'row',
+//             alignItems: 'stretch',
+//             height: '100%',
+//             maxHeight: '465px',
+//             padding: 0,
+//         },
+//     },
+//     left: {
+//         height: '100%',
+//         maxHeight: '465px',
+//         position: 'relative',
+//         width: '100%',
+//         // padding: theme.spacing(2),
+//         [theme.breakpoints.up('md')]: {
+//             flex: 1,
+//             height: '100%',
+//         },
+//         [theme.breakpoints.down('md')]: {
+//             maxHeight: '200px',
+//         },
+//     },
+//     leftImage: {
+//         background: theme.palette.theme_lightgray.main,
+//         position: 'absolute',
+//         top: 0,
+//         left: 0,
+//         width: '100%',
+//         height: '100%',
+//         objectFit: 'cover',
+//         [theme.breakpoints.down('md')]: {
+//             maxHeight: '200px',
+//         },
+//     },
+// }))
 
 export default () => {
-    const classes = useStyles()
+    // const classes = useStyles()
 
     const [events, loading] = useHighlightedEvents({
         limit: 1,
@@ -60,10 +58,10 @@ export default () => {
     if (!event) return null
     return (
         <PageWrapper loading={loading}>
-            <div className={classes.wrapper}>
-                <div className={classes.left}>
+            <div className={'classes.wrapper'}>
+                <div className={'classes.left'}>
                     <Image
-                        className={classes.leftImage}
+                        className={'classes.leftImage'}
                         publicId={
                             event.coverImage ? event.coverImage.publicId : ''
                         }
@@ -73,7 +71,7 @@ export default () => {
                         }}
                     />
                 </div>
-                {/* <div className={classes.right}>
+                {/* <div className={'classes.right'}>
                     <Typography variant="h6" color="primary">
                         Highlight
                     </Typography>
@@ -95,7 +93,7 @@ export default () => {
                                 color="theme_lightgray"
                                 variant="outlined"
                                 onClick={() =>
-                                    dispatch(push('/events/' + event.slug))
+                                    // dispatch(push('/events/' + event.slug))
                                 }
                             >
                                 {t('See_more_')}

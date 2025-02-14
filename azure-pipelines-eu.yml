@@ -1,4 +1,3 @@
-# Works
 trigger:
     - none
 
@@ -25,19 +24,20 @@ stages:
 
                 - script: mv ./backend/BACKEND_ENV_FILE_EU_UPDATED ./backend/.env
                   displayName: 'rename europe .env'
+
                 - task: DownloadSecureFile@1
                   displayName: 'download europe frontend'
                   inputs:
-                      secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File.
+                      secureFile: 'FRONTEND_ENV_FILE_EU_UPDATED' # string. Required. Secure File.
 
                 - task: CopyFiles@2
                   displayName: 'copy europe frontend'
                   inputs:
                       SourceFolder: '$(Agent.TempDirectory)'
-                      Contents: FRONTEND_ENV_FILE_EU
+                      Contents: FRONTEND_ENV_FILE_EU_UPDATED
                       TargetFolder: './frontend'
 
-                - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
+                - script: mv ./frontend/FRONTEND_ENV_FILE_EU_UPDATED ./frontend/.env
                   displayName: 'rename europe .env'
 
                 - script: ls -a ./frontend
@@ -96,7 +96,6 @@ stages:
                               inputs:
                                   targetType: 'inline'
                                   script: |
-                                      # Modify deployment script based on the app type
                                       echo "Starting deployment script run"
 
                             - task: ExtractFiles@1
@@ -115,8 +114,7 @@ stages:
                               inputs:
                                   targetType: 'inline'
                                   script: |
-                                      cd /home/azureuser/azagent/_work/2/japp
-                                      pm2 restart index
+                                      pm2 restart index --update-env
                                       sudo systemctl restart nginx
 
                     routeTraffic:

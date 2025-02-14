@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment-timezone'
 import Countdown from 'react-countdown-now'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 
 export default ({ annotator, children }) => {
     return (

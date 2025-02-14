@@ -1,4 +1,4 @@
-import { IconButton } from '@material-ui/core'
+import { IconButton } from '@mui/material'
 import Button from 'components/generic/Button'
 import React from 'react'
 import TeamHeader from '../TeamHeader'
@@ -6,11 +6,12 @@ import TeamDescription from '../TeamDescription'
 import TeamRoles from '../TeamRoles'
 import TeamMembers from '../TeamMembers'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import junctionStyle from 'utils/styles'
+// import junctionStyle from 'utils/styles'
 import { popupCenter } from 'utils/misc'
-import { Email } from '@material-ui/icons'
+import { Email } from '@mui/icons-material'
 import { objToArr } from 'utils/dataModifiers'
 import PageWrapper from 'components/layouts/PageWrapper'
+import { useTranslation } from 'react-i18next'
 
 // TODO add socialLinks component from Damilare (@mrprotocoll)
 
@@ -23,10 +24,15 @@ export default ({
     onRoleClick = () => {},
     loading = false,
 }) => {
+    console.log(
+        'TEAMDATA FROM TEAM PROFILE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',
+    )
+    console.log(teamData)
+    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
     const teamMembersArr = [...objToArr(teamData.meta)]
-    const membersCount = teamData.members.length
-
-    const classes = junctionStyle()
+    const membersCount = teamData?.members ? teamData.members.length : 0
+    const { t } = useTranslation()
+    // const classes = junctionStyle()
     return (
         <PageWrapper loading={loading}>
             <div className="tw-flex tw-flex-col tw-gap-12">
@@ -65,7 +71,7 @@ export default ({
                                     title: 'Discord',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}
@@ -78,7 +84,7 @@ export default ({
                                     title: 'Telegram',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}
@@ -94,7 +100,7 @@ export default ({
                                 })
                             }
                         >
-                            <Email className={classes.socialIcon} />
+                            <Email className={'classes.socialIcon'} />
                         </IconButton>
                     )}
                     {teamData?.slack && (
@@ -106,7 +112,7 @@ export default ({
                                     title: 'Slack',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}
@@ -115,7 +121,7 @@ export default ({
                 {enableActions && (
                     <div className="tw-flex tw-gap-4 tw-justify-start">
                         <Button onClick={onClickEdit} variant="jContained">
-                            Edit
+                            {t('Team_edit_')}
                         </Button>
                         {membersCount > 0 ? (
                             <Button
@@ -123,7 +129,8 @@ export default ({
                                 color="outlined_button"
                                 variant="jOutlined"
                             >
-                                Leave the team
+                                {t('Team_leave_')}
+                                {/* Leave the team */}
                             </Button>
                         ) : (
                             <Button
@@ -131,7 +138,8 @@ export default ({
                                 color="outlined_button"
                                 variant="jOutlined"
                             >
-                                Delete the team
+                                {t('Team_delete_')}
+                                {/* Delete the team */}
                             </Button>
                         )}
                     </div>
@@ -140,4 +148,3 @@ export default ({
         </PageWrapper>
     )
 }
-//TODO fix issue that doesn't let team owners leave their own team

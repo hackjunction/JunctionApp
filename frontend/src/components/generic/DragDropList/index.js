@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Box, List, ListSubheader } from '@material-ui/core'
+import { Box, List, ListSubheader } from '@mui/material'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 // a little function to help us with reordering the result

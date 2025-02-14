@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import { useQuery, gql } from '@apollo/client'
-import { useRouteMatch } from 'react-router'
+import { useParams, useResolvedPath } from 'react-router'
 import { useSelector } from 'react-redux'
 import { EventStatuses } from '@hackjunction/shared'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import RegistrationsService from 'services/registrations'
 
 // TODO move to queries
@@ -106,7 +106,9 @@ const registrationQuery = gql`
         myRegistration(eventSlug: $eventSlug) {
             status
             answers {
+                numHackathons
                 spokenLanguages
+                tShirtSize
                 roles {
                     role
                     years
@@ -140,6 +142,7 @@ const registrationQuery = gql`
                 needsTravelGrant
                 needsVisa
                 countryOfTravel
+                cityOfTravel
                 linkedin
                 github
                 curriculumVitae
@@ -149,6 +152,7 @@ const registrationQuery = gql`
                     university
                     degree
                     graduationYear
+                    country
                 }
                 motivation
                 biography
@@ -168,9 +172,10 @@ const registrationQuery = gql`
 `
 const EventDetailContext = React.createContext({})
 export const EventDetailProvider = ({ children }) => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
+    const { slug } = useParams()
     const idToken = useSelector(AuthSelectors.getIdToken)
-    const { slug } = match.params
+    // const { slug } = match.params
     const {
         data: eventData,
         loading: eventLoading,
@@ -178,7 +183,7 @@ export const EventDetailProvider = ({ children }) => {
         refetch: refetchEvent,
     } = useQuery(eventQuery, {
         variables: {
-            slug: slug,
+            slug,
         },
     })
 

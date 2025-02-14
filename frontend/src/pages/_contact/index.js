@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
-import { Button, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import { TextField } from '@material-ui/core'
+import { Button, Typography } from '@mui/material'
+
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { TextField } from '@mui/material'
 
 import Divider from 'components/generic/Divider'
 import Footer from 'components/layouts/Footer'
@@ -15,53 +14,55 @@ import Container from 'components/generic/Container'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
 
-// import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as AuthActions from 'redux/auth/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+
+import * as UserSelectors from 'reducers/user/selectors'
+
 import EmailService from 'services/email'
 import Shared from '@hackjunction/shared'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: theme.spacing(3),
-        background: 'black',
-        color: 'white',
-    },
-    logo: {
-        width: '200px',
-        height: '200px',
-    },
-    title: {
-        color: 'white',
-        textTransform: 'uppercase',
-        textAlign: 'center',
-    },
-    subtitle: {
-        color: 'white',
-        textAlign: 'center',
-    },
-    error: {
-        color: theme.palette.error.main,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(3),
-        padding: theme.spacing(0.5, 1),
-    },
-}))
+// const useStyles = styled(theme => ({
+//     wrapper: {
+//         height: '100%',
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         padding: theme.spacing(3),
+//         background: 'black',
+//         color: 'white',
+//     },
+//     logo: {
+//         width: '200px',
+//         height: '200px',
+//     },
+//     title: {
+//         color: 'white',
+//         textTransform: 'uppercase',
+//         textAlign: 'center',
+//     },
+//     subtitle: {
+//         color: 'white',
+//         textAlign: 'center',
+//     },
+//     error: {
+//         color: theme.palette.error.main,
+//         fontWeight: 'bold',
+//         textAlign: 'center',
+//         marginTop: theme.spacing(3),
+//         marginBottom: theme.spacing(3),
+//         padding: theme.spacing(0.5, 1),
+//     },
+// }))
 
 export default () => {
     const dispatch = useDispatch()
-    const classes = useStyles()
+    // const classes = useStyles()
     //const location = useLocation()
-    // const idToken = useSelector(AuthSelectors.getIdToken)
 
     const [loading, setLoading] = useState(false)
     const [subject, setSubject] = useState('')
@@ -69,18 +70,47 @@ export default () => {
     const [name, setName] = useState('')
     const [organisation, setOrganisation] = useState('')
     const [message, setMessage] = useState('')
+    const navigate = useNavigate()
 
     const { t } = useTranslation()
 
+    const clearContactForm = () => {
+        setLoading(false)
+        setMessage('')
+        setSubject('')
+        setEmail('')
+        setName('')
+        setOrganisation('')
+    }
+
+    const userProfile = useSelector(UserSelectors.userProfile)
+
     useEffect(() => {
-        dispatch(AuthActions.clearSession())
-    }, [dispatch])
+        if (userProfile) {
+            if (userProfile.hasOwnProperty('email') && !email) {
+                setEmail(userProfile.email)
+            }
+            if (
+                userProfile.hasOwnProperty('firstName') &&
+                userProfile.hasOwnProperty('lastName') &&
+                !name
+            ) {
+                setName(`${userProfile.firstName} ${userProfile.lastName}`)
+            }
+        }
+    }, [userProfile])
+
+    // useEffect(() => {
+    //     dispatch(AuthActions.clearSession())
+    // }, [dispatch])
     // TODO there isn't message which tells which field is needed
-    const sendEmail = useCallback(() => {
-        if (
-            !(message.length > 0 && subject.length > 0) &&
-            Shared.Utils.isEmail(email)
-        ) {
+    const sendEmail = () => {
+        if (!message || !subject || !Shared.Utils.isEmail(email)) {
+            dispatch(
+                SnackbarActions.error(
+                    'Please fill in a message, subject and a valid email',
+                ),
+            )
             return
         }
         setLoading(true)
@@ -93,20 +123,16 @@ export default () => {
         EmailService.sendContactEmail(params)
             .then(() => {
                 dispatch(SnackbarActions.success('Contact mail sent'))
+                clearContactForm()
             })
             .catch(err => {
                 dispatch(SnackbarActions.error('Something went wrong...'))
             })
             .finally(() => {
                 setLoading(false)
-                setMessage('')
-                setSubject('')
-                setEmail('')
-                setName('')
-                setOrganisation('')
             })
         return null
-    }, [dispatch, email, message, name, organisation, subject])
+    }
 
     return (
         <PageWrapper
@@ -170,8 +196,11 @@ export default () => {
                             content={config.SEO_TWITTER_HANDLE}
                         />
                     </Helmet>
-                    <Container center wrapperClass={classes.backButtonWrapper}>
-                        <Button onClick={() => dispatch(push('/'))}>
+                    <Container
+                        center
+                        wrapperClass={'classes.backButtonWrapper'}
+                    >
+                        <Button onClick={() => navigate(-1)}>
                             <ArrowBackIosIcon style={{ color: 'black' }} />
                             <Typography
                                 variant="button"

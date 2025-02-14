@@ -21,10 +21,10 @@ module.exports = {
 
         console.log(
             'Done with ProjectScore',
-            res.n,
-            res.nModified,
-            pres.n,
-            pres.nModified,
+            res.matchedCount,
+            res.modifiedCount,
+            pres.matchedCount,
+            pres.modifiedCount,
         )
         const PS = mongoose.model('ProjectScore')
         await PS.collection.createIndex(

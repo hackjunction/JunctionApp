@@ -1,10 +1,10 @@
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import { FastField } from 'formik'
 import React from 'react'
 
-const PunchlineField = ({ props }) => {
+const PunchlineField = ({ id = 'punchline-field', props }) => {
     return (
         <Grid item xs={12}>
             <FastField
@@ -19,6 +19,7 @@ const PunchlineField = ({ props }) => {
                         error={form.errors[field.name]}
                     >
                         <TextAreaInput
+                            id={id}
                             placeholder="What problem does your project solve? How would you describe it in two sentences?"
                             value={field.value}
                             onChange={value =>

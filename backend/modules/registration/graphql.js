@@ -21,7 +21,7 @@ const RegistrationType = new GraphQLObjectType({
         return {
             /** Fields from DB model */
             _id: {
-                type: GraphQLNonNull(GraphQLID),
+                type: new GraphQLNonNull(GraphQLID),
             },
             user: {
                 type: require('../user-profile/graphql').Types.UserProfileType,
@@ -42,7 +42,7 @@ const RegistrationType = new GraphQLObjectType({
                 type: GraphQLString,
             },
             tags: {
-                type: GraphQLList(GraphQLString),
+                type: new GraphQLList(GraphQLString),
             },
             checklist: {
                 type: Checklist,
@@ -91,26 +91,26 @@ const QueryType = new GraphQLObjectType({
             type: RegistrationType,
             args: {
                 _id: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
             },
         },
         registrations: {
-            type: GraphQLList(RegistrationType),
+            type: new GraphQLList(RegistrationType),
         },
         registrationsByEvent: {
-            type: GraphQLList(RegistrationType),
+            type: new GraphQLList(RegistrationType),
             args: {
                 eventId: {
-                    type: GraphQLNonNull(GraphQLString),
+                    type: new GraphQLNonNull(GraphQLString),
                 },
             },
         },
         registrationsByUser: {
-            type: GraphQLList(RegistrationType),
+            type: new GraphQLList(RegistrationType),
             args: {
                 userId: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
             },
         },
@@ -124,10 +124,10 @@ const MutationType = new GraphQLObjectType({
             type: RegistrationType,
             args: {
                 _id: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
                 answers: {
-                    type: GraphQLNonNull(GraphQLJSONObject),
+                    type: new GraphQLNonNull(GraphQLJSONObject),
                 },
             },
         },

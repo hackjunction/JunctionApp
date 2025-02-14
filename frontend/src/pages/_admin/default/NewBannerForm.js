@@ -1,21 +1,22 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { push } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
 import BannerService from 'services/banner'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 export default () => {
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const [name, setName] = useState('')
-    const [error, setError] = useState()
+    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const hasError = Boolean(error)
 
@@ -29,7 +30,7 @@ export default () => {
             } else if (name.length >= 50) {
                 setError(t('Name_must_under_'))
             } else {
-                setError()
+                setError('')
             }
         }
     }, [name, hasError, t])
@@ -51,7 +52,7 @@ export default () => {
         BannerService.createBanner(idToken, { name })
             .then(data => {
                 console.log('doing data', data)
-                dispatch(push(`/admin/banner/${data.slug}`))
+                navigate(`/admin/banner/${data.slug}`)
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {

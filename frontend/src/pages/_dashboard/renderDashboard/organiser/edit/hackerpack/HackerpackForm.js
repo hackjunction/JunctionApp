@@ -11,10 +11,10 @@ import {
     IconButton,
     Tooltip,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import getSlug from 'speakingurl'
-import HighlightOffIcon from '@material-ui/icons/HighlightOff'
-import EditIcon from '@material-ui/icons/Edit'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import EditIcon from '@mui/icons-material/Edit'
 import Button from 'components/generic/Button'
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import ImageUpload from 'components/inputs/ImageUpload'
@@ -206,9 +206,7 @@ export default ({ value, onChange }) => {
                         resizeMode="contain"
                     />
                 </Box>
-                <Typography variant="caption">
-                    Hackerpack logo.
-                </Typography>
+                <Typography variant="caption">Hackerpack logo.</Typography>
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h5">Link *</Typography>
@@ -217,9 +215,7 @@ export default ({ value, onChange }) => {
                     value={link}
                     onChange={setLink}
                 />
-                <Typography variant="caption">
-                    Hackerpack link.
-                </Typography>
+                <Typography variant="caption">Hackerpack link.</Typography>
             </Grid>
             <Grid item xs={12}>
                 <Box

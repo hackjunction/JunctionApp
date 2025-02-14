@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
-import { push } from 'connected-react-router'
-import { useDispatch } from 'react-redux'
-import { Box, Typography, Button as MuiButton } from '@material-ui/core'
+
+import { Box, Typography, Button as MuiButton } from '@mui/material'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 export default ({
     projects = [],
@@ -14,17 +14,17 @@ export default ({
     subheading,
     moreLink,
 }) => {
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const handleClickMore = useCallback(() => {
-        dispatch(push(moreLink))
-    }, [dispatch, moreLink])
+        navigate(moreLink)
+    }, [moreLink])
     const { t } = useTranslation()
 
     const handleSelected = useCallback(
         project => {
-            dispatch(push(`/projects/${event.slug}/view/${project._id}`))
+            navigate(`/projects/${event.slug}/view/${project._id}`)
         },
-        [event.slug, dispatch],
+        [event.slug],
     )
     return (
         <>

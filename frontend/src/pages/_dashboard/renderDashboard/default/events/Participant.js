@@ -1,10 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 import { useRegistrationsByUser } from 'graphql/queries/registrations'
 import { useTranslation } from 'react-i18next'
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography } from '@mui/material'
 
 //import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 import PageHeader from 'components/generic/PageHeader'
@@ -14,11 +14,13 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as UserActions from 'redux/user/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as UserActions from 'reducers/user/actions'
+import { useNavigate } from 'react-router-dom'
 
 export default () => {
+    const navigate = useNavigate()
     const userId = useSelector(AuthSelectors.getUserId)
     const activeEvents = useSelector(DashboardSelectors.activeEvents)
     const pastEvents = useSelector(DashboardSelectors.pastEvents)
@@ -49,7 +51,12 @@ export default () => {
                         </Grid>
 
                         {registrations?.map((registration, index) => (
-                            <Grid key={`${registration.id}-${index}`} item xs={12} md={6}>
+                            <Grid
+                                key={`${registration.id}-${index}`}
+                                item
+                                xs={12}
+                                md={6}
+                            >
                                 <EventCardSmall
                                     key={index}
                                     event={registration.event}
@@ -58,11 +65,9 @@ export default () => {
                                             UserActions.setAccessRight(
                                                 'participant',
                                             ),
-                                        ) //TODO: make this a schema
-                                        dispatch(
-                                            push(
-                                                `/dashboard/event/${event?.slug}`,
-                                            ),
+                                        )
+                                        navigate(
+                                            `/dashboard/event/${event?.slug}`,
                                         )
                                     }}
                                 />
@@ -90,16 +95,14 @@ export default () => {
                                 const eventStarted = isodate > event.startTime
                                 return (
                                     <NewEventCard
+                                        key={`active-${event._id}`}
                                         event={event}
                                         buttons={[
                                             <Button
                                                 size="small"
                                                 onClick={() =>
-                                                    dispatch(
-                                                        push(
-                                                            '/events/' +
-                                                                event.slug,
-                                                        ),
+                                                    navigate(
+                                                        '/events/' + event.slug,
                                                     )
                                                 }
                                             >
@@ -109,12 +112,10 @@ export default () => {
                                                 <Button
                                                     size="small"
                                                     onClick={() =>
-                                                        dispatch(
-                                                            push(
-                                                                '/events/' +
-                                                                    event.slug +
-                                                                    '/register/',
-                                                            ),
+                                                        navigate(
+                                                            '/events/' +
+                                                                event.slug +
+                                                                '/register/',
                                                         )
                                                     }
                                                 >
@@ -126,11 +127,9 @@ export default () => {
                                                     <Button
                                                         size="small"
                                                         onClick={() => {
-                                                            dispatch(
-                                                                push(
-                                                                    '/projects/' +
-                                                                        event.slug,
-                                                                ),
+                                                            navigate(
+                                                                '/projects/' +
+                                                                    event.slug,
                                                             )
                                                         }}
                                                     >
@@ -156,15 +155,15 @@ export default () => {
                             const eventStarted = isodate > event.startTime
                             return (
                                 <NewEventCard
+                                    key={`past-${event._id}`}
                                     event={event}
+                                    key={event.slug}
                                     buttons={[
                                         <Button
                                             size="small"
                                             onClick={() =>
-                                                dispatch(
-                                                    push(
-                                                        '/events/' + event.slug,
-                                                    ),
+                                                navigate(
+                                                    '/events/' + event.slug,
                                                 )
                                             }
                                         >
@@ -178,11 +177,9 @@ export default () => {
                                                         '/projects/' +
                                                             event.slug,
                                                     )
-                                                    dispatch(
-                                                        push(
-                                                            '/projects/' +
-                                                                event.slug,
-                                                        ),
+                                                    navigate(
+                                                        '/projects/' +
+                                                            event.slug,
                                                     )
                                                 }}
                                             >
@@ -200,7 +197,10 @@ export default () => {
                     <Button
                         variant="outlinedNew"
                         color="theme_lightgray"
-                        onClick={() => dispatch(push('/events'))} // TODO: Add past events page, fix the looks of this button
+                        onClick={() => {
+                            console.log('TODO: Add past events page')
+                            navigate('/events')
+                        }} // TODO: Add past events page, fix the looks of this button
                     >
                         {t('Past_events_all_')}
                     </Button>
