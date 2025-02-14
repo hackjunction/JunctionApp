@@ -1,11 +1,13 @@
 import React, { useRef, useCallback, useState } from 'react'
 import { QrReader } from '@cmdnio/react-qr-reader'
-import { useDispatch } from 'react-redux'
+// Legacy might not be needed at all, delete commented code if that's the case
 
-import { Box, Typography } from '@mui/material'
-import Button from 'components/generic/Button'
+// import { useDispatch } from 'react-redux'
 
-import * as SnackbarActions from 'reducers/snackbar/actions'
+// import { Box, Typography } from '@mui/material'
+// import Button from 'components/generic/Button'
+
+// import * as SnackbarActions from 'reducers/snackbar/actions'
 export default ({ onResult }) => {
     // const reader = useRef(null)
     // const dispatch = useDispatch()

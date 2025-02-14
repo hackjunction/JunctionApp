@@ -102,29 +102,7 @@ const editEventOrganisers = buildUpdatePath('event.data.organisers')
 const editEventRecruitres = buildUpdatePath('event.data.recruiters')
 
 export default function reducer(state = initialState, action) {
-    // const asyncThunkModifier = action => {
-    //     // Adds the promise status to the action being ran to match the buildHandler logic
-    //     if (_.endsWith(action.type, '/fulfilled')) {
-    //         action.baseType = _.replace(action.type, '/fulfilled', '')
-    //         action.status = 'success'
-    //     }
-    //     if (_.endsWith(action.type, '/pending')) {
-    //         action.baseType = _.replace(action.type, '/pending', '')
-    //         action.status = 'start'
-    //     }
-    //     if (_.endsWith(action.type, '/rejected')) {
-    //         action.baseType = _.replace(action.type, '/rejected', '')
-    //         action.status = 'failure'
-    //     }
-    //     return action
-    // }
-
     action = asyncThunkModifier(action)
-
-    // if (action.type === `${ActionTypes.UPDATE_EVENT}/fulfilled`) {
-    //     action.type = ActionTypes.UPDATE_EVENT
-    //     action.status = 'success'
-    // }
     switch (action.baseType || action.type) {
         case ActionTypes.UPDATE_EVENT: {
             return eventHandler(state, action)
@@ -288,7 +266,6 @@ export default function reducer(state = initialState, action) {
             return editEventRecruitres(state, data)
         }
         case ActionTypes.ADD_EVENT_RECRUITER: {
-            //const data = state.event.data.recruiters.concat(action.payload)
             return editEventRecruitres(state, action.payload)
         }
         /**TODO: Add attendee update actions */

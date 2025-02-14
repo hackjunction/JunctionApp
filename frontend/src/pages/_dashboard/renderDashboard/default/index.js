@@ -55,9 +55,6 @@ export default () => {
     const [activeEvents, loadingActive] = useActiveEvents({}) //active events, from these we select where to rediret, or default
     const [pastEvents, loadingPast] = usePastEvents({ limit: 3 }) //TODO: is undefined, fix
     const [loading, setLoading] = useState(true)
-    // const userAccessRight = useSelector(UserSelectors.userAccessRight)
-    // const stateActiveEvents = useSelector(DashboardSelectors.activeEvents)
-    // const statePastEvents = useSelector(DashboardSelectors.pastEvents)
 
     useEffect(() => {
         dispatch(UserActions.organizerEvents(organizerEvents))

@@ -84,8 +84,6 @@ export default ({
     const [alerts, setAlerts] = useState(originalAlerts)
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
-    console.log('SHOWN PAGES <<<<<<<<<<<<<<<<<<<<<<<<<<')
-    console.log(shownPages)
 
     let isNotMainEvent = event?.slug !== 'junction-2024'
 

@@ -1,14 +1,10 @@
-// import { createStore, applyMiddleware } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-// import { thunk } from 'redux-thunk'
-// import { composeWithDevTools } from '@redux-devtools/extension'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import LogRocket from 'logrocket'
 
 import createRootReducer from './rootReducer'
 import { configureStore } from '@reduxjs/toolkit'
-// import { eventApi } from './organiser/actions'
 
 const persistConfig = {
     key: 'root',
@@ -29,7 +25,6 @@ export default preloadedState => {
                     ignoredActions: ['persist/PERSIST'],
                 },
             }).concat(LogRocket.reduxMiddleware()),
-        // }).concat(eventApi.middleware, LogRocket.reduxMiddleware()),
         devTools: process.env.NODE_ENV === 'production' ? false : true,
     })
     const persistor = persistStore(store)

@@ -17,11 +17,6 @@ const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
     const { t } = useTranslation()
     const confirmed = confirmed1 && confirmed2 && confirmed3
 
-    console.log('Submit button >>>>>>>>>>>>>>>>>>>>')
-    console.log('hasErrors', hasErrors)
-    console.log('!confirmed', !confirmed)
-    console.log('loading', loading)
-    console.log('Disabled?', hasErrors || !confirmed || loading)
     return (
         <Box className="flex flex-col items-center">
             <Box className="bg-white p-4 mb-1 w-full max-w-xl flex flex-row items-center">

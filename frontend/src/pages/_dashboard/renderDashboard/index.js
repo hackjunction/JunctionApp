@@ -24,7 +24,6 @@ import {
 } from 'graphql/queries/events'
 
 export default role => {
-    // const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
 

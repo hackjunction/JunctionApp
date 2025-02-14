@@ -58,13 +58,9 @@ export default () => {
         setLoading(true)
         await RegistrationsService.getFullRegistration(idToken, slug, data)
             .then(data => {
-                console.log('RESULT FROM SCAN >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-                console.log(data)
                 setRegistration(data)
             })
             .catch(err => {
-                console.log('ERROR WHEN SCANNING >>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-                console.log(err)
                 if (err.response && err.response.status === 404) {
                     dispatch(SnackbarActions.error('User not found'))
                 } else {

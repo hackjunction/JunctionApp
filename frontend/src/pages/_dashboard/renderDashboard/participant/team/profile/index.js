@@ -95,8 +95,6 @@ export default () => {
 
     const handleEdit = useCallback(
         (values, formikBag) => {
-            console.log('submitted with:', values)
-            console.log('formikBag:', formikBag)
             setLoading(true)
             dispatch(DashboardActions.editTeam(slug, values))
                 .then(() => {
@@ -120,8 +118,6 @@ export default () => {
     )
 
     const teamData = hasTeam ? team : {}
-
-    // hasTeam ? (teamData = team) : (teamData = {})
 
     let formikSubmitAction
 

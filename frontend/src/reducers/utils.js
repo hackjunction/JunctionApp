@@ -39,10 +39,6 @@ import { reduce, cloneDeep, set, endsWith, replace } from 'lodash-es'
 
 export const buildHandler =
     (field, mapByField, mapIsArray) => (state, action) => {
-        console.log('ACTION FROM UTILS>>>>>>')
-        console.log(action.type)
-        // action.status = action.status || 'sucess'
-        console.log(action)
         switch (action.status) {
             case 'start':
                 return {
@@ -71,7 +67,6 @@ export const buildHandler =
                     },
                 }
             case 'success':
-                console.log('success is running>>>>>>>')
                 if (mapByField) {
                     const map = reduce(
                         action.payload,

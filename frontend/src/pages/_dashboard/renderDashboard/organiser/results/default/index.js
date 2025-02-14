@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { useDispatch } from 'react-redux'
-
-import { useNavigate, useResolvedPath } from 'react-router'
+import { useNavigate } from 'react-router'
 
 import { Grid, Paper, Box, Typography, ButtonBase } from '@mui/material'
 
@@ -17,15 +15,13 @@ import { Grid, Paper, Box, Typography, ButtonBase } from '@mui/material'
 
 export default () => {
     // const classes = useStyles()
-    const url = useResolvedPath('').pathname
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Paper elevation={0}>
                     <ButtonBase
-                        onClick={() => navigate(`${url}/overall`)}
+                        onClick={() => navigate(`/overall`)}
                         component="div"
                         classes={{ root: 'classes.paperButton' }}
                     >
@@ -43,7 +39,7 @@ export default () => {
             <Grid item xs={12}>
                 <Paper elevation={0}>
                     <ButtonBase
-                        onClick={() => navigate(`${url}/tracks`)}
+                        onClick={() => navigate(`/tracks`)}
                         component="div"
                         classes={{ root: 'classes.paperButton' }}
                     >
@@ -60,7 +56,7 @@ export default () => {
             <Grid item xs={12}>
                 <Paper elevation={0}>
                     <ButtonBase
-                        onClick={() => navigate(`${url}/challenges`)}
+                        onClick={() => navigate(`/challenges`)}
                         component="div"
                         classes={{ root: 'classes.paperButton' }}
                     >

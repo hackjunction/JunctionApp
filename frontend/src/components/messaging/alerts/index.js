@@ -16,8 +16,6 @@ export function Alerts({ alerts = [] }) {
         (a, b) => +new Date(b.sentAt) - +new Date(a.sentAt),
     )
     // const classes = useStyles()
-    console.log('ALERTS>>>>>>')
-    console.log(sortedAlerts)
     return (
         // <div className={classes.root}>
         <Grid>

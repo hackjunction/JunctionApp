@@ -14,26 +14,12 @@ import ProjectsTable from 'components/tables/ProjectsTable'
 import ChallengeLink from './ChallengeLink'
 
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
-import {
-    addTeamCodeToProjectAndFilterNoTeam,
-    getProjectsForChallenge,
-} from 'utils/dataModifiers'
-// import { getProjectsForChallenge } from 'utils/dataModifiers'
+import { getProjectsForChallenge } from 'utils/dataModifiers'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const projects = useSelector(OrganiserSelectors.projects)
     const teams = useSelector(OrganiserSelectors.teams)
-
-    // const getProjectsForChallenge = slug => {
-    //     const projectsWithTeam = addTeamCodeToProjectAndFilterNoTeam(
-    //         projects,
-    //         teams,
-    //     )
-    //     return projectsWithTeam.filter(project => {
-    //         return project.challenges && project.challenges.indexOf(slug) !== -1
-    //     })
-    // }
 
     const challenges = useMemo(() => {
         return sortBy(event.challenges, 'name')

@@ -3,12 +3,10 @@ import Button from 'components/generic/Button'
 
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-// import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 export default ({ eventData = {}, onCreate }) => {
     const navigate = useNavigate()
-    // const dispatch = useDispatch()
     const { t } = useTranslation()
     return (
         <div className="tw-flex tw-flex-col tw-gap-32 tw-py-12">
@@ -24,7 +22,6 @@ export default ({ eventData = {}, onCreate }) => {
                     variant="jOutlined"
                 >
                     {t('Team_join_')}
-                    {/* Join a team */}
                 </Button>
                 <Button
                     id="create-team"

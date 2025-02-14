@@ -8,19 +8,12 @@ import DetailPage from './id'
 // import AdminPage from './admin'
 
 export default () => {
-    // const dispatch = useDispatch()
-    // const location = useLocation()
-    // const url = useResolvedPath('').pathname
-
-    //console.log(match.url)
-
     return (
         <Routes>
             <Route index element={<SearchPage />} />
             <Route path={`/:id`} element={<DetailPage />} />
             {/* <Route exact={true} path=`${url}/recruitment/admin` component={AdminPage} /> */}
             <Route path="*" element={<Navigate to="/home" />} />
-            {/* <Navigate to={`${url}`} /> */}
         </Routes>
     )
 }

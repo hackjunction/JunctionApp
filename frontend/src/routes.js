@@ -119,7 +119,12 @@ const routes = [
 if (config.IS_DEBUG) {
     routes.push({
         path: '/devtools',
-        element: <DevTools />,
+        element: (
+            <RequiresRole
+                ComposedComponent={DevTools}
+                requiredRoles={[AuthConstants.Roles.SUPER_ADMIN]}
+            />
+        ),
     })
 }
 

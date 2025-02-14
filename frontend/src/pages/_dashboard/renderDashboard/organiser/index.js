@@ -45,10 +45,6 @@ export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const loading = useSelector(OrganiserSelectors.eventLoading)
     const error = useSelector(OrganiserSelectors.eventError)
-    console.log('FROM ORGANIZER INDEX')
-    console.log(url)
-    console.log(slug)
-    console.log(event)
 
     useEffect(() => {
         dispatch(OrganiserActions.updateEvent(slug))

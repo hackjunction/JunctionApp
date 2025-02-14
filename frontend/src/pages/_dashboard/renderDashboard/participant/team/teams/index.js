@@ -28,8 +28,6 @@ export default () => {
     //TODO create pagination component
     const teams = useSelector(DashboardSelectors.teams)
 
-    console.log('ALL TEAMS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-    console.log(teams)
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const [selected, setSelected] = useState(false)
     const [applying, setApplying] = useState(false)
@@ -46,9 +44,6 @@ export default () => {
     const selectedTeamLoading = useSelector(
         DashboardSelectors.selectedTeamLoading,
     )
-    console.log('TEST SELECTED TEAM>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-    console.log(selectedTeam)
-    console.log(selectedTeamLoading)
 
     const hadleTeamCardClick = async teamId => {
         if (teamId) {

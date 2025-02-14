@@ -25,8 +25,6 @@ export default ({
     const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
     const event = useSelector(DashboardSelectors.event)
 
-    // console.log('TEAM ROLES DATA>>>>>>>>>>>>>>>>>>>>>>>>>>')
-    // console.log(teamRolesData)
     let teamRoles = []
     const dispatch = useDispatch()
 
@@ -92,14 +90,11 @@ export default ({
         (values, formikBag) => {
             formikBag.setSubmitting(true)
             const submittionData = {}
-            console.log('values from application', values)
-            console.log('teamRolesData from application', teamRoles)
             submittionData.roles = _.filter(teamRoles, role =>
                 _.includes(values.roles, role.role),
             )
             submittionData.motivation = values.motivation
             submittionData.userId = userProfile.userId
-            console.log('submittionData from application', submittionData)
             dispatch(
                 DashboardActions.candidateApplyToTeam({
                     slug: event.slug,

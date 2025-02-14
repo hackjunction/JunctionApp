@@ -9,28 +9,15 @@ import UserProfilesService from 'services/userProfiles'
 
 import ProjectScoresService from 'services/projectScores'
 
-import GavelService from 'services/reviewing/gavel'
+// import GavelService from 'services/reviewing/gavel'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import _ from 'lodash'
-
-// export const updateEvent = slug => dispatch => {
-//     dispatch({
-//         type: ActionTypes.UPDATE_EVENT,
-//         promise: EventsService.getPublicEventBySlug(slug),
-//         meta: {
-//             onFailure: e => console.log('Error updating dashboard event', e),
-//         },
-//     })
-// }
 
 export const updateEvent = createAsyncThunk(
     ActionTypes.UPDATE_EVENT,
     async (slug, { getState, rejectWithValue }) => {
         try {
-            // const idToken = AuthSelectors.getIdToken(getState())
             const event = await EventsService.getPublicEventBySlug(slug)
-            console.log('UPDATE EVENT ACTION AS PARTICIPANT>>>>>>>>>>')
-            console.log(event)
             return event
         } catch (error) {
             console.error('Error updating event', error)
@@ -38,18 +25,6 @@ export const updateEvent = createAsyncThunk(
         }
     },
 )
-
-// export const updateRegistration = slug => (dispatch, getState) => {
-//     const idToken = AuthSelectors.getIdToken(getState())
-
-//     dispatch({
-//         type: ActionTypes.UPDATE_REGISTRATION,
-//         promise: RegistrationsService.getRegistration(idToken, slug),
-//         meta: {
-//             onFailure: () => dispatch(push('/')),
-//         },
-//     })
-// }
 
 export const updateRegistration = createAsyncThunk(
     ActionTypes.UPDATE_REGISTRATION,
@@ -60,8 +35,6 @@ export const updateRegistration = createAsyncThunk(
                 idToken,
                 slug,
             )
-            console.log('UPDATE REGISTRATION ACTION AS PARTICIPANT>>>>>>>>>>')
-            console.log(registration)
             return registration
         } catch (error) {
             console.error('Error updating registration', error)
@@ -92,22 +65,6 @@ export const updateRegistrationChecklist =
         }
     }
 
-// export const updateRecruitersForEvent =
-//     recruiters => async (dispatch, getState) => {
-//         const userIds = recruiters?.map(rec => {
-//             return rec.recruiterId
-//         })
-
-//         dispatch({
-//             type: ActionTypes.UPDATE_EVENT_RECRUITERS,
-//             promise: UserProfilesService.getPublicUserProfiles(userIds),
-//             meta: {
-//                 onFailure: e =>
-//                     console.log('Error updating recruiters for this event', e),
-//             },
-//         })
-//     }
-
 export const updateRecruitersForEvent = createAsyncThunk(
     ActionTypes.UPDATE_EVENT_RECRUITERS,
     async (recruiters, { getState, rejectWithValue }) => {
@@ -124,10 +81,6 @@ export const updateRecruitersForEvent = createAsyncThunk(
             })
             const RecruiterPublicProfiles =
                 await UserProfilesService.getPublicUserProfiles(userIds)
-            console.log(
-                'UPDATE PUBLIC RECRUITER ACTION AS PARTICIPANT>>>>>>>>>>',
-            )
-            console.log(RecruiterPublicProfiles)
             return RecruiterPublicProfiles
         } catch (error) {
             console.error('Error updating recruiters', error)
@@ -240,40 +193,6 @@ export const createPartnerRegistration =
         return registration
     }
 
-// export const updateTeams =
-//     (slug, page, size, filter) => async (dispatch, getState) => {
-//         const idToken = AuthSelectors.getIdToken(getState())
-//         if (!slug) return
-//         if (filter === 'All challenges') {
-//             dispatch({
-//                 type: ActionTypes.UPDATE_TEAMS,
-//                 promise: TeamsService.getAllTeamsForEventParticipant(
-//                     idToken,
-//                     slug,
-//                     page,
-//                     size,
-//                 ),
-//                 meta: {
-//                     onFailure: e => console.log('Error updating teams', e),
-//                 },
-//             })
-//         } else {
-//             dispatch({
-//                 type: ActionTypes.UPDATE_TEAMS,
-//                 promise: TeamsService.getAllTeamsForEventParticipant(
-//                     idToken,
-//                     slug,
-//                     page,
-//                     size,
-//                     filter,
-//                 ),
-//                 meta: {
-//                     onFailure: e => console.log('Error updating teams', e),
-//                 },
-//             })
-//         }
-//     }
-
 export const updateTeams = createAsyncThunk(
     ActionTypes.UPDATE_TEAMS,
     async ({ slug, page, size, filter }, { getState, rejectWithValue }) => {
@@ -287,9 +206,6 @@ export const updateTeams = createAsyncThunk(
                 size,
                 filter,
             )
-
-            console.log('UPDATE EVENT TEAMS ACTION AS PARTICIPANT>>>>>>>>>>')
-            console.log(teams)
             return teams
         } catch (error) {
             console.error('Error updating event teams', error)
@@ -297,27 +213,6 @@ export const updateTeams = createAsyncThunk(
         }
     },
 )
-
-// export const updateSelectedTeam =
-//     (slug, code) => async (dispatch, getState) => {
-//         const idToken = AuthSelectors.getIdToken(getState())
-//         if (!slug || !code) return
-//         return new Promise((resolve, reject) => {
-//             dispatch({
-//                 type: ActionTypes.UPDATE_SELECTED_TEAM,
-//                 promise: TeamsService.getTeamWithMetaForEventParticipant(
-//                     idToken,
-//                     slug,
-//                     code,
-//                     true,
-//                 ),
-//                 meta: {
-//                     onSuccess: team => resolve(team),
-//                     onFailure: e => reject(e),
-//                 },
-//             })
-//         })
-//     }
 
 export const updateSelectedTeam = createAsyncThunk(
     ActionTypes.UPDATE_SELECTED_TEAM,
@@ -332,7 +227,6 @@ export const updateSelectedTeam = createAsyncThunk(
                     teamId,
                     true,
                 )
-            console.log(team)
             return team
         } catch (error) {
             console.error('Error updating selected team', error)
@@ -340,25 +234,6 @@ export const updateSelectedTeam = createAsyncThunk(
         }
     },
 )
-
-// export const updateTeam = slug => (dispatch, getState) => {
-//     const idToken = AuthSelectors.getIdToken(getState())
-
-//     dispatch({
-//         type: ActionTypes.UPDATE_TEAM,
-//         promise: TeamsService.getTeamForEvent(idToken, slug, true).catch(
-//             err => {
-//                 if (err.response.status === 404) {
-//                     return Promise.resolve(null)
-//                 }
-//                 return Promise.reject(err)
-//             },
-//         ),
-//         meta: {
-//             onFailure: e => console.log('Error updating dashboard team', e),
-//         },
-//     })
-// }
 
 export const updateTeam = createAsyncThunk(
     ActionTypes.UPDATE_TEAM,
@@ -370,8 +245,6 @@ export const updateTeam = createAsyncThunk(
                 slug,
                 true,
             )
-            console.log('UPDATE TEAM ACTION AS PARTICIPANT>>>>>>>>>>')
-            console.log(team)
             return team
         } catch (error) {
             console.error('Error updating team', error)
@@ -432,27 +305,6 @@ export const getCandidateProfileById = userId => async (dispatch, getState) => {
     })
     return user
 }
-
-// export const candidateApplyToTeam =
-//     (slug, code, applicationData) => async (dispatch, getState) => {
-//         const idToken = AuthSelectors.getIdToken(getState())
-//         const team = await TeamsService.candidateApplyToTeam(
-//             idToken,
-//             slug,
-//             code,
-//             applicationData,
-//         )
-
-//         dispatch({
-//             type: ActionTypes.CANDIDATE_APPLY,
-//             payload: team,
-//             meta: {
-//                 onFailure: e => console.log('Error applying to team', e),
-//             },
-//         })
-
-//         return team
-//     }
 
 export const candidateApplyToTeam = createAsyncThunk(
     ActionTypes.CANDIDATE_APPLY,
@@ -537,9 +389,6 @@ export const organiserRemoveMemberFromTeam =
             code,
             userId,
         )
-
-        console.log('actions done ', team)
-
         return team
     }
 
@@ -594,18 +443,6 @@ export const lockTeam = (slug, code) => async (dispatch, getState) => {
     return team
 }
 
-// export const updateProjects = slug => async (dispatch, getState) => {
-//     const idToken = AuthSelectors.getIdToken(getState())
-
-//     return dispatch({
-//         type: ActionTypes.UPDATE_PROJECTS,
-//         promise: ProjectsService.getProjectsForEventAndTeam(idToken, slug),
-//         meta: {
-//             onFailure: e => console.log('Error updating dashboard project', e),
-//         },
-//     })
-// }
-
 export const updateProjects = createAsyncThunk(
     ActionTypes.UPDATE_PROJECTS,
     async (slug, { getState, rejectWithValue }) => {
@@ -615,8 +452,6 @@ export const updateProjects = createAsyncThunk(
                 idToken,
                 slug,
             )
-            console.log('UPDATE PROJECTS ACTION AS PARTICIPANT>>>>>>>>>>')
-            console.log(projects)
             return projects
         } catch (error) {
             console.error('Error updating projects', error)
@@ -624,28 +459,6 @@ export const updateProjects = createAsyncThunk(
         }
     },
 )
-
-// export const createProject = (slug, data) => async (dispatch, getState) => {
-//     try {
-//         const idToken = AuthSelectors.getIdToken(getState())
-//         await ProjectsService.createProjectForEventAndTeam(idToken, slug, data)
-//         const projects = await ProjectsService.getProjectsForEventAndTeam(
-//             idToken,
-//             slug,
-//         )
-
-//         return dispatch({
-//             type: ActionTypes.UPDATE_PROJECTS,
-//             promise: Promise.resolve(projects),
-//             meta: {
-//                 onFailure: e =>
-//                     console.log('Error creating dashboard project', e),
-//             },
-//         })
-//     } catch (error) {
-//         throw new Error(error)
-//     }
-// }
 
 export const createProject = createAsyncThunk(
     ActionTypes.UPDATE_PROJECTS,
@@ -816,32 +629,6 @@ export const deleteFileForProject = fileId => async (dispatch, getState) => {
     })
 }
 
-// export const editProject = (slug, data) => async (dispatch, getState) => {
-//     try {
-//         const idToken = AuthSelectors.getIdToken(getState())
-//         // const fileData = await fileAttachmentFinder(data, idToken)
-
-//         // if (fileData) {
-//         // }
-//         await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
-//         const projects = await ProjectsService.getProjectsForEventAndTeam(
-//             idToken,
-//             slug,
-//         )
-
-//         return dispatch({
-//             type: ActionTypes.UPDATE_PROJECTS,
-//             promise: Promise.resolve(projects),
-//             meta: {
-//                 onFailure: e =>
-//                     console.log('Error editing dashboard project', e),
-//             },
-//         })
-//     } catch (error) {
-//         throw new Error(error)
-//     }
-// }
-
 export const editProject = createAsyncThunk(
     ActionTypes.UPDATE_PROJECTS,
     async ({ slug, data }, { getState, rejectWithValue }) => {
@@ -877,19 +664,6 @@ export const editProject = createAsyncThunk(
 //     return error
 // }
 
-// export const updateProjectScores = slug => async (dispatch, getState) => {
-//     const idToken = AuthSelectors.getIdToken(getState())
-
-//     return dispatch({
-//         type: ActionTypes.UPDATE_PROJECT_SCORES,
-//         promise: ProjectScoresService.getScoresByEventAndTeam(idToken, slug),
-//         meta: {
-//             onFailure: e =>
-//                 console.log('Error updating dashboard project scores', e),
-//         },
-//     })
-// }
-
 export const updateProjectScores = createAsyncThunk(
     ActionTypes.UPDATE_PROJECT_SCORES,
     async (slug, { getState, rejectWithValue }) => {
@@ -900,8 +674,6 @@ export const updateProjectScores = createAsyncThunk(
                     idToken,
                     slug,
                 )
-            console.log('UPDATE PROJECT SCORES ACTION AS PARTICIPANT>>>>>>>>>>')
-            console.log(projectScores)
             return projectScores
         } catch (error) {
             console.error('Error updating project scores', error)

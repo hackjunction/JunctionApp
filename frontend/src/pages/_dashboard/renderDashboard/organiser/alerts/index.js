@@ -20,7 +20,6 @@ import FormControl from 'components/inputs/FormControl'
 import GradientBox from 'components/generic/GradientBox'
 import { Alerts } from '../../../../../components/messaging/alerts'
 // import { useGetEventBySlugQuery } from 'reducers/organiser/actions'
-import { useParams } from 'react-router-dom'
 
 // const makeBoxStyles = () => ({
 //     backgroundColor: '#f7fafc',
@@ -34,7 +33,6 @@ import { useParams } from 'react-router-dom'
 // })
 
 export default () => {
-    const { slug } = useParams()
     // const [getEventBySlug, { data, isLoading, isSuccess, isError }] =
     //     useGetEventBySlugQuery()
 
@@ -50,8 +48,6 @@ export default () => {
 
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
-    console.log('EVENT DATA FROM ALERT>>>>>>>>>>')
-    console.log(event)
     const loading = useSelector(OrganiserSelectors.eventLoading)
     const [alerts, setAlerts] = useState([])
     const [alertCount, setAlertCount] = useState(0)
@@ -93,7 +89,6 @@ export default () => {
 
     // Set alerts when data is fetched or recieved through websocket
     useEffect(() => {
-        console.log('got newAlert', newAlert)
         if (alertsData) {
             setAlerts(old => {
                 const newArray = [...old, ...alertsData.alerts]
@@ -131,8 +126,6 @@ export default () => {
                 changed[field] = value
             }
         })
-        console.log('EVENT ID>>>>>>', event._id)
-        console.log(event)
         saveChanges({
             variables: { input: { ...changed, eventId: event._id } },
         })

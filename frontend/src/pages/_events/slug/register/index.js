@@ -150,14 +150,6 @@ export default () => {
         registration,
     } = useContext(EventDetailContext)
 
-    console.log('EventRegister context >>>>>>>>>>>>>>>>>')
-    console.log('slug', slug)
-    console.log('event', event)
-    console.log('hasRegistration', hasRegistration)
-    console.log('createRegistration', createRegistration)
-    console.log('editRegistration', editRegistration)
-    console.log('finishRegistration', finishRegistration)
-
     const userProfile = useSelector(UserSelectors.userProfile)
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})

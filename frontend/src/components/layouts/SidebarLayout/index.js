@@ -113,8 +113,6 @@ export default React.memo(
         const drawerContent = (
             <>
                 <Box>
-                    <p>SIDEBAR LAYOUT</p>
-                    {/* <a href="/home"> */}
                     <Link to="/home">
                         <img
                             src={
@@ -124,7 +122,6 @@ export default React.memo(
                             alt={config.PLATFORM_OWNER_NAME + ' logo'}
                         />
                     </Link>
-                    {/* </a> */}
                 </Box>
                 <Box p={2}>{sidebarTopContent}</Box>
                 <List>

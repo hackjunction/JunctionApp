@@ -58,7 +58,6 @@ export default ({
                 id: row.original.user,
             }).toString()}`
             navigate({ search: search }, { replace: true })
-            // dispatch(navigate({ search }))
         },
         [dispatch],
     )
@@ -70,7 +69,6 @@ export default ({
                 modal: 'bulkEmail',
             })}`
             navigate({ search: search }, { replace: true })
-            // dispatch(push({ search }))
         },
         [dispatch],
     )
@@ -82,7 +80,6 @@ export default ({
                 modal: 'bulkEdit',
             })}`
             navigate({ search: search }, { replace: true })
-            // dispatch(push({ search }))
         },
         [dispatch],
     )
@@ -93,7 +90,6 @@ export default ({
 
     const resetSearch = useCallback(() => {
         navigate({ search: '' }, { replace: true })
-        // dispatch(push({ search: '' }))
     }, [dispatch])
 
     useEffect(() => {
