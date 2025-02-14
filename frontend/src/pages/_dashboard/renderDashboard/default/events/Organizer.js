@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { useSelector } from 'react-redux'
@@ -162,7 +162,7 @@ export default () => {
                                     dispatch(
                                         UserActions.setAccessRight('organizer'),
                                     )
-                                    dispatch(push(`/organise/${event.slug}`))
+                                    navigate(`/organise/${event.slug}`)
                                 }}
                                 buttons={[
                                     <Button
@@ -172,9 +172,6 @@ export default () => {
                                                 'event see more clicked',
                                             )
                                             navigate(`/events/${event.slug}`)
-                                            // dispatch(
-                                            //     push('/events/' + event.slug),
-                                            // )
                                         }}
                                     >
                                         {t('See_more_')}
@@ -188,9 +185,6 @@ export default () => {
                                                 ),
                                             )
                                             navigate(`/organise/${event.slug}`)
-                                            // dispatch(
-                                            //     push(`/organise/${event.slug}`),
-                                            // )
                                         }}
                                     >
                                         {t('Manage_')}

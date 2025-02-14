@@ -11,7 +11,9 @@ import HackerpackService from 'services/hackerpack'
 import * as AuthSelectors from 'reducers/auth/selectors'
 import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 export default () => {
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const [name, setName] = useState('')
     const [error, setError] = useState()
@@ -49,7 +51,7 @@ export default () => {
         setLoading(true)
         HackerpackService.createHackerpack(idToken, { name })
             .then(data => {
-                dispatch(push(`/admin/hackerpack/${data.slug}`))
+                navigate(`/admin/hackerpack/${data.slug}`)
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {

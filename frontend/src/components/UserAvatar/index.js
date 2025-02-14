@@ -1,22 +1,21 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 
-import { useResolvedPath } from 'react-router'
+import { useNavigate, useResolvedPath } from 'react-router'
 import { Avatar, Box, IconButton } from '@mui/material'
 import JunctionTheme from 'junctionTheme.js'
 import { useMyProfilePreview } from 'graphql/queries/userProfile'
 
 export default () => {
+    const navigate = useNavigate()
     const url = useResolvedPath('').pathname
     const [profile] = useMyProfilePreview()
-    const dispatch = useDispatch()
     const color = JunctionTheme.palette
 
     const handleClick = () => {
-        if (match.url === '/home') {
-            dispatch(push(`dashboard/default/profile`))
+        if (url === '/home') {
+            navigate(`../dashboard/default/profile`)
         } else {
-            dispatch(push(`${match.url}/profile`))
+            navigate(`${url}/profile`)
         }
     }
 

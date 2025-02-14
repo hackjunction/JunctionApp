@@ -6,12 +6,12 @@ import { Typography, Box } from '@mui/material'
 import { EventTypes } from '@hackjunction/shared'
 import TuneIcon from '@mui/icons-material/Tune'
 import SettingsIcon from '@mui/icons-material/Settings'
-import EqualizerIcon from '@mui/icons-material/Equalizer'
+// import EqualizerIcon from '@mui/icons-material/Equalizer'
 import PeopleIcon from '@mui/icons-material/People'
 import CropFreeIcon from '@mui/icons-material/CropFree'
 import CodeIcon from '@mui/icons-material/Code'
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff'
-import AssessmentIcon from '@mui/icons-material/Assessment'
+// import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff'
+// import AssessmentIcon from '@mui/icons-material/Assessment'
 import Alert from '@mui/material/Alert'
 
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
@@ -38,9 +38,8 @@ export default () => {
     const url = useResolvedPath('').pathname
     const location = useLocation()
     const dispatch = useDispatch()
-    // const { slug } = match.params
 
-    const { eventSlug } = useParams()
+    const { slug } = useParams()
     const { t } = useTranslation()
 
     const event = useSelector(OrganiserSelectors.event)
@@ -48,35 +47,21 @@ export default () => {
     const error = useSelector(OrganiserSelectors.eventError)
     console.log('FROM ORGANIZER INDEX')
     console.log(url)
-    console.log(eventSlug)
+    console.log(slug)
     console.log(event)
 
     useEffect(() => {
-        dispatch(OrganiserActions.updateEvent(eventSlug))
-    }, [dispatch, eventSlug])
+        dispatch(OrganiserActions.updateEvent(slug))
+    }, [dispatch, slug])
 
     useEffect(() => {
-        console.log('EVENT LOADED FROM ORGANIZER INDEX>>>>>>>>')
-        console.log(event)
         if (event?._id) {
-            // dispatch(
-            //     OrganiserActions.updateOrganisersForEvent(
-            //         event.owner,
-            //         event.organisers,
-            //     ),
-            // )
             dispatch(
                 OrganiserActions.updateRecruitersForEvent(event.recruiters),
             )
-            // dispatch(OrganiserActions.updateRegistrationsForEvent(eventSlug))
-            // dispatch(OrganiserActions.updateTeamsForEvent(eventSlug))
-            dispatch(OrganiserActions.updateFilterGroups(eventSlug))
-            // dispatch(OrganiserActions.updateProjects(eventSlug))
-            // dispatch(OrganiserActions.updateGavelProjects(eventSlug))
-            // dispatch(OrganiserActions.updateRankings(eventSlug))
-            // dispatch(OrganiserActions.generateResults(eventSlug)) // TODO do we need to get results always?
+            dispatch(OrganiserActions.updateFilterGroups(slug))
         }
-    }, [dispatch, eventSlug, event])
+    }, [dispatch, slug, event])
     return (
         <PageWrapper loading={loading} error={error}>
             <SidebarLayout

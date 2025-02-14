@@ -64,6 +64,7 @@ const ProjectsGrid = ({
             const scoreData = projectScoreData.find(
                 score => score?.value?.project === project._id,
             )
+            let projectMod = _.cloneDeep(project)
             if (scoreData) {
                 if (reviewerGrid) {
                     const userScore = scoreData?.value?.reviewers?.find(
@@ -72,13 +73,13 @@ const ProjectsGrid = ({
                         },
                     )
                     if (userScore) {
-                        project.scoreData = userScore
+                        projectMod.scoreData = userScore
                     }
                 } else {
-                    project.scoreData = scoreData?.value
+                    projectMod.scoreData = scoreData?.value
                 }
             }
-            return project
+            return projectMod
         })
         let sortedProjects
         if (reviewerGrid) {

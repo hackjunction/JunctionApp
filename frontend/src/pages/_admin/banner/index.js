@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useResolvedPath } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Box, Grid, Typography } from '@mui/material'
@@ -20,39 +20,38 @@ import * as AuthSelectors from 'reducers/auth/selectors'
 
 import { useTranslation } from 'react-i18next'
 import Button from 'components/generic/Button'
-const useStyles = makeStyles(theme => ({
-    topWrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        background: 'white',
-        borderRadius: '7px',
-        boxShadow: '2px 7px 15px rgba(0, 0, 0, 0.12)',
-        padding: theme.spacing(3),
-        [theme.breakpoints.up('md')]: {
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-        },
-    },
-    box: {
-        background: 'white',
-        borderRadius: '7px',
-        boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.12)',
-        padding: theme.spacing(3),
-    },
-    imageUpload: {
-        width: '300px',
-        height: '300px',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     topWrapper: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//         background: 'white',
+//         borderRadius: '7px',
+//         boxShadow: '2px 7px 15px rgba(0, 0, 0, 0.12)',
+//         padding: theme.spacing(3),
+//         [theme.breakpoints.up('md')]: {
+//             flexDirection: 'row',
+//             alignItems: 'flex-start',
+//         },
+//     },
+//     box: {
+//         background: 'white',
+//         borderRadius: '7px',
+//         boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.12)',
+//         padding: theme.spacing(3),
+//     },
+//     imageUpload: {
+//         width: '300px',
+//         height: '300px',
+//     },
+// }))
 
 export default () => {
-    const url = useResolvedPath('').pathname
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { t } = useTranslation()
-    const { slug } = match.params
-    const router = match
-    console.log('router :>> ', router)
+    const params = useParams()
+    const { slug } = params
 
     const [initialData, setInitialData] = useState({})
 
@@ -62,7 +61,7 @@ export default () => {
         })
     }, [slug])
 
-    const classes = useStyles()
+    // const classes = useStyles()
     const idToken = useSelector(AuthSelectors.getIdToken)
 
     const validationSchema = useCallback(data => {
@@ -87,7 +86,7 @@ export default () => {
             dispatch(AdminActions.editBanner(idToken, slug, newVal))
                 .then(() => {
                     dispatch(SnackbarActions.success('Changes saved!'))
-                    dispatch(push(`/admin`))
+                    navigate(`/admin`)
                 })
                 .catch(err => {
                     dispatch(
@@ -116,7 +115,7 @@ export default () => {
         >
             {formikProps => (
                 <>
-                    <Box className={classes.topWrapper}>
+                    <Box className={'classes.topWrapper'}>
                         <Box flex="1" display="flex" flexDirection="column">
                             <Grid container spacing={3}>
                                 <Grid item xs={12} md={6}>

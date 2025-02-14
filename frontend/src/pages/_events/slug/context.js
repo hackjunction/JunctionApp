@@ -173,7 +173,7 @@ const registrationQuery = gql`
 const EventDetailContext = React.createContext({})
 export const EventDetailProvider = ({ children }) => {
     const url = useResolvedPath('').pathname
-    const { eventSlug: slug } = useParams()
+    const { slug } = useParams()
     const idToken = useSelector(AuthSelectors.getIdToken)
     // const { slug } = match.params
     const {
@@ -183,7 +183,7 @@ export const EventDetailProvider = ({ children }) => {
         refetch: refetchEvent,
     } = useQuery(eventQuery, {
         variables: {
-            slug: slug,
+            slug,
         },
     })
 

@@ -601,12 +601,14 @@ controller.exportTeams = async teamIds => {
 controller.convertToFlatExportData = teamWithMeta => {
     return {
         teamCode: teamWithMeta.code,
+        teamName: teamWithMeta.name,
+        teamEmail: teamWithMeta.email,
+        teamTelegram: teamWithMeta.telegram,
+        teamDiscord: teamWithMeta.discord,
         teamMembers: Object.values(teamWithMeta.meta)
-            .map(memberMeta => memberMeta.profile)
-            .map(
-                memberProfile =>
-                    `${memberProfile.firstName} ${memberProfile.lastName} <${memberProfile.email}>`,
-            )
+            .map(memberMeta => {
+                return `${memberMeta.profile.firstName} ${memberMeta.profile.lastName} <status:${memberMeta.registration.status}> <userId:${memberMeta.profile.userId}>`
+            })
             .join(', '),
     }
 }

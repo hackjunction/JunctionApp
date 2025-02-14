@@ -8,8 +8,8 @@ import CallbackPage from './pages/_callback'
 import ErrorPage from './pages/_error'
 import LogoutPage from './pages/_logout'
 import LoginPage from './pages/_login'
-// import HackerpackPage from './pages/_hackerpack'
-// import PricingPage from './pages/_pricing'
+import HackerpackPage from './pages/_hackerpack'
+import PricingPage from './pages/_pricing'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
 import RequiresPermission from './hocs/RequiresPermission'
@@ -23,14 +23,12 @@ const DashboardRouter = lazy(() => import('./pages/_dashboard'))
 const OrganiserRouter = lazy(
     () => import('./pages/_dashboard/renderDashboard/organiser/router'),
 )
-// const AccountRouter = lazy(() => import('./pages/_account'))
-// const RecruitmentRouter = lazy(() =>
-//     import('./pages/_dashboard/renderDashboard/partner/partnerrecruitment'),
-// )
-// const ProjectsRouter = lazy(() => import('./pages/_projects'))
+const AccountRouter = lazy(() => import('./pages/_account'))
+const RecruitmentEvents = lazy(
+    () => import('./pages/_dashboard/renderDashboard/default/events/Partner'),
+)
+const ProjectsRouter = lazy(() => import('./pages/_projects'))
 const AdminRouter = lazy(() => import('./pages/_admin'))
-// const SandboxRouter = lazy(() => import('./pages/_sandbox'))
-// const FilesRouter = lazy(() => import('./pages/_sandbox/files'))
 
 const routes = [
     {
@@ -73,40 +71,40 @@ const routes = [
                 requiredPermissions={[AuthConstants.Permissions.MANAGE_EVENT]}
             />
         ),
-        // component: RequiresPermission(OrganiserRouter),
-        /*component: RequiresPermission(OrganiserRouter, [
-            AuthConstants.Permissions.MANAGE_EVENT,
-            ]),*/
     },
     {
         //default after login
         path: '/dashboard/*',
-        // element: <DashboardRouter />,
         element: <RequiresPermission ComposedComponent={DashboardRouter} />,
     },
-    // {
-    //     path: '/account',
-    //     component: RequiresPermission(AccountRouter),
-    // },
-    // {
-    //     path: '/recruitment',
-    //     component: RequiresPermission(RecruitmentRouter, [
-    //         AuthConstants.Permissions.ACCESS_RECRUITMENT,
-    //     ]),
-    // },
-    // {
-    //     path: '/projects',
-    //     component: ProjectsRouter,
-    // },
-    // {
-    //     path: '/hackerpack',
-    //     component: HackerpackPage,
-    // },
+    {
+        path: '/account/*',
+        element: <RequiresPermission ComposedComponent={AccountRouter} />,
+    },
+    {
+        path: '/recruitment',
+        element: (
+            <RequiresPermission
+                ComposedComponent={RecruitmentEvents}
+                requiredPermissions={[
+                    AuthConstants.Permissions.ACCESS_RECRUITMENT,
+                ]}
+            />
+        ),
+    },
+    {
+        path: '/projects/*',
+        element: <ProjectsRouter />,
+    },
+    {
+        path: '/hackerpack',
+        element: <HackerpackPage />,
+    },
 
-    // {
-    //     path: '/pricing',
-    //     component: PricingPage,
-    // },
+    {
+        path: '/pricing',
+        element: <PricingPage />,
+    },
     {
         path: '/admin/*',
         element: (
@@ -115,33 +113,13 @@ const routes = [
                 requiredRoles={[AuthConstants.Roles.SUPER_ADMIN]}
             />
         ),
-        // component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
     },
-    // {
-    //     path: '/admin',
-    //     component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
-    //     exact: false,
-    // },
-    // {
-    //     path: '/sandbox',
-    //     component: RequiresRole(SandboxRouter, [
-    //         AuthConstants.Roles.SUPER_ADMIN,
-    //     ]),
-    //     exact: false,
-    // },
-    // {
-    //     path: '/files',
-    //     component: RequiresRole(SandboxRouter, [
-    //         AuthConstants.Roles.SUPER_ADMIN,
-    //     ]),
-    //     exact: false,
-    // },
 ]
 
 if (config.IS_DEBUG) {
     routes.push({
         path: '/devtools',
-        component: DevTools,
+        element: <DevTools />,
     })
 }
 

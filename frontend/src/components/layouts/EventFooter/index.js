@@ -5,8 +5,10 @@ import { useTranslation } from 'react-i18next'
 import config from 'constants/config'
 import { Box, Typography, Button } from '@mui/material'
 import Hidden from '@mui/material/Hidden'
+import { useNavigate } from 'react-router-dom'
 
 const EventFooter = props => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { t } = useTranslation()
 
@@ -25,7 +27,7 @@ const EventFooter = props => {
                             variant="outlinedNew"
                             strong
                             className="mr-4"
-                            onClick={() => dispatch(push('/contact'))}
+                            onClick={() => navigate('/contact')}
                         >
                             {t('Contact_us_')}
                         </Button>
@@ -33,7 +35,7 @@ const EventFooter = props => {
                             color="theme_lightgrayDark"
                             variant="outlinedNew"
                             strong
-                            onClick={() => dispatch(push('/pricing'))}
+                            onClick={() => navigate('/pricing')}
                         >
                             Pricing
                         </Button>
@@ -49,7 +51,7 @@ const EventFooter = props => {
                             variant="outlinedNew"
                             strong
                             className="mt-4"
-                            onClick={() => dispatch(push('/hackerpack'))}
+                            onClick={() => navigate('/hackerpack')}
                         >
                             {t('To_hackerpack_')}
                         </Button>

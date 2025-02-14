@@ -303,7 +303,6 @@ export default React.memo(
                     {topContent}
                     <Container className="p-0 md:p-8">
                         <div className="p-8 max-w-[1400px]">
-                            <p>TEST LOADING SPACE</p>
                             <Routes>
                                 {routes.map(
                                     (
@@ -335,10 +334,6 @@ export default React.memo(
                                     path={`profile`}
                                     element={<ProfilePage />}
                                 />
-                                {/* <Route
-                                    key={'logout'}
-                                    path={`${baseRoute}/logout`}
-                                /> */}
                                 <Route
                                     key={'events'}
                                     path={`events/*`}
@@ -349,7 +344,6 @@ export default React.memo(
                                     element={<Navigate to="events" replace />}
                                 />
                             </Routes>
-                            {/* <Navigate to={`${baseRoute}/events`} /> */}
                         </div>
                     </Container>
                 </main>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-import { useResolvedPath, useLocation } from 'react-router'
+import { useResolvedPath, useLocation, useParams } from 'react-router'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
 
 import GroupIcon from '@mui/icons-material/Group'
 import DashboardIcon from '@mui/icons-material/Dashboard'
@@ -12,7 +13,7 @@ import StarRateIcon from '@mui/icons-material/StarRate'
 import HowToVoteIcon from '@mui/icons-material/HowToVote'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 
-import EventIcon from '@mui/icons-material/Event'
+// import EventIcon from '@mui/icons-material/Event'
 import PlaceIcon from '@mui/icons-material/Place'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
@@ -37,18 +38,17 @@ import { useTranslation } from 'react-i18next'
 
 import Badge from '@mui/material/Badge'
 import {
-    CheckBox,
-    EmojiEventsRounded,
-    LocalAirportRounded,
-    LocalPlayRounded,
-    QuestionAnswerSharp,
+    // CheckBox,
+    // EmojiEventsRounded,
+    // LocalAirportRounded,
+    // LocalPlayRounded,
+    // QuestionAnswerSharp,
     Directions,
 } from '@mui/icons-material'
 
-import { Chat } from 'components/messaging/chat'
-import { Grid, Paper } from '@mui/material'
 import DefaultImage from 'assets/images/dashboardDefault.jpg'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // const useStyles = makeStyles(theme => ({
 //     sidebarTop: {
@@ -73,6 +73,9 @@ export default ({
     // lockedPages,
 }) => {
     const event = useSelector(DashboardSelectors.event)
+    const dispatch = useDispatch()
+    const { slug } = useParams()
+
     // const classes = useStyles()
     const { t } = useTranslation()
     const url = useResolvedPath('').pathname
@@ -90,6 +93,10 @@ export default ({
         setAlerts(originalAlerts)
         setAlertCount(originalAlertCount)
     }, [originalAlerts, originalAlertCount])
+
+    useEffect(() => {
+        dispatch(DashboardActions.updateTeam(slug))
+    }, [slug])
 
     return (
         <SidebarLayout

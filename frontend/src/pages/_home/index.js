@@ -2,7 +2,6 @@ import React from 'react'
 
 import { Helmet } from 'react-helmet'
 
-import { useDispatch } from 'react-redux'
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
 import config from 'constants/config'
@@ -37,7 +36,6 @@ export default () => {
     //TODO these shouldn't be queried. Events and organizations should be in the state
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const { t } = useTranslation()
     // const classes = useStyles()
@@ -174,7 +172,7 @@ export default () => {
                     </Typography>
                 </Container>
 
-                {/* <Divider size={20} />
+                <Divider size={20} />
                 <Container center>
                     <Typography variant="h4" align="center">
                         {t('Join_hackerpack_')}
@@ -187,7 +185,7 @@ export default () => {
                     >
                         {t('To_hackerpack_')}
                     </Button>
-                </Container> */}
+                </Container>
             </div>
         </PageWrapper>
     )

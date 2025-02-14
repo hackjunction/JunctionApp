@@ -15,7 +15,6 @@ const HackerpackDetail = ({ hackerpack, redeemable = false }) => {
                         logo={hackerpack.logo}
                         partner={hackerpack.partner}
                         link={hackerpack.link}
-                        //TODO: remove this after junction2021
                         redeemable
                     />
                 </GradientBox>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { useParams, useResolvedPath } from 'react-router'
+import { useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import PageWrapper from 'components/layouts/PageWrapper'
 
@@ -24,7 +24,7 @@ import {
 } from 'graphql/queries/events'
 
 export default role => {
-    const url = useResolvedPath('').pathname
+    // const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
 
@@ -36,16 +36,13 @@ export default role => {
     const registrationLoading = useSelector(
         DashboardSelectors.registrationLoading,
     )
-    const team = useSelector(DashboardSelectors.team)
-    // const lockedPages = useSelector(DashboardSelectors.lockedPages)
-    // const shownPages = useSelector(DashboardSelectors.shownPages)
     const userAccessRight = useSelector(UserSelectors.userAccessRight)
-    const { eventSlug } = useParams()
+    const { slug } = useParams()
 
     const [alerts, setAlerts] = useState([])
     const [alertCount, setAlertCount] = useState(0)
     const { data: newAlert } = useSubscription(NEW_ALERTS_SUBSCRIPTION, {
-        variables: { eventSlug },
+        variables: { slug },
     })
 
     const isPartner =
@@ -69,12 +66,11 @@ export default role => {
         }
     }, [])
 
-    /** Update when eventSlug changes */
+    /** Update when slugchanges */
     useEffect(() => {
-        dispatch(DashboardActions.updateEvent(eventSlug))
-        dispatch(DashboardActions.updateRegistration(eventSlug))
-        dispatch(DashboardActions.updateTeam(eventSlug))
-    }, [eventSlug])
+        dispatch(DashboardActions.updateEvent(slug))
+        dispatch(DashboardActions.updateRegistration(slug))
+    }, [slug])
 
     // Must use lazy query because event is fetched asynchnronously
     const [getAlerts, { loading: alertsLoading, data: alertsData }] =
@@ -132,9 +128,9 @@ export default role => {
 
     /** Update project when team changes */
     useEffect(() => {
-        dispatch(DashboardActions.updateProjects(eventSlug))
-        dispatch(DashboardActions.updateProjectScores(eventSlug))
-    }, [eventSlug, team, dispatch])
+        dispatch(DashboardActions.updateProjects(slug))
+        dispatch(DashboardActions.updateProjectScores(slug))
+    }, [slug, dispatch])
 
     useEffect(() => {
         //does not take multiple roles into a count
@@ -159,8 +155,6 @@ export default role => {
                         event={event}
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
-                        // shownPages={shownPages}
-                        // lockedPages={lockedPages}
                     />
                 </PageWrapper>
             )
@@ -186,13 +180,9 @@ export default role => {
                     wrapContent={false}
                 >
                     <ParticipantDashboard
-                        // event={event}
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
-                        // shownPages={shownPages}
-                        // lockedPages={lockedPages}
                     />
-                    {/* <p>PARTICIPANT DASHBOARD</p> */}
                 </PageWrapper>
             )
         }

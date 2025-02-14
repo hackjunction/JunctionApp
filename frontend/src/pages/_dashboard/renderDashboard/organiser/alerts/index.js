@@ -34,7 +34,7 @@ import { useParams } from 'react-router-dom'
 // })
 
 export default () => {
-    const { eventSlug } = useParams()
+    const { slug } = useParams()
     // const [getEventBySlug, { data, isLoading, isSuccess, isError }] =
     //     useGetEventBySlugQuery()
 

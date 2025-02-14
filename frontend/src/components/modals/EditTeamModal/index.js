@@ -20,7 +20,7 @@ export default ({ teamCode, onClose = () => {}, onEdited = () => {} }) => {
     const [team, setTeam] = useState()
     const { slug } = event
     useEffect(() => {
-        if (teamCode) {
+        if (teamCode && slug && idToken) {
             setLoading(true)
             TeamsService.getTeamWithMetaForEventParticipant(
                 idToken,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, Divider, Button } from '@mui/material'
 
-import { useResolvedPath, useLocation } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
 import Footer from 'components/layouts/Footer'
@@ -13,35 +13,33 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { Helmet } from 'react-helmet'
 import config from 'constants/config'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
-import { useDispatch, useSelector } from 'react-redux'
-import { styled } from '@mui/system'
+import { useSelector } from 'react-redux'
 
-const useStyles = styled(theme => ({
-    wrapper: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: theme.spacing(3),
-        background: 'black',
-        color: 'white',
-    },
-}))
+// const useStyles = styled(theme => ({
+//     wrapper: {
+//         height: '100%',
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         padding: theme.spacing(3),
+//         background: 'black',
+//         color: 'white',
+//     },
+// }))
 
 export default () => {
-    const dispatch = useDispatch()
-    const classes = useStyles()
-    const url = useResolvedPath('').pathname
+    const navigate = useNavigate()
+    // const classes = useStyles()
 
-    const { slug } = match.params
+    const { slug } = useParams()
     const event = useSelector(DashboardSelectors.event)
 
-    const [hackerpack, setHackerpack] = useState([])
+    const [hackerpacks, setHackerpacks] = useState([])
 
     useEffect(() => {
         if (event) {
-            setHackerpack(event.hackerpacks)
+            setHackerpacks(event.hackerpacks)
         }
     }, [event, slug])
     console.log(event)
@@ -93,8 +91,8 @@ export default () => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
-            <Container center wrapperClass={classes.backButtonWrapper}>
-                <Button onClick={() => dispatch(push('/'))}>
+            <Container center wrapperClass={'classes.backButtonWrapper'}>
+                <Button onClick={() => navigate('/')}>
                     <ArrowBackIosIcon style={{ color: 'black' }} />
                     <Typography variant="button" style={{ color: 'black' }}>
                         Back
@@ -107,8 +105,8 @@ export default () => {
                     subheading="We want you to be able to fully focus on making your hackathon project as cool as possible! These software provided by our partners will help you unleash your creativity and maximize your learning during our events."
                 />
                 <Divider variant="middle" />
-                {hackerpack.map(company => (
-                    <HackerpackDetail partner={company} />
+                {hackerpacks.map(hackerpack => (
+                    <HackerpackDetail hackerpack={hackerpack} />
                 ))}
                 <Box p={2}>
                     <Typography color="textSecondary" variant="subtitle1">

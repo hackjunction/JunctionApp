@@ -1,8 +1,7 @@
 import React, { useContext } from 'react'
 
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import { useResolvedPath, useLocation } from 'react-router'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
@@ -10,13 +9,10 @@ import EventFooter from 'components/layouts/EventFooter'
 
 import EventDetail from './default'
 import EventRegister from './register'
-// import FinalistVoting from './voteWithToken'
+import FinalistVoting from './voteWithToken'
 import EventDetailContext, { EventDetailProvider } from './context'
 
 const EventDetailRouter = () => {
-    const url = useResolvedPath('').pathname
-    const location = useLocation()
-    console.log('location>>>>>>>>>>>>>>', location)
     const { eventLoading, eventError, isRegistrationOpen } =
         useContext(EventDetailContext)
     // TODO FIX errortext and desc to be from eventErro
@@ -32,26 +28,17 @@ const EventDetailRouter = () => {
                 return (
                     <AnimatePresence>
                         <Routes>
-                            {/* <Route index element={<p>EVENT SLUG INDEX</p>} /> */}
                             <Route index element={<EventDetail />} />
+                            <Route
+                                path={`/finalist-voting`}
+                                element={<FinalistVoting />}
+                            />
                             {isRegistrationOpen && (
                                 <Route
                                     path={`/register`}
                                     element={<EventRegister />}
                                 />
                             )}
-                            {/* {isRegistrationOpen && (
-                                <Route
-                                    path={`:eventSlug/register`}
-                                    element={<EventRegister />}
-                                />
-                            )} */}
-                            {/* <Route
-                                exact
-                                path={`${match.url}/finalist-voting`}
-                                element={<FinalistVoting />}
-                            />
-                            <Navigate to={`${match.url}`} /> */}
                         </Routes>
                     </AnimatePresence>
                 )

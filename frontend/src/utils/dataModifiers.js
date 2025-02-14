@@ -21,7 +21,7 @@ export const generateSlug = (str, replaceNumValue = '') => {
 }
 
 export const projectURLgenerator = (eventSlug, projectId) => {
-    //Utility to generate public project URL, with the shape /projects/:eventSlug/view/:projectId
+    //Utility to generate public project URL, with the shape /projects/:slug/view/:projectId
     const originURL = window.location.origin
     let projectURL
     if (!!projectId && !!eventSlug && !!originURL) {
