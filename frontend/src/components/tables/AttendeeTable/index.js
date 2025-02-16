@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import moment from 'moment'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { Box } from '@mui/material'
 import Rating from '@mui/lab/Rating'
@@ -40,6 +40,7 @@ export default ({
 }) => {
     const dispatch = useDispatch()
     const location = useLocation()
+    const navigate = useNavigate()
     const searchParams = new URLSearchParams(location.search)
     const organiserProfilesMap = useSelector(OrganiserSelectors.organisersMap)
     const event = useSelector(OrganiserSelectors.event)
@@ -56,7 +57,7 @@ export default ({
                 modal: 'edit',
                 id: row.original.user,
             }).toString()}`
-            dispatch(push({ search }))
+            navigate({ search: search }, { replace: true })
         },
         [dispatch],
     )
@@ -67,7 +68,7 @@ export default ({
             const search = `?${new URLSearchParams({
                 modal: 'bulkEmail',
             })}`
-            dispatch(push({ search }))
+            navigate({ search: search }, { replace: true })
         },
         [dispatch],
     )
@@ -78,7 +79,7 @@ export default ({
             const search = `?${new URLSearchParams({
                 modal: 'bulkEdit',
             })}`
-            dispatch(push({ search }))
+            navigate({ search: search }, { replace: true })
         },
         [dispatch],
     )
@@ -88,7 +89,7 @@ export default ({
     }
 
     const resetSearch = useCallback(() => {
-        dispatch(push({ search: '' }))
+        navigate({ search: '' }, { replace: true })
     }, [dispatch])
 
     useEffect(() => {

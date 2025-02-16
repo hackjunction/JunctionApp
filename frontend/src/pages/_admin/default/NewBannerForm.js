@@ -11,10 +11,12 @@ import BannerService from 'services/banner'
 import * as AuthSelectors from 'reducers/auth/selectors'
 import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 export default () => {
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const [name, setName] = useState('')
-    const [error, setError] = useState()
+    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const hasError = Boolean(error)
 
@@ -28,7 +30,7 @@ export default () => {
             } else if (name.length >= 50) {
                 setError(t('Name_must_under_'))
             } else {
-                setError()
+                setError('')
             }
         }
     }, [name, hasError, t])
@@ -50,7 +52,7 @@ export default () => {
         BannerService.createBanner(idToken, { name })
             .then(data => {
                 console.log('doing data', data)
-                dispatch(push(`/admin/banner/${data.slug}`))
+                navigate(`/admin/banner/${data.slug}`)
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {

@@ -21,13 +21,33 @@ export const generateSlug = (str, replaceNumValue = '') => {
 }
 
 export const projectURLgenerator = (eventSlug, projectId) => {
-    //Utility to generate public project URL, with the shape /projects/:eventSlug/view/:projectId
+    //Utility to generate public project URL, with the shape /projects/:slug/view/:projectId
     const originURL = window.location.origin
     let projectURL
     if (!!projectId && !!eventSlug && !!originURL) {
         projectURL = `${originURL}/projects/${eventSlug}/view/${projectId}`
     }
     return projectURL
+}
+
+export const addTeamCodeToProjectAndFilterNoTeam = (projects, teams) => {
+    // Add teams code to projects and filters the projects which no longer have a team
+    // TODO Delete projects which don't have a team anymore
+    const projectsWithTeam = projects
+        .map(project => {
+            const projectModified = { ...project }
+            const teamFound = teams.find(team => {
+                return team._id === projectModified.team
+            })
+            if (teamFound) {
+                projectModified.teamCode = teamFound.code
+            } else {
+                projectModified.teamCode = 'No team'
+            }
+            return projectModified
+        })
+        .filter(project => project.teamCode !== 'No team')
+    return projectsWithTeam
 }
 
 export const slugify = inputString => {
@@ -39,31 +59,34 @@ export const slugify = inputString => {
 }
 
 //TODO create CRON job or organizer action to delete projects without a valid team instead of using this function
-export const filterProjectsWithTeam = (projects, teams) => {
-    const projectsFiltered = _.compact(
-        projects.map(project => {
-            const teamFound = teams.find(team => {
-                return team._id === project.team
-            })
-            if (teamFound) {
-                project.teamCode = teamFound.code
-                project.teamName = teamFound.name
-                return project
-            }
-        }),
-    )
-    if (projectsFiltered.length > 0) {
-        return projectsFiltered
-    }
-    return []
-}
+// export const filterProjectsWithTeam = (projects, teams) => {
+//     const projectsFiltered = _.compact(
+//         projects.map(project => {
+//             const teamFound = teams.find(team => {
+//                 return team._id === project.team
+//             })
+//             if (teamFound) {
+//                 project.teamCode = teamFound.code
+//                 project.teamName = teamFound.name
+//                 return project
+//             }
+//         }),
+//     )
+//     if (projectsFiltered.length > 0) {
+//         return projectsFiltered
+//     }
+//     return []
+// }
 
 export const getProjectsForChallenge = (
     allProjects,
     allTeams,
     challengeSlug,
 ) => {
-    const projectsWithTeam = filterProjectsWithTeam(allProjects, allTeams)
+    const projectsWithTeam = addTeamCodeToProjectAndFilterNoTeam(
+        allProjects,
+        allTeams,
+    )
     return projectsWithTeam.filter(project => {
         return (
             project.challenges &&
@@ -73,7 +96,10 @@ export const getProjectsForChallenge = (
 }
 
 export const getProjectsForTrack = (allProjects, allTeams, trackSlug) => {
-    const projectsWithTeam = filterProjectsWithTeam(allProjects, allTeams)
+    const projectsWithTeam = addTeamCodeToProjectAndFilterNoTeam(
+        allProjects,
+        allTeams,
+    )
     return projectsWithTeam.filter(project => project.track === trackSlug)
 }
 

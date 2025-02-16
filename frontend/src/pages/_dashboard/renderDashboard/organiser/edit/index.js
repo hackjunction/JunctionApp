@@ -4,7 +4,7 @@ import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 
 import { Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
-import { forOwn } from 'lodash-es'
+import { forOwn, isEqual } from 'lodash-es'
 import { useResolvedPath, useLocation } from 'react-router'
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import * as OrganiserActions from 'reducers/organiser/actions'
@@ -17,18 +17,18 @@ import BottomBar from 'components/inputs/BottomBar'
 import DefaultTab from './default'
 import ConfigurationTab from './configuration'
 import EmailsTab from './emails'
+import scoreCriteriaTab from './scoreCriteria'
 import ChallengesTab from './challenges'
 import ScheduleTab from './schedule'
+// import TimelineTab from './timeline'
 import QuestionsTab from './questions'
 import SubmissionFormTab from './submission'
-// import TimelineTab from './timeline'
-import MeetingRoomsTab from './meetingRooms'
-import OtherTab from './other'
 import HackerpackTab from './hackerpack'
+import OtherTab from './other'
+// import MeetingRoomsTab from './meetingRooms'
 
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
-import scoreCriteriaTab from './scoreCriteria'
 
 export default () => {
     const dispatch = useDispatch()
@@ -171,16 +171,16 @@ export default () => {
                                     component: OtherTab,
                                 },
                                 //experimental
-                                {
-                                    path: '/rooms',
-                                    key: 'meetingRooms',
-                                    label: 'Meeting Rooms',
-                                    component: MeetingRoomsTab,
-                                    hidden: !event?.experimental,
-                                },
+                                // {
+                                //     path: '/rooms',
+                                //     key: 'meetingRooms',
+                                //     label: 'Meeting Rooms',
+                                //     component: MeetingRoomsTab,
+                                //     hidden: !event?.experimental,
+                                // },
                             ]}
                             location={location}
-                            baseRoute={match.url}
+                            baseRoute={url}
                         />
                         <div style={{ height: '100px' }} />
                         <BottomBar

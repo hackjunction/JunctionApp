@@ -24,11 +24,12 @@ import * as SnackbarActions from 'reducers/snackbar/actions'
 import config from 'constants/config'
 
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 // TODO can't read null
 export default () => {
     const { t } = useTranslation()
-
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
@@ -191,7 +192,7 @@ export default () => {
                     return (
                         <Button
                             onClick={() =>
-                                dispatch(push(`/events/${event.slug}/register`))
+                                navigate(`/events/${event.slug}/register`)
                             }
                             color="theme_white"
                             variant="contained"
@@ -266,10 +267,8 @@ export default () => {
                         <Box ml={1} mt={1}>
                             <Button
                                 onClick={() =>
-                                    dispatch(
-                                        push(
-                                            `/dashboard/event/${event.slug}/event-id`,
-                                        ),
+                                    navigate(
+                                        `/dashboard/event/${event.slug}/event-id`,
                                     )
                                 }
                                 color="theme_white"

@@ -56,14 +56,14 @@ const ColorPreview = ({ color }) => {
     )
 }
 
-const useStyles = makeStyles(theme => ({
-    errorMessage: {
-        color: theme.palette.error.main,
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     errorMessage: {
+//         color: theme.palette.error.main,
+//     },
+// }))
 
 export default ({ value = [], fieldName, setFieldValue }) => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const label = useFormField('', value => {
         if (!value || value.length === 0) {
             return 'Tag name is required'
@@ -170,7 +170,10 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     value={label.value}
                     onChange={label.setValue}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
+                <Typography
+                    variant="caption"
+                    className={'classes.errorMessage'}
+                >
                     {label.error}
                 </Typography>
             </Grid>
@@ -185,7 +188,10 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                         value: color,
                     }))}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
+                <Typography
+                    variant="caption"
+                    className={'classes.errorMessage'}
+                >
                     {color.error}
                 </Typography>
             </Grid>
@@ -195,7 +201,10 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     value={description.value}
                     onChange={description.setValue}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
+                <Typography
+                    variant="caption"
+                    className={'classes.errorMessage'}
+                >
                     {description.error}
                 </Typography>
             </Grid>

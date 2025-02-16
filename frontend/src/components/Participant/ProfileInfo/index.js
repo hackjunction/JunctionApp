@@ -3,59 +3,59 @@ import { Roles, Misc } from '@hackjunction/shared'
 import { Box, Chip, Typography, Grid } from '@mui/material'
 
 import GradientBox from 'components/generic/GradientBox'
-import SkillRating from '../../../pages/_dashboard/renderDashboard/partner/partnerrecruitment/default/SearchResults/SkillRating'
+import SkillRating from 'pages/_dashboard/renderDashboard/partner/partnerrecruitment/default/SearchResults/SkillRating'
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles(theme => ({
-    inline: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        alignItems: 'center',
-        marginBottom: '0.2rem',
-        padding: '4px',
-    },
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
+// const useStyles = makeStyles(theme => ({
+//     inline: {
+//         display: 'flex',
+//         flexDirection: 'row',
+//         justifyContent: 'space-between',
+//         width: '100%',
+//         alignItems: 'center',
+//         marginBottom: '0.2rem',
+//         padding: '4px',
+//     },
+//     container: {
+//         display: 'flex',
+//         flexDirection: 'column',
 
-        width: '100%',
-        padding: '4px',
-        gap: '4px',
-    },
-    experience: {
-        lineHeight: 1.1,
-        variant: theme.typography.body1,
+//         width: '100%',
+//         padding: '4px',
+//         gap: '4px',
+//     },
+//     experience: {
+//         lineHeight: 1.1,
+//         variant: theme.typography.body1,
 
-        padding: '2px',
-    },
-    years: {
-        lineHeight: 1.1,
-        variant: theme.typography.body1,
-        color: theme.palette.grey[600],
-        padding: '2px',
-    },
+//         padding: '2px',
+//     },
+//     years: {
+//         lineHeight: 1.1,
+//         variant: theme.typography.body1,
+//         color: theme.palette.grey[600],
+//         padding: '2px',
+//     },
 
-    skills: {
-        padding: '4px',
-    },
-    boxStyle: {},
-}))
+//     skills: {
+//         padding: '4px',
+//     },
+//     boxStyle: {},
+// }))
 
-const makeBoxStyles = () => ({
-    backgroundColor: '#f7fafc',
-    border: `2px solid #e2e8f0`,
-    borderRadius: '6px',
-    height: '100%',
+// const makeBoxStyles = () => ({
+//     backgroundColor: '#f7fafc',
+//     border: `2px solid #e2e8f0`,
+//     borderRadius: '6px',
+//     height: '100%',
 
-    //TODO: blurr the bottom
+//     //TODO: blurr the bottom
 
-    // backgroundColor: '#f8f8f8',
-})
+//     // backgroundColor: '#f8f8f8',
+// })
 
 export default ({ user = {} }) => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const { t } = useTranslation()
 
     const renderRecruitmentStatus = () => {
@@ -300,9 +300,9 @@ export default ({ user = {} }) => {
                                     item
                                     xs={6}
                                 >
-                                    <div className={classes.container}>
+                                    <div className={'classes.container'}>
                                         <GradientBox
-                                            style={makeBoxStyles()}
+                                            style={'makeBoxStyles()'}
                                             color="theme_white"
                                             p={3}
                                         >
@@ -315,20 +315,14 @@ export default ({ user = {} }) => {
                                             </Typography>
 
                                             {user.skills.map(skillObj => (
-                                                <SkillRating
-                                                    data={skillObj}
-                                                    key={skillObj.skill}
-                                                    small={false}
-                                                    size={'body1'}
-                                                />
-
-                                                // <Typography
-                                                //     className="tw-text-lg tw-p-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-300"
-                                                //     variant="body1"
-                                                //     component="p"
-                                                // >
-                                                //     {skillObj.skill}
-                                                // </Typography>
+                                                <>
+                                                    <SkillRating
+                                                        data={skillObj}
+                                                        key={skillObj.skill}
+                                                        small={false}
+                                                        size={'body1'}
+                                                    />
+                                                </>
                                             ))}
                                         </GradientBox>
                                     </div>
@@ -342,9 +336,9 @@ export default ({ user = {} }) => {
                                     xs={6}
                                 >
                                     {user.roles?.length > 0 && (
-                                        <div className={classes.container}>
+                                        <div className={'classes.container'}>
                                             <GradientBox
-                                                style={makeBoxStyles()}
+                                                style={'makeBoxStyles()'}
                                                 color="theme_white"
                                                 p={3}
                                             >
@@ -363,7 +357,7 @@ export default ({ user = {} }) => {
                                                     {user.roles.map(role => (
                                                         <div
                                                             className={
-                                                                classes.inline
+                                                                'classes.inline'
                                                             }
                                                         >
                                                             <Grid
@@ -374,7 +368,7 @@ export default ({ user = {} }) => {
                                                             >
                                                                 <Typography
                                                                     className={
-                                                                        classes.experience
+                                                                        'classes.experience'
                                                                     }
                                                                 >
                                                                     {role.role}
@@ -388,7 +382,7 @@ export default ({ user = {} }) => {
                                                             >
                                                                 <Typography
                                                                     className={
-                                                                        classes.years
+                                                                        'classes.years'
                                                                     }
                                                                 >
                                                                     {Roles.getLabelForExperienceLevel(
@@ -409,7 +403,7 @@ export default ({ user = {} }) => {
                     {user.education && (
                         <div className="tw-flex tw-flex-col tw-gap-4">
                             <GradientBox
-                                style={makeBoxStyles()}
+                                style={'makeBoxStyles()'}
                                 color="theme_white"
                                 p={3}
                             >

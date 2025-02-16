@@ -13,7 +13,7 @@ import GradientBox from 'components/generic/GradientBox'
 import Disabled from './Disabled'
 
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
-import * as DashboardActions from 'reducers/dashboard/actions'
+// import * as DashboardActions from 'reducers/dashboard/actions'
 import PageHeader from 'components/generic/PageHeader'
 import Button from 'components/generic/Button'
 import Countdown from 'react-countdown-now'
@@ -23,13 +23,13 @@ export default () => {
     const team = useSelector(DashboardSelectors.team)
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
-    const annotator = useSelector(DashboardSelectors.annotator)
-    const annotatorError = useSelector(DashboardSelectors.annotatorError)
-    const annotatorLoading = useSelector(DashboardSelectors.annotatorLoading)
+    // const annotator = useSelector(DashboardSelectors.annotator)
+    // const annotatorError = useSelector(DashboardSelectors.annotatorError)
+    // const annotatorLoading = useSelector(DashboardSelectors.annotatorLoading)
 
-    useEffect(() => {
-        dispatch(DashboardActions.updateAnnotator(event.slug))
-    }, [event.slug, dispatch])
+    // useEffect(() => {
+    //     dispatch(DashboardActions.updateAnnotator(event.slug))
+    // }, [event.slug, dispatch])
 
     const renderContent = () => {
         if (!team) {
@@ -208,7 +208,9 @@ export default () => {
     }
     // console.log("annotator", annotator, annotatorError)
     return (
-        <PageWrapper loading={annotatorLoading} error={annotatorError}>
+        <PageWrapper
+        // loading={annotatorLoading} error={annotatorError}
+        >
             {renderContent()}
         </PageWrapper>
     )

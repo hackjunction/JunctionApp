@@ -67,7 +67,7 @@
         "redux": "^5.0.1",
         "redux-persist": "^6.0.0",
         "redux-thunk": "^3.1.0",
-        "remark-breaks": "^1.0.5",
+        "remark-breaks": "^4.0.0",
         "reselect": "^4.0.0",
         "speakingurl": "^14.0.1",
         "tailwindcss": "^1.9.6",
@@ -93,7 +93,7 @@
     "proxy": "http://localhost:2222",
     "engines": {
         "node": "22.2.0",
-        "npm": "10.8.0"
+        "npm": "10.7.0"
     },
     "devDependencies": {
         "@babel/core": "^7.24.7",

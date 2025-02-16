@@ -14,21 +14,21 @@ import FilterItem from './FilterItem'
 import EventsFilterItem from './EventsFilterItem'
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        width: '400px',
-        minHeight: '400px',
-    },
-    items: {
-        backgroundColor: '#fafafa',
-        borderRadius: '7px',
-        padding: theme.spacing(1),
-    },
-    itemsEmpty: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     wrapper: {
+//         width: '400px',
+//         minHeight: '400px',
+//     },
+//     items: {
+//         backgroundColor: '#fafafa',
+//         borderRadius: '7px',
+//         padding: theme.spacing(1),
+//     },
+//     itemsEmpty: {
+//         padding: theme.spacing(2),
+//         textAlign: 'center',
+//     },
+// }))
 
 export default () => {
     const { t } = useTranslation()
@@ -37,7 +37,7 @@ export default () => {
     const allEvents = useSelector(RecruitmentSelectors.events)
     const eventsMap = useSelector(RecruitmentSelectors.eventsMap)
     const filters = useSelector(RecruitmentSelectors.filters)?.events ?? []
-    const classes = useStyles()
+    // const classes = useStyles()
     const [events, addEvent, removeEvent, editEvent, setEvents] =
         useArray(filters)
 
@@ -76,7 +76,10 @@ export default () => {
     const renderEvents = () => {
         if (!events.length) {
             return (
-                <Typography variant="subtitle1" className={classes.itemsEmpty}>
+                <Typography
+                    variant="subtitle1"
+                    className={'classes.itemsEmpty'}
+                >
                     {t('No_events_selected_')}
                 </Typography>
             )
@@ -100,14 +103,14 @@ export default () => {
             onSubmit={handleSubmit}
             onClose={handleReset}
         >
-            <Box className={classes.wrapper}>
+            <Box className={'classes.wrapper'}>
                 <Select
                     autoFocus
                     label={t('Choose_events_')}
                     options={eventOptions}
                     onChange={handleAdd}
                 />
-                <Box className={classes.items}>{renderEvents()}</Box>
+                <Box className={'classes.items'}>{renderEvents()}</Box>
             </Box>
         </FilterItem>
     )

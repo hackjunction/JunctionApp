@@ -61,7 +61,9 @@ export default () => {
             })
             .finally(() => {
                 dispatch(
-                    OrganiserActions.updateRegistrationsForEvent(event.slug),
+                    OrganiserActions.updateRegistrationsForEvent({
+                        slug: event.slug,
+                    }),
                 )
                 return
             })
@@ -88,7 +90,9 @@ export default () => {
             })
             .finally(() => {
                 dispatch(
-                    OrganiserActions.updateRegistrationsForEvent(event.slug),
+                    OrganiserActions.updateRegistrationsForEvent({
+                        slug: event.slug,
+                    }),
                 )
                 return
             })
@@ -117,7 +121,9 @@ export default () => {
             })
             .finally(() => {
                 dispatch(
-                    OrganiserActions.updateRegistrationsForEvent(event.slug),
+                    OrganiserActions.updateRegistrationsForEvent({
+                        slug: event.slug,
+                    }),
                 )
                 return
             })

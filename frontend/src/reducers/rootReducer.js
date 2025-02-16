@@ -5,8 +5,6 @@ import account from './account/reducer'
 import admin from './admin/reducer'
 import auth from './auth/reducer'
 import dashboard from './dashboard/reducer'
-//import eventdetail from './UNUSED_eventdetail/reducer'
-//import events from './UNUSED_events/reducer'
 import organiser from './organiser/reducer'
 import recruitment from './recruitment/reducer'
 import user from './user/reducer'
@@ -18,8 +16,6 @@ export default () =>
         admin,
         auth,
         dashboard,
-        //eventdetail, (replaced with GraphQL)
-        //events, (replaced with GraphQL)
         organiser,
         recruitment,
         snackbar,

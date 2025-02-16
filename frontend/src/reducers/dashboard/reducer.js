@@ -1,5 +1,6 @@
 import * as ActionTypes from './actionTypes'
-import { buildHandler, buildUpdatePath } from '../utils'
+import { asyncThunkModifier, buildHandler, buildUpdatePath } from '../utils'
+import _ from 'lodash'
 
 const initialState = {
     event: {
@@ -76,7 +77,21 @@ const editTeam = buildUpdatePath('team.data')
 const editAnnotator = buildUpdatePath('annotator.data')
 
 export default function reducer(state = initialState, action) {
-    switch (action.type) {
+    // if (_.endsWith(action.type, '/fulfilled')) {
+    //     action.baseType = _.replace(action.type, '/fulfilled', '')
+    //     action.status = 'success'
+    // }
+    // if (_.endsWith(action.type, '/pending')) {
+    //     action.baseType = _.replace(action.type, '/pending', '')
+    //     action.status = 'start'
+    // }
+    // if (_.endsWith(action.type, '/rejected')) {
+    //     action.baseType = _.replace(action.type, '/rejected', '')
+    //     action.status = 'failure'
+    // }
+
+    action = asyncThunkModifier(action)
+    switch (action.baseType || action.type) {
         case ActionTypes.UPDATE_EVENT: {
             return updateEventHandler(state, action)
         }
@@ -128,6 +143,7 @@ export default function reducer(state = initialState, action) {
                 return updateTeamsHandler(state, action)
             }
         }
+        case ActionTypes.CANDIDATE_APPLY:
         case ActionTypes.UPDATE_SELECTED_TEAM: {
             return updateSelectedTeamHandler(state, action)
         }

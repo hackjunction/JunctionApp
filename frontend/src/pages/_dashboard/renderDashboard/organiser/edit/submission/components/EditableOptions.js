@@ -2,7 +2,7 @@ import { faPlusCircle, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 //TODO modify component to return an array for all actions, instead of single values
 const EditableOptions = ({

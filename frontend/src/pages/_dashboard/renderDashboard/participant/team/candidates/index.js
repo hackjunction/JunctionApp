@@ -19,10 +19,10 @@ import {
     Typography,
 } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
-import junctionStyle from 'utils/styles'
+// import junctionStyle from 'utils/styles'
 
 export default () => {
-    const classes = junctionStyle()
+    // const classes = junctionStyle()
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const { slug } = event
@@ -259,14 +259,14 @@ export default () => {
                                                                         checkedIcon={
                                                                             <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
                                                                                 <span
-                                                                                    className={`tw-w-5 tw-h-5 tw-rounded-full ${classes.bgPrimary}`}
+                                                                                    className={`tw-w-5 tw-h-5 tw-rounded-full ${'classes.bgPrimary'}`}
                                                                                 ></span>
                                                                             </div>
                                                                         }
                                                                         icon={
                                                                             <span
                                                                                 className={
-                                                                                    classes.icon
+                                                                                    'classes.icon'
                                                                                 }
                                                                             />
                                                                         }

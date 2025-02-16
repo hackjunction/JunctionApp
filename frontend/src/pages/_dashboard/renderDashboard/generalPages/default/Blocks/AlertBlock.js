@@ -24,23 +24,35 @@ const makeTimelineStyles = () => ({
 export default ({ alerts = [] }) => {
     const { t } = useTranslation()
     return (
-        <>
+        <Grid container direction="column" alignItems="stretch">
             {alerts && alerts.length > 0 && (
-                <GradientBox style={makeBoxStyles()} color="theme_white" p={3}>
+                <Grid
+                    item
+                    xs={8}
+                    style={{ marginLeft: '20px', marginRight: '20px' }}
+                >
+                    <GradientBox style={makeBoxStyles()} color="primary" p={3}>
+                        <Typography variant="button" gutterBottom>
+                            {t('Announcements_')}
+                        </Typography>
+                        <hr className="tw-h-px  tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
+                        <Alerts alerts={alerts} />
+                    </GradientBox>
+                </Grid>
+            )}
+            <Grid item xs={alerts && alerts.length > 0 ? 4 : 12}>
+                <GradientBox
+                    style={makeTimelineStyles()}
+                    color="theme_white"
+                    p={3}
+                >
                     <Typography variant="button" gutterBottom>
-                        {t('Announcements_')}
+                        {t('Event_timeline_')}
                     </Typography>
                     <hr className="tw-h-px  tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
-                    <Alerts alerts={alerts} />
+                    <TimeLineBlock />
                 </GradientBox>
-            )}
-            <GradientBox style={makeTimelineStyles()} color="theme_white" p={3}>
-                <Typography variant="button" gutterBottom>
-                    {t('Event_timeline_')}
-                </Typography>
-                <hr className="tw-h-px  tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
-                <TimeLineBlock />
-            </GradientBox>
-        </>
+            </Grid>
+        </Grid>
     )
 }

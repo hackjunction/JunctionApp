@@ -17,8 +17,10 @@ import Container from 'components/generic/Container'
 import * as AuthSelectors from 'reducers/auth/selectors'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import * as UserActions from 'reducers/user/actions'
+import { useNavigate } from 'react-router-dom'
 
 export default () => {
+    const navigate = useNavigate()
     const userId = useSelector(AuthSelectors.getUserId)
     const activeEvents = useSelector(DashboardSelectors.activeEvents)
     const pastEvents = useSelector(DashboardSelectors.pastEvents)
@@ -63,12 +65,10 @@ export default () => {
                                             UserActions.setAccessRight(
                                                 'participant',
                                             ),
-                                        ) //TODO: make this a schema
-                                        // dispatch(
-                                        //     push(
-                                        //         `/dashboard/event/${event?.slug}`,
-                                        //     ),
-                                        // )
+                                        )
+                                        navigate(
+                                            `/dashboard/event/${event?.slug}`,
+                                        )
                                     }}
                                 />
                             </Grid>
@@ -101,11 +101,8 @@ export default () => {
                                             <Button
                                                 size="small"
                                                 onClick={() =>
-                                                    dispatch(
-                                                        push(
-                                                            '/events/' +
-                                                                event.slug,
-                                                        ),
+                                                    navigate(
+                                                        '/events/' + event.slug,
                                                     )
                                                 }
                                             >
@@ -115,12 +112,10 @@ export default () => {
                                                 <Button
                                                     size="small"
                                                     onClick={() =>
-                                                        dispatch(
-                                                            push(
-                                                                '/events/' +
-                                                                    event.slug +
-                                                                    '/register/',
-                                                            ),
+                                                        navigate(
+                                                            '/events/' +
+                                                                event.slug +
+                                                                '/register/',
                                                         )
                                                     }
                                                 >
@@ -132,11 +127,9 @@ export default () => {
                                                     <Button
                                                         size="small"
                                                         onClick={() => {
-                                                            dispatch(
-                                                                push(
-                                                                    '/projects/' +
-                                                                        event.slug,
-                                                                ),
+                                                            navigate(
+                                                                '/projects/' +
+                                                                    event.slug,
                                                             )
                                                         }}
                                                     >
@@ -169,10 +162,8 @@ export default () => {
                                         <Button
                                             size="small"
                                             onClick={() =>
-                                                dispatch(
-                                                    push(
-                                                        '/events/' + event.slug,
-                                                    ),
+                                                navigate(
+                                                    '/events/' + event.slug,
                                                 )
                                             }
                                         >
@@ -186,11 +177,9 @@ export default () => {
                                                         '/projects/' +
                                                             event.slug,
                                                     )
-                                                    dispatch(
-                                                        push(
-                                                            '/projects/' +
-                                                                event.slug,
-                                                        ),
+                                                    navigate(
+                                                        '/projects/' +
+                                                            event.slug,
                                                     )
                                                 }}
                                             >
@@ -210,7 +199,7 @@ export default () => {
                         color="theme_lightgray"
                         onClick={() => {
                             console.log('TODO: Add past events page')
-                            // dispatch(push('/events'))
+                            navigate('/events')
                         }} // TODO: Add past events page, fix the looks of this button
                     >
                         {t('Past_events_all_')}

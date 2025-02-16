@@ -15,16 +15,16 @@ import * as SnackbarActions from 'reducers/snackbar/actions'
 import * as AuthSelectors from 'reducers/auth/selectors'
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
-const useStyles = makeStyles(theme => ({
-    card: {
-        background: 'white',
-        padding: theme.spacing(2),
-        boxShadow: '0px 3px 15px rgba(0,0,0,0.1)',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     card: {
+//         background: 'white',
+//         padding: theme.spacing(2),
+//         boxShadow: '0px 3px 15px rgba(0,0,0,0.1)',
+//     },
+// }))
 
 export default () => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     const idToken = useSelector(AuthSelectors.getIdToken)
@@ -54,41 +54,38 @@ export default () => {
             })
     }, [registration, slug, idToken, dispatch])
 
-    const handleScan = useCallback(
-        data => {
-            setLoading(true)
-            RegistrationsService.getFullRegistration(idToken, slug, data)
-                .then(data => {
-                    setRegistration(data)
-                })
-                .catch(err => {
-                    if (err.response && err.response.status === 404) {
-                        dispatch(SnackbarActions.error('User not found'))
-                    } else {
-                        dispatch(
-                            SnackbarActions.error(
-                                'Something went wrong... Please try again.',
-                            ),
-                        )
-                    }
-                })
-                .finally(() => {
-                    setLoading(false)
-                })
-        },
-        [idToken, slug, dispatch],
-    )
+    const handleScan = async data => {
+        setLoading(true)
+        await RegistrationsService.getFullRegistration(idToken, slug, data)
+            .then(data => {
+                setRegistration(data)
+            })
+            .catch(err => {
+                if (err.response && err.response.status === 404) {
+                    dispatch(SnackbarActions.error('User not found'))
+                } else {
+                    dispatch(
+                        SnackbarActions.error(
+                            'Something went wrong... Please try again.',
+                        ),
+                    )
+                }
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }
 
-    const handleError = useCallback(
-        err => {
-            dispatch(
-                SnackbarActions.error(
-                    'Something went wrong... Please try again.',
-                ),
-            )
-        },
-        [dispatch],
-    )
+    // const handleError = useCallback(
+    //     err => {
+    //         dispatch(
+    //             SnackbarActions.error(
+    //                 'Something went wrong... Please try again.',
+    //             ),
+    //         )
+    //     },
+    //     [dispatch],
+    // )
 
     return (
         <Box>
@@ -101,11 +98,9 @@ export default () => {
                     <CircularProgress size={24} />
                 </Box>
             )}
-            {!loading && !registration && (
-                <Reader onResult={handleScan} onError={handleError} />
-            )}
+            {!loading && !registration && <Reader onResult={handleScan} />}
             {!loading && registration && (
-                <Box className={classes.card}>
+                <Box className={'classes.card'}>
                     <Typography variant="h6">
                         {registration.answers.firstName}{' '}
                         {registration.answers.lastName}

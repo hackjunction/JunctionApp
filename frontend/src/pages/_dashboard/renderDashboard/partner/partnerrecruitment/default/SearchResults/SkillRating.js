@@ -1,26 +1,26 @@
 import React from 'react'
 import Rating from '@mui/lab/Rating'
-import { withStyles } from '@mui/material/styles'
-import { Typography, Tooltip, Grid } from '@mui/material/'
+import { Typography, Tooltip, Grid, styled } from '@mui/material/'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import PropTypes from 'prop-types'
 import { Skills } from '@hackjunction/shared'
+import theme from 'junctionTheme'
 
-const useStyles = makeStyles(theme => ({
-    inline: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '0.2rem',
-    },
-    label: {
-        lineHeight: 1.1,
-    },
-    rating: {
-        color: theme.palette.primary.main,
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     inline: {
+//         display: 'flex',
+//         flexDirection: 'row',
+//         justifyContent: 'space-between',
+//         alignItems: 'center',
+//         marginBottom: '0.2rem',
+//     },
+//     label: {
+//         lineHeight: 1.1,
+//     },
+//     rating: {
+//         color: theme.palette.primary.main,
+//     },
+// }))
 
 const IconContainer = ({ value, ...other }) => {
     return (
@@ -36,20 +36,18 @@ IconContainer.propTypes = {
 }
 
 const SkillRating = ({ data, small = false, showTooltip, size }) => {
-    const classes = useStyles()
-
-    const StyledRating = withStyles(theme => ({
+    const StyledRating = styled(Rating)({
         iconFilled: {
             color: theme.palette.secondary.main,
         },
         iconHover: {
             color: theme.palette.secondary.dark,
         },
-    }))(Rating)
+    })
 
     return (
         <Grid direction="column" alignItems="stretch" container>
-            <div className={classes.inline}>
+            <div className={'classes.inline'}>
                 <Grid key={data.skill} item xs={6} wrap="nowrap">
                     <Typography
                         variant={small ? 'caption' : 'inherit'}

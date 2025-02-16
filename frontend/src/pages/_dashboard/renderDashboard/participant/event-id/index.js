@@ -10,30 +10,30 @@ import PageHeader from 'components/generic/PageHeader'
 import * as UserSelectors from 'reducers/user/selectors'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        background: 'white',
-    },
-    qrCodeWrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        background: 'white',
-        [theme.breakpoints.up('lg')]: {
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-        },
-    },
-    textWrapper: {
-        marginTop: theme.spacing(2),
-        textAlign: 'center',
-        [theme.breakpoints.up('lg')]: {
-            textAlign: 'left',
-            marginLeft: theme.spacing(2),
-            marginTop: 0,
-        },
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     root: {
+//         background: 'white',
+//     },
+//     qrCodeWrapper: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'center',
+//         background: 'white',
+//         [theme.breakpoints.up('lg')]: {
+//             flexDirection: 'row',
+//             alignItems: 'flex-start',
+//         },
+//     },
+//     textWrapper: {
+//         marginTop: theme.spacing(2),
+//         textAlign: 'center',
+//         [theme.breakpoints.up('lg')]: {
+//             textAlign: 'left',
+//             marginLeft: theme.spacing(2),
+//             marginTop: 0,
+//         },
+//     },
+// }))
 
 const makeBoxStyles = () => ({
     backgroundColor: '#f7fafc',
@@ -43,23 +43,23 @@ const makeBoxStyles = () => ({
 })
 
 export default () => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const userProfile = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)
     console.log('EVENT-ID PAGE')
 
     return (
-        <div className={classes.root}>
-            <Box lassName={classes.root}>
+        <div className={'classes.root'}>
+            <Box lassName={'classes.root'}>
                 <GradientBox style={makeBoxStyles()} color="theme_white" p={3}>
                     <PageHeader
                         heading="Your event ID"
                         subheading={`Show this QR code at the entrance to gain access to ${event.name}`}
                     />
                     <Box mt={2} />
-                    <Box className={classes.qrCodeWrapper}>
+                    <Box className={'classes.qrCodeWrapper'}>
                         <QRCode value={userProfile.userId} size={300} />
-                        <Box className={classes.textWrapper}>
+                        <Box className={'classes.textWrapper'}>
                             <Typography variant="h6">
                                 {userProfile.firstName} {userProfile.lastName}
                             </Typography>

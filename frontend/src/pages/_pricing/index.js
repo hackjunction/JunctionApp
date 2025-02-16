@@ -14,43 +14,25 @@ import PricingCard from 'components/generic/PricingCard'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { styled } from '@mui/system'
+import { useNavigate } from 'react-router-dom'
 
-const useStyles = styled(theme => ({
-    backButtonWrapper: {
-        position: 'absolute',
-        zIndex: 10,
-        width: '100%',
-        paddingTop: theme.spacing(1),
-    },
+// const useStyles = styled(theme => ({
+//     backButtonWrapper: {
+//         position: 'absolute',
+//         zIndex: 10,
+//         width: '100%',
+//         paddingTop: theme.spacing(1),
+//     },
 
-    pricingWrapper: {
-        width: '100%',
-        paddingTop: '2em',
-    },
-}))
+//     pricingWrapper: {
+//         width: '100%',
+//         paddingTop: '2em',
+//     },
+// }))
 
 export default () => {
-    const dispatch = useDispatch()
-    const classes = useStyles()
+    const navigate = useNavigate()
     const { t } = useTranslation()
-    const body1 = [
-        'Event registration and organization through platform.',
-        'For non - profit organizations.',
-    ]
-    const body2 = [
-        'Event registration and organization through platform',
-        'Tech Support during event',
-        'Full Access to the Junction App',
-        'Consulting from the Junction Team',
-        'Statistics',
-        'Price is negotiable',
-    ]
-    // const body3 = [
-    //     'Event registration and organization through platform',
-    //     'Tech Support during event',
-    // ]
 
     return (
         <PageWrapper
@@ -58,8 +40,11 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <>
-                    <Container center wrapperClass={classes.backButtonWrapper}>
-                        <Button onClick={() => dispatch(push('/'))}>
+                    <Container
+                        center
+                        wrapperClass={'classes.backButtonWrapper'}
+                    >
+                        <Button onClick={() => navigate('/')}>
                             <ArrowBackIosIcon style={{ color: 'black' }} />
                             <Typography
                                 variant="button"
@@ -70,7 +55,7 @@ export default () => {
                         </Button>
                     </Container>
                     <Divider size={3} />
-                    <Container center wrapperClass={classes.pricingWrapper}>
+                    <Container center wrapperClass={'classes.pricingWrapper'}>
                         <Grid
                             container
                             direction="row"
@@ -79,7 +64,6 @@ export default () => {
                         >
                             <PricingCard
                                 topic="What we offer"
-                                body={body2}
                                 price="Ask: hello@hackjunction.com"
                             />
                             <Divider size={4} />
@@ -95,7 +79,7 @@ export default () => {
                                 color="theme_lightgray"
                                 strong
                                 m={6}
-                                onClick={() => dispatch(push('/contact'))}
+                                onClick={() => navigate('/contact')}
                             >
                                 {t('Contact_us_')}
                             </Button>

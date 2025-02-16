@@ -8,23 +8,24 @@ import FilterGroupsService from 'services/filterGroups'
 import ProjectsService from 'services/projects'
 import GavelService from 'services/reviewing/gavel'
 import RankingsService from 'services/rankings'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
-/** Update event with loading/error data */
-export const updateEvent = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-    const promise = EventsService.getEventBySlugAsOrganiser(idToken, slug)
-
-    dispatch({
-        type: ActionTypes.UPDATE_EVENT,
-        promise: promise,
-        meta: {
-            onFailure: e => console.log('Error updating event', e),
-        },
-    })
-
-    return promise
-}
-
+export const updateEvent = createAsyncThunk(
+    ActionTypes.UPDATE_EVENT,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            const event = await EventsService.getEventBySlugAsOrganiser(
+                idToken,
+                slug,
+            )
+            return event
+        } catch (error) {
+            console.error('Error updating event', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 /** Submit edits to an event */
 export const editEvent = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
@@ -42,32 +43,36 @@ export const updateWinners = (slug, winners) => async (dispatch, getState) => {
 }
 
 /** Update event stats with loading/error data */
-export const updateEventStats = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-
-    dispatch({
-        type: ActionTypes.UPDATE_STATS,
-        promise: EventsService.getEventStats(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error updating event stats', e),
-        },
-    })
-}
+export const updateEventStats = createAsyncThunk(
+    ActionTypes.UPDATE_STATS,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            return await EventsService.getEventStats(idToken, slug)
+        } catch (error) {
+            console.error('Error updating event stats', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
 /** Update event organisers with loading/error data */
-export const updateOrganisersForEvent =
-    (owner, organisers) => async (dispatch, getState) => {
-        const userIds = [owner].concat(organisers)
-
-        dispatch({
-            type: ActionTypes.UPDATE_ORGANISERS,
-            promise: UserProfilesService.getPublicUserProfiles(userIds),
-            meta: {
-                onFailure: e =>
-                    console.log('Error updating event organisers', e),
-            },
-        })
-    }
+export const updateOrganisersForEvent = createAsyncThunk(
+    ActionTypes.UPDATE_ORGANISERS,
+    async (ownerAndOrganizers, { rejectWithValue }) => {
+        try {
+            const { owner, organisers } = ownerAndOrganizers
+            const userIds = [owner].concat(organisers)
+            const profiles =
+                await UserProfilesService.getPublicUserProfiles(userIds)
+            console.log(profiles)
+            return profiles
+        } catch (error) {
+            console.error('Error updating organisers', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
 export const removeOrganiserFromEvent =
     (slug, userId) => async (dispatch, getState) => {
@@ -105,22 +110,28 @@ export const addOrganiserToEvent =
 
 /** Update event recruiters with loading/error data */
 
-export const updateRecruitersForEvent =
-    recruiters => async (dispatch, getState) => {
-        const idToken = AuthSelectors.getIdToken(getState())
-        const userIds = recruiters?.map(rec => {
-            return rec.recruiterId
-        })
-
-        dispatch({
-            type: ActionTypes.UPDATE_EVENT_RECRUITERS,
-            promise: UserProfilesService.getPublicUserProfiles(userIds),
-            meta: {
-                onFailure: e =>
-                    console.log('Error updating recruiters for this event', e),
-            },
-        })
-    }
+export const updateRecruitersForEvent = createAsyncThunk(
+    ActionTypes.UPDATE_EVENT_RECRUITERS,
+    async (recruiters, { rejectWithValue }) => {
+        try {
+            let userIds = []
+            if (Array.isArray(recruiters)) {
+                userIds = recruiters?.map(rec => {
+                    return rec.recruiterId
+                })
+            }
+            if (userIds.length < 1) {
+                return
+            }
+            const profiles =
+                await UserProfilesService.getPublicUserProfiles(userIds)
+            return profiles
+        } catch (error) {
+            console.error('Error generating rankings', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
 export const addRecruiterToEvent =
     (slug, userId, organization) => async (dispatch, getState) => {
@@ -156,24 +167,24 @@ export const removeRecruiterFromEvent =
     }
 
 /** Update event registrations with loading/error data */
-export const updateRegistrationsForEvent =
-    (slug, getFullStrings) => async (dispatch, getState) => {
-        const idToken = AuthSelectors.getIdToken(getState())
-
-        if (!slug) return
-
-        dispatch({
-            type: ActionTypes.UPDATE_REGISTRATIONS,
-            promise: RegistrationsService.getRegistrationsForEvent(
-                idToken,
-                slug,
-                getFullStrings,
-            ),
-            meta: {
-                onFailure: e => console.log('Error updating registrations', e),
-            },
-        })
-    }
+export const updateRegistrationsForEvent = createAsyncThunk(
+    ActionTypes.UPDATE_REGISTRATIONS,
+    async ({ slug, getFullStrings = false }, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            const registrations =
+                await RegistrationsService.getRegistrationsForEvent(
+                    idToken,
+                    slug,
+                    getFullStrings,
+                )
+            return registrations
+        } catch (error) {
+            console.error('Error updating registrations', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
 export const editRegistration =
     (registrationId, data, slug) => async (dispatch, getState) => {
@@ -230,33 +241,35 @@ export const bulkEditRegistrations =
     }
 
 /** Update event teams with loading/error data */
-export const updateTeamsForEvent = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-    if (!slug) return
-
-    dispatch({
-        type: ActionTypes.UPDATE_TEAMS,
-        promise: TeamsService.getTeamsForEvent(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error updating teams', e),
-        },
-    })
-}
+export const updateTeamsForEvent = createAsyncThunk(
+    ActionTypes.UPDATE_TEAMS,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            const teams = await TeamsService.getTeamsForEvent(idToken, slug)
+            return teams
+        } catch (error) {
+            console.error('Error updating teams', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
 /** Update filter groups with loading/error status */
-export const updateFilterGroups = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-
-    dispatch({
-        type: ActionTypes.UPDATE_FILTER_GROUPS,
-        promise: FilterGroupsService.getFilterGroupsForEvent(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error updating filter groups', e),
-        },
-    })
-
-    return
-}
+export const updateFilterGroups = createAsyncThunk(
+    ActionTypes.UPDATE_FILTER_GROUPS,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            const filterGroups =
+                await FilterGroupsService.getFilterGroupsForEvent(idToken, slug)
+            return filterGroups
+        } catch (error) {
+            console.error('Error generating rankings', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
 export const createFilterGroup =
     (slug, label, description, filters) => async (dispatch, getState) => {
@@ -316,60 +329,64 @@ export const deleteFilterGroup =
         return filterGroup
     }
 
-export const updateProjects = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const updateProjects = createAsyncThunk(
+    ActionTypes.UPDATE_PROJECTS,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            return await ProjectsService.getAllProjectsAsOrganiser(
+                idToken,
+                slug,
+            )
+        } catch (error) {
+            console.error('Error getting projects', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
-    dispatch({
-        type: ActionTypes.UPDATE_PROJECTS,
-        promise: ProjectsService.getAllProjectsAsOrganiser(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error getting projects', e),
-        },
-    })
-}
+// export const updateGavelProjects = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
 
-export const updateGavelProjects = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+//     dispatch({
+//         type: ActionTypes.UPDATE_GAVEL_PROJECTS,
+//         promise: GavelService.getAllProjects(idToken, slug),
+//         meta: {
+//             onFailure: e => console.log('Error getting gavel projects', e),
+//         },
+//     })
+// }
 
-    dispatch({
-        type: ActionTypes.UPDATE_GAVEL_PROJECTS,
-        promise: GavelService.getAllProjects(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error getting gavel projects', e),
-        },
-    })
-}
+// export const editGavelProject =
+//     (slug, projectId, edits) => async (dispatch, getState) => {
+//         const idToken = AuthSelectors.getIdToken(getState())
 
-export const editGavelProject =
-    (slug, projectId, edits) => async (dispatch, getState) => {
-        const idToken = AuthSelectors.getIdToken(getState())
+//         const project = await GavelService.editProject(
+//             idToken,
+//             slug,
+//             projectId,
+//             edits,
+//         )
 
-        const project = await GavelService.editProject(
-            idToken,
-            slug,
-            projectId,
-            edits,
-        )
+//         dispatch({
+//             type: ActionTypes.EDIT_GAVEL_PROJECT,
+//             payload: project,
+//         })
 
-        dispatch({
-            type: ActionTypes.EDIT_GAVEL_PROJECT,
-            payload: project,
-        })
+//         return
+//     }
 
-        return
-    }
+// export const updateGavelAnnotators = slug => async (dispatch, getState) => {
+//     const idToken = AuthSelectors.getIdToken(getState())
 
-export const updateGavelAnnotators = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-
-    dispatch({
-        type: ActionTypes.UPDATE_GAVEL_ANNOTATORS,
-        promise: GavelService.getAllAnnotators(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error getting gavel annotators'),
-        },
-    })
-}
+//     dispatch({
+//         type: ActionTypes.UPDATE_GAVEL_ANNOTATORS,
+//         promise: GavelService.getAllAnnotators(idToken, slug),
+//         meta: {
+//             onFailure: e => console.log('Error getting gavel annotators'),
+//         },
+//     })
+// }
 
 export const editGavelAnnotator =
     (slug, annotatorId, edits) => async (dispatch, getState) => {
@@ -390,37 +407,28 @@ export const editGavelAnnotator =
         return
     }
 
-export const updateRankings = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const updateRankings = createAsyncThunk(
+    ActionTypes.UPDATE_RANKINGS,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            return await RankingsService.getFullResults(idToken, slug)
+        } catch (error) {
+            console.error('Error getting rankings', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)
 
-    dispatch({
-        type: ActionTypes.UPDATE_RANKINGS,
-        promise: RankingsService.getFullResults(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error getting rankings', e),
-        },
-    })
-}
-
-export const generateResults = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-    dispatch({
-        type: ActionTypes.UPDATE_RANKINGS,
-        promise: RankingsService.generateResults(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error generating rankings', e),
-        },
-    })
-}
-
-export const getProjectScores = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-
-    dispatch({
-        type: ActionTypes.GET_PROJECT_SCORES,
-        promise: ProjectsService.getProjectScores(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error getting project scores', e),
-        },
-    })
-}
+export const generateResults = createAsyncThunk(
+    ActionTypes.UPDATE_RANKINGS,
+    async (slug, { getState, rejectWithValue }) => {
+        try {
+            const idToken = AuthSelectors.getIdToken(getState())
+            return await RankingsService.generateResults(idToken, slug)
+        } catch (error) {
+            console.error('Error generating rankings', error)
+            return rejectWithValue(error.message || 'Unknown error')
+        }
+    },
+)

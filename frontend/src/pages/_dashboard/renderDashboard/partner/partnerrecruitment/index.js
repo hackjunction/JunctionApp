@@ -1,5 +1,5 @@
 import React from 'react'
-import { useResolvedPath } from 'react-router'
+// import { useResolvedPath } from 'react-router'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
 import SearchPage from './default'
@@ -8,18 +8,12 @@ import DetailPage from './id'
 // import AdminPage from './admin'
 
 export default () => {
-    // const dispatch = useDispatch()
-    // const location = useLocation()
-    const url = useResolvedPath('').pathname
-
-    //console.log(match.url)
-
     return (
         <Routes>
-            <Route exact={true} path={`${url}`} component={SearchPage} />
-            <Route exact={false} path={`${url}/:id`} component={DetailPage} />
+            <Route index element={<SearchPage />} />
+            <Route path={`/:id`} element={<DetailPage />} />
             {/* <Route exact={true} path=`${url}/recruitment/admin` component={AdminPage} /> */}
-            <Navigate to={`${url}`} />
+            <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
     )
 }

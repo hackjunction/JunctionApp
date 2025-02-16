@@ -36,7 +36,9 @@ export default ({
     const [teamMembersArr, setTeamMembersArr] = useState([
         ...objToArr(teamData.meta),
     ])
-    const membersCount = teamData.members.length
+    const membersCount = Array.isArray(teamData.members)
+        ? teamData.members.length
+        : 0
 
     const styling = {
         borderStyle: 'tw-border tw-border-solid tw-border-gray-300 tw-p-4',
@@ -45,6 +47,7 @@ export default ({
         userProfile: {},
     }
 
+    //TODO Implement team deletion and team member removal
     // TODO add way to remove team members
     // const onClickRemove = (userId) => {
     //     console.log("delete", slug, teamData.code, userId)
@@ -102,7 +105,7 @@ export default ({
     //         })
     // }, [teamMemberToRemove, slug, teamData?.code, dispatch])
 
-    const classes = junctionStyle()
+    // const classes = junctionStyle()
     return (
         <PageWrapper loading={loading}>
             <div className="tw-flex tw-flex-col tw-gap-12">
@@ -165,7 +168,7 @@ export default ({
                                     color="error"
                                     variant="contained"
                                 >
-                                    remove from team
+                                    Remove from team
                                 </Button>
                             ) : (
                                 <Button
@@ -193,7 +196,7 @@ export default ({
                                     title: 'Discord',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}
@@ -206,7 +209,7 @@ export default ({
                                     title: 'Telegram',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="2x"
                         />
                     )}
@@ -222,7 +225,7 @@ export default ({
                                 })
                             }
                         >
-                            <Email className={classes.socialIcon} />
+                            <Email className={'classes.socialIcon'} />
                         </IconButton>
                     )}
                 </div>

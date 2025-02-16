@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import moment from 'moment-timezone'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Typography, Box } from '@mui/material'
 import Countdown from 'react-countdown-now'
 
@@ -14,9 +14,11 @@ import SubmissionForm from './SubmissionForm'
 import ProjectsList from './ProjectsList'
 
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import { useNavigate } from 'react-router-dom'
 
 export default () => {
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
+    const navigation = useNavigate()
     const event = useSelector(DashboardSelectors.event)
     const teamLoading = useSelector(DashboardSelectors.teamLoading)
     const isTeamValid = useSelector(DashboardSelectors.isTeamValid)
@@ -65,9 +67,7 @@ export default () => {
                         color="theme_white"
                         variant="contained"
                         onClick={() =>
-                            dispatch(
-                                push(`/dashboard/event/${event.slug}/team`),
-                            )
+                            navigation(`/dashboard/event/${event.slug}/team`)
                         }
                     >
                         Create or join a team
@@ -94,9 +94,7 @@ export default () => {
                         color="theme_white"
                         variant="contained"
                         onClick={() =>
-                            dispatch(
-                                push(`/dashboard/event/${event.slug}/team`),
-                            )
+                            navigation(`/dashboard/event/${event.slug}/team`)
                         }
                     >
                         Edit your team

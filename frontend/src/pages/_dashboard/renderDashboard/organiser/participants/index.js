@@ -8,7 +8,7 @@ import PageHeader from 'components/generic/PageHeader'
 import DefaultTab from './default'
 import TeamsTab from './teams'
 import AssignedTab from './assigned'
-// import TravelTab from './travel'
+// // import TravelTab from './travel'
 import AdminTab from './admin'
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import * as OrganiserActions from 'reducers/organiser/actions'
@@ -17,13 +17,16 @@ import { useDispatch, useSelector } from 'react-redux'
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const dispatch = useDispatch()
-    const url = useResolvedPath("").pathname;
+    const url = useResolvedPath('').pathname
     const location = useLocation()
 
     useEffect(() => {
         if (event) {
             dispatch(
-                OrganiserActions.updateRegistrationsForEvent(event.slug, true),
+                OrganiserActions.updateRegistrationsForEvent({
+                    slug: event.slug,
+                    getFullStrings: true,
+                }),
             )
             dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
         }
@@ -36,7 +39,7 @@ export default () => {
             />
             <MaterialTabsLayout
                 transparent
-                baseRoute={match.url}
+                baseRoute={url}
                 location={location}
                 tabs={[
                     {
@@ -57,12 +60,12 @@ export default () => {
                         label: 'Assigned to you',
                         component: AssignedTab,
                     },
-                    // {
-                    //     path: '/travel',
-                    //     key: 'travel',
-                    //     label: 'Travel',
-                    //     component: TravelTab,
-                    // },
+                    // // {
+                    // //     path: '/travel',
+                    // //     key: 'travel',
+                    // //     label: 'Travel',
+                    // //     component: TravelTab,
+                    // // },
                     {
                         path: '/admin',
                         key: 'admin',

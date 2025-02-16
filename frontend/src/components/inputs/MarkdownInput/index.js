@@ -15,14 +15,14 @@ const MarkdownInput = ({
 
     return (
         <Box>
-            <Box className="flex flex-wrap justify-between mb-4">
+            <Box className="tw-flex tw-flex-wrap tw-justify-between tw-mb-4">
                 <Typography variant="body1">
                     This field supports{' '}
                     <a
                         rel="noopener noreferrer"
                         target="_blank"
                         href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
-                        className="text-blue-500 hover:underline"
+                        className="tw-text-blue-500 tw-hover:underline"
                     >
                         markdown
                     </a>
@@ -32,7 +32,7 @@ const MarkdownInput = ({
                         <Switch
                             checked={isPreview}
                             onChange={(e, value) => setIsPreview(value)}
-                            value="checkedB"
+                            value="checked"
                             color="primary"
                         />
                     }
@@ -43,11 +43,10 @@ const MarkdownInput = ({
                 {isPreview ? (
                     <Markdown
                         source={value}
-                        className="min-h-full bg-gray-100 p-4"
+                        className="tw-min-h-full tw-bg-gray-100 tw-p-4"
                     />
                 ) : (
                     <TextAreaInput
-                        id={id}
                         placeholder={placeholder}
                         value={value}
                         onChange={onChange}

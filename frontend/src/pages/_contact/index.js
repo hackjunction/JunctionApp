@@ -15,12 +15,15 @@ import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
 
 import * as SnackbarActions from 'reducers/snackbar/actions'
-import * as AuthActions from 'reducers/auth/actions'
+
+import * as UserSelectors from 'reducers/user/selectors'
+
 import EmailService from 'services/email'
 import Shared from '@hackjunction/shared'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 // const useStyles = styled(theme => ({
 //     wrapper: {
@@ -60,7 +63,6 @@ export default () => {
     const dispatch = useDispatch()
     // const classes = useStyles()
     //const location = useLocation()
-    // const idToken = useSelector(AuthSelectors.getIdToken)
 
     const [loading, setLoading] = useState(false)
     const [subject, setSubject] = useState('')
@@ -81,9 +83,26 @@ export default () => {
         setOrganisation('')
     }
 
+    const userProfile = useSelector(UserSelectors.userProfile)
+
     useEffect(() => {
-        dispatch(AuthActions.clearSession())
-    }, [dispatch])
+        if (userProfile) {
+            if (userProfile.hasOwnProperty('email') && !email) {
+                setEmail(userProfile.email)
+            }
+            if (
+                userProfile.hasOwnProperty('firstName') &&
+                userProfile.hasOwnProperty('lastName') &&
+                !name
+            ) {
+                setName(`${userProfile.firstName} ${userProfile.lastName}`)
+            }
+        }
+    }, [userProfile])
+
+    // useEffect(() => {
+    //     dispatch(AuthActions.clearSession())
+    // }, [dispatch])
     // TODO there isn't message which tells which field is needed
     const sendEmail = () => {
         if (!message || !subject || !Shared.Utils.isEmail(email)) {

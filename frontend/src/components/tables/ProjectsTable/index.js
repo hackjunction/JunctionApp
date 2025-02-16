@@ -7,14 +7,18 @@ import { Table, Filters, Sorters } from 'components/generic/_Table'
 import EditProjectModal from 'components/modals/EditProjectModal'
 import _ from 'lodash'
 import { CSVLink } from 'react-csv'
-import { flattenObject, projectURLgenerator } from 'utils/dataModifiers'
+import {
+    flattenObject,
+    projectURLgenerator,
+    addTeamCodeToProjectAndFilterNoTeam,
+} from 'utils/dataModifiers'
 
 const skipArray = ['_id', '__v', 'id', 'key', 'section']
 const stringEscapeArray = ['description', 'name', 'punchline']
 
 const ProjectsTable = ({ projects }) => {
     const event = useSelector(OrganiserSelectors.event)
-
+    const teams = useSelector(OrganiserSelectors.teams)
     const [selected, setSelected] = useState([])
 
     const [selectedProject, setSelectedProject] = useState(null)
@@ -60,7 +64,10 @@ const ProjectsTable = ({ projects }) => {
         ]
     }, [])
 
-    //TODO add a cron function or organizer action to delete projects without a valid team
+    const projectsWithTeam = addTeamCodeToProjectAndFilterNoTeam(
+        projects,
+        teams,
+    )
 
     const exportProjects = selectedRows => {
         setSelected(selectedRows)
@@ -73,7 +80,7 @@ const ProjectsTable = ({ projects }) => {
                 onClose={() => setSelectedProject(null)}
             />
             <Table
-                data={projects}
+                data={projectsWithTeam}
                 columns={columns}
                 onRowClick={openSingleEdit}
                 enableExport={false}

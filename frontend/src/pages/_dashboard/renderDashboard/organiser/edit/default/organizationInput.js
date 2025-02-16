@@ -21,17 +21,17 @@ import Select from 'components/inputs/Select'
 
 import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useTranslation } from 'react-i18next'
-const useStyles = makeStyles(theme => ({
-    radioGroup: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     radioGroup: {
+//         display: 'flex',
+//         flexDirection: 'row',
+//         flexWrap: 'wrap',
+//     },
+// }))
 
 export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
     const dispatch = useDispatch()
-    const classes = useStyles()
+    // const classes = useStyles()
     const selectEl = useRef(null)
     const [level, setLevel] = useState()
     const [skill, setSkill] = useState()
@@ -87,7 +87,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
             </Grid>
             <Grid item xs={8}>
                 <RadioGroup
-                    className={classes.radioGroup}
+                    // className={classes.radioGroup}
                     aria-label="Level of expertise"
                     value={level}
                     onChange={handleLevelChange}

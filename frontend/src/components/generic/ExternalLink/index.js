@@ -4,11 +4,11 @@ import clsx from 'clsx'
 const getLinkClasses = theme => {
     switch (theme) {
         case 'dark':
-            return 'text-black hover:text-black underline'
+            return 'tw-text-black hover:tw-text-black tw-underline'
         case 'footer':
-            return 'text-white hover:text-white no-underline'
+            return 'tw-text-white hover:tw-text-white tw-no-underline'
         default:
-            return 'text-primary hover:text-primary-dark underline'
+            return 'tw-text-primary hover:tw-text-primary-dark tw-underline'
     }
 }
 
@@ -17,7 +17,7 @@ const ExternalLink = ({ href, children, theme = 'default' }) => {
 
     return (
         <a
-            className={clsx(linkClasses, 'cursor-pointer')}
+            className={clsx(linkClasses, 'tw-cursor-pointer')}
             href={href}
             target="_blank"
             rel="noopener noreferrer"

@@ -6,33 +6,33 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { useTranslation } from 'react-i18next'
 import Button from 'components/generic/Button'
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        marginRight: '1rem',
-        marginBottom: '1rem',
-    },
-    toggleButton: ({ active }) => ({
-        background: '#ffffff',
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-        border: active ? '2px solid #000000' : '2px solid #DBDBDB',
-        borderRadius: '4px',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    }),
-    buttonLabel: ({ active }) => ({
-        fontSize: '14px',
-        marginLeft: '1rem',
-        color: active ? '#000000' : theme.palette.text.secondary,
-    }),
-    buttonIcon: {
-        marginLeft: '0.5rem',
-        marginRight: '0.5rem',
-        fontSize: '22px',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     root: {
+//         marginRight: '1rem',
+//         marginBottom: '1rem',
+//     },
+//     toggleButton: ({ active }) => ({
+//         background: '#ffffff',
+//         cursor: 'pointer',
+//         transition: 'all 0.2s ease',
+//         border: active ? '2px solid #000000' : '2px solid #DBDBDB',
+//         borderRadius: '4px',
+//         display: 'flex',
+//         flexDirection: 'row',
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//     }),
+//     buttonLabel: ({ active }) => ({
+//         fontSize: '14px',
+//         marginLeft: '1rem',
+//         color: active ? '#000000' : theme.palette.text.secondary,
+//     }),
+//     buttonIcon: {
+//         marginLeft: '0.5rem',
+//         marginRight: '0.5rem',
+//         fontSize: '22px',
+//     },
+// }))
 const FilterItem = ({
     label,
     active,
@@ -40,7 +40,7 @@ const FilterItem = ({
     onClose = () => {},
     onSubmit = () => {},
 }) => {
-    const classes = useStyles({ active })
+    // const classes = useStyles({ active })
     const [anchorEl, setAnchorEl] = React.useState(null)
     const { t } = useTranslation()
 
@@ -61,17 +61,17 @@ const FilterItem = ({
     const open = Boolean(anchorEl)
     const id = open ? 'simple-popover' : undefined
     return (
-        <div className={classes.root}>
+        <div className={'classes.root'}>
             <ButtonBase
-                className={classes.toggleButton}
+                className={'classes.toggleButton'}
                 aria-describedby={id}
                 variant="contained"
                 onClick={handleClick}
             >
-                <Typography variant="body1" className={classes.buttonLabel}>
+                <Typography variant="body1" className={'classes.buttonLabel'}>
                     {label}
                 </Typography>
-                <KeyboardArrowDownIcon className={classes.buttonIcon} />
+                <KeyboardArrowDownIcon className={'classes.buttonIcon'} />
             </ButtonBase>
             <Popover
                 id={id}

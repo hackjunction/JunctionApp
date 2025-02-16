@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
-    const url = useResolvedPath("").pathname;
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const teamHasCandidates = useSelector(DashboardSelectors.teamHasCandidates)
@@ -47,7 +47,7 @@ export default () => {
             <MaterialTabsLayout
                 transparent
                 tabs={enabledTabs}
-                baseRoute={match.url}
+                baseRoute={url}
                 location={location}
             />
         </Container>

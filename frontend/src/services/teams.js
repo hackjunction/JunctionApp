@@ -140,7 +140,7 @@ TeamsService.getAllTeamsForEventParticipant = (
     page_size,
     filter,
 ) => {
-    if (filter) {
+    if (filter && filter !== 'All challenges') {
         return _axios.get(
             `/teams/${eventSlug}/teams?page=${page}&size=${page_size}&filter=${filter}`,
             config(idToken),

@@ -15,7 +15,7 @@ import Profile from './profile'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
-    const url = useResolvedPath("").pathname;
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const { t } = useTranslation()
     return (
@@ -39,7 +39,7 @@ export default () => {
                             component: Profile,
                         },
                     ]}
-                    baseRoute={match.url}
+                    baseRoute={url}
                     location={location}
                 />
             )}

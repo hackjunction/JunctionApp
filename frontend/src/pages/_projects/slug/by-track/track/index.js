@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useCallback } from 'react'
 
-import { useResolvedPath } from 'react-router'
+import { useNavigate, useParams, useResolvedPath } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { find, sortBy } from 'lodash-es'
 import { Box } from '@mui/material'
@@ -10,12 +10,14 @@ import EventHeroImage from 'components/events/EventHeroImage'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 
 export default ({ event, projects }) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
-    const url = useResolvedPath('').pathname
+    // const url = useResolvedPath('').pathname
+    const params = useParams()
 
     const onProjectSelected = useCallback(
         project => {
-            dispatch(push(`/projects/${event.slug}/view/${project._id}`))
+            navigate(`/projects/${event.slug}/view/${project._id}`)
         },
         [dispatch, event.slug],
     )
@@ -23,9 +25,9 @@ export default ({ event, projects }) => {
     const track = useMemo(() => {
         if (!event || !event.tracks) return null
         return find(event.tracks, track => {
-            return track.slug === match.params.track
+            return track.slug === params.track
         })
-    }, [match, event])
+    }, [params, event])
 
     const filtered = useMemo(() => {
         if (!track || !projects) return []

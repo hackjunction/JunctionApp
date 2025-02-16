@@ -29,7 +29,6 @@ export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
                     console.log(err)
                 })
                 .finally(() => {
-                    console.log('Fetched at preview', userProfile)
                     setLoading(false)
                 })
         }
@@ -46,8 +45,6 @@ export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
             backgroundImage: `url(${userProfile.profile.avatar})`,
         }
     }
-
-    // console.log('User data on participant preview', userData)
 
     switch (viewMode) {
         case 'list':

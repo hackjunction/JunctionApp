@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import moment from 'moment-timezone'
 import { EventHelpers } from '@hackjunction/shared'
@@ -9,16 +9,18 @@ import GradientBox from 'components/generic/GradientBox'
 import Button from 'components/generic/Button'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import config from 'constants/config'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
+    const navigate = useNavigate()
     const event = useSelector(DashboardSelectors.event)
     const { t } = useTranslation()
     if (!EventHelpers.isEventOver(event, moment)) return null
     return (
         <Grid item xs={12}>
-            <GradientBox p={3} color="theme_purple">
+            <GradientBox p={3} color="primary">
                 <Typography variant="h4" gutterBottom>
                     {t('Event_over_')}
                 </Typography>
@@ -31,9 +33,7 @@ export default () => {
                             })}
                         </Typography>
                         <Button
-                            onClick={() =>
-                                dispatch(push(`/projects/${event.slug}`))
-                            }
+                            onClick={() => navigate(`/projects/${event.slug}`)}
                             color="theme_white"
                             variant="contained"
                         >

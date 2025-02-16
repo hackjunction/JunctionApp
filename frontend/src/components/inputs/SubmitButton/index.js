@@ -84,7 +84,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
                         fullWidth
                         color="primary"
                         variant="contained"
-                        className="disabled:opacity-60 disabled:bg-primary"
+                        // className="disabled:tw-opacity-60 disabled:tw-bg-primary"
                         disabled={hasErrors || !confirmed || loading}
                     >
                         {t('Submit_')}

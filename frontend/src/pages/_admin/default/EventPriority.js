@@ -39,7 +39,7 @@ export default ({ data = [] }) => {
             </Typography>
             <Grid container spacing={3}>
                 {events.map(event => (
-                    <>
+                    <Grid item key={event.slug}>
                         <Box p={2}>
                             {event.slug}
                             <button onClick={() => handleClick(event, 1)}>
@@ -51,7 +51,7 @@ export default ({ data = [] }) => {
                             </button>
                         </Box>
                         <Divider variant="middle" />
-                    </>
+                    </Grid>
                 ))}
             </Grid>
         </Box>

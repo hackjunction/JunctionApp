@@ -22,13 +22,17 @@ import * as OrganiserActions from 'reducers/organiser/actions'
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
-    const url = useResolvedPath("").pathname;
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     useEffect(() => {
         if (event.slug) {
             dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
             dispatch(OrganiserActions.updateProjects(event.slug))
-            dispatch(OrganiserActions.updateRegistrationsForEvent(event.slug))
+            dispatch(
+                OrganiserActions.updateRegistrationsForEvent({
+                    slug: event.slug,
+                }),
+            )
             dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
         }
     }, [event, location])
@@ -114,7 +118,7 @@ export default () => {
                 transparent
                 tabs={tabs}
                 location={location}
-                baseRoute={match.url}
+                baseRoute={url}
             />
         </PageWrapper>
     )

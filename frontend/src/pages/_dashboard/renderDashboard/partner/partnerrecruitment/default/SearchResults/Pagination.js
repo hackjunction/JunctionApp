@@ -20,12 +20,9 @@ export default () => {
     const [_currentPage, _setCurrentPage] = useState(currentPage)
     const debouncedPage = useDebounce(_currentPage, 200)
 
-    const handlePageChange = useCallback(
-        page => {
-            dispatch(RecruitmentActions.setPage(page))
-        },
-        [dispatch],
-    )
+    const handlePageChange = page => {
+        dispatch(RecruitmentActions.setPage(page))
+    }
 
     useEffect(() => {
         _setCurrentPage(currentPage)
@@ -45,24 +42,33 @@ export default () => {
 
     return (
         <Box display="flex" flexDirection="row" alignItems="center">
-            <IconButton disabled={_currentPage === 0} onClick={handlePrevPage}>
-                <ChevronLeftIcon />
-            </IconButton>
-            <Box padding={1}>
-                {totalResults === 0 && loading ? (
-                    <Typography variant="overline">Page 1</Typography>
-                ) : (
-                    <Typography variant="overline">
-                        Page {_currentPage + 1} of {totalPages}
-                    </Typography>
-                )}
-            </Box>
-            <IconButton
-                disabled={_currentPage + 1 === totalPages}
-                onClick={handleNextPage}
-            >
-                <ChevronRightIcon />
-            </IconButton>
+            {loading ? (
+                <Typography variant="overline">Page 1</Typography>
+            ) : (
+                <>
+                    <IconButton
+                        disabled={_currentPage === 0}
+                        onClick={handlePrevPage}
+                    >
+                        <ChevronLeftIcon />
+                    </IconButton>
+                    <Box padding={1}>
+                        {totalResults > 0 ? (
+                            <Typography variant="overline">
+                                Page {_currentPage + 1} of {totalPages}
+                            </Typography>
+                        ) : (
+                            <Typography variant="overline">Page 1</Typography>
+                        )}
+                    </Box>
+                    <IconButton
+                        disabled={_currentPage + 1 >= totalPages}
+                        onClick={handleNextPage}
+                    >
+                        <ChevronRightIcon />
+                    </IconButton>
+                </>
+            )}
         </Box>
     )
 }

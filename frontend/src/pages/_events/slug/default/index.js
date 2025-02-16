@@ -21,55 +21,57 @@ import EventDetailContext from '../context'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import EventButtons from './EventButtons'
-import { styled } from '@mui/system'
+// import { styled } from '@mui/system'
+import { useNavigate } from 'react-router-dom'
 
-const useStyles = styled({
-    header: {
-        background: props => props.headerBackgroundColor,
-        color: props => props.headerTextColor,
+// const useStyles = styled({
+//     header: {
+//         background: props => props.headerBackgroundColor,
+//         color: props => props.headerTextColor,
 
-        '& button:not(disabled)': {
-            color: props => props.headerBackgroundColor,
-            background: props => props.accentColor,
+//         '& button:not(disabled)': {
+//             color: props => props.headerBackgroundColor,
+//             background: props => props.accentColor,
 
-            '&:hover': {
-                background: props => props.linkColor,
-            },
-        },
-    },
-    cta: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '3rem 2rem',
-        margin: '20px 0 0 0',
-        '& button': {
-            margin: 0,
-        },
-    },
-    body: {
-        background: props => props.bodyBackgroundColor,
-        '& a>p': {
-            color: props => props.linkColor,
-        },
-    },
-    details: {
-        background: props => props.detailsBackgroundColor,
-        color: props => props.detailsTextColor,
+//             '&:hover': {
+//                 background: props => props.linkColor,
+//             },
+//         },
+//     },
+//     cta: {
+//         display: 'flex',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         padding: '3rem 2rem',
+//         margin: '20px 0 0 0',
+//         '& button': {
+//             margin: 0,
+//         },
+//     },
+//     body: {
+//         background: props => props.bodyBackgroundColor,
+//         '& a>p': {
+//             color: props => props.linkColor,
+//         },
+//     },
+//     details: {
+//         background: props => props.detailsBackgroundColor,
+//         color: props => props.detailsTextColor,
 
-        '& *': {
-            color: props => props.detailsTextColor,
-        },
-    },
-    sidebar: {
-        background: props => props.sidebarBackgroundColor,
-    },
-})
+//         '& *': {
+//             color: props => props.detailsTextColor,
+//         },
+//     },
+//     sidebar: {
+//         background: props => props.sidebarBackgroundColor,
+//     },
+// })
 
 export default () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
-    const classes = useStyles(event.theme)
+    // const classes = useStyles(event.theme)
 
     const keywords = event.name.split(' ').join(', ')
 
@@ -126,20 +128,20 @@ export default () => {
             </Helmet>
             <EventHeroImage
                 event={event}
-                onBack={() => dispatch(push('/home'))}
+                onBack={() => navigate('/home')}
                 alignRight
                 backgroundColor={event.theme.headerBackgroundColor}
             />
             <FadeInWrapper>
                 <StaggeredList>
-                    <Box className={classes.header}>
+                    <Box className={'classes.header'}>
                         <Container>
                             <Grid container spacing={5}>
                                 <Grid
                                     item
                                     xs={12}
                                     md={4}
-                                    className={classes.header}
+                                    className={'classes.header'}
                                 >
                                     <Box mt={3} />
                                 </Grid>
@@ -147,7 +149,7 @@ export default () => {
                                     item
                                     xs={12}
                                     md={8}
-                                    className={classes.header}
+                                    className={'classes.header'}
                                 >
                                     <Box mt={3} />
 
@@ -167,19 +169,19 @@ export default () => {
                             </Grid>
                         </Container>
                     </Box>
-                    <Box className={classes.body}>
+                    <Box className={'classes.body'}>
                         <Container>
                             <Grid container spacing={5} wrap="wrap-reverse">
                                 <Grid
                                     item
                                     xs={12}
                                     md={4}
-                                    className={classes.sidebar}
+                                    className={'classes.sidebar'}
                                 >
                                     <Box mt={3} />
                                     <StaggeredListItem>
                                         <Box mt={3} />
-                                        <GradientBox color="theme_white" p={3}>
+                                        <GradientBox color="primary" p={3}>
                                             <Typography
                                                 variant="button"
                                                 gutterBottom
@@ -203,7 +205,7 @@ export default () => {
                                     item
                                     xs={12}
                                     md={8}
-                                    className={classes.details}
+                                    className={'classes.details'}
                                 >
                                     <Box mt={3} />
                                     <StaggeredListItem>
@@ -213,7 +215,7 @@ export default () => {
                             </Grid>
                         </Container>
                     </Box>
-                    <Box className={`${classes.header} ${classes.cta}`}>
+                    <Box className={`${'classes.header'} ${'classes.cta'}`}>
                         <EventButtons
                             event={event}
                             registration={registration}

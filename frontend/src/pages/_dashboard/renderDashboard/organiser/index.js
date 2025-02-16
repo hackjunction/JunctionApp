@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { useResolvedPath, useLocation } from 'react-router'
+import { useResolvedPath, useLocation, useParams } from 'react-router'
 import { Typography, Box } from '@mui/material'
 import { EventTypes } from '@hackjunction/shared'
 import TuneIcon from '@mui/icons-material/Tune'
 import SettingsIcon from '@mui/icons-material/Settings'
-import EqualizerIcon from '@mui/icons-material/Equalizer'
+// import EqualizerIcon from '@mui/icons-material/Equalizer'
 import PeopleIcon from '@mui/icons-material/People'
 import CropFreeIcon from '@mui/icons-material/CropFree'
 import CodeIcon from '@mui/icons-material/Code'
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff'
-import AssessmentIcon from '@mui/icons-material/Assessment'
+// import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff'
+// import AssessmentIcon from '@mui/icons-material/Assessment'
 import Alert from '@mui/material/Alert'
 
 import * as OrganiserSelectors from 'reducers/organiser/selectors'
@@ -27,9 +27,9 @@ import EditPage from './edit'
 import ManagePage from './manage'
 import ParticipantsPage from './participants'
 import ProjectsPage from './projects'
-import ResultsPage from './results'
-// import StatsPage from './stats'
-import TravelGrantsPage from './travel-grants'
+// import ResultsPage from './results'
+// // import StatsPage from './stats'
+// import TravelGrantsPage from './travel-grants'
 import AlertsPage from './alerts'
 import { QuestionAnswerSharp } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
@@ -38,7 +38,8 @@ export default () => {
     const url = useResolvedPath('').pathname
     const location = useLocation()
     const dispatch = useDispatch()
-    const { slug } = match.params
+
+    const { slug } = useParams()
     const { t } = useTranslation()
 
     const event = useSelector(OrganiserSelectors.event)
@@ -50,7 +51,7 @@ export default () => {
     }, [dispatch, slug])
 
     useEffect(() => {
-        if (event) {
+        if (event?._id) {
             dispatch(
                 OrganiserActions.updateRecruitersForEvent(event.recruiters),
             )
@@ -104,13 +105,14 @@ export default () => {
                         <BasicNavBar />
                     </>
                 }
-                baseRoute={url}
+                baseRoute={`${url}`}
                 location={location}
                 routes={[
                     // TODO make one of the routes default or create a default route to render, instead of the events page
                     {
                         key: 'edit',
-                        path: '/edit',
+                        path: '/edit/*',
+                        onClickPath: '/edit',
                         icon: <TuneIcon />,
                         label: t('Edit_event_'),
                         component: EditPage,
@@ -125,14 +127,16 @@ export default () => {
                     // },
                     {
                         key: 'participants',
-                        path: '/participants',
+                        path: '/participants/*',
+                        onClickPath: '/participants',
                         icon: <PeopleIcon />,
                         label: t('Participants_'),
                         component: ParticipantsPage,
                     },
                     {
                         key: 'projects',
-                        path: '/projects',
+                        path: '/projects/*',
+                        onClickPath: '/projects',
                         icon: <CodeIcon />,
                         label: t('Projects_'),
                         component: ProjectsPage,
@@ -167,25 +171,25 @@ export default () => {
                     },
                     //Experimental
 
-                    {
-                        key: 'results',
-                        path: '/results',
-                        hidden: !event?.experimental,
-                        icon: <AssessmentIcon />,
-                        label: 'Results',
-                        component: ResultsPage,
-                    },
-                    {
-                        key: 'travel-grants',
-                        path: '/travel-grants',
-                        exact: true,
-                        hidden: !event?.experimental,
-                        // locked: event?.travelGrantConfig?.enabled ?? true,
-                        lockedDescription: 'Travel grants disabled',
-                        icon: <FlightTakeoffIcon />,
-                        label: 'Travel grants',
-                        component: TravelGrantsPage,
-                    },
+                    // {
+                    //     key: 'results',
+                    //     path: '/results',
+                    //     hidden: !event?.experimental,
+                    //     icon: <AssessmentIcon />,
+                    //     label: 'Results',
+                    //     component: ResultsPage,
+                    // },
+                    // {
+                    //     key: 'travel-grants',
+                    //     path: '/travel-grants',
+                    //     exact: true,
+                    //     hidden: !event?.experimental,
+                    //     // locked: event?.travelGrantConfig?.enabled ?? true,
+                    //     lockedDescription: 'Travel grants disabled',
+                    //     icon: <FlightTakeoffIcon />,
+                    //     label: 'Travel grants',
+                    //     component: TravelGrantsPage,
+                    // },
                 ]}
             />
         </PageWrapper>

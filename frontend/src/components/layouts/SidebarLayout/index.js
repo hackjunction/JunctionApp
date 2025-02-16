@@ -113,17 +113,15 @@ export default React.memo(
         const drawerContent = (
             <>
                 <Box>
-                    {/* <a href="/home"> */}
                     <Link to="/home">
                         <img
                             src={
                                 PlatformLogo /*config.LOGO_LIGHT_URL TODO: switch this to cloudinary*/
                             }
-                            className="block mx-auto p-1.5 h-18"
+                            className="tw-block tw-mx-auto tw-p-1.5 tw-h-18 tw-bg-black"
                             alt={config.PLATFORM_OWNER_NAME + ' logo'}
                         />
                     </Link>
-                    {/* </a> */}
                 </Box>
                 <Box p={2}>{sidebarTopContent}</Box>
                 <List>
@@ -134,14 +132,18 @@ export default React.memo(
                                 <ListItem
                                     disabled={route.locked}
                                     button
-                                    key={route.path}
+                                    key={route?.onClickPath || route.path}
                                     selected={index === safeIndex}
                                     className={`${
                                         index === safeIndex
                                             ? 'text-white'
                                             : 'text-gray-400'
                                     }`}
-                                    onClick={() => pushRoute(route.path)}
+                                    onClick={() =>
+                                        pushRoute(
+                                            route?.onClickPath || route.path,
+                                        )
+                                    }
                                 >
                                     <ListItemIcon className="text-inherit">
                                         {route.locked ? (
@@ -289,6 +291,7 @@ export default React.memo(
                         </Drawer>
                     </nav>
                 </Hidden> */}
+                {drawerContent}
                 <main
                     className={`flex-grow relative transition-all ${
                         desktopOpen ? 'ml-[300px]' : 'ml-0'
@@ -297,7 +300,6 @@ export default React.memo(
                     {topContent}
                     <Container className="p-0 md:p-8">
                         <div className="p-8 max-w-[1400px]">
-                            <p>TEST LOADING SPACE</p>
                             <Routes>
                                 {routes.map(
                                     (
@@ -306,7 +308,6 @@ export default React.memo(
                                             path,
                                             hidden,
                                             component: Component,
-                                            exact = false,
                                             locked,
                                         },
                                         index,
@@ -317,8 +318,7 @@ export default React.memo(
                                             return (
                                                 <Route
                                                     key={key}
-                                                    exact={exact}
-                                                    path={`${baseRoute}${path}`}
+                                                    path={`${path}`}
                                                     element={<Component />}
                                                 />
                                             )
@@ -328,18 +328,11 @@ export default React.memo(
 
                                 <Route
                                     key={'profile'}
-                                    exact={true}
                                     path={`profile`}
                                     element={<ProfilePage />}
                                 />
-                                {/* <Route
-                                    key={'logout'}
-                                    exact={true}
-                                    path={`${baseRoute}/logout`}
-                                /> */}
                                 <Route
                                     key={'events'}
-                                    exact={false}
                                     path={`events/*`}
                                     element={<EventsPage />}
                                 />
@@ -348,7 +341,6 @@ export default React.memo(
                                     element={<Navigate to="events" replace />}
                                 />
                             </Routes>
-                            {/* <Navigate to={`${baseRoute}/events`} /> */}
                         </div>
                     </Container>
                 </main>

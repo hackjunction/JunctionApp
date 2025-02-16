@@ -79,7 +79,8 @@ export default ({
                 },
                 {
                     key: 'recruitment',
-                    path: '/recruitment',
+                    path: '/recruitment/*',
+                    onClickPath: '/recruitment',
                     exact: false,
                     icon: <WorkIcon />,
                     label: 'Recruitment',

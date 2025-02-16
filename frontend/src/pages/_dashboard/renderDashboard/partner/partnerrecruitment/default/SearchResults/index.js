@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import Empty from 'components/generic/Empty'
 import ResultCard from './ResultCard'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useResolvedPath } from 'react-router'
 import { Grid, Box, Typography, CircularProgress } from '@mui/material'
 
 import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
@@ -10,11 +9,10 @@ import * as RecruitmentActions from 'reducers/recruitment/actions'
 import { useTranslation } from 'react-i18next'
 import Pagination from './Pagination'
 import LoadingCard from './LoadingCard'
-// import { push } from 'connected-react-router'
-const push = () => {}
-import { useResolvedPath } from 'react-router-dom'
+import { useNavigate, useResolvedPath } from 'react-router-dom'
 
 export default ({ items, organisation, eventId }) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const baseRoute = useResolvedPath('').pathname
     const itemsFromStore = useSelector(RecruitmentSelectors.searchResults)
@@ -95,9 +93,7 @@ export default ({ items, organisation, eventId }) => {
                                 data={user}
                                 organisation={organisation}
                                 onClick={() => {
-                                    dispatch(
-                                        push(`${baseRoute}/${user.userId}`),
-                                    )
+                                    navigate(`${baseRoute}/${user.userId}`)
                                 }}
                                 eventId={eventId}
                             />

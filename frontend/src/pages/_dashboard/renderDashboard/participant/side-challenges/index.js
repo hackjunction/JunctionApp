@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 import Image from 'components/generic/Image'
 import Markdown from 'components/generic/Markdown'
 import PageHeader from 'components/generic/PageHeader'

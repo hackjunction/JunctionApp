@@ -16,16 +16,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import { Roles } from '@hackjunction/shared'
 
-const useStyles = makeStyles(theme => ({
-    radios: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     radios: {
+//         display: 'flex',
+//         flexDirection: 'row',
+//         flexWrap: 'wrap',
+//     },
+// }))
 
 const RolesFilterItem = React.memo(({ role, years, onEdit, onRemove }) => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const toggleLevel = useCallback(
         year => {
             if (years.indexOf(year) !== -1) {
@@ -63,7 +63,7 @@ const RolesFilterItem = React.memo(({ role, years, onEdit, onRemove }) => {
                 </Box>
             </AccordionSummary>
             <AccordionDetails>
-                <FormGroup className={classes.radios}>
+                <FormGroup className={'classes.radios'}>
                     {Roles.experienceLevelArray.map(({ value, label }) => (
                         <FormControlLabel
                             key={label}

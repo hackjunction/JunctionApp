@@ -58,8 +58,8 @@ const Footer = () => {
     )
 }
 
-Footer.defaultProps = {
-    hide_contact: false,
-}
+// Footer.defaultProps = {
+//     hide_contact: false,
+// }
 
 export default Footer

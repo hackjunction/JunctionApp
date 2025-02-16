@@ -25,8 +25,8 @@ export default ({ ComposedComponent, requiredPermissions = [] }) => {
         )
     }, [permissions])
 
-    const checkAndRedirect = useCallback(() => {
-        if (!hasProfile || !isAuthenticated) {
+    const checkAndRedirect = () => {
+        if (!isAuthenticated) {
             const nextRoute = location?.pathname ?? '/'
             // dispatch(push('/login', { nextRoute }))
             navigate('/login', { state: { nextRoute } })
@@ -37,23 +37,19 @@ export default ({ ComposedComponent, requiredPermissions = [] }) => {
             // dispatch(push('/error', { error }))
             navigate('/error', { state: { error } })
         }
-    }, [
-        dispatch,
-        hasProfile,
-        hasRequiredPermissions,
-        isAuthenticated,
-        isSessionExpired,
-        location,
-    ])
+    }
 
     useEffect(() => {
         checkAndRedirect()
-    }, [checkAndRedirect])
+    }, [])
 
-    if (!isAuthenticated) return null
-    if (!hasProfile) return null
-    if (!hasRequiredPermissions) return null
-    if (isSessionExpired) return null
+    if (
+        !isAuthenticated ||
+        !hasProfile ||
+        !hasRequiredPermissions ||
+        isSessionExpired
+    )
+        return null
 
     return <ComposedComponent />
 }

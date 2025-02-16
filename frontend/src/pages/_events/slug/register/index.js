@@ -30,7 +30,7 @@ import Image from 'components/generic/Image'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import AnalyticsService from 'services/analytics'
 
-import RequiresPermission from 'hocs/RequiresPermission'
+// import RequiresPermission from 'hocs/RequiresPermission'
 
 import RegistrationSection from './RegistrationSection'
 import RegistrationSectionCustom from './RegistrationSectionCustom'
@@ -47,8 +47,8 @@ import EventDetailContext from '../context'
 import { useTranslation } from 'react-i18next'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
+import { useNavigate } from 'react-router-dom'
 // import { styled } from '@mui/system'
-import config from 'constants/config'
 
 // const useStyles = styled(theme => ({
 //     wrapper: {
@@ -133,12 +133,12 @@ import config from 'constants/config'
 //     },
 // }))
 
-const Connector = ({ index, active, completed, disabled }) => <div />
+const Connector = ({ index, active, completed, disabled }) => <div></div>
 
-export default RequiresPermission(() => {
+export default () => {
+    const navigate = useNavigate()
     const { t } = useTranslation()
     // const classes = useStyles()
-    const classes = {}
     const dispatch = useDispatch()
     const {
         slug,
@@ -149,6 +149,7 @@ export default RequiresPermission(() => {
         finishRegistration,
         registration,
     } = useContext(EventDetailContext)
+
     const userProfile = useSelector(UserSelectors.userProfile)
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
@@ -345,7 +346,7 @@ export default RequiresPermission(() => {
                     />
                     <StepContent
                         classes={{
-                            root: classes.stepContent,
+                            root: 'classes.stepContent',
                         }}
                     >
                         {isCustomSection ? (
@@ -392,13 +393,13 @@ export default RequiresPermission(() => {
         })
     }
 
-    const shareurl = `${config.BASE_URL}/events/${event.slug}`
+    const shareurl = 'https://eu.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
     const sharetext = `I just applied to ${event.name}!`
 
     return (
-        <FadeInWrapper className={classes.wrapper}>
+        <FadeInWrapper className={'classes.wrapper'}>
             <Image
-                className={classes.backgroundImage}
+                className={'classes.backgroundImage'}
                 publicId={event?.coverImage?.publicId}
                 default={require('assets/images/default_cover_image.png')}
                 transformation={{
@@ -406,20 +407,23 @@ export default RequiresPermission(() => {
                     height: 1080,
                 }}
             />
-            <Container center wrapperClass={classes.content}>
-                <Box className={classes.top}>
-                    <Typography variant="h1" className={classes.topTitle}>
+            <Container center wrapperClass={'classes.content'}>
+                <Box className={'classes.top'}>
+                    <Typography variant="h1" className={'classes.topTitle'}>
                         Register
                     </Typography>
                     <Box p={1} />
-                    <Typography variant="h2" className={classes.topTitleExtra}>
+                    <Typography
+                        variant="h2"
+                        className={'classes.topTitleExtra'}
+                    >
                         {event?.name}
                     </Typography>
                 </Box>
                 <div style={{ height: '100px' }} />
                 <Stepper
                     connector={<Connector />}
-                    className={classes.stepper}
+                    className={'classes.stepper'}
                     activeStep={activeStep}
                     orientation="vertical"
                 >
@@ -427,7 +431,7 @@ export default RequiresPermission(() => {
                     <Step key="finish">
                         <StepContent
                             classes={{
-                                root: classes.stepContent,
+                                root: 'classes.stepContent',
                             }}
                         >
                             <NewsLetterButton
@@ -456,7 +460,7 @@ export default RequiresPermission(() => {
                     <Step key="done">
                         <StepContent
                             classes={{
-                                root: classes.stepContent,
+                                root: 'classes.stepContent',
                             }}
                         >
                             <Box
@@ -465,17 +469,17 @@ export default RequiresPermission(() => {
                                 alignItems="center"
                             >
                                 <Typography
-                                    className={classes.doneTitle}
+                                    className={'classes.doneTitle'}
                                     variant="h3"
                                 >
                                     {t('Registration_saved_')}
                                 </Typography>
                                 <Box mt={5} alignItems="center">
                                     <Typography
-                                        className={classes.doneTitle}
+                                        className={'classes.doneTitle'}
                                         variant="h4"
                                     >
-                                        Share with friends!
+                                        Share online
                                     </Typography>
                                     <Grid
                                         container
@@ -485,35 +489,6 @@ export default RequiresPermission(() => {
                                     >
                                         <Grid item>
                                             <FontAwesomeIcon
-                                                icon={['fab', 'twitter-square']}
-                                                onClick={() =>
-                                                    popupCenter({
-                                                        url: `https://twitter.com/intent/tweet?text=${sharetext}&url=${shareurl}`,
-                                                        title: 'Twitter',
-                                                    })
-                                                }
-                                                className={classes.socialIcon}
-                                                size="3x"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <FontAwesomeIcon
-                                                icon={[
-                                                    'fab',
-                                                    'facebook-square',
-                                                ]}
-                                                onClick={() =>
-                                                    popupCenter({
-                                                        url: `https://www.facebook.com/sharer/sharer.php?u=${shareurl}&quote=${sharetext}`,
-                                                        title: 'Facebook',
-                                                    })
-                                                }
-                                                className={classes.socialIcon}
-                                                size="3x"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <FontAwesomeIcon
                                                 icon={['fab', 'linkedin']}
                                                 onClick={() =>
                                                     popupCenter({
@@ -521,7 +496,7 @@ export default RequiresPermission(() => {
                                                         title: 'Linkedin',
                                                     })
                                                 }
-                                                className={classes.socialIcon}
+                                                className={'classes.socialIcon'}
                                                 size="3x"
                                             />
                                         </Grid>
@@ -530,9 +505,7 @@ export default RequiresPermission(() => {
                                 <div style={{ height: '50px' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(
-                                            push(`/dashboard/event/${slug}`),
-                                        )
+                                        navigate(`/dashboard/event/${slug}`)
                                     }
                                     style={{ width: '300px' }}
                                     color="primary"
@@ -542,9 +515,7 @@ export default RequiresPermission(() => {
                                 </Button>
                                 <div style={{ height: '1rem' }} />
                                 <Button
-                                    onClick={() =>
-                                        dispatch(push(`/events/${slug}`))
-                                    }
+                                    onClick={() => navigate(`/events/${slug}`)}
                                     style={{ width: '300px', color: 'white' }}
                                 >
                                     {t('Back_to_event_')}
@@ -565,4 +536,4 @@ export default RequiresPermission(() => {
             </Container>
         </FadeInWrapper>
     )
-})
+}

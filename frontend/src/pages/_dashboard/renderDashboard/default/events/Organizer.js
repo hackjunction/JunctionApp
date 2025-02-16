@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { useSelector } from 'react-redux'
@@ -16,6 +16,7 @@ import * as UserActions from 'reducers/user/actions'
 
 import CreateEventCard from './CreateEventCard'
 import TextInput from '../../../../../components/inputs/TextInput'
+import { useNavigate } from 'react-router-dom'
 import { useDebounce } from 'hooks/customHooks'
 
 //TODO: make this to use theme colors and make prettier
@@ -58,6 +59,7 @@ export default () => {
     const organizerEvents = useSelector(UserSelectors.organizerEvents)
     // const classes = useStyles()
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { t } = useTranslation()
 
@@ -160,20 +162,17 @@ export default () => {
                                     dispatch(
                                         UserActions.setAccessRight('organizer'),
                                     )
-                                    dispatch(push(`/organise/${event.slug}`))
+                                    navigate(`/organise/${event.slug}`)
                                 }}
                                 buttons={[
                                     <Button
                                         size="small"
-                                        onClick={
-                                            () =>
-                                                console.log(
-                                                    'event see more clicked',
-                                                )
-                                            // dispatch(
-                                            //     push('/events/' + event.slug),
-                                            // )
-                                        }
+                                        onClick={() => {
+                                            console.log(
+                                                'event see more clicked',
+                                            )
+                                            navigate(`/events/${event.slug}`)
+                                        }}
                                     >
                                         {t('See_more_')}
                                     </Button>,
@@ -185,9 +184,7 @@ export default () => {
                                                     'organizer',
                                                 ),
                                             )
-                                            // dispatch(
-                                            //     push(`/organise/${event.slug}`),
-                                            // )
+                                            navigate(`/organise/${event.slug}`)
                                         }}
                                     >
                                         {t('Manage_')}

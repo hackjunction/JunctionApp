@@ -23,18 +23,18 @@ const STATUSES = [
     RegistrationStatuses.asObject.checkedIn,
 ]
 
-const useStyles = makeStyles(theme => ({
-    radios: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     radios: {
+//         display: 'flex',
+//         flexDirection: 'row',
+//         flexWrap: 'wrap',
+//     },
+// }))
 
 const EventsFilterItem = React.memo(
     ({ event, eventName, statuses, onEdit, onRemove }) => {
         const { t } = useTranslation()
-        const classes = useStyles()
+        // const classes = useStyles()
         const toggleStatus = useCallback(
             status => {
                 if (statuses.indexOf(status) !== -1) {
@@ -75,7 +75,7 @@ const EventsFilterItem = React.memo(
                     </Box>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <FormGroup className={classes.radios}>
+                    <FormGroup className={'classes.radios'}>
                         {STATUSES.map(({ id, description }) => (
                             <FormControlLabel
                                 key={id}

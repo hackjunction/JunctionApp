@@ -16,16 +16,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useTranslation } from 'react-i18next'
 import { Skills } from '@hackjunction/shared'
 
-const useStyles = makeStyles(theme => ({
-    radios: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     radios: {
+//         display: 'flex',
+//         flexDirection: 'row',
+//         flexWrap: 'wrap',
+//     },
+// }))
 const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
     const { t } = useTranslation()
-    const classes = useStyles()
+    // const classes = useStyles()
     const toggleLevel = useCallback(
         level => {
             if (levels.indexOf(level) !== -1) {
@@ -63,7 +63,7 @@ const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
                 </Box>
             </AccordionSummary>
             <AccordionDetails>
-                <FormGroup className={classes.radios}>
+                <FormGroup className={'classes.radios'}>
                     {Skills.skillLevelArray.map(({ value, label }) => (
                         <FormControlLabel
                             key={label}

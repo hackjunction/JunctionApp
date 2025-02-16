@@ -4,7 +4,17 @@ import CheckIcon from '@mui/icons-material/Check'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 
-const PricingItem = ({ topic, body, price }) => {
+const PricingItem = ({ topic, price }) => {
+    //TODO add plain text to locale to enable translation
+    const body = [
+        'Event registration and organization through platform',
+        'Tech Support during event',
+        'Full Access to the Junction App',
+        'Consulting from the Junction Team',
+        'Statistics',
+        'Price is negotiable',
+    ]
+
     const renderText = arr => {
         return arr.map((text, index) => (
             <ListItem key={index} className="flex items-center">

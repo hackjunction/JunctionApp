@@ -1,7 +1,8 @@
 import * as ActionTypes from './actionTypes'
 import * as AuthActionTypes from '../auth/actionTypes'
-import { buildHandler, buildUpdatePath } from '../utils'
+import { asyncThunkModifier, buildHandler, buildUpdatePath } from '../utils'
 import { concat, filter } from 'lodash-es'
+import _ from 'lodash'
 
 const initialState = {
     event: {
@@ -101,7 +102,8 @@ const editEventOrganisers = buildUpdatePath('event.data.organisers')
 const editEventRecruitres = buildUpdatePath('event.data.recruiters')
 
 export default function reducer(state = initialState, action) {
-    switch (action.type) {
+    action = asyncThunkModifier(action)
+    switch (action.baseType || action.type) {
         case ActionTypes.UPDATE_EVENT: {
             return eventHandler(state, action)
         }
@@ -122,7 +124,11 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_TEAMS: {
             const newState = teamsHandler(state, action)
-            if (action.payload) {
+            if (
+                action.payload &&
+                action.payload.data &&
+                Array.isArray(action.payload.data)
+            ) {
                 const byUser = action.payload.data.reduce((map, team) => {
                     map[team.owner] = team
                     team.members.forEach(member => {
@@ -260,8 +266,6 @@ export default function reducer(state = initialState, action) {
             return editEventRecruitres(state, data)
         }
         case ActionTypes.ADD_EVENT_RECRUITER: {
-            //const data = state.event.data.recruiters.concat(action.payload)
-            console.log("ADD_EVENT_RECRUITER", action.payload)
             return editEventRecruitres(state, action.payload)
         }
         /**TODO: Add attendee update actions */

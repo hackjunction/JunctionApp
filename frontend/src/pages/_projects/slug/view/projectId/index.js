@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useResolvedPath } from 'react-router'
+import { useParams, useResolvedPath } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import moment from 'moment-timezone'
@@ -7,8 +7,8 @@ import { EventHelpers } from '@hackjunction/shared'
 import ProjectsService from 'services/projects'
 
 export default ({ event, showFullTeam }) => {
-    const url = useResolvedPath("").pathname;
-    const { projectId } = match.params
+    const url = useResolvedPath('').pathname
+    const { projectId } = useParams()
     const [project, setProject] = useState()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
@@ -16,9 +16,8 @@ export default ({ event, showFullTeam }) => {
     const fetchProject = useCallback(async () => {
         setLoading(true)
         try {
-            const project = await ProjectsService.getPublicProjectById(
-                projectId,
-            )
+            const project =
+                await ProjectsService.getPublicProjectById(projectId)
             setProject(project)
         } catch (err) {
             setError(true)

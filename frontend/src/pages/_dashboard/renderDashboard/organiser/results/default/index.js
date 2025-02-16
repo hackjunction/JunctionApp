@@ -1,32 +1,29 @@
 import React from 'react'
 
-import { useDispatch } from 'react-redux'
-
-import { useResolvedPath } from 'react-router'
+import { useNavigate } from 'react-router'
 
 import { Grid, Paper, Box, Typography, ButtonBase } from '@mui/material'
 
-const useStyles = makeStyles(theme => ({
-    paperButton: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     paperButton: {
+//         width: '100%',
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignItems: 'flex-start',
+//     },
+// }))
 
 export default () => {
-    const classes = useStyles()
-    const url = useResolvedPath('').pathname
-    const dispatch = useDispatch()
+    // const classes = useStyles()
+    const navigate = useNavigate()
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Paper elevation={0}>
                     <ButtonBase
-                        onClick={() => dispatch(push(`${match.url}/overall`))}
+                        onClick={() => navigate(`/overall`)}
                         component="div"
-                        classes={{ root: classes.paperButton }}
+                        classes={{ root: 'classes.paperButton' }}
                     >
                         <Box p={3}>
                             <Typography variant="h6">
@@ -42,9 +39,9 @@ export default () => {
             <Grid item xs={12}>
                 <Paper elevation={0}>
                     <ButtonBase
-                        onClick={() => dispatch(push(`${match.url}/tracks`))}
+                        onClick={() => navigate(`/tracks`)}
                         component="div"
-                        classes={{ root: classes.paperButton }}
+                        classes={{ root: 'classes.paperButton' }}
                     >
                         <Box p={3}>
                             <Typography variant="h6">Track results</Typography>
@@ -59,11 +56,9 @@ export default () => {
             <Grid item xs={12}>
                 <Paper elevation={0}>
                     <ButtonBase
-                        onClick={() =>
-                            dispatch(push(`${match.url}/challenges`))
-                        }
+                        onClick={() => navigate(`/challenges`)}
                         component="div"
-                        classes={{ root: classes.paperButton }}
+                        classes={{ root: 'classes.paperButton' }}
                     >
                         <Box p={3} display="flex" flexDirection="column">
                             <Typography variant="h6">

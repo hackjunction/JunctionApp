@@ -6,28 +6,28 @@ import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import { popupCenter } from '../../../../../../utils/misc'
 
-const useStyles = makeStyles(theme => ({
-    doneTitle: {
-        color: 'black',
-        textAlign: 'center',
-    },
-    socialIcon: {
-        color: 'black',
-        width: 'auto',
-        margin: '1rem',
-        cursor: 'pointer',
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     doneTitle: {
+//         color: 'black',
+//         textAlign: 'center',
+//     },
+//     socialIcon: {
+//         color: 'black',
+//         width: 'auto',
+//         margin: '1rem',
+//         cursor: 'pointer',
+//     },
+// }))
 
 const SocialMediaBlock = () => {
     const event = useSelector(DashboardSelectors.event)
-    const classes = useStyles()
-    const shareurl = 'https://app.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
+    // const classes = useStyles()
+    const shareurl = 'https://eu.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
     const sharetext = `I just applied to ${event.name}!`
     return (
         <Grid item xs={12} lg={12}>
             <Box mt={5} alignItems="center" alignContent="center">
-                <Typography className={classes.doneTitle} variant="h4">
+                <Typography className={'classes.doneTitle'} variant="h4">
                     Share with friends!
                 </Typography>
                 <Grid
@@ -37,7 +37,7 @@ const SocialMediaBlock = () => {
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <Grid item>
+                    {/* <Grid item>
                         <FontAwesomeIcon
                             icon={['fab', 'twitter-square']}
                             onClick={() =>
@@ -46,7 +46,7 @@ const SocialMediaBlock = () => {
                                     title: 'Twitter',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="3x"
                         />
                     </Grid>
@@ -59,10 +59,10 @@ const SocialMediaBlock = () => {
                                     title: 'Facebook',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="3x"
                         />
-                    </Grid>
+                    </Grid> */}
                     <Grid item>
                         <FontAwesomeIcon
                             icon={['fab', 'linkedin']}
@@ -72,10 +72,23 @@ const SocialMediaBlock = () => {
                                     title: 'Linkedin',
                                 })
                             }
-                            className={classes.socialIcon}
+                            className={'classes.socialIcon'}
                             size="3x"
                         />
                     </Grid>
+                    {/* <Grid item>
+                        <FontAwesomeIcon
+                            icon={['fab', 'vk']}
+                            onClick={() =>
+                                popupCenter({
+                                    url: `https://vkontakte.ru/share.php?url=${shareurl}&`,
+                                    title: 'VKOntakte',
+                                })
+                            }
+                            className={'classes.socialIcon'}
+                            size="3x"
+                        />
+                    </Grid> */}
                 </Grid>
             </Box>
         </Grid>
