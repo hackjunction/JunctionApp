@@ -15,11 +15,9 @@ export const getSessionExpiresAt = state =>
     state.auth.session ? state.auth.session.expiresAt : 0
 export const getNextRoute = state => state.auth.nextRoute
 export const isAuthenticated = state => {
-
     return getIdToken(state) !== null
 }
 export const isSessionExpired = state => {
-
     return new Date().getTime() > state.auth.session.expiresAt
 }
 

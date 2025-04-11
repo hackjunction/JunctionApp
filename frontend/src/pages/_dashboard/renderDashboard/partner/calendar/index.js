@@ -10,12 +10,12 @@ import { Auth } from '@hackjunction/shared'
 export default () => {
     const event = useSelector(DashboardSelectors.event)
     const user = useSelector(UserSelectors.userProfile)
-    const isPartner = user.userId == "google-oauth2|108766439620242776277" ||
-        useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-            'Recruiter'
-        ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-            'SuperAdmin'
-        )
+    const isPartner =
+        user.userId == 'google-oauth2|108766439620242776277' ||
+        (useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
+            !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
+                'SuperAdmin',
+            ))
 
     return (
         <>
@@ -33,7 +33,6 @@ export default () => {
     /> */}
 
             <PartnerCalendarView event={event} />
-
         </>
     )
 }

@@ -18,7 +18,6 @@ const Auth0Service = {
     },
     // TODO this causes a loop on localhost when the token expires
     logout: () => {
-        
         Auth0.logout({
             returnTo: `${config.BASE_URL}/logout`,
         })

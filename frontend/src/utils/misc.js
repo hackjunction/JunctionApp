@@ -91,13 +91,13 @@ export const popupCenter = ({ url, title, w = 900, h = 600 }) => {
     const width = window.innerWidth
         ? window.innerWidth
         : document.documentElement.clientWidth
-        ? document.documentElement.clientWidth
-        : window.screen.width
+          ? document.documentElement.clientWidth
+          : window.screen.width
     const height = window.innerHeight
         ? window.innerHeight
         : document.documentElement.clientHeight
-        ? document.documentElement.clientHeight
-        : window.screen.height
+          ? document.documentElement.clientHeight
+          : window.screen.height
 
     const systemZoom = width / window.screen.availWidth
     const left = (width - w) / 2 / systemZoom + dualScreenLeft

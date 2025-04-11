@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
                 ? theme.palette.secondary.light
                 : theme.palette.primary.main
             : booked
-            ? theme.palette.error.light
-            : theme.palette.grey[300],
+              ? theme.palette.error.light
+              : theme.palette.grey[300],
         fontSize: '12px',
         cursor: booked && available ? 'initial' : 'pointer',
     }),

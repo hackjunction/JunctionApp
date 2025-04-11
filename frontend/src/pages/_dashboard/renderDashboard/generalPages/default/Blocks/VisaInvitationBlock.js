@@ -9,8 +9,8 @@ import GradientBox from 'components/generic/GradientBox'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 const STATUSES = RegistrationStatuses.asObject
-const VisaInvitationDrawer = React.lazy(() =>
-    import('components/modals/VisaInvitationDrawer'),
+const VisaInvitationDrawer = React.lazy(
+    () => import('components/modals/VisaInvitationDrawer'),
 )
 
 export default () => {
