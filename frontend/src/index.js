@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker'
 import './i18n'
 import './styles/tailwind.css'
 import { CssBaseline } from '@mui/material'
-import { ThemeProvider } from '@mui/material/styles'
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { CloudinaryContext } from 'cloudinary-react'
@@ -14,8 +14,8 @@ import WebFont from 'webfontloader'
 import Notifier from './notifier'
 import configureStore from 'reducers/configureStore'
 import config from 'constants/config'
-// import theme from './material-ui-theme'
 import theme from './junctionTheme'
+import './styles/tailwind.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -62,20 +62,22 @@ root.render(
                 includeOwnBody={true}
                 cloudName={config.CLOUDINARY_CLOUD_NAME}
             >
-                <ThemeProvider theme={theme}>
-                    <SnackbarProvider
-                        maxSnack={3}
-                        autoHideDuration={10000}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                    >
-                        <Notifier />
-                        <CssBaseline />
-                        <App />
-                    </SnackbarProvider>
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <SnackbarProvider
+                            maxSnack={3}
+                            autoHideDuration={10000}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                        >
+                            <Notifier />
+                            <CssBaseline />
+                            <App />
+                        </SnackbarProvider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
             </CloudinaryContext>
         </PersistGate>
     </Provider>,
