@@ -1,56 +1,50 @@
 import React from 'react'
 
 import UserMenu from 'components/UserMenu'
-// import Button from 'components/generic/Button'
 
 import config from 'constants/config'
 import PlatformLogo from 'assets/logos/JO_wordmark_black.png'
-// import WavePattern from 'assets/images/nawbar_waves.svg'
+import WavePattern from 'assets/images/nawbar_waves.svg'
 import { Link } from 'react-router-dom'
-// import { styled } from '@mui/system'
+import { styled } from '@mui/material/styles'
+import Box from '@mui/material/Box'
 
-// const useStyles = styled(theme => ({
-//     wrapper: {
-//         width: '100%',
-//         height: '60px',
-//         background: WavePattern,
-//         padding: theme.spacing(0, 2),
-//     },
-//     inner: {
-//         display: 'flex',
-//         flexDirection: 'row',
-//         alignItems: 'center',
-//         justifyContent: 'space-between',
-//         margin: '0',
-//         height: '100%',
-//     },
-//     wordmark: {
-//         height: '70px',
-//         paddingLeft: '20px',
-//         paddingTop: '5px',
-//         paddingBottom: '5px',
-//         backgroundColor: 'white',
-//     },
-// }))
+const NavbarWrapper = styled(Box)(({ theme }) => ({
+    width: '100%',
+    background: `url(${WavePattern})`,
+    display: 'flex',
+    flexDirection: 'row',
+    // For smaller screens
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+    },
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '0.5rem',
+}))
+
+const LogoImage = styled('img')(({ theme }) => ({
+    height: '3rem',
+    backgroundColor: 'white',
+    borderRadius: '0.4rem',
+    [theme.breakpoints.down('md')]: {
+        height: '4rem',
+        marginBottom: '0.3rem',
+    },
+    marginLeft: '0.2rem',
+    marginRight: '0.2rem',
+}))
 
 export default () => {
-    // const classes = useStyles()
     return (
-        <div
-            id="global-navbar"
-            className="tw-w-full tw-p-2 tw-gap-1 tw-bg-wave-pattern tw-flex tw-flex-col tw-justify-between tw-items-center md:tw-flex-row"
-        >
-            <div>
-                <div>
-                    <Link to="/home">
-                        <img
-                            src={PlatformLogo}
-                            alt={config.PLATFORM_OWNER_NAME + ' logo'}
-                        />
-                    </Link>
-                    <UserMenu />
-                </div>
-            </div>
-        </div>
+        <NavbarWrapper id="global-navbar">
+            <Link to="/home">
+                <LogoImage
+                    src={PlatformLogo}
+                    alt={config.PLATFORM_OWNER_NAME + ' logo'}
+                />
+            </Link>
+            <UserMenu />
+        </NavbarWrapper>
     )
 }

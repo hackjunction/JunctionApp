@@ -21,19 +21,17 @@ export default () => {
 
     return (
         <Box display="flex" flexDirection="row" alignItems="center">
-            <div className="tw-rounded-full tw-border-8 tw-border-white">
-                <IconButton onClick={handleClick}>
-                    <Avatar
-                        className="tw-w-12 tw-h-12"
-                        src={profile?.avatar}
-                        alt="Avatar"
-                        style={{
-                            border: `2px solid ${color['primary'].main}`,
-                            borderRadius: '50%',
-                        }}
-                    />
-                </IconButton>
-            </div>
+            <IconButton onClick={handleClick}>
+                <Avatar
+                    className="tw-w-12 tw-h-12"
+                    src={profile?.avatar}
+                    alt="Avatar"
+                    style={{
+                        border: `2px solid ${color['primary'].main}`,
+                        borderRadius: '50%',
+                    }}
+                />
+            </IconButton>
         </Box>
     )
 }

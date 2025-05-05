@@ -1,7 +1,6 @@
 import React from 'react'
 
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
+import { Select, MenuItem, InputBase } from '@mui/material/'
 
 import { useTranslation } from 'react-i18next'
 
@@ -21,18 +20,11 @@ export default () => {
     }
     return (
         <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
             value={currentLanguage}
             onChange={handleChange}
             defaultValue={'en'}
-            className="tw-text-black tw-border-1 tw-border-2 tw-border-solid tw-border-black tw-px-2 tw-py-0 tw-bg-white tw-rounded-lg"
-            // style={{
-            //     padding: '8px 0px 8px 16px',
-            //     color: 'white',
-            //     backgroundColor: 'black',
-            // }}
-            disableUnderline
+            className="tw-border-2 tw-border-solid tw-border-black tw-bg-white tw-rounded-lg tw-pl-2"
+            input={<InputBase disableUnderline />}
         >
             {/* <MenuItem value={'fi'}>
                 <span role="img" aria-label="fi">
