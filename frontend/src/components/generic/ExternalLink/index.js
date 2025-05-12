@@ -6,7 +6,7 @@ const getLinkClasses = theme => {
         case 'dark':
             return 'tw-text-black hover:tw-text-black tw-underline'
         case 'footer':
-            return 'tw-text-white hover:tw-text-white tw-no-underline'
+            return 'tw-underline'
         default:
             return 'tw-text-primary hover:tw-text-primary-dark tw-underline'
     }
