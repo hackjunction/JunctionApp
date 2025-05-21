@@ -4,6 +4,7 @@ import * as AuthSelectors from 'reducers/auth/selectors'
 import { useNavigate } from 'react-router-dom'
 
 import Box from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
 import Button from 'components/generic/Button'
 import UserAvatar from 'components/UserAvatar'
 import LanguageMenu from 'components/LanguageMenu'
@@ -16,8 +17,18 @@ export default () => {
     const idTokenPayload = useSelector(AuthSelectors.getIdTokenPayload)
     const userId = idTokenPayload?.sub
 
+    const UserMenu = styled(Box)(({ theme }) => ({
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        [theme.breakpoints.up('sm')]: {
+            flexDirection: 'row',
+        },
+        gap: '0.5em',
+    }))
+
     return (
-        <Box className="tw-gap-2 tw-flex tw-flex-col sm:tw-flex-row tw-items-center">
+        <UserMenu>
             <LanguageMenu />
             {userId ? (
                 <>
@@ -46,6 +57,6 @@ export default () => {
                     {t('Sign_in_')}
                 </Button>
             )}
-        </Box>
+        </UserMenu>
     )
 }
