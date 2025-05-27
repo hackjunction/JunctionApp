@@ -126,7 +126,6 @@ export function useQueryParams() {
 //     }
 //     console.log("defaultPage", defaultPage != null ? "not null" : "null")
 
-
 //     if (defaultPage != null) {
 //         console.log(`/dashboard/${defaultPage.slug}`)
 //         dispatch(push(`/dashboard/${defaultPage.slug}`))
@@ -134,7 +133,5 @@ export function useQueryParams() {
 //         console.log(`/dashboard`)
 //         dispatch(push(`/dashboard`))
 //     }
-
-
 
 // }

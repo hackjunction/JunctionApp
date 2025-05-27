@@ -60,7 +60,13 @@ export const GET_MEETING_ROOMS = gql`
     ${MeetingRoomFull}
 `
 
-export const getMeetingSlots = ({ eventId, challengeId, recruiterEmail, from, to }) => {
+export const getMeetingSlots = ({
+    eventId,
+    challengeId,
+    recruiterEmail,
+    from,
+    to,
+}) => {
     const { data, loading, error, refetch } = useQuery(GET_MEETINGS, {
         variables: {
             eventId,

@@ -19,7 +19,7 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.LOAD_USERS: {
-            switch(action.status) {
+            switch (action.status) {
                 case 'start':
                     return {
                         ...state,
@@ -47,7 +47,7 @@ export default function reducer(state = initialState, action) {
             }
         }
         case ActionTypes.LOAD_ROLES: {
-            switch(action.status) {
+            switch (action.status) {
                 case 'start':
                     return {
                         ...state,

@@ -67,7 +67,12 @@ EventsService.getEventRecruiters = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/recruiters/${slug}`, config(idToken))
 }
 
-EventsService.addRecruiterToEvent = (idToken, slug, recruiterId, organization) => {
+EventsService.addRecruiterToEvent = (
+    idToken,
+    slug,
+    recruiterId,
+    organization,
+) => {
     return _axios.post(
         `${BASE_ROUTE}/recruiters/${slug}/${recruiterId}`,
         { organization: organization },

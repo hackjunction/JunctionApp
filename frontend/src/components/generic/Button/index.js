@@ -1,53 +1,217 @@
 import React from 'react'
+
 import { Button as MuiButton, CircularProgress } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
-const getButtonClasses = (color, variant, strong) => {
-    const baseClasses = [
-        'rounded-[13px]',
-        'px-6',
-        'py-2',
-        'box-border',
-        'text-[16px]',
-        'tracking-[0.02em]',
-        'leading-[22px]',
-        'shadow-none',
-        'font-bold',
-    ]
+const getButton = (color, variant, strong) => {
+    const baseStyles = (theme, strong) => ({
+        borderRadius: '13px',
+        padding: '0.35rem 1.5rem',
+        boxSizing: 'border-box',
+        fontSize: '1rem',
+        letterSpacing: '0.02em',
+        lineHeight: '1.4rem',
+        boxShadow: 'none',
+        fontWeight: 'bold',
+        fontFamily: strong
+            ? theme.typography.h1.fontFamily
+            : theme.typography.body1.fontFamily,
+        '&:focus': {
+            boxShadow: 'none',
+        },
+    })
 
-    if (strong) {
-        baseClasses.push('uppercase')
-        baseClasses.push('font-sans')
-    } else {
-        baseClasses.push('font-body')
+    const getVariant = (theme, color) => {
+        const colorPalette = theme.palette[color]
+        switch (variant) {
+            case 'contained': {
+                return {
+                    backgroundColor: colorPalette.main,
+                    color: colorPalette.contrastText,
+                    border: `2px solid ${colorPalette.main}`,
+                    '&.Mui-disabled': {
+                        border: `2px solid lightgrey`,
+                    },
+                }
+            }
+            case 'containedNew': {
+                return {
+                    color: colorPalette.contrastText,
+                    textDecoration: 'underline',
+                    textTransform: 'uppercase',
+                    textAlign: 'center',
+                    '&:hover': {
+                        textDecoration: 'none',
+                    },
+                    '&.Mui-disabled': {
+                        backgroundColor: 'transparent',
+                        color: colorPalette.contrastText,
+                        opacity: 0.5,
+                    },
+                }
+            }
+            case 'outlined-small': {
+                return {
+                    backgroundColor: 'transparent',
+                    color: colorPalette.contrastText,
+                    border: `2px solid ${colorPalette.dark}`,
+                    borderRadius: '28px',
+                    height: '2em',
+                    width: '10em',
+                    fontSize: '10px',
+                    margin: theme.spacing(3),
+                }
+            }
+            case 'contained-large': {
+                return {
+                    backgroundColor: colorPalette.main,
+                    color: colorPalette.contrastText,
+                    border: `2px solid ${colorPalette.main}`,
+                    height: '3em',
+                    fontSize: '1.5em',
+                    '&:hover': {
+                        backgroundColor: colorPalette.main,
+                    },
+                    '&.Mui-disabled': {
+                        backgroundColor: colorPalette.dark,
+                        color: colorPalette.contrastText,
+                        opacity: 0.5,
+                    },
+                }
+            }
+            // "See more"
+            case 'containedCard': {
+                return {
+                    color: colorPalette.contrastText,
+                    backgroundColor: colorPalette.main,
+                    borderRadius: '16px 0 15px',
+                    textTransform: 'uppercase',
+                    opacity: 0.75,
+                    fontSize: '12px',
+                    '&:hover': {
+                        backgroundColor: colorPalette.main,
+                        opacity: 1,
+                    },
+                    '&.Mui-disabled': {
+                        backgroundColor: 'transparent',
+                        color: colorPalette.contrastText,
+                        opacity: 1,
+                    },
+                }
+            }
+            case 'containedEventImage': {
+                return {
+                    backgroundColor: colorPalette.main,
+                    color: colorPalette.contrastText,
+                    border: `2px solid ${colorPalette.main}`,
+                    height: '2.6em',
+                    borderRadius: '28px',
+                    fontSize: '1.3em',
+                    margin: theme.spacing(2),
+                    '&:hover': {
+                        backgroundColor: colorPalette.main,
+                    },
+                }
+            }
+            case 'outlined': {
+                return {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    border: `2px solid ${colorPalette.dark}`,
+                }
+            }
+            case 'outlinedNew': {
+                return {
+                    backgroundColor: 'transparent',
+                    color: colorPalette.contrastText,
+                    border: `2px solid ${colorPalette.dark}`,
+                    borderRadius: '28px',
+                    height: '3em',
+                    width: '13em',
+                }
+            }
+            case 'applicationsClosed': {
+                return {
+                    color: colorPalette.main,
+                    margin: '25px 0 0 0',
+                    textTransform: 'uppercase',
+                    fontSize: '18px',
+                    textAlign: 'center',
+                    '&:hover': {
+                        textDecoration: 'none',
+                    },
+                    '&.Mui-disabled': {
+                        backgroundColor: 'transparent',
+                        color: colorPalette.contrastText,
+                        opacity: 0.5,
+                    },
+                }
+            }
+            case 'jOutlined': {
+                return {
+                    backgroundColor: 'transparent',
+                    color: colorPalette.contrastText,
+                    border: `2px solid ${colorPalette.dark}`,
+                    borderRadius: theme.spacing(4),
+                    padding: theme.spacing(1, 2),
+                    margin: 0,
+                }
+            }
+            case 'jIconText': {
+                return {
+                    backgroundColor: 'transparent',
+                    color: colorPalette.main,
+                    padding: theme.spacing(1, 2),
+                    margin: 0,
+                    fontWeight: 'fontWeightRegular',
+                    fontSize: theme.spacing(1, 4),
+                }
+            }
+            case 'jContained': {
+                return {
+                    backgroundColor: colorPalette.main,
+                    color: colorPalette.contrastText,
+                    border: `2px solid ${colorPalette.main}`,
+                    borderRadius: theme.spacing(4),
+                    padding: theme.spacing(1, 2),
+                    margin: 0,
+                    '&:hover': {
+                        backgroundColor: colorPalette.dark,
+                        border: `2px solid ${colorPalette.dark}`,
+                    },
+                    '&.Mui-disabled': {
+                        backgroundColor: colorPalette.dark,
+                        color: colorPalette.contrastText,
+                        opacity: 0.5,
+                    },
+                }
+            }
+            case 'jOutlinedBox': {
+                return {
+                    backgroundColor: colorPalette.main,
+                    color: colorPalette.contrastText,
+                    border: `1px solid ${colorPalette.lightBorder}`,
+                    borderRadius: theme.spacing(1),
+                    padding: theme.spacing(2),
+                    margin: 0,
+                    width: '100%',
+                }
+            }
+            default: {
+                return {
+                    borderRadius: 0,
+                    color: colorPalette.main,
+                }
+            }
+        }
     }
 
-    const colorClasses = {
-        primary: 'text-white bg-primary-main border-2 border-primary-main',
-        secondary:
-            'text-white bg-secondary-main border-2 border-secondary-main',
-        // Add more color mappings as needed
-    }
+    const CustomButton = styled(MuiButton)(({ theme }) => ({
+        ...baseStyles(theme, strong),
+        ...getVariant(theme, color, variant),
+    }))
 
-    const variantClasses = {
-        contained: `${colorClasses[color]} hover:bg-opacity-75`,
-        containedNew:
-            'text-white underline uppercase text-center hover:no-underline',
-        applicationsClosed:
-            'text-primary-main uppercase text-lg text-center mt-6',
-        containedCard:
-            'text-white bg-primary-main rounded-[16px_0_15px] uppercase opacity-75 text-xs hover:opacity-100',
-        outlined: `bg-transparent text-white border-2 border-${color}-dark`,
-        outlinedNew: `bg-transparent text-white border-2 border-${color}-dark rounded-[28px] h-[3em] w-[13em] m-3`,
-        outlinedSmall: `bg-transparent text-white border-2 border-${color}-dark rounded-[28px] h-[2em] w-[10em] text-[10px] m-3`,
-        containedLarge: `${colorClasses[color]} h-[3em] text-[1.5em] hover:bg-opacity-75`,
-        containedEventImage: `${colorClasses[color]} h-[2.6em] rounded-[28px] text-[1.3em] m-2 hover:bg-opacity-75`,
-        jOutlined: `bg-transparent text-white border-2 border-${color}-dark rounded-lg px-4 py-2`,
-        jIconText: `bg-transparent text-${color}-main px-4 py-2 font-normal text-sm`,
-        jContained: `${colorClasses[color]} rounded-lg px-4 py-2 hover:bg-${color}-dark hover:border-${color}-dark`,
-        jOutlinedBox: `bg-${color}-main text-white border border-${color}-lightBorder rounded p-2 w-full`,
-    }
-
-    return baseClasses.join(' ') + ' ' + (variantClasses[variant] || '')
+    return CustomButton
 }
 
 const Button = ({
@@ -57,21 +221,18 @@ const Button = ({
     className = '',
     ...props
 }) => {
-    const buttonClasses = getButtonClasses(color, props.variant, strong)
+    const CustomButton = getButton(color, props.variant, strong)
 
     // These are the only variants offered by MUIbutton
     if (!['text', 'outlined', 'contained'].includes(props.variant)) {
         delete props.variant
     }
-
     return (
-        <MuiButton
+        <CustomButton
             {...props}
-            className={buttonClasses}
             disabled={loading || props.disabled}
-        >
-            {loading ? <CircularProgress size={20} /> : props.children}
-        </MuiButton>
+            children={loading ? <CircularProgress size={20} /> : props.children}
+        />
     )
 }
 

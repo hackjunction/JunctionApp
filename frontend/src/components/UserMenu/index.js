@@ -1,50 +1,34 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-// import { push } from 'connected-react-router'
-import { Box, ListItem, ListItemText, Grid } from '@mui/material'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import * as AuthSelectors from 'reducers/auth/selectors'
-import JunctionTheme from 'junctionTheme.js'
+import { useNavigate } from 'react-router-dom'
+
+import Box from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
 import Button from 'components/generic/Button'
 import UserAvatar from 'components/UserAvatar'
-import { useMyProfilePreview } from 'graphql/queries/userProfile'
-import { styled } from '@mui/system'
-import { useLocation, useNavigate } from 'react-router-dom'
+import LanguageMenu from 'components/LanguageMenu'
 
 import { useTranslation } from 'react-i18next'
-import LanguageMenu from 'components/LanguageMenu'
 
 export default () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const location = useLocation()
     const idTokenPayload = useSelector(AuthSelectors.getIdTokenPayload)
     const userId = idTokenPayload?.sub
-    const dispatch = useDispatch()
-    // const classes = useStyles()
 
-    if (!userId) {
-        return (
-            <Box display="flex" flexDirection="row" alignItems="center">
-                <Grid container spacing={0}>
-                    <Grid item xs={12}>
-                        <Button
-                            onClick={() =>
-                                navigate('/login', {
-                                    state: { nextRoute: location.pathname },
-                                })
-                            }
-                            strong={true}
-                        >
-                            {t('Sign_in_')}
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Box>
-        )
-    }
+    const UserMenu = styled(Box)(({ theme }) => ({
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        [theme.breakpoints.up('sm')]: {
+            flexDirection: 'row',
+        },
+        gap: '0.5em',
+    }))
 
     return (
-        <Box className="tw-gap-2 tw-flex tw-flex-col md:tw-flex-row tw-items-center">
+        <UserMenu>
             <LanguageMenu />
             {userId ? (
                 <>
@@ -52,7 +36,6 @@ export default () => {
                         onClick={() => navigate('/dashboard/default/')}
                         strong={true}
                         variant="contained"
-                        // className={classes.menuBox}
                     >
                         {t('Dashboard_')}
                     </Button>
@@ -60,8 +43,6 @@ export default () => {
                         onClick={() => navigate('/logout')}
                         strong={true}
                         variant="outlined"
-                        className={'tw-bg-white tw-text-black'}
-                        // className={classes.menuBox}
                     >
                         {t('Log_out_')}
                     </Button>
@@ -76,6 +57,6 @@ export default () => {
                     {t('Sign_in_')}
                 </Button>
             )}
-        </Box>
+        </UserMenu>
     )
 }

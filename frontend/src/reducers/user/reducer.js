@@ -14,7 +14,7 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.UPDATE_PROFILE: {
-            switch(action.status) {
+            switch (action.status) {
                 case 'start':
                     return {
                         ...state,
@@ -61,13 +61,13 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.SET_ACCESSRIGHT: {
             return {
                 ...state,
-                accessRight: action.payload.accessRight
+                accessRight: action.payload.accessRight,
             }
         }
         case ActionTypes.ORGANIZER_EVENTS: {
             return {
                 ...state,
-                organizerEvents: action.payload.organizerEvents
+                organizerEvents: action.payload.organizerEvents,
             }
         }
         default:

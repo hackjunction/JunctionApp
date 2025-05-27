@@ -3,4 +3,3 @@ export const SET_PROFILE = 'user/SET_PROFILE'
 export const SET_REGISTRATION = 'user/SET_REGISTRATION'
 export const SET_ACCESSRIGHT = 'user/SET_ACCESSRIGHT'
 export const ORGANIZER_EVENTS = 'user/ORGANIZER_EVENTS'
-

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
+import { Select, MenuItem, InputBase } from '@mui/material/'
+import { styled } from '@mui/material/styles'
 
 import { useTranslation } from 'react-i18next'
 
@@ -19,20 +19,21 @@ export default () => {
     } else {
         currentLanguage = i18n.language
     }
+
+    const SelectBox = styled(Select)({
+        backgroundColor: 'white',
+        borderWidth: '2px',
+        borderColor: 'black',
+        borderRadius: '0.5rem',
+        paddingLeft: '0.5rem',
+    })
+
     return (
-        <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+        <SelectBox
             value={currentLanguage}
             onChange={handleChange}
             defaultValue={'en'}
-            className="tw-text-black tw-border-1 tw-border-2 tw-border-solid tw-border-black tw-px-2 tw-py-0 tw-bg-white tw-rounded-lg"
-            // style={{
-            //     padding: '8px 0px 8px 16px',
-            //     color: 'white',
-            //     backgroundColor: 'black',
-            // }}
-            disableUnderline
+            input={<InputBase />} // Removes the default border
         >
             {/* <MenuItem value={'fi'}>
                 <span role="img" aria-label="fi">
@@ -50,6 +51,6 @@ export default () => {
                     ZH 🇨🇳
                 </span>
             </MenuItem>
-        </Select>
+        </SelectBox>
     )
 }
