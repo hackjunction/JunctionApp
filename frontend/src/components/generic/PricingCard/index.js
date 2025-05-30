@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box, Typography, Grid } from '@mui/material'
+import { Box, Typography, Grid2 as Grid } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
+import { styled } from '@mui/material/styles'
 
 const PricingItem = ({ topic, price }) => {
     //TODO add plain text to locale to enable translation
@@ -17,34 +18,33 @@ const PricingItem = ({ topic, price }) => {
 
     const renderText = arr => {
         return arr.map((text, index) => (
-            <ListItem key={index} className="flex items-center">
-                <CheckIcon className="mr-2" />
+            <ListItem key={index}>
+                <CheckIcon sx={{ mr: '0.5rem' }} />
                 <Typography>{text}</Typography>
             </ListItem>
         ))
     }
 
+    const CardWrapper = styled(Box)({
+        background: '#fbfbfb',
+        borderWidth: '2px',
+        borderRadius: '16px',
+        borderColor: '#232323',
+        '&:hover': {
+            borderColor: '#73F9EC',
+        },
+        padding: '1rem',
+    })
+
     return (
-        <Grid item xs={12} md={4} lg={4}>
-            <Box
-                border={2}
-                className="bg-gray-50 rounded-lg border-gray-900 hover:border-teal-400"
-            >
-                <Box className="relative p-4 h-88">
-                    <Typography variant="h6" className="text-pink-500">
-                        {topic}
-                    </Typography>
-                    <List>{renderText(body)}</List>
-                    <Box mt={1} />
-                </Box>
-                <Box className="p-4">
-                    <Box className="flex flex-row flex-wrap">
-                        <Typography variant="h6" className="font-bold">
-                            {price}
-                        </Typography>
-                    </Box>
-                </Box>
-            </Box>
+        <Grid size={{ xs: 12, md: 4 }}>
+            <CardWrapper>
+                <Typography variant="h6">{topic}</Typography>
+                <List>{renderText(body)}</List>
+                <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>
+                    {price}
+                </Typography>
+            </CardWrapper>
         </Grid>
     )
 }

@@ -1,34 +1,19 @@
 import React from 'react'
 
-import { Grid, Typography } from '@mui/material'
-
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
 
-import Divider from 'components/generic/Divider'
 import Button from 'components/generic/Button'
 
 import Container from 'components/generic/Container'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import PricingCard from 'components/generic/PricingCard'
+
+import { Grid2 as Grid, Typography } from '@mui/material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-
-// const useStyles = styled(theme => ({
-//     backButtonWrapper: {
-//         position: 'absolute',
-//         zIndex: 10,
-//         width: '100%',
-//         paddingTop: theme.spacing(1),
-//     },
-
-//     pricingWrapper: {
-//         width: '100%',
-//         paddingTop: '2em',
-//     },
-// }))
 
 export default () => {
     const navigate = useNavigate()
@@ -40,11 +25,13 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <>
-                    <Container
-                        center
-                        wrapperClass={'classes.backButtonWrapper'}
-                    >
-                        <Button onClick={() => navigate('/')}>
+                    <Container center sx={{ pt: 1 }}>
+                        <Button
+                            sx={{
+                                borderRadius: '10px',
+                            }}
+                            onClick={() => navigate('/')}
+                        >
                             <ArrowBackIosIcon style={{ color: 'black' }} />
                             <Typography
                                 variant="button"
@@ -54,38 +41,33 @@ export default () => {
                             </Typography>
                         </Button>
                     </Container>
-                    <Divider size={3} />
-                    <Container center wrapperClass={'classes.pricingWrapper'}>
+                    <Container center sx={{ pt: '0.5em', pb: '1.5em' }}>
                         <Grid
                             container
                             direction="row"
                             justifyContent="center"
-                            spacing={3}
+                            spacing={2}
                         >
                             <PricingCard
                                 topic="What we offer"
                                 price="Ask: hello@hackjunction.com"
                             />
-                            <Divider size={4} />
-                            <Typography variant="body1" justifyContent="center">
+                            <Typography variant="body1">
                                 Our expertise of organising hackathons combined
                                 with the power of a highly-customizable platform
                                 for events makes hosting diverse events
                                 possible.
                             </Typography>
-                            <Divider size={4} />
                             <Button
                                 variant="outlined"
                                 color="theme_lightgray"
                                 strong
-                                m={6}
                                 onClick={() => navigate('/contact')}
                             >
                                 {t('Contact_us_')}
                             </Button>
                         </Grid>
                     </Container>
-                    <Divider size={4} />
                 </>
             )}
         />
