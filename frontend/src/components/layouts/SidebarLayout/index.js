@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import { findIndex } from 'lodash-es'
 import { Routes, Route, Navigate, useNavigate, Link } from 'react-router-dom'
 
-import Container from 'components/generic/Container/index'
 import MenuIcon from '@mui/icons-material/Menu'
 import LockIcon from '@mui/icons-material/Lock'
 import StorageIcon from '@mui/icons-material/Storage'
@@ -13,19 +12,77 @@ import {
     Drawer,
     List,
     ListItem,
+    ListItemButton,
     ListItemIcon,
     ListItemText,
-    Hidden,
     Box,
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 import PlatformLogo from 'assets/logos/JO_wordmark_white.png'
+import Container from 'components/generic/Container/index'
 import IconButton from 'components/generic/IconButton'
 import EventsPage from 'pages/_dashboard/renderDashboard/default/events'
 import ProfilePage from 'pages/_account/profile' //TODO: fix the profile view
 
 import config from 'constants/config'
 import { useTranslation } from 'react-i18next'
+
+const SIDEBAR_WIDTH = '300px'
+
+const Logo = styled('img')({
+    height: '70px',
+    margin: '0 auto',
+    padding: '5px',
+    backgroundColor: 'black',
+})
+
+const RouteList = styled(List)({
+    color: 'rgba(255,255,255,0.6)',
+    '& .MuiListItem-root': {
+        padding: 0,
+    },
+    '& .MuiListItemButton-root': {
+        '&.Mui-selected': {
+            color: 'white',
+            backgroundColor: 'black',
+        },
+    },
+    '& .MuiListItemIcon-root': {
+        color: 'inherit',
+    },
+})
+
+const MenuButtonBox = styled(Box, {
+    // This specifies which props should not get passed down to the DOM, will throw a console error if you do.
+    shouldForwardProp: prop => prop !== 'desktopOpen',
+})(({ theme, desktopOpen }) => ({
+    position: 'fixed',
+    top: '0.5rem',
+    left: '0.5rem',
+    zIndex: 100, // to make sure the text boxes doesn't go over the button
+    [theme.breakpoints.up('md')]: {
+        top: '0.75rem',
+        transition: 'all 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
+        left: desktopOpen ? `calc(${SIDEBAR_WIDTH} + 0.5rem)` : '0.5rem',
+        transform: desktopOpen ? 'rotate(-90deg)' : 'rotate(0)',
+    },
+}))
+
+const LineDivider = styled('hr')({
+    margin: '2rem auto',
+    width: '80%',
+    height: '1px',
+})
+
+const Main = styled('main', {
+    shouldForwardProp: prop => prop !== 'desktopOpen',
+})(({ theme, desktopOpen }) => ({
+    [theme.breakpoints.up('md')]: {
+        marginLeft: desktopOpen ? SIDEBAR_WIDTH : 0,
+    },
+    transition: 'margin-left 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
+}))
 
 export default React.memo(
     ({
@@ -111,162 +168,140 @@ export default React.memo(
         }
 
         const drawerContent = (
-            <>
-                <Box>
-                    <Link to="/home">
-                        <img
-                            src={
-                                PlatformLogo /*config.LOGO_LIGHT_URL TODO: switch this to cloudinary*/
-                            }
-                            className="tw-block tw-mx-auto tw-p-1.5 tw-h-18 tw-bg-black"
-                            alt={config.PLATFORM_OWNER_NAME + ' logo'}
-                        />
-                    </Link>
-                </Box>
-                <Box p={2}>{sidebarTopContent}</Box>
-                <List>
+            <Box>
+                <Link to="/home">
+                    <Logo
+                        src={
+                            PlatformLogo /*config.LOGO_LIGHT_URL TODO: switch this to cloudinary*/
+                        }
+                        alt={config.PLATFORM_OWNER_NAME + ' logo'}
+                    />
+                </Link>
+                <Box sx={{ p: 2 }}>{sidebarTopContent}</Box>
+                <RouteList>
                     {routes
                         .filter(route => !route.hidden)
                         .map((route, index) => {
                             return (
-                                <ListItem
-                                    disabled={route.locked}
-                                    button
-                                    key={route?.onClickPath || route.path}
-                                    selected={index === safeIndex}
-                                    className={`${
-                                        index === safeIndex
-                                            ? 'text-white'
-                                            : 'text-gray-400'
-                                    }`}
-                                    onClick={() =>
-                                        pushRoute(
-                                            route?.onClickPath || route.path,
-                                        )
-                                    }
-                                >
-                                    <ListItemIcon className="text-inherit">
-                                        {route.locked ? (
-                                            <LockIcon />
-                                        ) : (
-                                            route.icon
-                                        )}
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        className="text-inherit"
-                                        primary={route.label}
-                                        secondary={
-                                            route.locked
-                                                ? route.lockedDescription
-                                                : ''
+                                <ListItem>
+                                    <ListItemButton
+                                        disabled={route.locked}
+                                        key={route?.onClickPath || route.path}
+                                        selected={index === safeIndex}
+                                        onClick={() =>
+                                            pushRoute(
+                                                route?.onClickPath ||
+                                                    route.path,
+                                            )
                                         }
-                                    />
+                                    >
+                                        <ListItemIcon>
+                                            {route.locked ? (
+                                                <LockIcon />
+                                            ) : (
+                                                route.icon
+                                            )}
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={route.label}
+                                            secondary={
+                                                route.locked
+                                                    ? route.lockedDescription
+                                                    : ''
+                                            }
+                                        />
+                                    </ListItemButton>
                                 </ListItem>
                             )
                         })}
-                    <hr className="tw-h-px tw-my-8 tw-w-4/5 tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
-                    <div className="tw-grid tw-place-items-center">
-                        <ListItem
-                            button
+                    <LineDivider />
+                    <ListItem>
+                        <ListItemButton
                             key={'/events'}
                             selected={routes.length === safeIndex}
-                            className={`${
-                                routes.length === safeIndex
-                                    ? 'text-white'
-                                    : 'text-gray-400'
-                            }`}
                             onClick={() => {
                                 pushRoute('/events')
                             }}
                         >
-                            <ListItemIcon className="text-inherit">
+                            <ListItemIcon>
                                 <StorageIcon />
                             </ListItemIcon>
-                            <ListItemText
-                                className="text-inherit"
-                                primary={t('Events_')}
-                            />
-                        </ListItem>
-                        <ListItem
-                            button
+                            <ListItemText primary={t('Events_')} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemButton
                             key={'/profile'}
                             selected={routes.length + 1 === safeIndex}
-                            className={`${
-                                routes.length + 1 === safeIndex
-                                    ? 'text-white'
-                                    : 'text-gray-400'
-                            }`}
                             onClick={() => pushRoute('/profile')}
                         >
-                            <ListItemIcon className="text-inherit">
+                            <ListItemIcon>
                                 <AccountBoxIcon />
                             </ListItemIcon>
-                            <ListItemText
-                                className="text-inherit"
-                                primary={t('Profile_')}
-                            />
-                        </ListItem>
-                        <ListItem
-                            button
+                            <ListItemText primary={t('Profile_')} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemButton
                             key={'/logout'}
-                            selected={routes.length + 2 === safeIndex}
-                            className={`${
-                                routes.length + 2 === safeIndex
-                                    ? 'text-white'
-                                    : 'text-gray-400'
-                            }`}
                             onClick={() => navigate('/logout')}
                         >
-                            <ListItemIcon className="text-inherit">
+                            <ListItemIcon>
                                 <ExitToAppIcon />
                             </ListItemIcon>
-                            <ListItemText
-                                className="text-inherit"
-                                primary={t('Log_out_')}
-                            />
-                        </ListItem>
-                    </div>
-                </List>
-            </>
+                            <ListItemText primary={t('Log_out_')} />
+                        </ListItemButton>
+                    </ListItem>
+                </RouteList>
+            </Box>
         )
 
         return (
             <div>
-                {/* <Hidden mdUp implementation="css">
+                {/* Menu button for small screens */}
+                <MenuButtonBox sx={{ display: { xs: 'block', md: 'none' } }}>
                     <IconButton
                         variant="roundedBlack"
                         onClick={handleDrawerToggle}
-                        className="p-2 fixed top-2 left-2 z-50"
+                        sx={{ padding: '10px' }}
                         aria-label="toggle drawer"
                     >
                         <MenuIcon fontSize="large" />
                     </IconButton>
-                </Hidden>
-                <Hidden smDown implementation="css">
+                </MenuButtonBox>
+                {/* Menu button for bigger screens */}
+                <MenuButtonBox
+                    desktopOpen={desktopOpen}
+                    sx={{ display: { xs: 'none', md: 'block' } }}
+                >
                     <IconButton
                         variant="roundedBlack"
                         onClick={handleDrawerToggleDesktop}
-                        className={`p-2 fixed top-2 z-50 transition-all ${
-                            desktopOpen ? 'left-[calc(300px+0.5rem)]' : 'left-2'
-                        }`}
+                        sx={{ padding: '10px' }}
                         aria-label="toggle drawer desktop"
                     >
-                        <MenuIcon
-                            className={`transition-transform ${
-                                desktopOpen ? 'rotate-[-90deg]' : 'rotate-0'
-                            }`}
-                        />
+                        <MenuIcon />
                     </IconButton>
-                </Hidden>
-                <Hidden mdUp implementation="css">
-                    <nav className="fixed top-0 left-0 md:w-[300px] md:flex-shrink-0">
+                </MenuButtonBox>
+
+                {/* Small screen drawer */}
+                <Box
+                    sx={{
+                        display: { xs: 'block', md: 'none' },
+                    }}
+                >
+                    <nav>
                         <Drawer
                             variant="temporary"
                             anchor="left"
                             open={mobileOpen}
                             onClose={handleDrawerToggle}
-                            classes={{
-                                paper: 'w-[300px] max-w-[80%] bg-black z-[998]',
+                            sx={{
+                                '& .MuiDrawer-paper': {
+                                    width: SIDEBAR_WIDTH,
+                                    backgroundColor: 'black',
+                                    maxWidth: '80%',
+                                },
                             }}
                             ModalProps={{
                                 keepMounted: true, // Better open performance on mobile.
@@ -275,75 +310,78 @@ export default React.memo(
                             {drawerContent}
                         </Drawer>
                     </nav>
-                </Hidden>
-                <Hidden smDown implementation="css">
-                    <nav className="fixed top-0 left-0 md:w-[300px] md:flex-shrink-0">
+                </Box>
+                {/* Bigger screen drawer */}
+                <Box
+                    sx={{
+                        display: { xs: 'none', md: 'block' },
+                    }}
+                >
+                    <nav>
                         <Drawer
-                            classes={{
-                                paper: 'w-[300px] max-w-[80%] bg-black z-[998]',
-                            }}
                             variant="persistent"
                             anchor="left"
                             open={desktopOpen}
                             onClose={handleDrawerToggleDesktop}
+                            sx={{
+                                '& .MuiDrawer-paper': {
+                                    width: SIDEBAR_WIDTH,
+                                    backgroundColor: 'black',
+                                    /* maxWidth: '80%', */
+                                },
+                            }}
                         >
                             {drawerContent}
                         </Drawer>
                     </nav>
-                </Hidden> */}
-                {drawerContent}
-                <main
-                    className={`flex-grow relative transition-all ${
-                        desktopOpen ? 'ml-[300px]' : 'ml-0'
-                    }`}
-                >
-                    {topContent}
-                    <Container className="p-0 md:p-8">
-                        <div className="p-8 max-w-[1400px]">
-                            <Routes>
-                                {routes.map(
-                                    (
-                                        {
-                                            key,
-                                            path,
-                                            hidden,
-                                            component: Component,
-                                            locked,
-                                        },
-                                        index,
-                                    ) => {
-                                        if (hidden || locked) {
-                                            return null
-                                        } else {
-                                            return (
-                                                <Route
-                                                    key={key}
-                                                    path={`${path}`}
-                                                    element={<Component />}
-                                                />
-                                            )
-                                        }
-                                    },
-                                )}
+                </Box>
 
-                                <Route
-                                    key={'profile'}
-                                    path={`profile`}
-                                    element={<ProfilePage />}
-                                />
-                                <Route
-                                    key={'events'}
-                                    path={`events/*`}
-                                    element={<EventsPage />}
-                                />
-                                <Route
-                                    path="*"
-                                    element={<Navigate to="events" replace />}
-                                />
-                            </Routes>
-                        </div>
+                <Main desktopOpen={desktopOpen}>
+                    {topContent}
+                    <Container sx={{ padding: { xs: '1rem', md: '2rem' } }}>
+                        <Routes>
+                            {routes.map(
+                                (
+                                    {
+                                        key,
+                                        path,
+                                        hidden,
+                                        component: Component,
+                                        locked,
+                                    },
+                                    index,
+                                ) => {
+                                    if (hidden || locked) {
+                                        return null
+                                    } else {
+                                        return (
+                                            <Route
+                                                key={key}
+                                                path={`${path}`}
+                                                element={<Component />}
+                                            />
+                                        )
+                                    }
+                                },
+                            )}
+
+                            <Route
+                                key={'profile'}
+                                path={`profile`}
+                                element={<ProfilePage />}
+                            />
+                            <Route
+                                key={'events'}
+                                path={`events/*`}
+                                element={<EventsPage />}
+                            />
+                            <Route
+                                path="*"
+                                element={<Navigate to="events" replace />}
+                            />
+                        </Routes>
                     </Container>
-                </main>
+                </Main>
             </div>
         )
     },
