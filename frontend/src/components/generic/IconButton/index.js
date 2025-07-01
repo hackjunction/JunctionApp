@@ -54,13 +54,6 @@ const variantStyles = (variant, color) => {
                 'disabled:bg-current disabled:text-white disabled:opacity-50': true,
                 [`disabled:bg-${color}-700`]: true,
             }
-        case 'containedEventImage':
-            return {
-                'bg-current text-white border-2 border-current h-10 rounded-full text-lg mt-2': true,
-                [`bg-${color}-600 border-${color}-600 hover:bg-${color}-700`]: true,
-                'disabled:bg-current disabled:text-white disabled:opacity-50': true,
-                [`disabled:bg-${color}-700`]: true,
-            }
         case 'jOutlined':
             return {
                 'bg-transparent text-current border-2 rounded-full px-4 py-1': true,

@@ -1,12 +1,21 @@
-import { Box } from '@mui/material'
-import EventImage from 'components/generic/EventImage'
 import React, { useState, useEffect } from 'react'
-import { SwipeableViews } from 'components/animated/SwipeableViews'
+
+import { Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
+
+import Image from 'components/generic/Image'
 import BannerService from 'services/banner'
 
-const BannerCarousel = (event = null) => {
+const Banner = styled(Box)({
+    maxHeight: '465px',
+    display: 'flex',
+    alignItems: 'center',
+    overflow: 'hidden',
+})
+
+// This used to have SwipeableViews, that's why it's called a carousel
+const BannerCarousel = () => {
     const [pictures, setPictures] = useState([])
-    const [index, setIndex] = useState(0)
 
     useEffect(() => {
         BannerService.getAllBanners().then(banners => {
@@ -14,35 +23,15 @@ const BannerCarousel = (event = null) => {
         })
     }, [])
     return (
-        <>
-            <Box className="relative mt-0">
-                <SwipeableViews
-                    enableMouseEvents
-                    index={index}
-                    onChangeIndex={setIndex}
-                    interval={5000}
-                    disabled
-                >
-                    {pictures?.map(picture => (
-                        <Box
-                            key={picture._id}
-                            className="bg-black flex flex-col items-center justify-center h-full max-h-[465px]"
-                        >
-                            <EventImage
-                                className="w-full h-full max-h-[465px] object-contain max-w-[1440px]"
-                                publicId={picture.icon}
-                                defaultImage={require('assets/images/default_cover_image.png')}
-                                transformation={{
-                                    width: 1440,
-                                    height: 465,
-                                }}
-                                buttons={picture.buttons}
-                            />
-                        </Box>
-                    ))}
-                </SwipeableViews>
-            </Box>
-        </>
+        <Banner>
+            {pictures?.map(picture => (
+                <Image
+                    publicId={picture.icon}
+                    defaultImage={require('assets/images/default_cover_image.png')}
+                    key={picture._id}
+                />
+            ))}
+        </Banner>
     )
 }
 
