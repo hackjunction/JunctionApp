@@ -338,7 +338,12 @@ export default React.memo(
 
                 <Main desktopOpen={desktopOpen}>
                     {topContent}
-                    <Container sx={{ padding: { xs: '1rem', md: '2rem' } }}>
+                    <Container
+                        sx={{
+                            padding: { xs: '1rem', md: '2rem' },
+                            maxWidth: '1440px',
+                        }}
+                    >
                         <Routes>
                             {routes.map(
                                 (
