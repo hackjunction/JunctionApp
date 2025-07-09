@@ -23,7 +23,6 @@ const DashboardRouter = lazy(() => import('./pages/_dashboard'))
 const OrganiserRouter = lazy(
     () => import('./pages/_dashboard/renderDashboard/organiser/router'),
 )
-const AccountRouter = lazy(() => import('./pages/_account'))
 const RecruitmentEvents = lazy(
     () => import('./pages/_dashboard/renderDashboard/default/events/Partner'),
 )
@@ -76,10 +75,6 @@ const routes = [
         //default after login
         path: '/dashboard/*',
         element: <RequiresPermission ComposedComponent={DashboardRouter} />,
-    },
-    {
-        path: '/account/*',
-        element: <RequiresPermission ComposedComponent={AccountRouter} />,
     },
     {
         path: '/recruitment',
