@@ -1,12 +1,54 @@
 import React, { useState, useCallback } from 'react'
 import Upload from 'antd/es/upload'
 import { useDispatch, useSelector } from 'react-redux'
+
 import { Box, Typography, CircularProgress } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+import { styled } from '@mui/material/styles'
+
 import * as AuthSelectors from 'reducers/auth/selectors'
 import * as SnackbarActions from 'reducers/snackbar/actions'
-import clsx from 'clsx'
+
+const EmptyWrapper = styled('div')({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+})
+
+const ButtonOverlay = styled('div')({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: 'rgba(0,0,0,0.6)',
+    opacity: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    transition: 'opacity 0.2s ease',
+    '&:hover': {
+        opacity: 1,
+    },
+    color: 'white',
+})
+
+const ImageButton = styled('div')({
+    padding: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    '&:hover': {
+        background: 'rgba(255,255,255,0.2)',
+    },
+})
 
 const ImageUpload = ({
     value,
@@ -75,65 +117,56 @@ const ImageUpload = ({
     )
 
     const renderLoading = () => (
-        <Box className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center cursor-pointer bg-gray-200">
-            <CircularProgress size={24} className="text-black" />
-        </Box>
-    )
-
-    const renderImage = () => (
-        <Box className="relative w-full h-full">
-            <img
-                className={clsx(
-                    'absolute top-0 left-0 w-full h-full object-contain',
-                    {
-                        'object-contain': resizeMode === 'contain',
-                        'object-cover': resizeMode === 'cover',
-                    },
-                )}
-                src={value.url}
-                alt="upload"
-            />
-            <Box className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 transition-opacity duration-200 hover:opacity-100 cursor-pointer">
-                <Box
-                    className="flex flex-row items-center p-2 hover:bg-white hover:bg-opacity-20"
-                    onClick={handleRemove}
-                >
-                    <DeleteIcon className="text-white" />
-                    <Box p={1} />
-                    <Typography
-                        variant="button"
-                        className="text-white select-none"
-                    >
-                        Remove image
-                    </Typography>
-                </Box>
-                <Box
-                    className="flex flex-row items-center p-2 hover:bg-white hover:bg-opacity-20"
-                    onClick={() => window.open(value.url, '_blank')}
-                >
-                    <VisibilityIcon className="text-white" />
-                    <Box p={1} />
-                    <Typography
-                        variant="button"
-                        className="text-white select-none"
-                    >
-                        View original
-                    </Typography>
-                </Box>
-            </Box>
-        </Box>
+        <EmptyWrapper>
+            <CircularProgress size={24} />
+        </EmptyWrapper>
     )
 
     const renderEmpty = () => (
-        <Box className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center cursor-pointer bg-gray-200">
-            <Typography className="text-center text-black select-none">
-                Click or drag a file to upload
-            </Typography>
-        </Box>
+        <EmptyWrapper>
+            <Typography>Click or drag a file to upload</Typography>
+        </EmptyWrapper>
+    )
+
+    const renderImage = () => (
+        <>
+            <Box
+                component="img"
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: resizeMode,
+                }}
+                src={value.url}
+                alt="upload"
+            />
+            <ButtonOverlay>
+                <ImageButton onClick={handleRemove}>
+                    <DeleteIcon />
+                    <Typography variant="button">Remove image</Typography>
+                </ImageButton>
+                <ImageButton onClick={() => window.open(value.url, '_blank')}>
+                    <VisibilityIcon />
+                    <Typography variant="button">View original</Typography>
+                </ImageButton>
+            </ButtonOverlay>
+        </>
     )
 
     return (
-        <Box className="relative w-full h-full bg-gray-100">
+        <Box
+            sx={{
+                backgroundColor: '#f7fafc',
+                width: '100%',
+                height: '100%',
+                position: 'relative',
+                cursor: 'pointer',
+                userSelect: 'none',
+            }}
+        >
             <Upload
                 name="image"
                 listType="picture"
