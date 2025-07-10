@@ -99,20 +99,6 @@ const getButton = (color, variant, strong) => {
                     },
                 }
             }
-            case 'containedEventImage': {
-                return {
-                    backgroundColor: colorPalette.main,
-                    color: colorPalette.contrastText,
-                    border: `2px solid ${colorPalette.main}`,
-                    height: '2.6em',
-                    borderRadius: '28px',
-                    fontSize: '1.3em',
-                    margin: theme.spacing(2),
-                    '&:hover': {
-                        backgroundColor: colorPalette.main,
-                    },
-                }
-            }
             case 'outlined': {
                 return {
                     backgroundColor: 'white',
