@@ -1,6 +1,5 @@
 import React from 'react'
-
-import { Link, Typography } from '@mui/material'
+import { Link, Typography, Box } from '@mui/material'
 
 const PageHeader = ({
     heading,
@@ -9,32 +8,45 @@ const PageHeader = ({
     link = null,
     alignment = 'center',
 }) => {
-    const styling = {
-        center: 'tw-items-center tw-text-center',
-        left: 'tw-items-start tw-text-left',
-        right: 'tw-items-end tw-text-right',
+    const alignmentMap = {
+        center: 'center',
+        left: 'flex-start',
+        right: 'flex-end',
     }
 
     return (
-        <div className={`tw-flex tw-flex-col tw-gap-2 ${styling[alignment]}`}>
+        <Box
+            display="flex"
+            flexDirection="column"
+            gap={2}
+            alignItems={alignmentMap[alignment]}
+            textAlign={alignment}
+        >
             <Typography
-                className="tw-font-bold tw-tracking-tight"
                 variant="h3"
                 component="h3"
+                fontWeight="bold"
+                sx={{ letterSpacing: '-0.5px' }}
             >
                 {heading}
             </Typography>
-            <div className="tw-flex tw-gap-2">
-                <Typography
-                    className="tw-tracking-tight tw-font-medium"
-                    variant="h6"
-                    component="h6"
-                >
-                    {subheading}
-                </Typography>
-                <Typography variant="body1" color="secondary" component="p">
-                    {details}
-                </Typography>
+
+            <Box display="flex" flexDirection="column" gap={1}>
+                {subheading && (
+                    <Typography
+                        variant="h6"
+                        component="h6"
+                        fontWeight="medium"
+                        sx={{ letterSpacing: '-0.25px' }}
+                    >
+                        {subheading}
+                    </Typography>
+                )}
+                {details && (
+                    <Typography variant="body1" color="secondary">
+                        {details}
+                    </Typography>
+                )}
                 {!!link && (
                     <Link
                         component="a"
@@ -45,8 +57,8 @@ const PageHeader = ({
                         Open in new tab
                     </Link>
                 )}
-            </div>
-        </div>
+            </Box>
+        </Box>
     )
 }
 

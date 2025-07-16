@@ -11,20 +11,7 @@ import { Helmet } from 'react-helmet'
 import config from 'constants/config'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import { useSelector } from 'react-redux'
-
-//  Updated PageHeader components
-const PageHeader = ({ heading, subheading }) => {
-    return (
-        <Box textAlign="center" my={1}>
-            <Typography variant="h3" component="h1" fontWeight="bold">
-                {heading}
-            </Typography>
-            <Typography variant="subtitle1" color="black" mt={2}>
-                {subheading}
-            </Typography>
-        </Box>
-    )
-}
+import PageHeader from 'components/generic/PageHeader'
 
 export default () => {
     const navigate = useNavigate()
