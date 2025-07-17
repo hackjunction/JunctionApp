@@ -1,32 +1,15 @@
 import React, { useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import clsx from 'clsx'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
-import { SelectOptions } from '@hackjunction/shared'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import Paper from '@mui/material/Paper'
 import Chip from '@mui/material/Chip'
 import Avatar from '@mui/material/Avatar'
 import MenuItem from '@mui/material/MenuItem'
+import Box from '@mui/material/Box'
 import CancelIcon from '@mui/icons-material/Cancel'
-
-const NoOptionsMessage = props => (
-    // <Typography
-    //     color="textSecondary"
-    //     className={props.selectProps.classes.noOptionsMessage}
-    //     {...props.innerProps}
-    // >
-    <div>{props.children}</div>
-)
-// {/* </Typography> */}
-
-NoOptionsMessage.propTypes = {
-    children: PropTypes.node,
-    innerProps: PropTypes.object.isRequired,
-    selectProps: PropTypes.object.isRequired,
-}
+import { SelectOptions } from '@hackjunction/shared'
 
 const inputComponent = ({ inputRef, ...props }) => (
     <div ref={inputRef} {...props} />
@@ -52,16 +35,19 @@ const Control = props => {
     return (
         <TextField
             fullWidth
-            InputProps={{
-                inputComponent,
-                inputProps: {
-                    className: 'flex p-0 h-auto',
-                    ref: innerRef,
-                    children,
-                    ...innerProps,
+            variant="standard"
+            {...TextFieldProps}
+            slotProps={{
+                input: {
+                    inputComponent,
+                    inputProps: {
+                        sx: { display: 'flex', p: 0, height: 'auto' },
+                        ref: innerRef,
+                        children,
+                        ...innerProps,
+                    },
                 },
             }}
-            {...TextFieldProps}
         />
     )
 }
@@ -116,30 +102,25 @@ Option.propTypes = {
     isSelected: PropTypes.bool.isRequired,
 }
 
-// const Placeholder = props => (
-//     <Typography
-//         color="textSecondary"
-//         className={props.selectProps.classes.placeholder}
-//         {...props.innerProps}
-//     >
-//         {props.children}
-//     </Typography>
-// )
+const Placeholder = props => (
+    <Typography
+        color="textSecondary"
+        sx={{ position: 'absolute', left: 2, bottom: 6, fontSize: 16 }}
+        {...props.innerProps}
+    >
+        {props.children}
+    </Typography>
+)
 
-// Placeholder.propTypes = {
-//     children: PropTypes.node,
-//     innerProps: PropTypes.object,
-//     selectProps: PropTypes.object.isRequired,
-// }
+Placeholder.propTypes = {
+    children: PropTypes.node,
+    innerProps: PropTypes.object,
+    selectProps: PropTypes.object.isRequired,
+}
 
 const SingleValue = props => (
-    // <Typography
-    //     className={props.selectProps.classes.singleValue}
-    //     {...props.innerProps}
-    // >
-    <div>{props.children}</div>
+    <Typography {...props.innerProps}>{props.children}</Typography>
 )
-// {/* </Typography> */}
 
 SingleValue.propTypes = {
     children: PropTypes.node,
@@ -147,25 +128,31 @@ SingleValue.propTypes = {
     selectProps: PropTypes.object.isRequired,
 }
 
-// const ValueContainer = props => (
-//     <div className={props.selectProps.classes.valueContainer}>
-//         {props.children}
-//     </div>
-// )
+const ValueContainer = props => (
+    <Box
+        sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            flex: 1,
+            alignItems: 'center',
+            overflow: 'hidden',
+        }}
+    >
+        {props.children}
+    </Box>
+)
 
-// ValueContainer.propTypes = {
-//     children: PropTypes.node,
-//     selectProps: PropTypes.object.isRequired,
-// }
+ValueContainer.propTypes = {
+    children: PropTypes.node,
+    selectProps: PropTypes.object.isRequired,
+}
 
 const MultiValue = props => (
     <Chip
         avatar={props.data.icon ? <Avatar src={props.data.icon} /> : null}
         tabIndex={-1}
         label={props.children}
-        className={clsx(props.selectProps.classes?.chip, {
-            [props.selectProps.classes?.chipFocused]: props.isFocused,
-        })}
+        sx={{ margin: '0.25rem 0.125rem' }}
         onDelete={props.removeProps.onClick}
         deleteIcon={<CancelIcon {...props.removeProps} />}
     />
@@ -182,31 +169,14 @@ MultiValue.propTypes = {
     selectProps: PropTypes.object.isRequired,
 }
 
-const Menu = props => (
-    // <Paper
-    //     square
-    //     className={props.selectProps.classes.paper}
-    //     {...props.innerProps}
-    // >
-    <div>{props.children}</div>
-)
-
-// {/* </Paper> */}
-Menu.propTypes = {
-    children: PropTypes.element.isRequired,
-    innerProps: PropTypes.object.isRequired,
-    selectProps: PropTypes.object.isRequired,
-}
-
+//https://react-select.com/components
 const components = {
     Control,
-    Menu,
     MultiValue,
-    NoOptionsMessage,
     Option,
-    // Placeholder,
+    Placeholder,
     SingleValue,
-    // ValueContainer,
+    ValueContainer,
 }
 
 const IntegrationReactSelect = ({
@@ -220,22 +190,11 @@ const IntegrationReactSelect = ({
     onBlur,
     onChange,
     options = [],
-    // placeholder,
+    placeholder,
     value,
     allowCreate = false,
 }) => {
-    // const theme = useTheme()
     const inputId = 'select-' + name
-
-    // const selectStyles = {
-    //     input: base => ({
-    //         ...base,
-    //         color: theme.palette.text.primary,
-    //         '& input': {
-    //             font: 'inherit',
-    //         },
-    //     }),
-    // }
 
     const _options = useMemo(() => {
         if (Array.isArray(options)) {
@@ -335,7 +294,6 @@ const IntegrationReactSelect = ({
     const SelectProps = {
         isDisabled: disabled,
         autoFocus,
-        // styles: selectStyles,
         inputId,
         TextFieldProps: {
             label,
@@ -344,7 +302,7 @@ const IntegrationReactSelect = ({
                 shrink: true,
             },
         },
-        // placeholder,
+        placeholder,
         options: _options,
         components,
         value: transformedInput,
@@ -356,13 +314,13 @@ const IntegrationReactSelect = ({
     }
 
     return (
-        <div className="flex-grow">
+        <Box sx={{ flexGrow: 1 }}>
             {allowCreate ? (
                 <CreatableSelect {...SelectProps} />
             ) : (
                 <Select {...SelectProps} />
             )}
-        </div>
+        </Box>
     )
 }
 
@@ -378,7 +336,7 @@ IntegrationReactSelect.propTypes = {
     onChange: PropTypes.func.isRequired,
     options: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
         .isRequired,
-    // placeholder: PropTypes.string,
+    placeholder: PropTypes.string,
     value: PropTypes.any,
     allowCreate: PropTypes.bool,
 }
