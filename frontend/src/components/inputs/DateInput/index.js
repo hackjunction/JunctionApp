@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Grid, Box, Typography } from '@mui/material'
+import { Grid2 as Grid, Box, Typography } from '@mui/material'
 import moment from 'moment'
 import Select from 'components/inputs/Select'
 
@@ -38,7 +38,12 @@ const DateInput = ({ label, value, onChange, onBlur, disableFutureYears }) => {
         <Box>
             {label && <Typography variant="subtitle1">{label}</Typography>}
             <Grid container spacing={3}>
-                <Grid item xs={4} md={4}>
+                <Grid
+                    size={{
+                        xs: 4,
+                        md: 4,
+                    }}
+                >
                     <Select
                         label="Day"
                         options="day"
@@ -46,7 +51,12 @@ const DateInput = ({ label, value, onChange, onBlur, disableFutureYears }) => {
                         onChange={handleDateChange}
                     />
                 </Grid>
-                <Grid item xs={8} md={4}>
+                <Grid
+                    size={{
+                        xs: 8,
+                        md: 4,
+                    }}
+                >
                     <Select
                         label="Month"
                         options="month"
@@ -54,7 +64,12 @@ const DateInput = ({ label, value, onChange, onBlur, disableFutureYears }) => {
                         onChange={handleMonthChange}
                     />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid
+                    size={{
+                        xs: 12,
+                        md: 4,
+                    }}
+                >
                     <Select
                         label="Year"
                         options={disableFutureYears ? 'year' : 'year-future'}

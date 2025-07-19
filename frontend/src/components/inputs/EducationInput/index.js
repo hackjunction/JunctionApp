@@ -1,7 +1,7 @@
 import React, { useRef, useMemo, useCallback } from 'react'
 
 import { Universities, Countries } from '@hackjunction/shared'
-import { Grid } from '@mui/material'
+import { Grid2 as Grid } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Select from 'components/inputs/Select'
@@ -93,7 +93,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
     // console.log('counry here', value, country)
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Select
                     autoFocus={autoFocus}
                     innerRef={selectEl}
@@ -106,7 +106,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
             </Grid>
             {!fieldsDisabled && (
                 <>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                         <Select
                             label="Country of study"
                             placeholder="Choose country"
@@ -117,7 +117,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                             }
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                         <Select
                             disabled={fieldsDisabled}
                             label="University"
@@ -134,7 +134,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                             allowCreate
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                         <TextInput
                             disabled={fieldsDisabled}
                             label="Field of study"
@@ -143,7 +143,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                             onChange={degree => handleChange('degree', degree)}
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                         <Select
                             disabled={fieldsDisabled}
                             label="Graduation year"

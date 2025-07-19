@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { Misc } from '@hackjunction/shared'
-import { Grid, Typography } from '@mui/material'
+import { Grid2 as Grid, Typography } from '@mui/material'
 
 import Select from 'components/inputs/Select'
 import BooleanInput from 'components/inputs/BooleanInput'
@@ -50,7 +50,7 @@ const RecruitmentOptionInput = ({
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Typography variant="body1" gutterBottom>
                     {t('Current_pro_situation_')}
                 </Typography>
@@ -65,7 +65,7 @@ const RecruitmentOptionInput = ({
             </Grid>
             {value.status && value.status !== 'not-interested' ? (
                 <>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Typography variant="body1">
                             {t('Cool_partners_')}
                         </Typography>
@@ -81,7 +81,7 @@ const RecruitmentOptionInput = ({
                             }
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Typography variant="body1" gutterBottom>
                             {t('Relocation_option_')}
                         </Typography>

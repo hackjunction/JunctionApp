@@ -21,6 +21,7 @@ const TextInput = React.memo(
         autoFocus,
         type = 'text',
         maxLength,
+        variant = 'standard',
     }) => {
         const [errorLength, setErrorLength] = useState(errorLengthBase)
         const handleChange = useCallback(
@@ -46,6 +47,7 @@ const TextInput = React.memo(
             textFieldFormat = (
                 <TextField
                     id={id}
+                    variant={variant}
                     autoFocus={autoFocus}
                     disabled={disabled}
                     fullWidth
@@ -65,6 +67,7 @@ const TextInput = React.memo(
             textFieldFormat = (
                 <TextField
                     id={id}
+                    variant={variant}
                     autoFocus={autoFocus}
                     disabled={disabled}
                     fullWidth

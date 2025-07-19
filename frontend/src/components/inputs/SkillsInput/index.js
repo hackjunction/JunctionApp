@@ -1,16 +1,14 @@
 import React, { useCallback, useState, useRef } from 'react'
 import {
-    Grid,
+    Grid2 as Grid,
     Typography,
     Button,
-    Box,
     FormControlLabel,
     RadioGroup,
     Radio,
     List,
     ListItem,
     ListItemText,
-    ListItemSecondaryAction,
     Divider,
 } from '@mui/material'
 import { Skills } from '@hackjunction/shared'
@@ -59,7 +57,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Select
                     autoFocus={autoFocus}
                     onBlur={onBlur}
@@ -71,14 +69,14 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                     onChange={setSkill}
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 <Typography variant="subtitle1">
                     {t('Level_of_expertise_')}
                 </Typography>
             </Grid>
-            <Grid item xs={8}>
+            <Grid size={8}>
                 <RadioGroup
-                    className="flex flex-row flex-wrap"
+                    row
                     aria-label="Level of expertise"
                     value={level}
                     onChange={handleLevelChange}
@@ -94,27 +92,38 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                     ))}
                 </RadioGroup>
             </Grid>
-            <Grid item xs={12}>
-                <Box
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="flex-end"
+            <Grid
+                size={12}
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                }}
+            >
+                <Button
+                    onClick={handleAdd}
+                    disabled={buttonDisabled}
+                    color="primary"
+                    variant="contained"
                 >
-                    <Button
-                        onClick={handleAdd}
-                        disabled={buttonDisabled}
-                        color="primary"
-                        variant="contained"
-                    >
-                        {t('Add_')}
-                    </Button>
-                </Box>
+                    {t('Add_')}
+                </Button>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <List>
                     {value.map(({ skill, level }, index) => [
                         <Divider key={skill + '-divider'} />,
-                        <ListItem key={skill}>
+                        <ListItem
+                            key={skill}
+                            secondaryAction={
+                                <Button
+                                    color="error"
+                                    onClick={() => handleRemove(index)}
+                                >
+                                    {t('Remove_')}
+                                </Button>
+                            }
+                        >
                             <ListItemText
                                 primary={
                                     <Typography>
@@ -125,7 +134,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                                 secondary={
                                     <Typography
                                         color="textSecondary"
-                                        style={{ marginRight: '50px' }}
+                                        sx={{ marginRight: '50px' }}
                                     >
                                         {Skills.getDescriptionForSkillLevel(
                                             level,
@@ -133,11 +142,6 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                                     </Typography>
                                 }
                             />
-                            <ListItemSecondaryAction>
-                                <Button onClick={() => handleRemove(index)}>
-                                    {t('Remove_')}
-                                </Button>
-                            </ListItemSecondaryAction>
                         </ListItem>,
                     ])}
                 </List>
