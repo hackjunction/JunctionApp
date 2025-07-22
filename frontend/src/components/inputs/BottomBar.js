@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import {
     Box,
-    Grid,
+    Grid2 as Grid,
     CircularProgress,
     ButtonBase,
     Typography,
@@ -11,10 +11,34 @@ import {
     ListItemText,
 } from '@mui/material'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
+import { styled } from '@mui/material/styles'
+import { isArray } from 'lodash-es'
+
 import Button from 'components/generic/Button'
 import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty/index'
-import { isArray } from 'lodash-es'
-import clsx from 'clsx'
+
+const SIDEBAR_WIDTH = '300px'
+
+const Wrapper = styled(Box)(({ theme, dirty, hasErrors }) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: hasErrors
+        ? theme.palette.error.main
+        : theme.palette.primary.main,
+    padding: '1rem',
+    [theme.breakpoints.up('md')]: {
+        paddingLeft: `calc(${SIDEBAR_WIDTH} + 1rem)`,
+    },
+    position: 'fixed',
+    transition: 'bottom 0.33s ease',
+    width: '100%',
+    bottom: dirty ? 0 : '-100px',
+    right: 0,
+    zIndex: 500,
+    color: 'white',
+}))
 
 const BottomBar = ({
     errors,
@@ -36,35 +60,34 @@ const BottomBar = ({
     }, [])
 
     const renderErrorsButton = () => (
-        <ButtonBase className="p-2" onClick={handleShowErrors}>
-            <Typography variant="button" className="text-white">
+        <ButtonBase sx={{ padding: '8px' }} onClick={handleShowErrors}>
+            <Typography sx={{ textTransform: 'uppercase', mr: 1 }}>
                 {Object.keys(errors).length} errors
             </Typography>
-            <Box mr={1} />
-            <ErrorOutlineIcon className="text-white" />
+            <ErrorOutlineIcon />
         </ButtonBase>
     )
 
     return (
         <>
-            <Box
-                className={clsx(
-                    'fixed transition-all duration-300 flex flex-row justify-end items-center z-50 w-full p-4',
-                    dirty ? 'bottom-0' : '-bottom-24',
-                    hasErrors ? 'bg-red-500' : 'bg-blue-500',
-                )}
-            >
+            <Wrapper dirty={dirty} hasErrors={hasErrors}>
                 {loading && (
-                    <Grid container spacing={2}>
-                        <Grid item xs={8}>
-                            <Typography className="font-bold text-white inline-block mr-4 text-lg">
+                    <Grid
+                        container
+                        spacing={2}
+                        sx={{ alignItems: 'center', width: '100%', mr: '1rem' }}
+                    >
+                        <Grid size={{ xs: 10, sm: 11 }}>
+                            <Typography
+                                sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}
+                            >
                                 {loadingText}
                             </Typography>
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid size={{ xs: 2, sm: 1 }}>
                             <CircularProgress
-                                className="text-white m-2 p-1"
                                 size={24}
+                                sx={{ color: 'inherit' }}
                             />
                         </Grid>
                     </Grid>
@@ -81,7 +104,7 @@ const BottomBar = ({
                     </Button>
                 )}
                 {!loading && hasErrors && renderErrorsButton()}
-            </Box>
+            </Wrapper>
             {dirty && <BlockExitIfDirty dirty={dirty} />}
             <Popover
                 open={showErrors}

@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useRef } from 'react'
 import {
-    Grid,
+    Grid2 as Grid,
     Typography,
     Button,
     Box,
@@ -10,7 +10,6 @@ import {
     List,
     ListItem,
     ListItemText,
-    ListItemSecondaryAction,
     Divider,
 } from '@mui/material'
 import { Roles } from '@hackjunction/shared'
@@ -64,7 +63,7 @@ export default ({ value = [], onChange, autoFocus }) => {
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Select
                     autoFocus={autoFocus}
                     innerRef={selectEl}
@@ -75,12 +74,12 @@ export default ({ value = [], onChange, autoFocus }) => {
                     onChange={setRole}
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 <Typography variant="subtitle1">Years of experience</Typography>
             </Grid>
-            <Grid item xs={8}>
+            <Grid size={8}>
                 <RadioGroup
-                    className="flex flex-row flex-wrap"
+                    row
                     aria-label="Years of experience"
                     value={years}
                     onChange={handleYearsChange}
@@ -96,7 +95,7 @@ export default ({ value = [], onChange, autoFocus }) => {
                     ))}
                 </RadioGroup>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Box
                     display="flex"
                     flexDirection="row"
@@ -112,25 +111,27 @@ export default ({ value = [], onChange, autoFocus }) => {
                     </Button>
                 </Box>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <List>
                     {value.map(({ role, years }, index) => [
                         <Divider key={role + '-divider'} />,
-                        <ListItem key={role}>
+                        <ListItem
+                            key={role}
+                            secondaryAction={
+                                <Button
+                                    color="error"
+                                    onClick={() => handleRemove(index)}
+                                >
+                                    {t('Remove_')}
+                                </Button>
+                            }
+                        >
                             <ListItemText
                                 primary={role}
                                 secondary={Roles.getLabelForExperienceLevel(
                                     years,
                                 )}
                             />
-                            <ListItemSecondaryAction>
-                                <Button
-                                    onClick={() => handleRemove(index)}
-                                    color="default" //TODO this should be red
-                                >
-                                    {t('Remove_')}
-                                </Button>
-                            </ListItemSecondaryAction>
                         </ListItem>,
                     ])}
                 </List>

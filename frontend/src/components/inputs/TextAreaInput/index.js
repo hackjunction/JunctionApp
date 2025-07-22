@@ -43,7 +43,13 @@ const TextAreaInput = React.memo(
 
         return (
             <TextField
-                className="w-full bg-gray-100 border-2 border-gray-300 rounded-md"
+                sx={{
+                    '& .MuiFilledInput-root': {
+                        backgroundColor: '#f7fafc',
+                        border: `2px solid #e2e8f0`,
+                        borderRadius: '6px',
+                    },
+                }}
                 type="text"
                 variant="filled"
                 autoFocus={autoFocus}

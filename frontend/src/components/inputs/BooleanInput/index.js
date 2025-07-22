@@ -43,9 +43,8 @@ const BooleanInput = ({ value, onChange, alignCenter = false }) => {
     return (
         <Box>
             <RadioGroup
-                className={`flex flex-row flex-wrap ${
-                    alignCenter ? 'justify-center' : 'justify-start'
-                }`}
+                row
+                sx={{ justifyContent: alignCenter ? 'center' : 'start' }}
                 aria-label="yes-no"
                 value={value}
                 onChange={handleChange}

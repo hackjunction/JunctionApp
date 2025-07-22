@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Grid, InputAdornment, Box, Typography } from '@mui/material'
+import { Grid2 as Grid, InputAdornment, Box, Typography } from '@mui/material'
 import Select from 'components/inputs/Select'
 import TextInput from 'components/inputs/TextInput'
 
@@ -34,7 +34,12 @@ const PhoneNumberInput = React.memo(
                     direction="row"
                     alignItems="flex-end"
                 >
-                    <Grid item xs={12} md={4}>
+                    <Grid
+                        size={{
+                            xs: 12,
+                            md: 4,
+                        }}
+                    >
                         <Select
                             options="countryCode"
                             label="Country code"
@@ -43,7 +48,12 @@ const PhoneNumberInput = React.memo(
                             onBlur={onBlur}
                         />
                     </Grid>
-                    <Grid item xs={12} md={8}>
+                    <Grid
+                        size={{
+                            xs: 12,
+                            md: 8,
+                        }}
+                    >
                         <TextInput
                             label="Phone number"
                             type="number"

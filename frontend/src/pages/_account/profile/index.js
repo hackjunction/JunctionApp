@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Grid2 as Grid, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 import { Formik, FastField, Field } from 'formik'
 import { RegistrationFields } from '@hackjunction/shared'
@@ -26,32 +27,14 @@ import * as UserActions from 'reducers/user/actions'
 import * as SnackbarActions from 'reducers/snackbar/actions'
 
 import { useTranslation } from 'react-i18next'
-import { debugGroup } from 'utils/debuggingTools'
-// const useStyles = makeStyles(theme => ({
-//     topWrapper: {
-//         display: 'flex',
-//         flexDirection: 'column',
-//         alignItems: 'center',
-//         background: 'white',
-//         borderRadius: '7px',
-//         boxShadow: '2px 7px 15px rgba(0, 0, 0, 0.12)',
-//         padding: theme.spacing(3),
-//         [theme.breakpoints.up('md')]: {
-//             flexDirection: 'row',
-//             alignItems: 'flex-start',
-//         },
-//     },
-//     box: {
-//         background: 'white',
-//         borderRadius: '7px',
-//         boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.12)',
-//         padding: theme.spacing(3),
-//     },
-//     imageUpload: {
-//         width: '300px',
-//         height: '300px',
-//     },
-// }))
+
+const ProfileBox = styled('div')(({ theme }) => ({
+    borderRadius: '7px',
+    boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.12)',
+    padding: theme.spacing(3),
+    background: 'white',
+    marginBottom: '1.5rem',
+}))
 
 export default () => {
     const dispatch = useDispatch()
@@ -60,8 +43,6 @@ export default () => {
     const hasProfile = useSelector(UserSelectors.hasProfile)
     const loading = userProfileLoading || !hasProfile
     const { t } = useTranslation()
-
-    // const classes = useStyles()
 
     const validationSchema = data => {
         const validations = {}
@@ -114,17 +95,30 @@ export default () => {
             >
                 {formikProps => (
                     <>
-                        <Box className={'classes.topWrapper'}>
-                            <Box width="300px" height="300px" margin={3}>
+                        <ProfileBox
+                            sx={{
+                                display: 'flex',
+                                flexDirection: { xs: 'column', md: 'row' },
+                                alignItems: { xs: 'center', md: 'flex-start' },
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: '300px',
+                                    height: '300px',
+                                    margin: 3,
+                                }}
+                            >
                                 <FastField
                                     name="avatar"
                                     render={({ field, form }) => (
                                         <Box
-                                            width="100%"
-                                            height="100%"
-                                            borderRadius="50%"
-                                            overflow="hidden"
-                                            position="relative"
+                                            sx={{
+                                                width: '100%',
+                                                height: '100%',
+                                                borderRadius: '50%',
+                                                overflow: 'hidden',
+                                            }}
                                         >
                                             <ImageUpload
                                                 value={
@@ -149,9 +143,15 @@ export default () => {
                                     )}
                                 />
                             </Box>
-                            <Box flex="1" display="flex" flexDirection="column">
+                            <Box
+                                sx={{
+                                    flex: '1',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                }}
+                            >
                                 <Grid container spacing={3}>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid size={{ xs: 12, md: 6 }}>
                                         <FastField
                                             name="firstName"
                                             render={({ field, form }) => (
@@ -173,7 +173,7 @@ export default () => {
                                             )}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid size={{ xs: 12, md: 6 }}>
                                         <FastField
                                             name="lastName"
                                             render={({ field, form }) => (
@@ -195,7 +195,7 @@ export default () => {
                                             )}
                                         />
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid size={12}>
                                         <FastField
                                             name="email"
                                             render={({ field, form }) => (
@@ -223,7 +223,7 @@ export default () => {
                                             })}
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid size={12}>
                                         <FastField
                                             name="phoneNumber"
                                             render={({ field, form }) => (
@@ -248,7 +248,7 @@ export default () => {
                                             {t('Contact_phone_')}
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid size={12}>
                                         <FastField
                                             name="dateOfBirth"
                                             render={({ field, form }) => (
@@ -271,7 +271,7 @@ export default () => {
                                             )}
                                         />
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid size={12}>
                                         <FastField
                                             name="gender"
                                             render={({ field, form }) => (
@@ -296,19 +296,24 @@ export default () => {
                                     </Grid>
                                 </Grid>
                             </Box>
-                        </Box>
-                        <Box className={'classes.box'} mt={3}>
+                        </ProfileBox>
+
+                        <ProfileBox>
                             <Typography variant="h6">
                                 {t('Profile_details_')}
                             </Typography>
-                            <Typography variant="body1" gutterBottom>
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                sx={{ wordBreak: 'break-word' }}
+                            >
                                 {t('Pre_filled_details_', {
                                     owner: config.PLATFORM_OWNER_NAME,
                                     privacy: config.PRIVACY_URL,
                                 })}
                             </Typography>
                             <Grid container spacing={3}>
-                                <Grid item xs={12}>
+                                <Grid size={12}>
                                     <FastField
                                         name="headline"
                                         render={({ field, form }) => (
@@ -342,34 +347,32 @@ export default () => {
                                         }
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <Box>
-                                        <Field
-                                            name="biography"
-                                            render={({ field, form }) => (
-                                                <TextAreaInput
-                                                    label={
-                                                        RegistrationFields.getField(
-                                                            'biography',
-                                                        ).label
-                                                    }
-                                                    placeholder={`Hi my name is ${form.values.firstName} and...`}
-                                                    value={field.value}
-                                                    onChange={value =>
-                                                        form.setFieldValue(
-                                                            field.name,
-                                                            value,
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        form.setFieldTouched(
-                                                            field.name,
-                                                        )
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                    </Box>
+                                <Grid size={12}>
+                                    <Field
+                                        name="biography"
+                                        render={({ field, form }) => (
+                                            <TextAreaInput
+                                                label={
+                                                    RegistrationFields.getField(
+                                                        'biography',
+                                                    ).label
+                                                }
+                                                placeholder={`Hi my name is ${form.values.firstName} and...`}
+                                                value={field.value}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value,
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name,
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    />
                                     <Typography variant="caption">
                                         {
                                             RegistrationFields.getField(
@@ -378,7 +381,7 @@ export default () => {
                                         }
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={12} md={6}>
+                                <Grid size={{ xs: 12, md: 6 }}>
                                     <FastField
                                         name="countryOfResidence"
                                         render={({ field, form }) => (
@@ -403,7 +406,7 @@ export default () => {
                                         )}
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6}>
+                                <Grid size={{ xs: 12, md: 6 }}>
                                     <FastField
                                         name="nationality"
                                         render={({ field, form }) => (
@@ -426,7 +429,7 @@ export default () => {
                                         )}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid size={12}>
                                     <FastField
                                         name="spokenLanguages"
                                         render={({ field, form }) => (
@@ -450,7 +453,7 @@ export default () => {
                                         )}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid size={12}>
                                     <FastField
                                         name="themesOfInterest"
                                         render={({ field, form }) => (
@@ -474,7 +477,7 @@ export default () => {
                                         )}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid size={12}>
                                     <FastField
                                         name="industriesOfInterest"
                                         render={({ field, form }) => (
@@ -501,8 +504,9 @@ export default () => {
                                     />
                                 </Grid>
                             </Grid>
-                        </Box>
-                        <Box className={'classes.box'} mt={3}>
+                        </ProfileBox>
+
+                        <ProfileBox>
                             <Typography variant="h6">
                                 {t('Education_')}
                             </Typography>
@@ -527,8 +531,9 @@ export default () => {
                                     />
                                 )}
                             />
-                        </Box>
-                        <Box className={'classes.box'} mt={3}>
+                        </ProfileBox>
+
+                        <ProfileBox>
                             <Typography variant="h6">{t('Skills_')}</Typography>
                             <Typography variant="body1" gutterBottom>
                                 {t('Enter_skills_')}
@@ -547,8 +552,9 @@ export default () => {
                                     />
                                 )}
                             />
-                        </Box>
-                        <Box className={'classes.box'} mt={3}>
+                        </ProfileBox>
+
+                        <ProfileBox>
                             <Typography variant="h6">
                                 {t('Pro_roles_')}
                             </Typography>
@@ -569,8 +575,9 @@ export default () => {
                                     />
                                 )}
                             />
-                        </Box>
-                        <Box className={'classes.box'} mt={3}>
+                        </ProfileBox>
+
+                        <ProfileBox>
                             <Typography variant="h6">
                                 {t('Recruitment_pref_')}
                             </Typography>
@@ -592,8 +599,9 @@ export default () => {
                                     />
                                 )}
                             />
-                        </Box>
-                        <Box className={'classes.box'} mt={3}>
+                        </ProfileBox>
+
+                        <ProfileBox sx={{ marginBottom: '10rem' }}>
                             <Typography variant="h6">
                                 {t('Additional_links_')}
                             </Typography>
@@ -601,7 +609,7 @@ export default () => {
                                 {t('You_can_link_')}
                             </Typography>
                             <Grid container spacing={3}>
-                                <Grid item xs={12}>
+                                <Grid size={12}>
                                     <FastField
                                         name="curriculumVitae"
                                         render={({ field, form }) => (
@@ -635,7 +643,7 @@ export default () => {
                                         }
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid size={12}>
                                     <FastField
                                         name="portfolio"
                                         render={({ field, form }) => (
@@ -669,7 +677,7 @@ export default () => {
                                         }
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid size={12}>
                                     <FastField
                                         name="github"
                                         render={({ field, form }) => (
@@ -703,7 +711,7 @@ export default () => {
                                         }
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid size={12}>
                                     <FastField
                                         name="linkedin"
                                         render={({ field, form }) => (
@@ -738,8 +746,8 @@ export default () => {
                                     </Typography>
                                 </Grid>
                             </Grid>
-                        </Box>
-                        <Box height="300px" />
+                        </ProfileBox>
+
                         <BottomBar
                             onSubmit={formikProps.handleSubmit}
                             errors={formikProps.errors}
