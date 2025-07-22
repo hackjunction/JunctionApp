@@ -302,7 +302,11 @@ export default () => {
                             <Typography variant="h6">
                                 {t('Profile_details_')}
                             </Typography>
-                            <Typography variant="body1" gutterBottom>
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                sx={{ wordBreak: 'break-word' }}
+                            >
                                 {t('Pre_filled_details_', {
                                     owner: config.PLATFORM_OWNER_NAME,
                                     privacy: config.PRIVACY_URL,
