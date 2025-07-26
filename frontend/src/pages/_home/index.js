@@ -105,20 +105,36 @@ export default () => {
                 </Container>
                 <Divider size={20} />
                 <Container center small>
-                    <Grid>
+                    {/* Logo Centered */}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            mb: 2,
+                        }}
+                    >
                         <Image
                             defaultImage={require('assets/logos/emblem_black.png')}
-                            transformation={{
-                                width: 150,
-                            }}
+                            transformation={{ width: 150 }}
                         />
-                        <Typography variant="h4" align="center">
-                            {t('Platform_organise_hack_', {
-                                owner: config.PLATFORM_OWNER_NAME,
-                            })}
-                        </Typography>
-                    </Grid>
-                    <Grid container justifyContent="center" alignItems="center">
+                    </Box>
+
+                    {/* Heading Centered */}
+                    <Typography variant="h4" align="center" sx={{ mb: 3 }}>
+                        {t('Platform_organise_hack_', {
+                            owner: config.PLATFORM_OWNER_NAME,
+                        })}
+                    </Typography>
+
+                    {/* Buttons Centered Horizontally with Spacing */}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: 2,
+                            mb: 4,
+                        }}
+                    >
                         <Button
                             color="theme_lightgray"
                             variant="outlinedNew"
@@ -135,52 +151,50 @@ export default () => {
                         >
                             {t('Pricing_')}
                         </Button>
-                    </Grid>
+                    </Box>
+
                     <Divider size={4} />
                 </Container>
+
                 <Divider size={20} />
-                <Container center small>
-                    <Divider size={1} />
-                    <Typography variant="h3" align="center">
+
+                <Container maxWidth="sm" sx={{ textAlign: 'center', py: 8 }}>
+                    <Typography variant="h3" gutterBottom>
                         {t('New_to_', {
                             owner: config.PLATFORM_OWNER_NAME_CAPS,
                         })}
                     </Typography>
-                    <Divider size={3} />
 
                     <Typography
                         variant="body1"
-                        align="center"
-                        style={{ fontSize: '24px' }}
+                        sx={{ fontSize: '20px', mb: 3 }}
                     >
                         {t('Junction_info_', {
                             owner: config.PLATFORM_OWNER_NAME,
                         })}
                     </Typography>
-                    <Divider size={3} />
+
                     <Typography
                         variant="body1"
-                        align="center"
-                        style={{ fontSize: '24px' }}
+                        sx={{ fontSize: '20px', mb: 5 }}
                     >
                         {t('More_info_', {
                             owner: config.PLATFORM_OWNER_NAME,
-                        })}
+                        })}{' '}
                         <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
                             {t('More_info_link_')}
                         </ExternalLink>
                     </Typography>
-                </Container>
 
-                <Divider size={20} />
-                <Container center>
-                    <Typography variant="h4" align="center">
+                    <Typography variant="h4" sx={{ mb: 3 }}>
                         {t('Join_hackerpack_')}
                     </Typography>
+
                     <Button
                         color="theme_lightgray"
                         variant="outlinedNew"
                         strong
+                        size="large"
                         onClick={() => navigate('/hackerpack')}
                     >
                         {t('To_hackerpack_')}

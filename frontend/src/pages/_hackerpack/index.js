@@ -1,37 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, Divider, Button } from '@mui/material'
-
 import { useNavigate, useParams } from 'react-router'
 import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
-import PageHeader from 'components/generic/PageHeader'
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Container from 'components/generic/Container'
-
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { Helmet } from 'react-helmet'
 import config from 'constants/config'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import { useSelector } from 'react-redux'
-
-// const useStyles = styled(theme => ({
-//     wrapper: {
-//         height: '100%',
-//         display: 'flex',
-//         flexDirection: 'column',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         padding: theme.spacing(3),
-//         background: 'black',
-//         color: 'white',
-//     },
-// }))
+import PageHeader from 'components/generic/PageHeader'
 
 export default () => {
     const navigate = useNavigate()
-    // const classes = useStyles()
-
     const { slug } = useParams()
     const event = useSelector(DashboardSelectors.event)
 
@@ -42,7 +25,6 @@ export default () => {
             setHackerpacks(event.hackerpacks)
         }
     }, [event, slug])
-    console.log(event)
 
     return (
         <PageWrapper
@@ -61,7 +43,6 @@ export default () => {
                     property="og:title"
                     content="Junction App || Hackerpack"
                 />
-
                 <meta
                     name="twitter:title"
                     content="Junction App || Hackerpack"
@@ -78,7 +59,6 @@ export default () => {
                     name="twitter:description"
                     content="Login to redeem our awesome hackerpack offers!"
                 />
-
                 <meta name="og:type" content="website" />
                 <meta property="og:image" content={config.SEO_IMAGE_URL} />
                 <meta name="twitter:image" content={config.SEO_IMAGE_URL} />
@@ -91,6 +71,7 @@ export default () => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
+
             <Container center wrapperClass={'classes.backButtonWrapper'}>
                 <Button onClick={() => navigate('/')}>
                     <ArrowBackIosIcon style={{ color: 'black' }} />
@@ -99,6 +80,7 @@ export default () => {
                     </Typography>
                 </Button>
             </Container>
+
             <Container center>
                 <PageHeader
                     heading="Hackerpack"
@@ -106,13 +88,19 @@ export default () => {
                 />
                 <Divider variant="middle" />
                 {hackerpacks.map(hackerpack => (
-                    <HackerpackDetail hackerpack={hackerpack} />
+                    <HackerpackDetail
+                        key={hackerpack.id}
+                        hackerpack={hackerpack}
+                    />
                 ))}
                 <Box p={2}>
                     <Typography color="textSecondary" variant="subtitle1">
                         Anything you would like to see here in the future?
-                        Contact us at partnerships@hackjunction.com with your
-                        suggestion.
+                        Contact us at{' '}
+                        <a href="mailto:partnerships@hackjunction.com">
+                            partnerships@hackjunction.com
+                        </a>{' '}
+                        with your suggestion.
                     </Typography>
                 </Box>
             </Container>
