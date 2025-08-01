@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { Grid, Box, Typography } from '@mui/material'
+import { Grid2 as Grid, Box, Typography } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
@@ -71,12 +71,12 @@ export default () => {
                 Create new frontpage banner
             </Typography>
             <Grid container spacing={2} direction="row" alignItems="flex-end">
-                <Grid item xs={12}>
+                <Grid size={12}>
                     <Typography variant="caption" color="error">
                         {error}
                     </Typography>
                 </Grid>
-                <Grid item xs={12} sm={9}>
+                <Grid size={{ xs: 12, sm: 9 }}>
                     <TextInput
                         label="Banner name"
                         placeholder="Banner name"
@@ -85,7 +85,7 @@ export default () => {
                         disabled={loading}
                     />
                 </Grid>
-                <Grid item xs={12} sm={3}>
+                <Grid size={{ xs: 12, sm: 3 }}>
                     <Button
                         disabled={hasError}
                         onClick={handleCreate}

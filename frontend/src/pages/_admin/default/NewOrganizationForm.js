@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { Grid, Box, Typography } from '@mui/material'
+import { Grid2 as Grid, Box, Typography } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
@@ -70,12 +70,12 @@ export default () => {
                 {t('Create_new_organization_')}
             </Typography>
             <Grid container spacing={2} direction="row" alignItems="flex-end">
-                <Grid item xs={12}>
+                <Grid size={12}>
                     <Typography variant="caption" color="error">
                         {error}
                     </Typography>
                 </Grid>
-                <Grid item xs={12} sm={9}>
+                <Grid size={{ xs: 12, sm: 9 }}>
                     <TextInput
                         label={t('Organization_name_')}
                         placeholder={t('Enter_organization_name_')}
@@ -84,7 +84,7 @@ export default () => {
                         disabled={loading}
                     />
                 </Grid>
-                <Grid item xs={12} sm={3}>
+                <Grid size={{ xs: 12, sm: 3 }}>
                     <Button
                         disabled={hasError}
                         onClick={handleCreate}
