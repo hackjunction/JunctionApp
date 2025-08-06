@@ -1,9 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import { Grid, Box, Typography } from '@mui/material'
+import { Grid2 as Grid, Box, Typography } from '@mui/material'
 import EventCardSmall from 'components/events/EventCardSmall'
-import Divider from 'components/generic/Divider'
 
 import { useTranslation } from 'react-i18next'
 import { IconButton } from '@mui/material'
@@ -12,9 +11,10 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 
 import EventService from 'services/events'
 import * as AuthSelectors from 'reducers/auth/selectors'
+import { useNavigate } from 'react-router-dom'
 
 export default ({ data = [] }) => {
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [events, setEvents] = useState(data)
@@ -54,35 +54,28 @@ export default ({ data = [] }) => {
             <Grid container spacing={3}>
                 {events.map(event =>
                     event.published ? (
-                        <div key={event.slug}>
-                            <Box p={2}>
-                                <IconButton
-                                    edge="end"
-                                    aria-label="delete"
-                                    onClick={() => handleRemove(event.slug)}
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                                <IconButton
-                                    edge="end"
-                                    aria-label="Approve"
-                                    onClick={() => handleApprove(event.slug)}
-                                >
-                                    <ThumbUpIcon />
-                                </IconButton>
-                                <EventCardSmall
-                                    event={event}
-                                    handleClick={event =>
-                                        dispatch(
-                                            push(
-                                                `/organise/${event?.slug}/edit`,
-                                            ),
-                                        )
-                                    }
-                                />
-                            </Box>
-                            <Divider variant="middle" />
-                        </div>
+                        <Box p={2} key={event.slug}>
+                            <IconButton
+                                edge="end"
+                                aria-label="delete"
+                                onClick={() => handleRemove(event.slug)}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                            <IconButton
+                                edge="end"
+                                aria-label="Approve"
+                                onClick={() => handleApprove(event.slug)}
+                            >
+                                <ThumbUpIcon />
+                            </IconButton>
+                            <EventCardSmall
+                                event={event}
+                                handleClick={event =>
+                                    navigate(`/organise/${event?.slug}/edit`)
+                                }
+                            />
+                        </Box>
                     ) : null,
                 )}
             </Grid>

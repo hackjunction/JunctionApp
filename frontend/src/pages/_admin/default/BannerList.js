@@ -1,9 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import { Grid, Box, Typography } from '@mui/material'
-
-import Divider from 'components/generic/Divider'
+import { Grid2 as Grid, Box, Typography } from '@mui/material'
 
 import { useTranslation } from 'react-i18next'
 import { IconButton } from '@mui/material'
@@ -12,9 +10,10 @@ import EditIcon from '@mui/icons-material/Edit'
 
 import BannerService from 'services/banner'
 import * as AuthSelectors from 'reducers/auth/selectors'
+import { useNavigate } from 'react-router-dom'
 
 export default ({ data = [] }) => {
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [banner, setBanner] = useState(data)
@@ -43,36 +42,31 @@ export default ({ data = [] }) => {
             </Typography>
             <Grid container spacing={3}>
                 {banner.map(company => (
-                    <div key={company.slug}>
-                        <Box p={2}>
-                            <IconButton
-                                edge="end"
-                                aria-label="delete"
-                                onClick={() => handleRemove(company.slug)}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                            <IconButton
-                                edge="end"
-                                aria-label="edit"
-                                onClick={() =>
-                                    dispatch(
-                                        push(`admin/banner/${company.slug}`),
-                                    )
-                                }
-                            >
-                                <EditIcon />
-                            </IconButton>
-                            <span>{company.name}</span>
-                            <span>{company.icon}</span>
-                            {company.buttons.map(i => (
-                                <>
-                                    <span>{i.text}</span> <span>{i.push}</span>
-                                </>
-                            ))}
-                        </Box>
-                        <Divider variant="middle" />
-                    </div>
+                    <Box p={2} key={company.slug}>
+                        <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => handleRemove(company.slug)}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                            edge="end"
+                            aria-label="edit"
+                            onClick={() =>
+                                navigate(`admin/banner/${company.slug}`)
+                            }
+                        >
+                            <EditIcon />
+                        </IconButton>
+                        <span>{company.name}</span>
+                        <span>{company.icon}</span>
+                        {company.buttons.map(i => (
+                            <>
+                                <span>{i.text}</span> <span>{i.push}</span>
+                            </>
+                        ))}
+                    </Box>
                 ))}
             </Grid>
         </Box>

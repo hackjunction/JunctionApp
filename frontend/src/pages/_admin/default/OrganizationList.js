@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import { Grid, Box, Typography } from '@mui/material'
+import { Grid2 as Grid, Box, Typography } from '@mui/material'
 
 import Button from 'components/generic/Button'
 
@@ -11,28 +11,15 @@ import GradientBox from 'components/generic/GradientBox'
 import { IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import Divider from 'components/generic/Divider'
 
 import { useTranslation } from 'react-i18next'
 
 import OrganizationService from 'services/organization'
 import * as AuthSelectors from 'reducers/auth/selectors'
-
-// const useStyles = makeStyles(theme => ({
-//     outboundLink: {
-//         '& a': {
-//             textDecoration: 'none !important',
-//         },
-//     },
-//     companyLogo: {
-//         width: '200px',
-//         height: '50px;',
-//     },
-// }))
+import { useNavigate } from 'react-router-dom'
 
 export default ({ data = [] }) => {
-    const dispatch = useDispatch()
-    // const classes = useStyles()
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [organization, setOrganization] = useState(data)
@@ -65,29 +52,26 @@ export default ({ data = [] }) => {
             <Grid container spacing={3}>
                 {organization.map(org => (
                     <>
-                        <Grid item xs={12} md={12} xl={12}>
+                        <Grid size={12}>
                             <GradientBox color="theme_white" p={3}>
                                 <Grid container justifyContent="center">
-                                    <Grid item xs={3}>
+                                    <Grid size={3}>
                                         <img
                                             alt={org.name}
                                             src={org.icon}
-                                            // className={classes.companyLogo}
+                                            height={'50px'}
+                                            width={'200px'}
                                         />
                                     </Grid>
-                                    <Grid item xs={3}>
+                                    <Grid size={3}>
                                         <Typography variant="h5">
                                             {org.name}
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={3}>
+                                    <Grid size={3}>
                                         <Typography>{org.about}</Typography>
                                     </Grid>
-                                    <Grid
-                                        item
-                                        xs={3}
-                                        // className={classes.outboundLink}
-                                    >
+                                    <Grid size={3}>
                                         <OutboundLink
                                             eventLabel="myLabel"
                                             to={org.link}
@@ -105,10 +89,8 @@ export default ({ data = [] }) => {
                                             edge="end"
                                             aria-label="edit"
                                             onClick={() =>
-                                                dispatch(
-                                                    push(
-                                                        `admin/organization/${org.slug}`,
-                                                    ),
+                                                navigate(
+                                                    `admin/organization/${org.slug}`,
                                                 )
                                             }
                                         >
@@ -127,8 +109,6 @@ export default ({ data = [] }) => {
                                 </Grid>
                             </GradientBox>
                         </Grid>
-
-                        <Divider variant="middle" />
                     </>
                 ))}
             </Grid>
