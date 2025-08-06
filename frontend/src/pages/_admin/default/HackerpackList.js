@@ -1,9 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import { Grid, Box, Typography } from '@mui/material'
+import { Grid2 as Grid, Box, Typography } from '@mui/material'
 import CompanySection from 'components/hackerpack/CompanySection'
-import Divider from 'components/generic/Divider'
 
 import { useTranslation } from 'react-i18next'
 import { IconButton } from '@mui/material'
@@ -16,7 +15,6 @@ import { useNavigate } from 'react-router-dom'
 
 export default ({ data = [] }) => {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
     const { t } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [hackerpack, setHackerpack] = useState(data)
@@ -72,7 +70,6 @@ export default ({ data = [] }) => {
                                 link={company.link}
                             />
                         </Box>
-                        <Divider variant="middle" />
                     </>
                 ))}
             </Grid>

@@ -1,8 +1,9 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { Grid, Box, Typography } from '@mui/material'
-import Divider from 'components/generic/Divider'
+import { Grid2 as Grid, Box, Typography, IconButton } from '@mui/material'
+import AddCircle from '@mui/icons-material/AddCircle'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 
 import { useTranslation } from 'react-i18next'
 
@@ -37,20 +38,17 @@ export default ({ data = [] }) => {
             <Typography variant="h6" gutterBottom>
                 {t('event_priority_')}
             </Typography>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} sx={{ p: 2 }}>
                 {events.map(event => (
-                    <Grid item key={event.slug}>
-                        <Box p={2}>
-                            {event.slug}
-                            <button onClick={() => handleClick(event, 1)}>
-                                +
-                            </button>
-                            {event.frontPagePriority}
-                            <button onClick={() => handleClick(event, -1)}>
-                                -
-                            </button>
-                        </Box>
-                        <Divider variant="middle" />
+                    <Grid key={event.slug}>
+                        {event.slug}
+                        <IconButton onClick={() => handleClick(event, 1)}>
+                            <AddCircle />
+                        </IconButton>
+                        {event.frontPagePriority}
+                        <IconButton onClick={() => handleClick(event, -1)}>
+                            <RemoveCircleIcon />
+                        </IconButton>
                     </Grid>
                 ))}
             </Grid>
