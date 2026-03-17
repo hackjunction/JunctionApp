@@ -27,6 +27,12 @@ module.exports = app => {
             message: 'Hello!',
         })
     })
+    app.get('/api/health', (req, res) => {
+        res.status(200).json({
+            status: 'ok',
+            uptime: process.uptime(),
+        })
+    })
     app.use('/api/auth', authRouter)
     app.use('/api/email', emailRouter)
     app.use('/api/newsletter', newsletterRouter)

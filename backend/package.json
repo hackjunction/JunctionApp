@@ -49,6 +49,7 @@
         "graphql-tools": "^7.0.2",
         "graphql-type-json": "^0.3.2",
         "helmet": "^3.22.0",
+        "ioredis": "^5.3.2",
         "heroku-ssl-redirect": "0.0.4",
         "http-status": "^1.4.2",
         "jwks-rsa": "^1.12.2",
