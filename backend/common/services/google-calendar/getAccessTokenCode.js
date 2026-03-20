@@ -35,7 +35,7 @@ fs.readFile(`${__dirname}/credentials.json`, (err, content) => {
                 '\ncopy the code from the url bar when done:\nhttp://localhost/?code=<COPY THIS PART>&scope=https://www.googleapis.com/auth/calendar',
             )
             console.log(
-                '\nthen run "npm run writeGoogleTokenJson <THE COPIED CODE HERE>" in the backend folder',
+                '\nthen run "bun run writeGoogleTokenJson <THE COPIED CODE HERE>" in the backend folder',
             )
         } else {
             console.log('Token.json exists, skipping')

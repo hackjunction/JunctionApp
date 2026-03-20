@@ -25,6 +25,7 @@ export default $config({
       providers: {
         aws: {
           region: "eu-north-1",
+          profile: process.env.AWS_PROFILE ?? "AdministratorAccess-369559608088",
         },
         cloudflare: true,
       },
@@ -153,7 +154,7 @@ export default $config({
         retention: $app.stage === "production" ? "3 months" : "1 month",
       },
       dev: {
-        command: "npm run dev",
+        command: "bun run dev",
         directory: "backend",
       },
     });
@@ -164,7 +165,7 @@ export default $config({
     const frontend = new sst.aws.StaticSite("Frontend", {
       path: "frontend",
       build: {
-        command: "npm run build",
+        command: "bun run build",
         output: "build",
       },
       domain: {

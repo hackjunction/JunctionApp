@@ -5,37 +5,30 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "better-npm-run start:prod",
-        "prod": "better-npm-run forever:prod",
-        "dev": "better-npm-run start:dev",
-        "debug": "better-npm-run start:debug",
-        "only_build": "better-npm-run build",
-        "build": "better-npm-run setup && better-npm-run build",
-        "setup": "better-npm-run setup",
+        "deploy": "bunx sst deploy --stage production",
+        "start": "cd backend && bun run start",
+        "prod": "cd backend && bun run prod",
+        "dev": "(cd frontend && bun run start) & (cd backend && bun run dev) & wait",
+        "debug": "(cd frontend && bun run start) & (cd backend && bun run debug) & wait",
+        "only_build": "rm -rf ./backend/build && cd frontend && bun run build && cp -r ./build ../backend/build",
+        "build": "bun run setup && bun run only_build",
+        "setup": "bun install && bun run setup:backend && bun run setup:frontend && bun run setup:shared",
         "loadGavelVote": "cd tests && k6 run gavelSubmitVoteStressTest.js",
         "loadGavelStartVote": "cd tests && k6 run gavelStartVoteStressTest.js",
-        "dev:frontend": "cd frontend && npm start",
-        "dev:backend": "cd backend && npm run dev",
+        "dev:frontend": "cd frontend && bun run start",
+        "dev:backend": "cd backend && bun run dev",
         "db-sync:prod-to-local": "sh ./scripts/sync-production-to-local.sh",
         "db-sync:prod-to-dev": "sh ./scripts/sync-production-to-dev.sh",
         "db-sync:prod-to-staging": "sh ./scripts/sync-production-to-staging.sh",
         "db-sync:dev-to-local": "sh ./scripts/sync-dev-to-local.sh",
-        "pre-commit:frontend": "cd frontend && npm run precommit",
-        "pre-commit:backend": "cd backend && npm run precommit",
-        "pre-commit:shared": "cd shared && npm run precommit",
-        "auth0": "a0deploy import -c ./auth0/config.json -i ./auth0/tenant.yaml",
-        "tailwind": "cd frontend && npm run build:tailwind"
-    },
-    "betterScripts": {
-        "setup": "better-npm-run setup:backend && better-npm-run setup:frontend && better-npm-run setup:shared",
-        "setup:frontend": "cd frontend && npm install",
-        "setup:backend": "cd backend && npm ci",
-        "setup:shared": "cd shared && npm ci",
-        "start:dev": "npm-run-all --parallel dev:frontend dev:backend",
-        "start:debug": "npm-run-all --parallel dev:frontend dev:backend --debug-brk=2222",
-        "start:prod": "cd backend && npm start",
-        "forever:prod": "cd backend && npm run prod",
-        "build": "rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build"
+        "pre-commit:frontend": "cd frontend && bun run precommit",
+        "pre-commit:backend": "cd backend && bun run precommit",
+        "pre-commit:shared": "cd shared && bun run precommit",
+        "auth0": "bunx a0deploy import -c ./auth0/config.json -i ./auth0/tenant.yaml",
+        "tailwind": "cd frontend && bun run build:tailwind",
+        "setup:frontend": "cd frontend && bun install",
+        "setup:backend": "cd backend && bun install",
+        "setup:shared": "cd shared && bun install"
     },
     "pre-commit": [
         "pre-commit:frontend",
@@ -45,7 +38,6 @@
     "author": "Juuso Lappalainen",
     "license": "ISC",
     "devDependencies": {
-        "npm-run-all": "^4.1.5",
         "pre-commit": "^1.2.2"
     },
     "dependencies": {
@@ -53,7 +45,6 @@
         "@fontsource/inter": "^5.0.3",
         "@google-cloud/local-auth": "^2.1.0",
         "auth0-deploy-cli": "^5.5.7",
-        "better-npm-run": "^0.1.1",
         "forever": "^4.0.3",
         "googleapis": "^105.0.0",
         "graphql-redis-subscriptions": "^2.5.0",
@@ -68,7 +59,8 @@
     },
     "engines": {
         "node": "12.3.1",
-        "npm": "6.9.0"
+        "bun": "1.3.10"
     },
+    "packageManager": "bun@1.3.10",
     "type": "module"
 }

@@ -1,11 +1,15 @@
+FROM oven/bun:1.3.10-alpine AS bun
+
 FROM node:18-alpine AS base
 RUN apk add --no-cache curl
+COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
+RUN ln -s /usr/local/bin/bun /usr/local/bin/bunx
 
 # --- Build shared ---
 FROM base AS shared
 WORKDIR /app/shared
-COPY shared/package*.json ./
-RUN npm ci
+COPY shared/package.json ./
+RUN bun install
 COPY shared/ ./
 
 # --- Build frontend ---
@@ -13,18 +17,18 @@ FROM base AS frontend
 WORKDIR /app/shared
 COPY --from=shared /app/shared ./
 WORKDIR /app/frontend
-COPY frontend/package*.json ./
-RUN npm ci
+COPY frontend/package.json ./
+RUN bun install
 COPY frontend/ ./
-RUN npm run build
+RUN bun run build
 
 # --- Build backend ---
 FROM base AS backend
 WORKDIR /app/shared
 COPY --from=shared /app/shared ./
 WORKDIR /app/backend
-COPY backend/package*.json ./
-RUN npm ci
+COPY backend/package.json ./
+RUN bun install
 COPY backend/ ./
 
 # --- Production image ---
@@ -41,7 +45,7 @@ COPY --from=backend /app/backend ./backend
 COPY --from=frontend /app/frontend/build ./backend/build
 
 # Copy root package files
-COPY package*.json ./
+COPY package.json ./
 
 WORKDIR /app/backend
 

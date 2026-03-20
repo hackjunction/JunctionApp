@@ -58,9 +58,12 @@ stages:
         targetType: 'inline'
         script: |
           node -v
-          npm -v
-          npm install
-          npm run build
+          curl -fsSL https://bun.sh/install | bash
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          bun -v
+          bun install
+          bun run build
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'

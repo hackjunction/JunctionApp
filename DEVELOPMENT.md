@@ -7,6 +7,7 @@ Follow this quick guide to set up the project for local development.
 Before you begin, make sure you have the following installed on your system:
 
 -   Node.js 12.x (Recommended: use Nvm for managing Node versions)
+-   Bun 1.3.x
 -   MongoDB 3.6.x
 
 Regarding your development environment: _I highly recommend you to use VSCode with the Prettier and EsLint plugins installed. This way your code can be automatically fixed on save, according to the eslint/prettier configuration defined in the project._ The project will not allow commits that do not pass the linter.
@@ -23,8 +24,8 @@ cd JunctionApp
 This is a monorepo consisting of a `backend`, `frontend` and `shared` folder, which all need to be installed separately. For convenience, there exists a `setup` script in the root-level package.json, which does that for you. To set up the project, just run (in the root folder):
 
 ```
-npm install
-npm run setup
+bun install
+bun run setup
 ```
 
 ## Auth0 tenant set up
@@ -48,7 +49,7 @@ JunctionApp uses Auth0 for user authentication and authorization. To set up Auth
 -   AUTHZ_URL
     -   from authorization extension [img. 2.]
 
-6. Run `npm run auth0`. The script is going to display error message but everything works.
+6. Run `bun run auth0`. The script is going to display error message but everything works.
 
 -   In your auth0 tenant there should be now 5 new applications.
 
@@ -129,7 +130,7 @@ HASH_SALT=
 
 Running the project in development mode requires running the React dev server and the Node.js backend concurrently. For convenience, there exists a `dev` script in the root level package.json which does that for you. So, to spin up both servers just run:
 
-`npm run dev`
+`bun run dev`
 
 The app will automatically reload when you make changes to the code. Note: starting up the React development server will take some time on first startup, depending on the machine your working on, so be patient with it. Consequent code changes should reload the app quickly.
 
