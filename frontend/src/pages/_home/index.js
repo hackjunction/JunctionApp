@@ -125,35 +125,6 @@ export default () => {
                 </Container>
                 <Divider size={20} />
                 <Container center small>
-                    <Grid>
-                        <Typography variant="h4" align="center" className={classes.sectionTitle}>
-                            {t('Platform_organise_hack_', {
-                                owner: config.PLATFORM_OWNER_NAME,
-                            })}
-                        </Typography>
-                    </Grid>
-                    <Grid container justifyContent="center" alignItems="center">
-                        <Button
-                            color="theme_lightgray"
-                            variant="outlinedNew"
-                            strong
-                            onClick={() => dispatch(push('/contact'))}
-                        >
-                            {t('Contact_us_')}
-                        </Button>
-                        <Button
-                            color="theme_lightgray"
-                            variant="outlinedNew"
-                            strong
-                            onClick={() => dispatch(push('/pricing'))}
-                        >
-                            {t('Pricing_')}
-                        </Button>
-                    </Grid>
-                    <Divider size={4} />
-                </Container>
-                <Divider size={20} />
-                <Container center small>
                     <Divider size={1} />
                     <Typography variant="h3" align="center" className={classes.sectionTitle}>
                         {t('New_to_', {

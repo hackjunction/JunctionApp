@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.svg" type="image/svg+xml" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
@@ -12,38 +13,42 @@
     <link rel="mask-icon" href="%PUBLIC_URL%/safari-pinned-tab.svg" color="#ffffff" />
     <meta name="msapplication-TileColor" content="#001d24" />
     <meta name="theme-color" content="#001d24" />
+
+    <!-- Preconnect to Google Fonts for fastest possible font loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Load fonts in <head> with display=swap so text is visible immediately with fallback -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Pixelify+Sans:wght@400;500;600;700&display=swap" />
+
     <script defer data-domain="%REACT_APP_PLAUSIBLE_DATA_DOMAIN%" src="%REACT_APP_PLAUSIBLE_SRC%"></script>
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>%REACT_APP_PAGE_TITLE%</title>
 
-    <!-- <style>
+    <style>
+        /* Critical CSS inlined to avoid FOUC */
+        html, body {
+            background-color: #001d24;
+            color: #ffffff;
+            font-family: 'IBM Plex Mono', monospace;
+            margin: 0;
+        }
+        body {
+            background-image:
+                linear-gradient(rgba(77, 255, 209, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(77, 255, 209, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
         #root {
-            min-height: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-
-        html,
-        body {
-            height: 100%;
-        }
-
-        body {
-            /* position: absolute;
-            left: -17px;
-            right: -17px;
-            padding-top: 0; */
-            /* padding-right: 17px !important;
-                padding-left: 17px; */
-            padding-bottom: 0px;
-            overflow-x: hidden;
-            overflow-y: auto !important;
-        }
-    </style> -->
+    </style>
 </head>
 
-<body class="body" style="background-color: #001d24; color: #ffffff;">
+<body class="body">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 </body>

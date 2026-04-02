@@ -1,18 +1,12 @@
 module.exports = {
     future: {
-        // removeDeprecatedGapUtilities: true,
-        // purgeLayersByDefault: true,
+        removeDeprecatedGapUtilities: true,
+        purgeLayersByDefault: true,
     },
     prefix: 'tw-',
     purge: {
-        content: [
-            './src/*.js',
-            './src/**/*.js',
-            './src/**/**/*.js',
-            './src/**/**/**/*.js',
-            './src/**/**/**/**/*.js',
-            './src/**/**/**/**/**/*.js',
-        ],
+        enabled: true,
+        content: ['./src/**/*.js', './public/index.html'],
     },
     theme: {
         extend: {

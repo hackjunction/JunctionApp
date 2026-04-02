@@ -47,20 +47,16 @@ const settings = {
         value: process.env.REACT_APP_IS_DEBUG === 'true',
     },
     LOGO_DARK_URL: {
-        required: true,
-        value:
-            process.env.REACT_APP_LOGO_DARK_URL ||
-            '',
+        required: false,
+        value: process.env.REACT_APP_LOGO_DARK_URL,
     },
     LOGO_LIGHT_URL: {
-        required: true,
-        value:
-            process.env.REACT_APP_LOGO_LIGHT_URL ||
-            '',
+        required: false,
+        value: process.env.REACT_APP_LOGO_LIGHT_URL,
     },
     EMBLEM_DARK_URL: {
-        required: true,
-        value: process.env.REACT_APP_EMBLEM_DARK_URL || '',
+        required: false,
+        value: process.env.REACT_APP_EMBLEM_DARK_URL,
     },
     LOGROCKET_ID: {
         required: false,

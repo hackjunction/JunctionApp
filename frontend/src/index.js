@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import './i18n'
-import './styles/tailwind.css'
+import './styles/index.css'
 import { CssBaseline } from '@material-ui/core'
 import { StylesProvider, ThemeProvider } from '@material-ui/styles'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { CloudinaryContext } from 'cloudinary-react'
 import { SnackbarProvider } from 'notistack'
-import WebFont from 'webfontloader'
 import Notifier from './notifier'
 import configureStore, { history } from 'redux/configureStore'
 import config from 'constants/config'
@@ -37,15 +36,6 @@ if (process.env.NODE_ENV === 'development') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render')
     whyDidYouRender(React)
 }
-
-WebFont.load({
-    google: {
-        families: [
-            'IBM+Plex+Mono:400,400i,500,700,700i',
-            'Pixelify+Sans:400,500,600,700',
-        ],
-    },
-})
 
 ReactDOM.render(
     <Provider store={store}>

@@ -1,30 +1,18 @@
 import React from 'react'
-import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
-import SVG from 'react-inlinesvg'
+
+import boatLogo from 'assets/images/tch-logo-animated.gif'
 
 export default ({ size, title }) => {
     const classes = useStyles({ size })
     return (
         <div className={classes.root}>
             <div className={classes.logo}>
-                <SVG
-                    src={require('assets/logos/emblem.svg')}
-                    className={clsx(classes.svg, classes.svg1)}
-                >
-                    <img
-                        src={require('assets/logos/emblem_white.png')}
-                        alt="logo"
-                    />
-                </SVG>
-                <SVG
-                    src={require('assets/logos/emblem.svg')}
-                    className={clsx(classes.svg, classes.svg2)}
-                ></SVG>
-                <SVG
-                    src={require('assets/logos/emblem.svg')}
-                    className={clsx(classes.svg, classes.svg3)}
-                ></SVG>
+                <img
+                    className={classes.logoImg}
+                    src={boatLogo}
+                    alt="That Crypto Hackathon"
+                />
             </div>
             {title && (
                 <div>
@@ -200,30 +188,10 @@ const useStyles = makeStyles(theme => ({
             opacity: 0.25,
         },
     },
-    svg: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
+    logoImg: {
         width: '100%',
         height: '100%',
-    },
-    svg1: {
-        animation: '$glitch1 2.5s infite',
-        '& path': {
-            fill: 'white',
-        },
-    },
-    svg2: {
-        animation: '$glitch2 2.5s infinite',
-        '& path': {
-            fill: '#b200b7',
-        },
-    },
-    svg3: {
-        animation: '$glitch3 2.5s infinite',
-        '& path': {
-            fill: 'white',
-        },
+        objectFit: 'contain',
     },
     logo: ({ size }) => ({
         width: `${size}px`,
@@ -240,7 +208,7 @@ const useStyles = makeStyles(theme => ({
         animation: '$glitch1 2.5s infinite',
         '&:nth-child(2n)': {
             animation: '$glitch2 2.5s infinite',
-            color: '#b200b7',
+            color: '#4dffd1',
         },
         '&:nth-child(3n)': {
             animation: '$glitch3 2.5s infinite',
