@@ -151,8 +151,8 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                                 }
                                 label={
                                     item.approved
-                                        ? 'This script was approved by Junction'
-                                        : 'This script is not yet approved by Junction. Request approval by getting in touch with the platform maintainers..'
+                                        ? 'This script was approved by the platform'
+                                        : 'This script is not yet approved. Request approval by getting in touch with the platform maintainers.'
                                 }
                             />
                         </FormGroup>

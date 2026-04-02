@@ -255,10 +255,10 @@ export default () => {
                         <FormControl
                             label="Overall winner method"
                             //TODO: test and fix Finals, public voting
-                            //*Finals, public voting*: Winners are selected by voting in the JunctionApp, finalists are auto-generated from the top-ranked projects in each challenge.
+                            //*Finals, public voting*: Winners are selected by voting in the app, finalists are auto-generated from the top-ranked projects in each challenge.
                             hint={`Which method should be used to determine the overall winner?
 
-*Finals, manual voting*: Winners are selected by voting in the JunctionApp, finalists are hand picked by organisers in the "Finalist selection" tab in "Projects".
+*Finals, manual voting*: Winners are selected by voting in the app, finalists are hand picked by organisers in the "Finalist selection" tab in "Projects".
 
 *No overall winner*: There is no single overall winner for this event and no voting happens for overall results.
 `}

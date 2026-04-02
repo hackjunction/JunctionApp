@@ -17,7 +17,6 @@ import Divider from 'components/generic/Divider'
 import ExternalLink from 'components/generic/ExternalLink'
 import Footer from 'components/layouts/Footer'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
-import Image from 'components/generic/Image'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import EventsGrid from './EventsGrid'
@@ -35,7 +34,7 @@ export default () => {
                 <title>{config.PLATFORM_OWNER_NAME}</title>
                 <meta
                     name="keywords"
-                    content="Hackathon, hackathon platform, Junction"
+                    content="Hackathon, hackathon platform, crypto, web3, That Crypto Hackathon"
                 />
                 <meta name="title" content={config.SEO_PAGE_TITLE} />
                 <meta property="og:title" content={config.SEO_PAGE_TITLE} />
@@ -75,7 +74,7 @@ export default () => {
                     <Button
                         variant="outlinedNew"
                         color="theme_lightgray"
-                        onClick={() => dispatch(push('/events'))} // TODO: Add past events page
+                        onClick={() => dispatch(push('/events'))}
                     >
                         {t('Past_events_all_')}
                     </Button>
@@ -84,13 +83,7 @@ export default () => {
             <Divider size={20} />
             <Container center small>
                 <Grid>
-                    <Image
-                        defaultImage={require('assets/logos/emblem_black.png')}
-                        transformation={{
-                            width: 150,
-                        }}
-                    />
-                    <Typography variant="h4" align="center">
+                    <Typography variant="h4" align="center" style={{ color: '#4dffd1', fontFamily: '"Pixelify Sans", sans-serif' }}>
                         {t('Platform_organise_hack_', {
                             owner: config.PLATFORM_OWNER_NAME,
                         })}
@@ -119,7 +112,7 @@ export default () => {
             <Divider size={20} />
             <Container center small>
                 <Divider size={1} />
-                <Typography variant="h3" align="center">
+                <Typography variant="h3" align="center" style={{ color: '#4dffd1', fontFamily: '"Pixelify Sans", sans-serif' }}>
                     {t('New_to_', {
                         owner: config.PLATFORM_OWNER_NAME_CAPS,
                     })}
@@ -129,7 +122,7 @@ export default () => {
                 <Typography
                     variant="body1"
                     align="center"
-                    style={{ fontSize: '24px' }}
+                    style={{ fontSize: '24px', color: 'rgba(255,255,255,0.85)' }}
                 >
                     {t('Junction_info_', {
                         owner: config.PLATFORM_OWNER_NAME,
@@ -139,7 +132,7 @@ export default () => {
                 <Typography
                     variant="body1"
                     align="center"
-                    style={{ fontSize: '24px' }}
+                    style={{ fontSize: '24px', color: 'rgba(255,255,255,0.85)' }}
                 >
                     {t('More_info_', {
                         owner: config.PLATFORM_OWNER_NAME,
@@ -151,7 +144,7 @@ export default () => {
             </Container>
             <Divider size={20} />
             <Container center>
-                <Typography variant="h4" align="center">
+                <Typography variant="h4" align="center" style={{ color: '#4dffd1', fontFamily: '"Pixelify Sans", sans-serif' }}>
                     {t('Join_hackerpack_')}
                 </Typography>
                 <Button
@@ -164,12 +157,6 @@ export default () => {
                 </Button>
             </Container>
             <Divider size={20} />
-            <Container center>
-                <img
-                    src="https://i.imgur.com/R7pG4Ln.png"
-                    style={{ width: '10em' }}
-                />
-            </Container>
         </PageWrapper>
     )
 }

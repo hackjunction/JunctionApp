@@ -71,7 +71,7 @@ export default ({ history, location }) => {
                             <title>{config.PLATFORM_OWNER_NAME}</title>
                             <meta
                                 name="keywords"
-                                content="Hackathon, hackathon platform, Junction"
+                                content="Hackathon, hackathon platform, crypto, web3, That Crypto Hackathon"
                             />
                             <meta
                                 name="title"

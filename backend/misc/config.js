@@ -75,7 +75,7 @@ const settings = {
     },
     PLATFORM_OWNER_NAME: {
         required: true,
-        value: process.env.PLATFORM_OWNER_NAME || 'Junction',
+        value: process.env.PLATFORM_OWNER_NAME || 'That Crypto Hackathon',
     },
     PORT: {
         required: true,
@@ -91,7 +91,7 @@ const settings = {
     },
     SENDGRID_FROM_NAME: {
         required: true,
-        value: process.env.SENDGRID_FROM_NAME || 'Junction',
+        value: process.env.SENDGRID_FROM_NAME || 'That Crypto Hackathon',
     },
     SENDGRID_GENERIC_TEMPLATE: {
         required: true,

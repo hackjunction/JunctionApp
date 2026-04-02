@@ -228,11 +228,10 @@ const ParticipationCertificate = ({ event, project, userProfile }) => {
                             />
                         </View>
                         <Text style={styles.footer}>
-                            <strong style={styles.junction}>Junction</strong> is
-                            the world’s leading hackathon organizer and a global
-                            community of hackers. Our mission is to bridge the
-                            gap between creators by making everyone fall in love
-                            with technology.
+                            <strong style={styles.junction}>That Crypto Hackathon</strong> brings
+                            together builders, developers, and crypto enthusiasts
+                            to hack, create, and innovate with the latest web3
+                            technology.
                         </Text>
 
                         <View style={styles.lowerRings}>

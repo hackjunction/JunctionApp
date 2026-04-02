@@ -31,15 +31,15 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         padding: theme.spacing(3),
-        background: 'black',
-        color: 'white',
+        background: '#001d24',
+        color: '#ffffff',
     },
     logo: {
         width: '200px',
         height: '200px',
     },
     title: {
-        color: 'white',
+        color: '#4dffd1',
         textTransform: 'uppercase',
         textAlign: 'center',
     },
@@ -118,20 +118,20 @@ export default () => {
                         <title>{config.PLATFORM_OWNER_NAME}</title>
                         <meta
                             name="keywords"
-                            content="Hackathon, hackathon platform, Junction"
+                            content="Hackathon, hackathon platform, crypto, web3, That Crypto Hackathon"
                         />
                         <meta
                             name="title"
-                            content="Junction App || Contact us"
+                            content="That Crypto Hackathon || Contact us"
                         />
                         <meta
                             property="og:title"
-                            content="Junction App || Contact us"
+                            content="That Crypto Hackathon || Contact us"
                         />
 
                         <meta
                             name="twitter:title"
-                            content="Junction App || Contact us"
+                            content="That Crypto Hackathon || Contact us"
                         />
                         <meta
                             name="description"

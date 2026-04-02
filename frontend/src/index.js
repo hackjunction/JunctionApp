@@ -41,9 +41,8 @@ if (process.env.NODE_ENV === 'development') {
 WebFont.load({
     google: {
         families: [
-            'Montserrat:400,400i,700,700i',
-            'Lato:400,400i,700,700i',
-            'Inter:400,400i,700,700i',
+            'IBM+Plex+Mono:400,400i,500,700,700i',
+            'Pixelify+Sans:400,500,600,700',
         ],
     },
 })

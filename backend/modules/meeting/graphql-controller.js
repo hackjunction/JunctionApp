@@ -97,10 +97,10 @@ class MeetingContorller {
             organizerEmail: partnerEmail,
             location: meeting.location || '',
             title:
-                meeting.title || `Junction: ${challenge.name} partner meeting`,
+                meeting.title || `TCH: ${challenge.name} partner meeting`,
             description:
                 meeting.description ||
-                `Junction: ${challenge.name}\nmeeting between participants and partner, ${challenge.partner}. `,
+                `TCH: ${challenge.name}\nmeeting between participants and partner, ${challenge.partner}. `,
             attendees: [],
             startTime: meeting.startTime,
             endTime: meeting.endTime,
