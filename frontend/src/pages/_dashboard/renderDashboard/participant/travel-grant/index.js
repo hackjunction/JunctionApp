@@ -134,7 +134,7 @@ export default () => {
                             according to the receipts you provided, up to the
                             amount of your travel grant allowance. Don't
                             hesitate to reach out to us at
-                            finance@hackjunction.com if you have any questions!
+                            finance@thatcryptohackathon.com if you have any questions!
                         </Typography>
                         <Typography variant="body1" paragraph>
                             In case we still need to clarify some of your

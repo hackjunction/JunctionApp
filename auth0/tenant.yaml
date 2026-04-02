@@ -124,7 +124,7 @@ clients:
       alg: RS256
       lifetime_in_seconds: 36000
       secret_encoded: false
-    logo_uri: 'https://www.hackjunction.com/static/media/text_white.4811a1ac.png'
+    logo_uri: 'https://www.thatcryptohackathon.com/static/media/text_white.4811a1ac.png'
     native_social_login:
       apple:
         enabled: false

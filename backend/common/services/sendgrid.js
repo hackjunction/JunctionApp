@@ -302,7 +302,7 @@ const SendgridService = {
                 <br/>
                 Now the processing moves on to the next step, confirming your payment information. There is no more action
                 required from you, and we are currently on track to be able to initiate the transactions on 15 December. 
-                Please reach out to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
+                Please reach out to finance@thatcryptohackathon.com (by replying to this email) with any further questions on the matter.
             `,
             },
         )
@@ -335,11 +335,11 @@ const SendgridService = {
                 If you don't do this, we will not be able to pay your travel grant.
                 <br />
                 <br />
-                Please refer to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
+                Please refer to finance@thatcryptohackathon.com (by replying to this email) with any further questions on the matter.
             `,
                 cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}/travel-grant`,
                 cta_text: 'Edit your details',
-                reply_to: 'finance@hackjunction.com',
+                reply_to: 'finance@thatcryptohackathon.com',
             },
         )
 

@@ -229,7 +229,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
-                                placeholder="https://www.hackjunction.com/challenges"
+                                placeholder="https://www.thatcryptohackathon.com/challenges"
                             />
                         </FormControl>
                     )}
@@ -251,7 +251,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
-                                placeholder="https://www.hackjunction.com/faq"
+                                placeholder="https://www.thatcryptohackathon.com/faq"
                             />
                         </FormControl>
                     )}
@@ -273,7 +273,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
-                                placeholder="https://www.hackjunction.com/demos"
+                                placeholder="https://www.thatcryptohackathon.com/demos"
                             />
                         </FormControl>
                     )}
@@ -295,7 +295,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
-                                placeholder="https://www.hackjunction.com/privacy"
+                                placeholder="https://www.thatcryptohackathon.com/privacy"
                             />
                         </FormControl>
                     )}
@@ -317,7 +317,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
-                                placeholder="https://www.hackjunction.com/terms"
+                                placeholder="https://www.thatcryptohackathon.com/terms"
                             />
                         </FormControl>
                     )}

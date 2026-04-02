@@ -21,7 +21,7 @@ const settings = {
         required: false,
         value:
             process.env.REACT_APP_CALENDAR_URL ||
-            'https://hackjunction.com/calendar',
+            'https://thatcryptohackathon.com/calendar',
     },
     CLOUDINARY_CLOUD_NAME: {
         required: true,
@@ -79,13 +79,13 @@ const settings = {
         required: true,
         value:
             process.env.REACT_APP_PLATFORM_OWNER_WEBSITE ||
-            'https://hackjunction.com',
+            'https://thatcryptohackathon.com',
     },
     PRIVACY_URL: {
         required: false,
         value:
             process.env.REACT_APP_PRIVACY_URL ||
-            'https://www.hackjunction.com/privacy-policy',
+            'https://www.thatcryptohackathon.com/privacy-policy',
     },
     SEO_IMAGE_URL: {
         required: false,
@@ -113,7 +113,7 @@ const settings = {
         required: false,
         value:
             process.env.REACT_APP_TERMS_URL ||
-            'https://www.hackjunction.com/terms-conditions',
+            'https://www.thatcryptohackathon.com/terms-conditions',
     },
     SEO_PAGE_LOGIN_DESCRIPTION: {
         required: true,

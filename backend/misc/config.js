@@ -25,7 +25,7 @@ const settings = {
     },
     CALENDAR_URL: {
         required: false,
-        value: process.env.CALENDAR_URL || 'https://hackjunction.com/calendar',
+        value: process.env.CALENDAR_URL || 'https://thatcryptohackathon.com/calendar',
     },
     CLOUDINARY_API_KEY: {
         required: true,
@@ -87,7 +87,7 @@ const settings = {
     },
     SENDGRID_FROM_EMAIL: {
         required: true,
-        value: process.env.SENDGRID_FROM_EMAIL || 'noreply@hackjunction.com',
+        value: process.env.SENDGRID_FROM_EMAIL || 'noreply@thatcryptohackathon.com',
     },
     SENDGRID_FROM_NAME: {
         required: true,

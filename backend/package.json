@@ -21,6 +21,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "extract-files": "9.0.0",
         "@hackjunction/shared": "file:../shared",
         "@sendgrid/client": "^7.4.1",
         "@sendgrid/mail": "^7.1.1",
@@ -45,8 +46,11 @@
         "googleapis": "^107.0.0",
         "graphql": "^15.4.0",
         "graphql-iso-date": "^3.6.1",
+        "graphql-redis-subscriptions": "^2.6.1",
+        "graphql-subscriptions": "^1.2.1",
         "graphql-tools": "^7.0.2",
         "graphql-type-json": "^0.3.2",
+        "graphql-ws": "^5.11.3",
         "helmet": "^3.22.0",
         "ioredis": "^5.3.2",
         "heroku-ssl-redirect": "0.0.4",
@@ -63,7 +67,12 @@
         "pino-pretty": "^4.0.0",
         "pino-sentry": "^0.3.0",
         "prerender-node": "^3.2.5",
+        "jsonwebtoken": "^9.0.0",
+        "mongodb": "^3.6.0",
+        "request": "^2.88.2",
         "shortid": "^2.2.15",
+        "uuid": "^8.3.2",
+        "ws": "^7.5.0",
         "yup": "^0.29.1"
     },
     "eslintConfig": {

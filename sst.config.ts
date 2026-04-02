@@ -7,12 +7,8 @@
  *   - aws        (core infra: VPC, ECS, S3, CloudFront, ElastiCache, SES)
  *   - cloudflare (DNS + CDN proxy)
  *
- * Both are preloaded with SST — no extra provider installs needed.
- *
- * Optional providers to add later:
- *   - mongodbatlas  (managed MongoDB — currently using URI secret instead)
- *   - auth0         (manage Auth0 tenant as IaC)
- *   - @checkly/pulumi, @pulumiverse/sentry, datadog (monitoring)
+ * MongoDB is managed externally via Atlas — connection URI passed as a secret.
+ * Cron task (daily results generation) to be added after upgrading to Cluster v2.
  */
 
 export default $config({
@@ -27,12 +23,14 @@ export default $config({
           region: "eu-north-1",
           profile: process.env.AWS_PROFILE ?? "AdministratorAccess-369559608088",
         },
-        cloudflare: true,
+        cloudflare: "6.13.0",
       },
     };
   },
 
   async run() {
+    await import("dotenv/config");
+
     // ─────────────────────────────────────────────
     // 1. SECRETS — Auth0, Cloudinary, MongoDB, SendGrid + app
     // ─────────────────────────────────────────────
@@ -63,6 +61,13 @@ export default $config({
       webhookApiKey: new sst.Secret("WebhookApiKey"),
     };
 
+    const isProd = $app.stage === "production";
+    const domain = "thatcryptohackathon.com";
+    const frontendDomain = isProd
+      ? `app.${domain}`
+      : `${$app.stage}.app.${domain}`;
+    const frontendUrl = `https://${frontendDomain}`;
+
     // ─────────────────────────────────────────────
     // 2. NETWORKING — VPC
     // ─────────────────────────────────────────────
@@ -77,9 +82,7 @@ export default $config({
     // ─────────────────────────────────────────────
     const redis = new sst.aws.Redis("Redis", {
       vpc,
-      engine: "valkey", // OSS-compatible, ~25% cheaper than Redis
-      instance:
-        $app.stage === "production" ? "cache.t4g.small" : "cache.t4g.micro",
+      instance: isProd ? "t4g.small" : "t4g.micro",
     });
 
     // ─────────────────────────────────────────────
@@ -94,7 +97,7 @@ export default $config({
     // 5. EMAIL — SES with Cloudflare DNS
     // ─────────────────────────────────────────────
     const email = new sst.aws.Email("Email", {
-      sender: "hackjunction.com",
+      sender: domain,
       dns: sst.cloudflare.dns(),
       dmarc: "v=DMARC1; p=quarantine; pct=100;",
     });
@@ -109,8 +112,8 @@ export default $config({
     // ─────────────────────────────────────────────
     const backend = new sst.aws.Service("Backend", {
       cluster,
-      cpu: $app.stage === "production" ? "1 vCPU" : "0.5 vCPU",
-      memory: $app.stage === "production" ? "2 GB" : "1 GB",
+      cpu: isProd ? "1 vCPU" : "0.5 vCPU",
+      memory: isProd ? "2 GB" : "1 GB",
       storage: "30 GB",
       health: {
         command: [
@@ -123,18 +126,21 @@ export default $config({
         startPeriod: "60 seconds",
       },
       scaling: {
-        min: $app.stage === "production" ? 2 : 1,
-        max: $app.stage === "production" ? 8 : 2,
+        min: isProd ? 2 : 1,
+        max: isProd ? 8 : 2,
         cpuUtilization: 70,
         memoryUtilization: 80,
       },
-      capacity:
-        $app.stage === "production"
-          ? [
-              { weight: 70 }, // 70% on-demand
-              { type: "spot", weight: 30 }, // 30% spot for cost savings
-            ]
-          : undefined,
+      loadBalancer: {
+        rules: [
+          { listen: "80/http", redirect: "443/https" },
+          { listen: "443/https", forward: "2222/http" },
+        ],
+        domain: {
+          name: isProd ? `api.${domain}` : `${$app.stage}.api.${domain}`,
+          dns: sst.cloudflare.dns(),
+        },
+      },
       image: {
         context: ".",
         dockerfile: "Dockerfile",
@@ -143,15 +149,43 @@ export default $config({
       environment: {
         NODE_ENV: "production",
         PORT: "2222",
+        WEB_CONCURRENCY: "1",
         ENVIRONMENT_TAG: $app.stage,
-        PLATFORM_OWNER_NAME: "Junction",
-        SENDGRID_FROM_EMAIL: "noreply@hackjunction.com",
-        SENDGRID_FROM_NAME: "Junction",
+        FRONTEND_URL: frontendUrl,
+        // Auth0
+        AUTH0_DOMAIN: secrets.auth0Domain.value,
+        AUTH0_CLIENT_ID: secrets.auth0ClientId.value,
+        AUTH0_CLIENT_SECRET: secrets.auth0ClientSecret.value,
+        AUTH0_AUTHORIZATION_EXTENSION_URL: secrets.auth0AuthExtUrl.value,
+        ID_TOKEN_NAMESPACE: secrets.idTokenNamespace.value,
+        // Cloudinary
+        CLOUDINARY_API_KEY: secrets.cloudinaryApiKey.value,
+        CLOUDINARY_API_SECRET: secrets.cloudinaryApiSecret.value,
+        CLOUDINARY_CLOUD_NAME: secrets.cloudinaryCloudName.value,
+        CLOUDINARY_FOLDER: secrets.cloudinaryFolder.value,
+        // MongoDB
+        MONGODB_URI: secrets.mongodbUri.value,
+        // SendGrid
+        SENDGRID_API_KEY: secrets.sendgridApiKey.value,
+        SENDGRID_GENERIC_TEMPLATE: secrets.sendgridGenericTemplate.value,
+        SENDGRID_CONTACT_TEMPLATE: secrets.sendgridContactTemplate.value,
+        SENDGRID_CONTACT_MAIL: secrets.sendgridContactMail.value,
+        SENDGRID_FROM_EMAIL: `noreply@${domain}`,
+        SENDGRID_FROM_NAME: "That Crypto Hackathon",
         SENDGRID_MAILING_LIST_ID: "7150117",
-        CALENDAR_URL: "https://hackjunction.com/calendar",
+        // App
+        ADMIN_TOKEN: secrets.adminToken.value,
+        HASH_SALT: secrets.hashSalt.value,
+        PLATFORM_OWNER_NAME: "That Crypto Hackathon",
+        CALENDAR_URL: `https://${domain}/calendar`,
+        // Optional
+        DISCORD_BOT_TOKEN: secrets.discordBotToken.value,
+        WEBHOOK_API_KEY: secrets.webhookApiKey.value,
+        // Redis — backend reads REDISCLOUD_URL directly in graphql modules
+        REDISCLOUD_URL: $interpolate`redis://${redis.host}:${redis.port}`,
       },
       logging: {
-        retention: $app.stage === "production" ? "3 months" : "1 month",
+        retention: isProd ? "3 months" : "1 month",
       },
       dev: {
         command: "bun run dev",
@@ -165,58 +199,26 @@ export default $config({
     const frontend = new sst.aws.StaticSite("Frontend", {
       path: "frontend",
       build: {
-        command: "bun run build",
+        command: "NODE_OPTIONS=--openssl-legacy-provider bun run build",
         output: "build",
       },
       domain: {
-        name:
-          $app.stage === "production"
-            ? "app.hackjunction.com"
-            : `${$app.stage}.app.hackjunction.com`,
+        name: frontendDomain,
         dns: sst.cloudflare.dns({ proxy: true }), // Cloudflare CDN + DDoS protection
-        redirects:
-          $app.stage === "production"
-            ? ["www.app.hackjunction.com"]
-            : undefined,
+        redirects: isProd ? [`www.app.${domain}`] : undefined,
       },
       environment: {
         REACT_APP_AUTH0_DOMAIN: secrets.auth0Domain.value,
         REACT_APP_AUTH0_CLIENT_ID: secrets.auth0ClientId.value,
         REACT_APP_CLOUDINARY_CLOUD_NAME: secrets.cloudinaryCloudName.value,
-        REACT_APP_FRONTEND_URL:
-          $app.stage === "production"
-            ? "https://app.hackjunction.com"
-            : `https://${$app.stage}.app.hackjunction.com`,
-        REACT_APP_API_BASE_URL: $interpolate`${backend.url}`,
+        REACT_APP_ID_TOKEN_NAMESPACE: secrets.idTokenNamespace.value,
+        REACT_APP_BASE_URL: $interpolate`${backend.url}`,
+        REACT_APP_FRONTEND_URL: frontendUrl,
       },
     });
 
     // ─────────────────────────────────────────────
-    // 9. CRON — Daily event results generation
-    // ─────────────────────────────────────────────
-    const cronTask = new sst.aws.Task("GenerateResults", {
-      cluster,
-      cpu: "0.25 vCPU",
-      memory: "0.5 GB",
-      image: {
-        context: ".",
-        dockerfile: "Dockerfile",
-      },
-      link: [redis, ...Object.values(secrets)],
-      environment: {
-        NODE_ENV: "production",
-        TASK: "generate-event-results",
-        ENVIRONMENT_TAG: $app.stage,
-      },
-    });
-
-    const cron = new sst.aws.Cron("DailyResultsGen", {
-      task: cronTask,
-      schedule: "cron(0 2 * * ? *)", // 2:00 AM UTC daily
-    });
-
-    // ─────────────────────────────────────────────
-    // 10. OUTPUTS
+    // 9. OUTPUTS
     // ─────────────────────────────────────────────
     return {
       frontendUrl: frontend.url,

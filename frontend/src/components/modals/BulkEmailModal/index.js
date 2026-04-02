@@ -115,8 +115,8 @@ export default ({ visible, userIds = [], onClose }) => {
         if (!validate()) return
         setLoading(true)
         const fromObject = {
-            email: event.emailConfig.senderEmail ? event.emailConfig.senderEmail : 'noreply@hackjunction.com',
-            name: event.emailConfig.senderName ? event.emailConfig.senderName : 'Junction',
+            email: event.emailConfig.senderEmail ? event.emailConfig.senderEmail : 'noreply@thatcryptohackathon.com',
+            name: event.emailConfig.senderName ? event.emailConfig.senderName : 'That Crypto Hackathon',
         }
         EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: user.email, params: params, from: fromObject})
             .then(() => {

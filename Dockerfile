@@ -20,7 +20,7 @@ WORKDIR /app/frontend
 COPY frontend/package.json ./
 RUN bun install
 COPY frontend/ ./
-RUN bun run build
+RUN NODE_OPTIONS=--openssl-legacy-provider bun run build
 
 # --- Build backend ---
 FROM base AS backend
@@ -28,7 +28,10 @@ WORKDIR /app/shared
 COPY --from=shared /app/shared ./
 WORKDIR /app/backend
 COPY backend/package.json ./
-RUN bun install
+RUN npm install --legacy-peer-deps
+# Fix: extract-files@9 uses deprecated trailing-slash exports pattern that Node 18 rejects.
+# Remove the exports field so Node falls back to traditional file resolution.
+RUN node -e "const f='node_modules/extract-files/package.json';const p=JSON.parse(require('fs').readFileSync(f));delete p.exports;require('fs').writeFileSync(f,JSON.stringify(p,null,2))"
 COPY backend/ ./
 
 # --- Production image ---

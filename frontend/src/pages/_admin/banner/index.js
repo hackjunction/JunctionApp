@@ -155,12 +155,11 @@ export default () => {
                                                 now only tested inside the
                                                 platform, but should be used so
                                                 that you take everything after
-                                                "app.hackjunction.com",
-                                                including the last slash, and
-                                                add it there. For example
-                                                "/pricing" at the push
-                                                destiation would lead to
-                                                app.hackjunction.com/pricing
+                                                the domain, including the last
+                                                slash, and add it there. For
+                                                example "/pricing" at the push
+                                                destination would lead to
+                                                app.thatcryptohackathon.com/pricing
                                             </Typography>
                                         </Grid>
                                     </Grid>

@@ -37,7 +37,7 @@ router.route('/anonymize-db').get(
                         $set: {
                             'answers.email': `anon+${Math.floor(
                                 Math.random() * 1000000,
-                            )}@hackjunction.com`,
+                            )}@thatcryptohackathon.com`,
                         },
                     },
                 },
@@ -63,7 +63,7 @@ router.route('/anonymize-db').get(
                         $set: {
                             email: `anon+${Math.floor(
                                 Math.random() * 1000000,
-                            )}@hackjunction.com`,
+                            )}@thatcryptohackathon.com`,
                         },
                     },
                 },

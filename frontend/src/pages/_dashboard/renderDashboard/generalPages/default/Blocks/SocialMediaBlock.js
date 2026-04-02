@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 const SocialMediaBlock = () => {
     const event = useSelector(DashboardSelectors.event)
     const classes = useStyles()
-    const shareurl = 'https://app.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
+    const shareurl = `${window.location.origin}/events/${event.slug}`
     const sharetext = `I just applied to ${event.name}!`
     return (
         <Grid item xs={12} lg={12}>

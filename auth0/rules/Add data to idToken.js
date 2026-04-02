@@ -1,5 +1,5 @@
 function (user, context, callback) {
-  const namespace = 'https://app.hackjunction.com/';
+  const namespace = 'https://app.thatcryptohackathon.com/';
   const assignedRoles = (context.authorization || {}).roles || [];
  
   context.idToken[namespace + 'country'] = context.request.geoip.country_name;

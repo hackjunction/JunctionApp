@@ -12,7 +12,7 @@ const install = {
     token_uri: "https://oauth2.googleapis.com/token",//"https://oauth2.googleapis.com/token", //global.gConfig.GOOGLE_TOKEN_URI,
     auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",//"https://www.googleapis.com/oauth2/v1/certs", //global.gConfig.GOOGLE_AUTH_PROVIDER,
     client_secret: "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",//"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", //global.gConfig.GOOGLE_CLIENT_SECRET,
-    redirect_uris: ["http://localhost", "https://app.hackjunction.com", "https://eu.junctionplatform.com"]//["http://localhost","https://app.hackjunction.com"], //[ global.gConfig.GOOGLE_REDIRECT]
+    redirect_uris: ["http://localhost", "https://app.thatcryptohackathon.com"]
 }
 const credentialsJ = {
     installed: install
