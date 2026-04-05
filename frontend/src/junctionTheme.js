@@ -1,26 +1,26 @@
 import { createTheme } from '@material-ui/core/styles'
-const titleFont = ['"Inter"', 'sans-serif'].join(',')
-const bodyFont = ['"Inter"', 'sans-serif'].join(',')
+const titleFont = ['"Pixelify Sans"', 'sans-serif'].join(',')
+const bodyFont = ['"IBM Plex Mono"', 'monospace'].join(',')
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#6B09FF',
-            dark: '#330080',
-            light: '#a366ff',
-            contrastText: '#ffffff',
+            main: '#4dffd1',
+            dark: '#25c49a',
+            light: '#7fffe0',
+            contrastText: '#001d24',
         },
         secondary: {
-            main: '#f8a787',
-            dark: '#f58356',
-            light: '#fac0aa',
+            main: '#061126',
+            dark: '#000000',
+            light: '#2a3650',
             contrastText: '#ffffff',
         },
         success: {
-            main: '#34FACC',
-            light: '#6afbd9',
-            dark: '#06e0ad',
-            contrastText: '#ffffff',
+            main: '#4dffd1',
+            light: '#7fffe0',
+            dark: '#25c49a',
+            contrastText: '#001d24',
         },
         error: {
             main: '#e63900',
@@ -32,17 +32,17 @@ const theme = createTheme({
             main: '#EAB059',
             light: '#f4d4a4',
             dark: '#e3931c',
-            contrastText: '#ffffff',
+            contrastText: '#001d24',
         },
         theme_black: {
-            main: '#232323',
+            main: '#001d24',
         },
         theme_red: {
             main: '#ff5b5b',
         },
         theme_gray: {
-            base: '#f7fafc',
-            dark: '#e2e8f0',
+            base: '#0c2c34',
+            dark: '#061126',
         },
         theme_orange: {
             main: '#f58532',
@@ -51,58 +51,62 @@ const theme = createTheme({
             contrastText: '#ffffff',
         },
         theme_blue: {
-            main: '#73F9EC',
-            light: '#8ffaff',
-            dark: '#0b96a5',
-            contrastText: '#232323',
+            main: '#4dffd1',
+            light: '#7fffe0',
+            dark: '#25c49a',
+            contrastText: '#001d24',
         },
         theme_purple: {
-            main: '#392F80',
-            light: '#6959b0',
-            dark: '#000953',
+            main: '#529777',
+            light: '#7ab89a',
+            dark: '#3a6b54',
             contrastText: '#ffffff',
         },
         theme_turquoise: {
-            main: '#58C7D6',
-            light: '#8ffaff',
-            dark: '#0b96a5',
-            contrastText: '#ffffff',
+            main: '#4dffd1',
+            light: '#7fffe0',
+            dark: '#25c49a',
+            contrastText: '#001d24',
         },
         theme_lightgray: {
-            main: '#efefef',
-            light: '#ffffff',
-            dark: '#bdbdbd',
-            contrastText: '#000000',
+            main: '#0c2c34',
+            light: '#1a4a55',
+            dark: '#001d24',
+            contrastText: '#4dffd1',
         },
         theme_lightgrayDark: {
-            main: '#efefef',
-            light: '#ffffff',
-            dark: '#bdbdbd',
-            contrastText: '#ffffff',
+            main: '#0c2c34',
+            light: '#1a4a55',
+            dark: '#001d24',
+            contrastText: '#4dffd1',
         },
         theme_white: {
-            main: '#ffffff',
-            light: '#ffffff',
-            dark: '#ffffff',
-            contrastText: '#000000',
+            main: '#001d24',
+            light: '#0c2c34',
+            dark: '#000000',
+            contrastText: '#ffffff',
         },
         background: {
-            paper: '#fff',
-            default: '#ffffff',
-            level2: '#f5f5f5',
-            level1: '#fff',
+            paper: '#0c2c34',
+            default: '#001d24',
+            level2: '#061126',
+            level1: '#0c2c34',
         },
         outlined_button: {
-            main: '#ffffff',
-            light: '#ffffff',
-            dark: '#000000',
-            contrastText: '#000000',
-            lightBorder: '#e2e8f0',
+            main: '#001d24',
+            light: '#0c2c34',
+            dark: '#4dffd1',
+            contrastText: '#4dffd1',
+            lightBorder: '#0c2c34',
+        },
+        text: {
+            primary: '#ffffff',
+            secondary: 'rgba(255,255,255,0.7)',
         },
     },
     typography: {
         fontFamily: bodyFont,
-        fontWeightRegular: 300,
+        fontWeightRegular: 400,
         h1: {
             fontFamily: titleFont,
             fontWeight: '700',
@@ -158,6 +162,42 @@ const theme = createTheme({
         },
     },
     spacing: 8,
+    overrides: {
+        MuiCssBaseline: {
+            '@global': {
+                body: {
+                    backgroundColor: '#001d24',
+                    color: '#ffffff',
+                },
+            },
+        },
+        MuiPaper: {
+            root: {
+                backgroundColor: '#0c2c34',
+                color: '#ffffff',
+            },
+        },
+        MuiTypography: {
+            root: {
+                color: '#ffffff',
+            },
+        },
+        MuiInputBase: {
+            root: {
+                color: '#ffffff',
+            },
+        },
+        MuiOutlinedInput: {
+            notchedOutline: {
+                borderColor: '#0c2c34',
+            },
+        },
+        MuiInputLabel: {
+            root: {
+                color: 'rgba(255,255,255,0.7)',
+            },
+        },
+    },
 })
 
 export default theme

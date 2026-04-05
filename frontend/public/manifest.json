@@ -1,6 +1,6 @@
 {
-  "short_name": "Junction App",
-  "name": "Junction App HackPlatform",
+  "short_name": "TCH",
+  "name": "That Crypto Hackathon",
   "default_locale": "en",
   "icons": [
     {
@@ -11,6 +11,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#001d24",
+  "background_color": "#001d24"
 }

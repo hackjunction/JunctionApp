@@ -25,7 +25,7 @@ export default () => {
     return (
         <>
             <Helmet>
-                <title>Junction App || Dashboard</title>
+                <title>That Crypto Hackathon || Dashboard</title>
             </Helmet>
             <PageHeader
                 heading="Challenges"

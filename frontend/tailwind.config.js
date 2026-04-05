@@ -1,21 +1,24 @@
 module.exports = {
     future: {
-        // removeDeprecatedGapUtilities: true,
-        // purgeLayersByDefault: true,
+        removeDeprecatedGapUtilities: true,
+        purgeLayersByDefault: true,
     },
     prefix: 'tw-',
     purge: {
-        content: [
-            './src/*.js',
-            './src/**/*.js',
-            './src/**/**/*.js',
-            './src/**/**/**/*.js',
-            './src/**/**/**/**/*.js',
-            './src/**/**/**/**/**/*.js',
-        ],
+        enabled: true,
+        content: ['./src/**/*.js', './public/index.html'],
     },
     theme: {
         extend: {
+            colors: {
+                'tch-dark': '#001d24',
+                'tch-darker': '#061126',
+                'tch-card': '#0c2c34',
+                'tch-primary': '#4dffd1',
+                'tch-primary-dark': '#25c49a',
+                'tch-green': '#529777',
+                'tch-separator': '#0c2c34',
+            },
             backgroundImage: {
                 'wave-pattern': "url('../assets/images/nawbar_waves.svg')",
             },

@@ -1,10 +1,6 @@
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* CSS */
-
-/* Create below composite classes, after you finish, from the /frontend directory, you must run the command 'bun run build:tailwind' to build tailwind css to see the changes on the development enviroment
-
-Any custom css, create it here and do not make any updates to the tailwind.css file, since it will be deleted every time tailwind build is executed*/
 
 .tw-break-words-overflow {
   overflow-wrap: break-word;
@@ -12,4 +8,90 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 }
 .tw-rounded-02rem {
   border-radius: 0.2rem
+}
+
+/* That Crypto Hackathon - Dark theme global styles */
+html, body {
+  background-color: #001d24;
+  color: #ffffff;
+}
+
+body {
+  background-image:
+    linear-gradient(rgba(77, 255, 209, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77, 255, 209, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+#root {
+  background-color: transparent;
+}
+
+/* Override MUI default white backgrounds */
+.MuiPaper-root {
+  background-color: #0c2c34 !important;
+  color: #ffffff !important;
+}
+
+.MuiCard-root {
+  background-color: #0c2c34 !important;
+  border: 1px solid rgba(77, 255, 209, 0.1);
+}
+
+.MuiTypography-root {
+  color: #ffffff;
+}
+
+.MuiTypography-colorTextSecondary {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Input fields */
+.MuiInputBase-root {
+  color: #ffffff !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: #0c2c34 !important;
+}
+
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #4dffd1 !important;
+}
+
+.MuiInputLabel-root {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #001d24;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0c2c34;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #25c49a;
+}
+
+/* Links */
+a {
+  color: #4dffd1;
+}
+
+a:hover {
+  color: #7fffe0;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(77, 255, 209, 0.3);
+  color: #ffffff;
 }

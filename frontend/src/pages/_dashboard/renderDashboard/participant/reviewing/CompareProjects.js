@@ -204,7 +204,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                                     {t('Current_')}
                                 </Button>
                             </Grid>
-                            {/* commented out for Junction 2021
+                            {/* commented out
                             {event.eventType === 'physical' && (
                                 <Grid item xs={12}>
                                     <Box

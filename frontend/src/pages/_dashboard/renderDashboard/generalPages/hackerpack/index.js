@@ -40,20 +40,20 @@ export default () => {
     return (
         <>
             <Helmet>
-                <title>Junction App || Dashboard</title>
+                <title>That Crypto Hackathon || Dashboard</title>
                 <meta
                     name="keywords"
-                    content={`Redeem hackepack, junction, hackjunction, hackerpack`}
+                    content={`Redeem hackerpack, crypto, web3, hackerpack`}
                 />
-                <meta name="title" content="Junction App || Hackerpack" />
+                <meta name="title" content="That Crypto Hackathon || Hackerpack" />
                 <meta
                     property="og:title"
-                    content="Junction App || Hackerpack"
+                    content="That Crypto Hackathon || Hackerpack"
                 />
 
                 <meta
                     name="twitter:title"
-                    content="Junction App || Hackerpack"
+                    content="That Crypto Hackathon || Hackerpack"
                 />
                 <meta
                     name="description"

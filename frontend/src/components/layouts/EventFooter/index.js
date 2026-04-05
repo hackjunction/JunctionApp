@@ -90,49 +90,7 @@ const EventFooter = props => {
     const { t } = useTranslation()
     return (
         <div className={classes.wrapper}>
-            <Grid container className={classes.innerSecond}>
-                <Grid item xs={12} md={6} xl={6} className={classes.align}>
-                    <Typography variant="h4" className={classes.white}>
-                        {t('Platform_organise_hack_', {
-                            owner: config.PLATFORM_OWNER_NAME,
-                        })}
-                    </Typography>
-                    <Button
-                        color="theme_lightgrayDark"
-                        variant="outlinedNew"
-                        strong
-                        onClick={() => dispatch(push('/contact'))}
-                    >
-                        {t('Contact_us_')}
-                    </Button>
-                    <Button
-                        color="theme_lightgrayDark"
-                        variant="outlinedNew"
-                        strong
-                        onClick={() => dispatch(push('/pricing'))}
-                    >
-                        {/* {t('Contact_us_')} */}
-                        Pricing
-                    </Button>
-                </Grid>
-                <Hidden xsDown>
-                    <Grid item xs={6} md={6} x={6} className={classes.innest}>
-                        <Typography variant="h4" className={classes.white}>
-                            {t('Join_hackerpack_')}
-                        </Typography>
-                        <Button
-                            color="theme_lightgrayDark"
-                            variant="outlinedNew"
-                            strong
-                            onClick={() => dispatch(push('/hackerpack'))}
-                            className={classes.align}
-                        >
-                            {t('To_hackerpack_')}
-                        </Button>
-                    </Grid>
-                </Hidden>
-            </Grid>
-            <Divider size={5} />
+            <Divider size={2} />
 
             <div className={classes.inner}>
                 <div className={classes.links}>
@@ -156,8 +114,7 @@ const EventFooter = props => {
                 <div className={classes.copyright}>
                     <Divider size={1} />
                     <span className={classes.copyright}>
-                        Designed and developed with ❤️ and ☕ by the Junction
-                        team, with the help of:
+                        Powered by That Crypto Hackathon
                     </span>
                     <Divider size={1} />
                     <div className={classes.logos}>

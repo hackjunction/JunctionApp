@@ -18,14 +18,39 @@ import Divider from 'components/generic/Divider'
 import ExternalLink from 'components/generic/ExternalLink'
 import Footer from 'components/layouts/Footer'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
-import Image from 'components/generic/Image'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import EventsGrid from './EventsGrid'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        background: theme.palette.theme_white.main,
+        background: 'linear-gradient(180deg, rgba(82,151,119,0.15) 0%, #001d24 30%)',
+        minHeight: '100vh',
+    },
+    heroSection: {
+        textAlign: 'center',
+        padding: theme.spacing(8, 2),
+    },
+    heroTitle: {
+        fontFamily: '"Pixelify Sans", sans-serif',
+        color: '#4dffd1',
+        fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+        fontWeight: 700,
+        marginBottom: theme.spacing(2),
+    },
+    heroSubtitle: {
+        color: 'rgba(255,255,255,0.8)',
+        fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+        maxWidth: '680px',
+        margin: '0 auto',
+        fontFamily: '"IBM Plex Mono", monospace',
+    },
+    sectionTitle: {
+        color: '#4dffd1',
+        fontFamily: '"Pixelify Sans", sans-serif',
+    },
+    bodyText: {
+        color: 'rgba(255,255,255,0.85)',
     },
 }))
 
@@ -36,7 +61,6 @@ export default () => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
     const classes = useStyles()
-    console.log('activeEvents', activeEvents)
 
     return (
         <PageWrapper header={() => <GlobalNavBar />} footer={() => <Footer />}>
@@ -45,7 +69,7 @@ export default () => {
                     <title>{config.PLATFORM_OWNER_NAME}</title>
                     <meta
                         name="keywords"
-                        content="Hackathon, hackathon platform, Junction"
+                        content="Hackathon, hackathon platform, crypto, web3, That Crypto Hackathon"
                     />
                     <meta name="title" content={config.SEO_PAGE_TITLE} />
                     <meta property="og:title" content={config.SEO_PAGE_TITLE} />
@@ -93,7 +117,7 @@ export default () => {
                         <Button
                             variant="outlinedNew"
                             color="theme_lightgray"
-                            onClick={() => dispatch(push('/events'))} // TODO: Add past events page
+                            onClick={() => dispatch(push('/events'))}
                         >
                             {t('Past_events_all_')}
                         </Button>
@@ -101,43 +125,8 @@ export default () => {
                 </Container>
                 <Divider size={20} />
                 <Container center small>
-                    <Grid>
-                        <Image
-                            defaultImage={require('assets/logos/emblem_black.png')}
-                            transformation={{
-                                width: 150,
-                            }}
-                        />
-                        <Typography variant="h4" align="center">
-                            {t('Platform_organise_hack_', {
-                                owner: config.PLATFORM_OWNER_NAME,
-                            })}
-                        </Typography>
-                    </Grid>
-                    <Grid container justifyContent="center" alignItems="center">
-                        <Button
-                            color="theme_lightgray"
-                            variant="outlinedNew"
-                            strong
-                            onClick={() => dispatch(push('/contact'))}
-                        >
-                            {t('Contact_us_')}
-                        </Button>
-                        <Button
-                            color="theme_lightgray"
-                            variant="outlinedNew"
-                            strong
-                            onClick={() => dispatch(push('/pricing'))}
-                        >
-                            {t('Pricing_')}
-                        </Button>
-                    </Grid>
-                    <Divider size={4} />
-                </Container>
-                <Divider size={20} />
-                <Container center small>
                     <Divider size={1} />
-                    <Typography variant="h3" align="center">
+                    <Typography variant="h3" align="center" className={classes.sectionTitle}>
                         {t('New_to_', {
                             owner: config.PLATFORM_OWNER_NAME_CAPS,
                         })}
@@ -147,6 +136,7 @@ export default () => {
                     <Typography
                         variant="body1"
                         align="center"
+                        className={classes.bodyText}
                         style={{ fontSize: '24px' }}
                     >
                         {t('Junction_info_', {
@@ -157,6 +147,7 @@ export default () => {
                     <Typography
                         variant="body1"
                         align="center"
+                        className={classes.bodyText}
                         style={{ fontSize: '24px' }}
                     >
                         {t('More_info_', {
@@ -169,7 +160,7 @@ export default () => {
                 </Container>
                 <Divider size={20} />
                 <Container center>
-                    <Typography variant="h4" align="center">
+                    <Typography variant="h4" align="center" className={classes.sectionTitle}>
                         {t('Join_hackerpack_')}
                     </Typography>
                     <Button
@@ -182,12 +173,6 @@ export default () => {
                     </Button>
                 </Container>
                 <Divider size={20} />
-                <Container center>
-                    <img
-                        src="https://i.imgur.com/R7pG4Ln.png"
-                        style={{ width: '10em' }}
-                    />
-                </Container>
             </div>
         </PageWrapper>
     )

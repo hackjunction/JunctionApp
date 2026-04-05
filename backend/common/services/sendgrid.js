@@ -348,7 +348,7 @@ const SendgridService = {
     sendRecruiterMessageEmail: (recruiter, user, organization, message) => {
         const params = {
             header_image:
-                'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_600/v1573050918/wordmark_black.png',
+                '',
             subject: `${global.gConfig.PLATFORM_OWNER_NAME}: You have a message from a recruiter!`,
             subtitle: `${recruiter.firstName} ${recruiter.lastName} messaged you on ${global.gConfig.SENDGRID_FROM_NAME} Recruitment.`,
             body: `

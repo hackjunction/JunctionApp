@@ -197,24 +197,24 @@ const ProjectDetail = ({
                 <title>{config.PLATFORM_OWNER_NAME}</title>
                 <meta
                     name="keywords"
-                    content="Hackathon, hackathon platform, Junction"
+                    content="Hackathon, hackathon platform, crypto, web3, That Crypto Hackathon"
                 />
                 <meta
                     name="title"
                     content={
-                        project ? `${project.name} - Junction Platform` : ''
+                        project ? `${project.name} - That Crypto Hackathon` : ''
                     }
                 />
                 <meta
                     property="og:title"
                     content={
-                        project ? `${project.name} - Junction Platform` : ''
+                        project ? `${project.name} - That Crypto Hackathon` : ''
                     }
                 />
                 <meta
                     name="twitter:title"
                     content={
-                        project ? `${project.name} - Junction Platform` : ''
+                        project ? `${project.name} - That Crypto Hackathon` : ''
                     }
                 />
                 <meta

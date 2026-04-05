@@ -1,5 +1,5 @@
 {
-    "name": "junctionapp-frontend",
+    "name": "tch-platform-frontend",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
@@ -78,16 +78,14 @@
     },
     "scripts": {
         "start": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/start.js",
-        "build": "bun run build:styles && node --expose-gc --max-old-space-size=2048 node_modules/react-scripts/scripts/build.js",
+        "build": "node --expose-gc --max-old-space-size=2048 node_modules/react-scripts/scripts/build.js",
         "test": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/test.js",
         "eject": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/eject.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint ./src --fix",
         "depcheck": "depcheck .",
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
-        "precommit": "echo \"Frontend: running pre-commit checks\" && bun run lint",
-        "build:tailwind": "bunx tailwindcss build src/styles/index.css -o src/styles/tailwind.css",
-        "build:styles": "bun run build:tailwind"
+        "precommit": "echo \"Frontend: running pre-commit checks\" && bun run lint"
     },
     "browserslist": [
         "defaults",

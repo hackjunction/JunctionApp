@@ -38,7 +38,7 @@ export default () => {
                 <Link
                     target="_blank"
                     rel="noreferrer"
-                    href="https://junctionhq.notion.site/Participant-Guidebook-Junction-2024-10559a11813780389e0fc382f7ec6ea8?pvs=74"
+                    href="#"
                 >
                     Click here to review the Guidebook
                 </Link>

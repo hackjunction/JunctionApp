@@ -127,7 +127,7 @@ const createGoogleEvent = event => {
     console.log("creating google event")
     try {
         const googleEvent = {
-            summary: event.title + " ||  " + event.desc || 'Junction: meeting with challenge partner',
+            summary: event.title + " ||  " + event.desc || 'TCH: meeting with challenge partner',
             location: event.location || '',
             description: event.description || '',
             start: event.start,

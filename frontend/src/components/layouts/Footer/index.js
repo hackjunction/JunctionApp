@@ -80,8 +80,7 @@ const Footer = props => {
                 <div className={classes.copyright}>
                     <Divider size={1} />
                     <span className={classes.copyright}>
-                        Designed and developed with ❤️ and ☕ by the Junction
-                        team, with the help of:
+                        Powered by That Crypto Hackathon
                     </span>
                     <Divider size={1} />
                     <div className={classes.logos}>

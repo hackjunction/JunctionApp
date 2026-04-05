@@ -329,7 +329,7 @@ const EventSchema = new mongoose.Schema({
         },
         senderName: {
             type: String,
-            default: 'Junction team',
+            default: 'That Crypto Hackathon team',
             trim: true,
             maxLength: 100,
         },

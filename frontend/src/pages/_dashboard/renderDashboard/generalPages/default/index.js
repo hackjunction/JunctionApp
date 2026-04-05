@@ -31,17 +31,17 @@ export default ({ alerts }) => {
             <PageHeader heading="Dashboard" />
 
             <Helmet>
-                <title>Junction App || Dashboard</title>
+                <title>That Crypto Hackathon || Dashboard</title>
                 <meta
                     name="keywords"
-                    content="Hackathon, hackathon platform, Junction, junction dashboard"
+                    content="Hackathon, hackathon platform, crypto, web3, dashboard"
                 />
-                <meta name="title" content="Junction App || Dashboard" />
-                <meta property="og:title" content="Junction App || Dashboard" />
+                <meta name="title" content="That Crypto Hackathon || Dashboard" />
+                <meta property="og:title" content="That Crypto Hackathon || Dashboard" />
 
                 <meta
                     name="twitter:title"
-                    content="Junction App || Dashboard"
+                    content="That Crypto Hackathon || Dashboard"
                 />
                 <meta
                     name="description"
