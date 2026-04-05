@@ -5,11 +5,11 @@ RUN apk add --no-cache curl
 COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
 RUN ln -s /usr/local/bin/bun /usr/local/bin/bunx
 
-# --- Build shared ---
+# --- Build shared (production deps only) ---
 FROM base AS shared
 WORKDIR /app/shared
 COPY shared/package.json ./
-RUN bun install
+RUN bun install --production
 COPY shared/ ./
 
 # --- Build frontend ---
@@ -22,20 +22,21 @@ RUN bun install
 COPY frontend/ ./
 RUN NODE_OPTIONS=--openssl-legacy-provider bun run build
 
-# --- Build backend ---
+# --- Build backend (production deps only) ---
 FROM base AS backend
 WORKDIR /app/shared
 COPY --from=shared /app/shared ./
 WORKDIR /app/backend
 COPY backend/package.json ./
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps --omit=dev
 # Fix: extract-files@9 uses deprecated trailing-slash exports pattern that Node 18 rejects.
 # Remove the exports field so Node falls back to traditional file resolution.
 RUN node -e "const f='node_modules/extract-files/package.json';const p=JSON.parse(require('fs').readFileSync(f));delete p.exports;require('fs').writeFileSync(f,JSON.stringify(p,null,2))"
 COPY backend/ ./
 
-# --- Production image ---
-FROM base AS production
+# --- Production image (no Bun needed at runtime) ---
+FROM node:18-alpine AS production
+RUN apk add --no-cache curl
 WORKDIR /app
 
 # Copy shared
