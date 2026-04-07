@@ -15,7 +15,7 @@ const mongooseSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-})
+}, { _id: false })
 
 module.exports = {
     mongoose: mongooseSchema,

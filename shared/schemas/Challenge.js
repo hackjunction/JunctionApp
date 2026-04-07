@@ -12,7 +12,7 @@ const ChallengeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        length: 200,
+        maxlength: 200,
     },
     partner: {
         type: String,
@@ -63,7 +63,7 @@ const ChallengeSchema = new mongoose.Schema({
         ],
         default: [],
     },
-})
+}, { _id: false })
 
 const ChallengeType = new GraphQLObjectType({
     name: 'Challenge',

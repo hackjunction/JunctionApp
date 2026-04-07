@@ -15,7 +15,7 @@ const CloudinaryImageSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-})
+}, { _id: false })
 const CloudinaryImageType = new GraphQLObjectType({
     name: 'CloudinaryImage',
     fields: {

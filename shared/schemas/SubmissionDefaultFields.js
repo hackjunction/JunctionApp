@@ -79,7 +79,7 @@ const SubmissionDefaultFieldsSchema = new mongoose.Schema({
         required: true,
         default: true,
     },
-})
+}, { _id: false })
 
 const SubmissionDefaultFieldsType = new GraphQLObjectType({
     name: 'SubmissionDefaultFields',

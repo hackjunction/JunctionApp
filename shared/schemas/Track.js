@@ -20,7 +20,7 @@ const TrackSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
     },
-})
+}, { _id: false })
 
 const TrackInput = new GraphQLInputObjectType({
     name: 'TrackInput',

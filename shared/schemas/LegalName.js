@@ -14,7 +14,7 @@ const LegalNameSchema = new mongoose.Schema({
         required: true,
         type: String,
     },
-})
+}, { _id: false })
 
 const LegalNameType = new GraphQLObjectType({
     name: 'LegalName',

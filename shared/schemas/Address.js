@@ -12,9 +12,7 @@ const mongooseSchema = new mongoose.Schema({
         type: String,
         required: true,
         validate: {
-            validator(v) {
-                return Countries.asArrayOfName.indexOf(v) !== -1
-            },
+            validator: v => Countries.asArrayOfName.indexOf(v) !== -1,
             message: props => `${props.value} is not a valid country`,
         },
     },
@@ -36,7 +34,7 @@ const mongooseSchema = new mongoose.Schema({
     venueName: {
         type: String,
     },
-})
+}, { _id: false })
 
 const graphqlInput = new GraphQLInputObjectType({
     name: 'AddressInput',

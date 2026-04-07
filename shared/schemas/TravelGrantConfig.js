@@ -25,13 +25,11 @@ const TravelGrantConfigSchema = new mongoose.Schema({
         required: true,
         default: 'EUR',
         validate: {
-            validator(v) {
-                return Currencies.keys.indexOf(v) !== -1
-            },
+            validator: v => Currencies.keys.indexOf(v) !== -1,
             message: props => `${props.value} is not a valid currency code`,
         },
     },
-})
+}, { _id: false })
 
 const TravelGrantConfigType = new GraphQLObjectType({
     name: 'TravelGrantConfig',

@@ -21,7 +21,7 @@ const RegistrationSectionSchema = new mongoose.Schema({
     description: String,
     conditional: String,
     questions: [RegistrationQuestionSchema.mongoose],
-})
+}, { _id: false })
 
 const RegistrationSectionType = new GraphQLObjectType({
     name: 'RegistrationSection',

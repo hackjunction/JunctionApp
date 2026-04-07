@@ -44,9 +44,7 @@ const RegistrationQuestionSchema = new mongoose.Schema({
         type: String,
         required: true,
         validate: {
-            validator(v) {
-                return FIELD_TYPES.indexOf(v) !== -1
-            },
+            validator: v => FIELD_TYPES.indexOf(v) !== -1,
             message: () => `Field type must be one of ${FIELD_TYPES.join(',')}`,
         },
     },
@@ -59,20 +57,10 @@ const RegistrationQuestionSchema = new mongoose.Schema({
         options: {
             type: [String],
             default: [],
-            required() {
-                return (
-                    ['single-choice', 'multiple-choice'].indexOf(
-                        this.fieldType,
-                    ) !== -1
-                )
-            },
         },
         default: {
             type: Boolean,
             default: false,
-            required() {
-                return ['boolean', 'checkbox'].indexOf(this.fieldType) !== -1
-            },
         },
         maxSize: {
             type: Number,
@@ -81,7 +69,7 @@ const RegistrationQuestionSchema = new mongoose.Schema({
             type: [String],
         },
     },
-})
+}, { _id: false })
 
 const RegistrationQuestionType = new GraphQLObjectType({
     name: 'RegistrationQuestion',

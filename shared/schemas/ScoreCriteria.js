@@ -15,7 +15,7 @@ const ScoreCriteriaSchema = new mongoose.Schema({
         // default: 0,
         required: true,
     },
-})
+}, { _id: false })
 
 module.exports = {
     mongoose: ScoreCriteriaSchema,

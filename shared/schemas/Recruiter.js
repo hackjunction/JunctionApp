@@ -16,7 +16,7 @@ const mongooseSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
-})
+}, { _id: false })
 
 const EventRecruitersType = new GraphQLObjectType({
     name: 'EventRecruiters',

@@ -25,7 +25,7 @@ const HackerpackSchema = new mongoose.Schema({
     link: {
         type: String,
     },
-})
+}, { _id: false })
 
 const HackerpackType = new GraphQLObjectType({
     name: 'Hackerpack',

@@ -35,7 +35,7 @@ const ScoreCriteriaSettingsSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-})
+}, { _id: false })
 
 const ScoreCriteriaSettingsType = new GraphQLObjectType({
     name: 'ScoreCriteriaSettings',

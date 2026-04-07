@@ -7,14 +7,11 @@ const mongooseSchema = new mongoose.Schema({
     role: {
         type: String,
         validate: {
-            validator(v) {
-                console.log('Validating role', v)
-                return Roles.items.indexOf(v) !== -1 || v === 'Open application'
-            },
+            validator: v => Roles.items.indexOf(v) !== -1 || v === 'Open application',
             message: props => `${props.value} is not a valid role`,
         },
     },
-})
+}, { _id: false })
 
 // const graphqlSchema = new GraphQLObjectType({
 //     name: 'TeamRole',

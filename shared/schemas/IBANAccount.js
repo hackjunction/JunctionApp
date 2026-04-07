@@ -14,7 +14,7 @@ const IBANAccountSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-})
+}, { _id: false })
 
 const IBANAccountType = new GraphQLObjectType({
     name: 'IBANAccount',
