@@ -35,7 +35,7 @@ const connect = () => {
             //     bucketName: "uploads"
             // })
             // logger.info(`Mongoose GridFSBucket connected to ${gfs}`)
-            logger.info(`Mongoose connected to ${global.gConfig.MONGODB_URI}`)
+            logger.info(`Mongoose connected to ${global.gConfig.MONGODB_URI.replace(/\/\/.*@/, '//<credentials>@')}`)
             resolve()
 
         })

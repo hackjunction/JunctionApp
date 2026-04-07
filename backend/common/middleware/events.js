@@ -19,7 +19,7 @@ function isSuperAdmin(user) {
     if (!user) {
         return new NotFoundError('User does not exist')
     }
-    if (!user.roles.includes('SuperAdmin')) {
+    if (!user.roles || !user.roles.includes('SuperAdmin')) {
         return new InsufficientPrivilegesError('Must be owner a superadmin')
     }
     return null
