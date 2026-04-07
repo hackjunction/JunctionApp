@@ -10,19 +10,10 @@ const {
 const Currencies = require('../constants/currencies')
 
 const TravelGrantConfigSchema = new mongoose.Schema({
-    enabled: {
-        type: Boolean,
-        required: true,
-        default: false,
-    },
-    budget: {
-        type: Number,
-        required: true,
-        default: 0,
-    },
+    enabled: { type: Boolean, default: false },
+    budget: { type: Number, default: 0 },
     currency: {
         type: String,
-        required: true,
         default: 'EUR',
         validate: {
             validator: v => Currencies.keys.indexOf(v) !== -1,

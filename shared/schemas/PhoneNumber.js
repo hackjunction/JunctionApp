@@ -5,7 +5,7 @@ const Countries = require('../constants/countries')
 const mongooseSchema = new mongoose.Schema({
     countryCode: {
         type: String,
-        required: true,
+
         validate: {
             validator: v => Countries.asArrayOfPhoneCodes.indexOf(v) !== -1,
             message: props => `${props.value} is not a valid phone code`,

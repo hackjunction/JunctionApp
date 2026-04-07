@@ -11,23 +11,23 @@ const {
 const WebhookSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+
     },
     resource: {
         type: String,
-        required: true,
+
     },
     action: {
         type: String,
-        required: true,
+
     },
     url: {
         type: String,
-        required: true,
+
     },
     enabled: {
         type: Boolean,
-        required: true,
+
     },
 }, { _id: false })
 

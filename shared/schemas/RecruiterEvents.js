@@ -5,7 +5,7 @@ const Misc = require('../constants/misc')
 const mongooseSchema = new mongoose.Schema({
     eventId: {
         type: String,
-        required: true,
+
 
     },
     organisation: {

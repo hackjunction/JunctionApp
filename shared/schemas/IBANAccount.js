@@ -4,15 +4,15 @@ const { GraphQLNonNull, GraphQLObjectType, GraphQLString } = require('graphql')
 const IBANAccountSchema = new mongoose.Schema({
     accountNumber: {
         type: String,
-        required: true,
+
     },
     bankName: {
         type: String,
-        required: true,
+
     },
     swift: {
         type: String,
-        required: true,
+
     },
 }, { _id: false })
 

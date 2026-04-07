@@ -3,15 +3,15 @@ const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = require('graphql')
 
 const LegalNameSchema = new mongoose.Schema({
     firstName: {
-        required: true,
+
         type: String,
     },
     middleName: {
-        required: false,
+
         type: String,
     },
     lastName: {
-        required: true,
+
         type: String,
     },
 }, { _id: false })

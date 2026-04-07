@@ -12,11 +12,11 @@ const RegistrationQuestionSchema = require('./RegistrationQuestion')
 const RegistrationSectionSchema = new mongoose.Schema({
     label: {
         type: String,
-        required: true,
+
     },
     name: {
         type: String,
-        required: true,
+
     },
     description: String,
     conditional: String,

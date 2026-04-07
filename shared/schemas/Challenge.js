@@ -11,7 +11,7 @@ const CloudinaryImageSchema = require('./CloudinaryImage')
 const ChallengeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+
         maxlength: 200,
     },
     partner: {
@@ -53,11 +53,11 @@ const ChallengeSchema = new mongoose.Schema({
             {
                 criteria: {
                     type: String,
-                    required: true,
+            
                 },
                 label: {
                     type: String,
-                    required: true,
+            
                 },
             },
         ],

@@ -10,7 +10,7 @@ const CloudinaryImageSchema = require('./CloudinaryImage')
 const HackerpackSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+
     },
     partner: {
         type: String,

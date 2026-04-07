@@ -10,7 +10,7 @@ const {
 const mongooseSchema = new mongoose.Schema({
     recruiterId: {
         type: String,
-        required: true,
+
     },
     organization: {
         type: String,

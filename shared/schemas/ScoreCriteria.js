@@ -4,16 +4,16 @@ const mongoose = require('mongoose')
 const ScoreCriteriaSchema = new mongoose.Schema({
     criteria: {
         type: String,
-        required: true,
+
     },
     label: {
         type: String,
-        required: true,
+
     },
     score: {
         type: Number,
         // default: 0,
-        required: true,
+
     },
 }, { _id: false })
 

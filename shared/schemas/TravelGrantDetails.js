@@ -17,41 +17,41 @@ const TravelGrantDetailsSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
+
     },
     gender: {
         type: String,
-        required: true,
+
     },
     dateOfBirth: {
-        required: true,
+
         type: Date,
     },
     address: {
-        required: true,
+
         type: AddressSchema.mongoose,
     },
     hasSSN: {
         type: Boolean,
-        required: true,
+
     },
     SSN: {
         type: String,
     },
     hasIBAN: {
         type: Boolean,
-        required: true,
+
     },
     IBAN: {
         type: IBANAccountSchema.mongoose,
     },
     receiptsPdf: {
-        required: true,
+
         type: CloudinaryImageSchema.mongoose,
     },
     receiptsSum: {
         type: Number,
-        required: true,
+
     },
 }, { _id: false })
 

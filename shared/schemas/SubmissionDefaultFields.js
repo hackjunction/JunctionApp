@@ -9,76 +9,20 @@ const {
 } = require('graphql')
 
 const SubmissionDefaultFieldsSchema = new mongoose.Schema({
-    name: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    images: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    punchline: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    description: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    track: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    challenges: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    technologies: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    video: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    demo: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    source: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    sourcePublic: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    location: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    privacy: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
-    status: {
-        type: Boolean,
-        required: true,
-        default: true,
-    },
+    name: { type: Boolean, default: true },
+    images: { type: Boolean, default: true },
+    punchline: { type: Boolean, default: true },
+    description: { type: Boolean, default: true },
+    track: { type: Boolean, default: true },
+    challenges: { type: Boolean, default: true },
+    technologies: { type: Boolean, default: true },
+    video: { type: Boolean, default: true },
+    demo: { type: Boolean, default: true },
+    source: { type: Boolean, default: true },
+    sourcePublic: { type: Boolean, default: true },
+    location: { type: Boolean, default: true },
+    privacy: { type: Boolean, default: true },
+    status: { type: Boolean, default: true },
 }, { _id: false })
 
 const SubmissionDefaultFieldsType = new GraphQLObjectType({
