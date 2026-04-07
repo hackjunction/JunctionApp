@@ -13,6 +13,10 @@ const settings = {
         required: true,
         value: process.env.REACT_APP_BASE_URL,
     },
+    FRONTEND_URL: {
+        required: true,
+        value: process.env.REACT_APP_FRONTEND_URL,
+    },
     WEB_SOCKET_URL: {
         required: false,
         value: process.env.REACT_APP_WEB_SOCKET_URL,

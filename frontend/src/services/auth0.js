@@ -4,7 +4,7 @@ import config from 'constants/config'
 const Auth0 = new auth0.WebAuth({
     domain: config.AUTH0_DOMAIN,
     clientID: config.AUTH0_CLIENT_ID,
-    redirectUri: `${config.BASE_URL}/callback`,
+    redirectUri: `${config.FRONTEND_URL}/callback`,
     responseType: 'token id_token',
     scope: 'openid profile',
 })
@@ -13,14 +13,14 @@ const Auth0Service = {
     authorize: params => {
         Auth0.authorize({
             ...params,
-            redirectUri: `${config.BASE_URL}/callback`,
+            redirectUri: `${config.FRONTEND_URL}/callback`,
         })
     },
     // TODO this causes a loop on localhost when the token expires
     logout: () => {
-        
+
         Auth0.logout({
-            returnTo: `${config.BASE_URL}/logout`,
+            returnTo: `${config.FRONTEND_URL}/logout`,
         })
     },
     checkSession: () => {

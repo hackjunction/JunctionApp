@@ -13,7 +13,7 @@ import { createClient } from 'graphql-ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 
 const httpLink = createHttpLink({
-    uri: '/graphql',
+    uri: `${config.BASE_URL.replace(/\/+$/, '')}/graphql`,
 })
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {

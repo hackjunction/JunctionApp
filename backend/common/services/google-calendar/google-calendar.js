@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 const fs = require('fs')
 const { google } = require('googleapis')
-const uuidv4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 const { updateMeetingGoogleInfo } = require('../../../modules/meeting/helpers')
 
 const TOKEN_PATH = `${__dirname}/token.json`

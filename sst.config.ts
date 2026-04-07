@@ -144,6 +144,8 @@ export default $config({
       image: {
         context: ".",
         dockerfile: "Dockerfile",
+        cacheFrom: [],
+        cacheTo: [],
       },
       link: [redis, uploads, email, ...Object.values(secrets)],
       environment: {

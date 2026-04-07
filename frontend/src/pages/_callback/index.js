@@ -29,7 +29,7 @@ export default () => {
                     dispatch(AuthActions.pushNextRoute())
                 }
             } catch (err) {
-                if (err.response.status === 404) {
+                if (err.response && err.response.status === 404) {
                     dispatch(push('/login/welcome'))
                 } else {
                     dispatch(push('/error', { error: 'Login failed' }))

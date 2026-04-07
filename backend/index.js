@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser')
 const { errors } = require('celebrate')
 const path = require('path')
@@ -17,6 +18,12 @@ const logger = require('./misc/logger')
 // Enable route logging by uncommenting this line
 /** Use helmet for some basic security measures */
 app.use(helmet())
+
+/* Enable CORS for split frontend/backend domains */
+app.use(cors({
+    origin: process.env.FRONTEND_URL || true,
+    credentials: true,
+}))
 
 /* Prerender */
 app.use(

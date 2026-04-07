@@ -8,9 +8,10 @@
  */
 
 import axios from 'axios'
+import config from 'constants/config'
 
 const instance = axios.create({
-    baseURL: '/api',
+    baseURL: `${config.BASE_URL.replace(/\/+$/, '')}/api`,
 })
 
 instance.interceptors.response.use(

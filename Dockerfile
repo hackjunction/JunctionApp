@@ -32,6 +32,8 @@ RUN npm install --legacy-peer-deps --omit=dev
 # Fix: extract-files@9 uses deprecated trailing-slash exports pattern that Node 18 rejects.
 # Remove the exports field so Node falls back to traditional file resolution.
 RUN node -e "const f='node_modules/extract-files/package.json';const p=JSON.parse(require('fs').readFileSync(f));delete p.exports;require('fs').writeFileSync(f,JSON.stringify(p,null,2))"
+# Fix: uuid@8 strict exports reject require('uuid/v4') used by the `request` package.
+RUN node -e "const f='node_modules/uuid/package.json';const p=JSON.parse(require('fs').readFileSync(f));delete p.exports;require('fs').writeFileSync(f,JSON.stringify(p,null,2))"
 COPY backend/ ./
 
 # --- Production image (no Bun needed at runtime) ---
