@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/core/styles'
 const useTextField = makeStyles(theme => ({
     root: {
         '& .MuiFilledInput-root': {
-            backgroundColor: '#f7fafc',
-            border: `2px solid #e2e8f0`,
+            backgroundColor: '#0a2028',
+            border: `2px solid #1a3a44`,
             borderRadius: '6px',
         },
     },

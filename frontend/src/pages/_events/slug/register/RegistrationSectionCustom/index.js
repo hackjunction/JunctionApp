@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
         marginBottom: '200px',
     },
     question: {
-        backgroundColor: 'white',
+        backgroundColor: '#0c2c34',
         marginTop: '1px',
         padding: theme.spacing(3),
         transition: 'all 0.2s ease',
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     radioGroupWrapper: {
-        background: 'white',
+        background: '#0c2c34',
         padding: theme.spacing(2),
         width: '100%',
         flexDirection: 'column',

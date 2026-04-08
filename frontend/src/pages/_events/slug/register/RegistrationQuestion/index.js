@@ -422,7 +422,7 @@ const RegistrationQuestion = ({
                             }
                             placeholder={config.placeholder}
                             value={field.value}
-                            className={`tw-rounded-md tw-w-full tw-max-h-full tw-bg-gray-100 tw-border-gray-300 tw-px-2 tw-py-4 tw-items-start tw-justify-start tw-text-gray-800 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-300`}
+                            className={`tw-rounded-md tw-w-full tw-max-h-full tw-bg-gray-800 tw-border-gray-600 tw-px-2 tw-py-4 tw-items-start tw-justify-start tw-text-gray-100 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-700`}
                         />
                     </FormControl>
                 )
@@ -476,7 +476,7 @@ const RegistrationQuestion = ({
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <div className="tw-bg-gray-100 tw-p-2 tw-rounded-md tw-border-gray-300 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-300">
+                        <div className="tw-bg-gray-800 tw-p-2 tw-rounded-md tw-border-gray-600 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-700">
                             <Select
                                 autoFocus={autoFocus}
                                 label={'Choose one'}
@@ -503,7 +503,7 @@ const RegistrationQuestion = ({
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <div className="tw-bg-gray-100 tw-p-2 tw-rounded-md tw-border-gray-300 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-300">
+                        <div className="tw-bg-gray-800 tw-p-2 tw-rounded-md tw-border-gray-600 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-700">
                             <Select
                                 autoFocus={autoFocus}
                                 label={'Choose many'}

@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
         padding: 0,
     },
     question: {
-        backgroundColor: 'white',
+        backgroundColor: '#0c2c34',
         marginTop: '1px',
         padding: theme.spacing(3),
         transition: 'all 0.2s ease',
