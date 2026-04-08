@@ -116,28 +116,28 @@ const theme = createTheme({
             fontWeight: '700',
         },
         h3: {
-            fontFamily: titleFont,
-            fontWeight: '400',
+            fontFamily: bodyFont,
+            fontWeight: '700',
         },
         h4: {
-            fontFamily: titleFont,
-            fontWeight: '400',
+            fontFamily: bodyFont,
+            fontWeight: '700',
         },
         h5: {
-            fontFamily: titleFont,
+            fontFamily: bodyFont,
             fontWeight: '700',
         },
         h6: {
-            fontFamily: titleFont,
+            fontFamily: bodyFont,
             fontWeight: '500',
             lineHeight: '1.3',
         },
         subtitle1: {
-            fontFamily: titleFont,
+            fontFamily: bodyFont,
             fontWeight: '400',
         },
         subtitle2: {
-            fontFamily: titleFont,
+            fontFamily: bodyFont,
             fontWeight: '400',
         },
         body1: {
