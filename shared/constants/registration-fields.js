@@ -80,7 +80,7 @@ const FieldProps = {
         copyToUserProfile: true,
         mongooseSchema: {
             type: String,
-            required: true,
+
             trim: true,
         },
         graphqlSchema: GraphQLNonNull(GraphQLString),
@@ -109,7 +109,6 @@ const FieldProps = {
         copyToUserProfile: true,
         mongooseSchema: {
             type: String,
-            required: true,
             trim: true,
         },
         graphqlSchema: GraphQLNonNull(GraphQLString),
@@ -137,7 +136,6 @@ const FieldProps = {
         copyToUserProfile: true,
         mongooseSchema: {
             type: String,
-            required: true,
             trim: true,
         },
         graphqlSchema: GraphQLNonNull(GraphQLString),
