@@ -40,7 +40,6 @@ const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
     const [confirmed3, setConfirmed3] = useState(false)
     const { t } = useTranslation()
     const confirmed = confirmed1 && confirmed2 && confirmed3
-    console.log('event is ', event)
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
             <Box className={classes.wrapper}>

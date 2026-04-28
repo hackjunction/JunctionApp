@@ -38,7 +38,7 @@ export default () => {
 
     const [loading, setLoading] = useState(false)
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false)
-    const { status } = registration
+    const status = registration?.status
 
     const handleConfirm = useCallback(() => {
         setLoading(true)
