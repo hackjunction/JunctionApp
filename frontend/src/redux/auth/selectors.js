@@ -25,12 +25,12 @@ export const isSessionExpired = state => {
 
 export const getRoles = state =>
     state.auth.session.idTokenPayload
-        ? state.auth.session.idTokenPayload[namespace + 'roles']
+        ? state.auth.session.idTokenPayload[namespace + 'roles'] || []
         : []
 
 export const getPermissions = state =>
     state.auth.session.idTokenPayload
-        ? state.auth.session.idTokenPayload[namespace + 'permissions']
+        ? state.auth.session.idTokenPayload[namespace + 'permissions'] || []
         : []
 
 export const getHasPermission = state => {

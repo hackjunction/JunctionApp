@@ -9,31 +9,31 @@ const {
 const EventThemeSchema = new mongoose.Schema({
     headerBackgroundColor: {
         type: String,
-        default: '#ffffff',
+        default: '#0a1628',
     },
     headerTextColor: {
         type: String,
-        default: '#000000',
+        default: '#73f9ec',
     },
     bodyBackgroundColor: {
         type: String,
-        default: '#ffffff',
+        default: '#0d1f35',
     },
     detailsBackgroundColor: {
         type: String,
-        default: '#ffffff',
+        default: '#0d1f35',
     },
     detailsTextColor: {
         type: String,
-        default: '#000000',
+        default: '#ffffff',
     },
     sidebarBackgroundColor: {
         type: String,
-        default: '#ffffff',
+        default: '#0a1628',
     },
     sidebarTextColor: {
         type: String,
-        default: '#000000',
+        default: '#ffffff',
     },
     accentColor: {
         type: String,

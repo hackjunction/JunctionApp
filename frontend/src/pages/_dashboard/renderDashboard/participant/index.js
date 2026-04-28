@@ -47,7 +47,7 @@ import {
 
 import { Chat } from 'components/messaging/chat'
 import { Grid, Paper } from '@material-ui/core'
-import DefaultImage from 'assets/images/dashboardDefault.jpg'
+import DefaultImage from 'assets/images/tch-logo-animated.gif'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {

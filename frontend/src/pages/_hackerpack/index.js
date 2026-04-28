@@ -113,7 +113,7 @@ export default () => {
                 <Box p={2}>
                     <Typography color="textSecondary" variant="subtitle1">
                         Anything you would like to see here in the future?
-                        Contact us at hello@thatcryptohackathon.com with your
+                        Contact us at jani@bluechipevents.fi with your
                         suggestion.
                     </Typography>
                 </Box>

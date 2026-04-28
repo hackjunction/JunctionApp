@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const NewsLetterButton = ({
-    email = 'hello@thatcryptohackathon.com',
+    email = 'jani@bluechipevents.fi',
     country,
     onHidden,
 }) => {

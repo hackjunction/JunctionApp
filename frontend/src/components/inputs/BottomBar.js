@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     saveButton: {
         transition: 'all 0.2s ease',
         background: 'white',
-        color: theme.palette.text.primary,
+        color: theme.palette.background.default,
         '&:hover': {
             background: 'white',
             paddingLeft: theme.spacing(2),

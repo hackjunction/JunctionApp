@@ -81,7 +81,7 @@ export default () => {
                             <PricingCard
                                 topic="What we offer"
                                 body={body2}
-                                price="Ask: hello@thatcryptohackathon.com"
+                                price="Ask: jani@bluechipevents.fi"
                             />
                             <Divider size={4} />
                             <Typography variant="body1" justifyContent="center">

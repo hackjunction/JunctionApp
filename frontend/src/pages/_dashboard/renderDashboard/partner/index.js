@@ -11,7 +11,7 @@ import {
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import BasicNavBar from 'components/navbars/BasicNavBar'
-import DefaultImage from 'assets/images/dashboardDefault.jpg'
+import DefaultImage from 'assets/images/tch-logo-animated.gif'
 
 import Image from 'components/generic/Image'
 

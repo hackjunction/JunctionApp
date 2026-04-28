@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        background: 'white',
+        background: theme.palette.background.paper,
         borderRadius: '7px',
         boxShadow: '2px 7px 15px rgba(0, 0, 0, 0.12)',
         padding: theme.spacing(3),
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     box: {
-        background: 'white',
+        background: theme.palette.background.paper,
         borderRadius: '7px',
         boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.12)',
         padding: theme.spacing(3),

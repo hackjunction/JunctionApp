@@ -174,7 +174,7 @@ export default RequiresPermission(() => {
         document.querySelector('html').style.backgroundColor = '#000000'
 
         return () => {
-            document.querySelector('html').style.backgroundColor = '#ffffff'
+            document.querySelector('html').style.backgroundColor = '#0a1628'
         }
     }, [])
 

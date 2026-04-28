@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     wrapper: {
         width: '100%',
         height: '78px',
-        background: 'white',
+        background: theme.palette.background.paper,
         padding: theme.spacing(0, 2),
     },
     inner: {

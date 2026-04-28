@@ -19,7 +19,7 @@ export default (ComposedComponent, requiredRoles = []) => {
         const hasProfile = useSelector(UserSelectors.hasProfile)
 
         const hasRequiredRoles = useMemo(() => {
-            return requiredRoles.filter(x => !roles.includes(x)).length === 0
+            return requiredRoles.filter(x => !(roles || []).includes(x)).length === 0
         }, [roles])
 
         const checkAndRedirect = useCallback(() => {

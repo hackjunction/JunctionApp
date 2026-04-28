@@ -22,7 +22,7 @@ import {
     Box,
 } from '@material-ui/core'
 
-import PlatformLogo from 'assets/logos/JO_wordmark_white.png'
+import PlatformLogo from 'assets/images/tch-logo-animated.gif'
 import IconButton from 'components/generic/IconButton'
 import EventsPage from 'pages/_dashboard/renderDashboard/default/events'
 import ProfilePage from 'pages/_account/profile' //TODO: fix the profile view
