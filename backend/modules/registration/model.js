@@ -71,7 +71,7 @@ const RegistrationSchema = new mongoose.Schema({
         enum: RegistrationTravelGrantStatuses.ids,
     },
     travelGrantDetails: {
-        type: TravelGrantDetailsSchema.mongoose,
+        type: mongoose.Schema.Types.Mixed,
     },
     travelGrantComment: {
         type: String,
