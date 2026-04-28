@@ -49,13 +49,13 @@ const RegistrationSchema = new mongoose.Schema({
         default: [],
     },
     checklist: {
-        type: ChecklistSchema.mongoose,
+        type: mongoose.Schema.Types.Mixed,
         default: {
             items: checklistItemsPhysical(),
         },
     },
     answers: {
-        type: AnswersSchema.mongoose,
+        type: mongoose.Schema.Types.Mixed,
         default: {},
     },
     travelGrant: {
