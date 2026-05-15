@@ -70,7 +70,7 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
 
     useEffect(() => {
         fetchTeamMembers()
-    }, [])
+    }, [fetchTeamMembers])
 
     if (loading) {
         return (

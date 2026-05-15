@@ -40,6 +40,7 @@ export default () => {
             component: CandidatesPage,
         })
     }
+    // const hasTeam = useSelector(DashboardSelectors.hasTeam)
     // TODO make tab "my team" and "Team candidates" visible only if user has a team
     return (
         <Container>
