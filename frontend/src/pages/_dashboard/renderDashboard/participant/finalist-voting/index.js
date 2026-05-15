@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { Grid, Box, Button, Dialog, Card, Typography } from '@material-ui/core'
+import { Grid, Box, Button, Dialog } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 
 import PageHeader from 'components/generic/PageHeader'
@@ -26,15 +26,14 @@ export default () => {
     const [selected, setSelected] = useState(false)
 
     const [projects, setProjects] = useState([])
-    const [currentVote, setCurrentVote] = useState(null)
-    const [hasVoted, setHasVoted] = useState(false)
-    const [newVote, setNewVote] = useState(null)
+    const [vote, setVote] = useState(null)
+    const [hasVoted, setVoted] = useState(false)
 
-    const getCurrentVote = async () => {
+    const getCurrentVote = useCallback(async () => {
         return WinnerVoteService.getVote(idToken, event.slug)
-    }
+    }, [idToken, event])
 
-    const getFinalists = async () => {
+    const getFinalists = useCallback(async () => {
         EventsService.getFinalists(idToken, event.slug)
             .then(finalistProjects => {
                 setProjects(finalistProjects)
@@ -46,7 +45,7 @@ export default () => {
                     ),
                 )
             })
-    }
+    }, [idToken, event])
 
     useEffect(() => {
         setLoading(true)
@@ -59,13 +58,12 @@ export default () => {
         }
     }, [])
 
-    const update = async () => {
+    const update = useCallback(async () => {
         try {
-            const currentVoteFetched = await getCurrentVote()
-            if (currentVoteFetched && currentVoteFetched?.project) {
-                setCurrentVote(currentVoteFetched.project)
-                setNewVote(currentVoteFetched.project)
-                setHasVoted(true)
+            const vote = await getCurrentVote()
+            if (vote && vote?.project) {
+                setVote(vote?.project)
+                setVoted(true)
             }
         } catch (err) {
             dispatch(
@@ -74,7 +72,7 @@ export default () => {
                 ),
             )
         }
-    }
+    }, [event, idToken])
 
     const handleSubmit = async () => {
         try {
@@ -82,17 +80,15 @@ export default () => {
             const result = await WinnerVoteService.submitVote(
                 idToken,
                 event.slug,
-                newVote,
+                vote,
             )
             if (result) {
-                setCurrentVote(newVote)
-                setHasVoted(true)
-                dispatch(SnackbarActions.success('vote submitted!'))
+                dispatch(SnackbarActions.success('Vote submitted!'))
             }
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
-                    `Your vote could not be saved. Error: ${
+                    `Score could not be saved. Error: ${
                         err.response.data.message || err.message
                     }`,
                 ),
@@ -108,40 +104,33 @@ export default () => {
                 heading="Finalist voting"
                 subheading="Vote for your favorite project of the finalists"
             />
-            <Box className="tw-p-4 tw-my-4 tw-border-gray-200 tw-border-solid tw-rounded-md">
-                {projects &&
-                    currentVote &&
-                    projects.find(project => project._id === currentVote) && (
-                        <div className="tw-mb-2">
-                            <Typography variant="subtitle1">
-                                Your current choice is:{' '}
-                                {
-                                    projects.find(
-                                        project => project._id === currentVote,
-                                    ).name
-                                }
-                            </Typography>
-                        </div>
-                    )}
-                <div className="tw-flex tw-flex-col tw-w-full tw-gap-2">
+            <Box
+                mt={5}
+                mb={3}
+                display="flex"
+                flexDirection="row"
+                alignItems="flex-end"
+            >
+                <Box mb={2} flex="1">
                     <Select
-                        value={newVote ? newVote : currentVote}
-                        onChange={setNewVote}
+                        value={vote}
+                        onChange={setVote}
                         label="Choose your favorite"
                         options={projects.map(project => ({
                             label: project.name,
                             value: project._id,
                         }))}
                     />
+                </Box>
+                <Box ml={2} mb={2}>
                     <Button
-                        disabled={newVote === currentVote}
                         onClick={handleSubmit}
                         color="primary"
                         variant="contained"
                     >
                         {hasVoted ? 'Change vote' : 'Submit vote'}
                     </Button>
-                </div>
+                </Box>
             </Box>
             <Grid container spacing={3}>
                 {projects.map((project, index) => (

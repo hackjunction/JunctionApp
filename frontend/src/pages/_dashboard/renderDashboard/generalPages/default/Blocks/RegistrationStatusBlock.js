@@ -82,7 +82,7 @@ export default () => {
                 return 'error'
             }
             case RegistrationStatuses.asObject.accepted.id: {
-                return 'theme_purple'
+                return 'success'
             }
             case RegistrationStatuses.asObject.acceptedToHub.id: {
                 return 'success'
@@ -207,7 +207,7 @@ export default () => {
                 return (
                     <Button
                         onClick={() =>
-                            window.open(`${config.BASE_URL}/home`, '_blank')
+                            window.open(config.CALENDAR_URL, '_blank')
                         }
                         color="theme_white"
                         variant="contained"

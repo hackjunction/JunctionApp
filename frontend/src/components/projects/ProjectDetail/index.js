@@ -114,8 +114,30 @@ const ProjectDetail = ({
     const classes = useStyles()
     const [index, setIndex] = useState(0)
     const [pause, setPause] = useState(true)
+    const dispatch = useDispatch()
 
     if (!project) return null
+    const downloadFile = async fileDataString => {
+        const parsedValue = JSON.parse(fileDataString)
+        await dispatch(
+            DashboardActions.getFileForProject(
+                parsedValue.id,
+                parsedValue.filename,
+            ),
+        )
+    }
+
+    const extractFileDetails = (fileDataString, toExtract) => {
+        const parsedValue = JSON.parse(fileDataString)
+        switch (toExtract) {
+            case 'filename':
+                return parsedValue.filename
+            case 'id':
+                return parsedValue.id
+            default:
+                return parsedValue.filename
+        }
+    }
 
     const renderTrack = () => {
         const value = find(event.tracks, t => t.slug === project.track)
@@ -128,7 +150,7 @@ const ProjectDetail = ({
         return <Typography variant="subtitle1">{value.name}</Typography>
     }
 
-    const renderChallenges = () => {
+    const renderChallenges = challenges => {
         const values = filter(
             event.challenges,
             c => project.challenges.indexOf(c.slug) !== -1,
@@ -373,8 +395,7 @@ const ProjectDetail = ({
                                                                         <Typography variant="subtitle1">
                                                                             {answer.fieldType ===
                                                                             'boolean'
-                                                                                ? answer.value ===
-                                                                                  'true'
+                                                                                ? answer.value
                                                                                     ? 'Yes'
                                                                                     : 'No'
                                                                                 : answer.value}
